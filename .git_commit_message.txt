@@ -1,0 +1,10 @@
+issue #NUMERO : Travail Réalisé
+
+DONE : 
+# Détail du travail réaliser.
+
+TO DO : 
+# Ce qu'il reste a faire (si nécessaire)
+
+PING : 
+# Persone concerner par l'issue (@GitPseudo)
