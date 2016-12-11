@@ -7,3 +7,6 @@ services:
 
 script:
   - docker run -d ubuntu
+
+notifications:
+  slack: societyco:T1mHeYKrOtopvRjIZ68MqOQo
