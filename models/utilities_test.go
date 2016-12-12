@@ -13,9 +13,9 @@ import (
 func TestUtilities(t *testing.T) {
 	Convey("Testing Id generation", t, func() {
 		number_of_id := 1000
-		assertion := "Checking validity of" + strconv.
-		Convey("Checking validity of", func() {
-				for i := 0; i < 1000; i++ {
+		assertion := "Checking validity of" + strconv.Itoa(number_of_id)
+		Convey(assertion, func() {
+				for i := 0; i < number_of_id; i++ {
 					id := NewId()
 					So(len(id),ShouldBeLessThan,27)
 				}
