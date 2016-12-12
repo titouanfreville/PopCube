@@ -10,6 +10,10 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
+// Test correction test for user ;)
+
+
+// Test Password functionalities from User Model
 func TestPasswordHash(t *testing.T) {
 	Convey("Given a password", t, func() {
 		hash := HashPassword("Test")
@@ -20,6 +24,10 @@ func TestPasswordHash(t *testing.T) {
 
 		Convey("Compare it with correct entry shoud be false", func () {
 			So(ComparePassword(hash, "Test1"), ShouldBeFalse)
+		})
+
+		Convey("Compare it with empty entry shoud be false", func () {
+			So(ComparePassword(hash, ""), ShouldBeFalse)
 		})
 	})
 }
