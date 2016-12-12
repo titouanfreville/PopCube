@@ -1,0 +1,12 @@
+sudo: required
+
+language: bash
+
+services:
+  - docker
+
+script:
+  - docker run -d ubuntu
+
+notifications:
+  slack: societyco:T1mHeYKrOtopvRjIZ68MqOQo
