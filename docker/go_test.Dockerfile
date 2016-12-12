@@ -12,7 +12,7 @@ RUN apk add --update git && \
 		rm -rf /var/cache/apk/*
 
 VOLUME /go/
-COPY . /go
-
+COPY ./api /go/api
+COPY ./models /go/models
 
 ENTRYPOINT go test -v **/*.go

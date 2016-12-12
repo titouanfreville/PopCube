@@ -12,19 +12,25 @@ import (
 
 func TestUtilities(t *testing.T) {
 	Convey("Testing Id generation", t, func() {
-		number_of_id := 1000
-		assertion := "Checking validity of" + strconv.Itoa(number_of_id)
+		number_of_generation := 1000
+		assertion := "Checking validity of " + strconv.Itoa(number_of_generation) + "random ids"
 		Convey(assertion, func() {
 				for i := 0; i < number_of_id; i++ {
 					id := NewId()
 					So(len(id),ShouldBeLessThan,27)
 				}
 			})
-	})
+	})*
+
+
+	Convey("Testing String generation", t, func() {
+
 }
 
 func TestRandomString(t *testing.T) {
 	Convey("Test that random String function correctly generate string (1000 generation to test)", t, func() {
+		number_of_generation := 1000
+		assertion := "Checking generation of" + strconv.Itoa(number_of_id) +" random string"
 		for i := 0; i < 1000; i++ {
 			r := NewRandomString(32)
 			So(len(r),ShouldEqual,32)
