@@ -6,7 +6,7 @@ services:
   - docker
 
 script:
-  - docker run -d ubuntu
+  # - docker run -d ubuntu
   - docker build -t go_test -f docker/go_test.Dockerfile . && docker run --rm go_test
 
 notifications:
