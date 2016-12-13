@@ -1,0 +1,263 @@
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script type='text/javascript'>
+	document.ANALYSIS_DATA = ;
+	document.CALLGRAPH = ;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "./models/"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>
+Here is the file which describe the user model.
+It provides bascis function to manipulate the model.
+</p>
+
+			</div>
+		</div>
+		
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+				<dd><a href="#pkg-constants">Constants</a></dd>
+			
+			
+			
+				
+				<dd><a href="#ComparePassword">func ComparePassword(hash string, password string) bool</a></dd>
+			
+				
+				<dd><a href="#HashPassword">func HashPassword(password string) string</a></dd>
+			
+			
+				
+				<dd><a href="#User">type User</a></dd>
+				
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h4>Package files</h4>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="/src/target/user.go">user.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		<div id="pkg-callgraph" class="toggle" style="display: none">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Internal Call Graph section">Internal call graph ▹</h2>
+		</div> <!-- .expanded -->
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Internal Call Graph section">Internal call graph ▾</h2>
+			<p>
+			  In the call graph viewer below, each node
+			  is a function belonging to this package
+			  and its children are the functions it
+			  calls&mdash;perhaps dynamically.
+			</p>
+			<p>
+			  The root nodes are the entry points of the
+			  package: functions that may be called from
+			  outside the package.
+			  There may be non-exported or anonymous
+			  functions among them if they are called
+			  dynamically from another package.
+			</p>
+			<p>
+			  Click a node to visit that function's source code.
+			  From there you can visit its callers by
+			  clicking its declaring <code>func</code>
+			  token.
+			</p>
+			<p>
+			  Functions may be omitted if they were
+			  determined to be unreachable in the
+			  particular programs or tests that were
+			  analyzed.
+			</p>
+			<!-- Zero means show all package entry points. -->
+			<ul style="margin-left: 0.5in" id="callgraph-0" class="treeview"></ul>
+		</div>
+		</div> <!-- #pkg-callgraph -->
+
+		
+			<h2 id="pkg-constants">Constants</h2>
+			
+				<pre>const (
+    <span id="USER_NOTIFY_ALL">USER_NOTIFY_ALL</span>            = &#34;all&#34;
+    <span id="USER_NOTIFY_MENTION">USER_NOTIFY_MENTION</span>        = &#34;mention&#34;
+    <span id="USER_NOTIFY_NONE">USER_NOTIFY_NONE</span>           = &#34;none&#34;
+    <span id="DEFAULT_LOCALE">DEFAULT_LOCALE</span>             = &#34;en&#34;
+    <span id="USER_AUTH_SERVICE_EMAIL">USER_AUTH_SERVICE_EMAIL</span>    = &#34;email&#34;
+    <span id="USER_AUTH_SERVICE_USERNAME">USER_AUTH_SERVICE_USERNAME</span> = &#34;username&#34;
+    <span id="USER_CHANNEL">USER_CHANNEL</span>               = &#34;general&#34;
+)</pre>
+				
+			
+		
+		
+		
+			
+			
+			<h2 id="ComparePassword">func <a href="/src/target/user.go?s=3056:3111#L86">ComparePassword</a>
+				<a class="permalink" href="#ComparePassword">&#xb6;</a>
+			</h2>
+			<pre>func ComparePassword(hash <a href="/pkg/builtin/#string">string</a>, password <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			<p>
+ComparePassword compares the hash
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="HashPassword">func <a href="/src/target/user.go?s=2853:2894#L76">HashPassword</a>
+				<a class="permalink" href="#HashPassword">&#xb6;</a>
+			</h2>
+			<pre>func HashPassword(password <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+HashPassword generates a hash using the bcrypt.GenerateFromPassword
+</p>
+
+			
+			
+
+		
+		
+			
+			
+			<h2 id="User">type <a href="/src/target/user.go?s=2010:2779#L57">User</a>
+				<a class="permalink" href="#User">&#xb6;</a>
+			</h2>
+			<pre>type User struct {
+    Id                 <a href="/pkg/builtin/#string">string</a> `json:&#34;id&#34;`
+    Deleted            <a href="/pkg/builtin/#bool">bool</a>   `json:&#34;deleted&#34;`
+    Username           <a href="/pkg/builtin/#string">string</a> `json:&#34;username&#34;`
+    Password           <a href="/pkg/builtin/#string">string</a> `json:&#34;password,omitempty&#34;`
+    Email              <a href="/pkg/builtin/#string">string</a> `json:&#34;email&#34;`
+    EmailVerified      <a href="/pkg/builtin/#bool">bool</a>   `json:&#34;email_verified,omitempty&#34;`
+    Nickname           <a href="/pkg/builtin/#string">string</a> `json:&#34;nickname&#34;`
+    FirstName          <a href="/pkg/builtin/#string">string</a> `json:&#34;first_name&#34;`
+    LastName           <a href="/pkg/builtin/#string">string</a> `json:&#34;last_name&#34;`
+    Roles              <a href="/pkg/builtin/#string">string</a> `json:&#34;roles&#34;`
+    LastPasswordUpdate <a href="/pkg/builtin/#int64">int64</a>  `json:&#34;last_password_update,omitempty&#34;`
+    FailedAttempts     <a href="/pkg/builtin/#int">int</a>    `json:&#34;failed_attempts,omitempty&#34;`
+    Locale             <a href="/pkg/builtin/#string">string</a> `json:&#34;locale&#34;`
+    LastActivityAt     <a href="/pkg/builtin/#int64">int64</a>  `db:&#34;-&#34; json:&#34;last_activity_at,omitempty&#34;`
+}</pre>
+			<p>
+User object
+</p>
+<p>
+- ID: String unique and non null to identify the user.
+</p>
+<p>
+- Deleted: True if user is deleted.
+</p>
+<p>
+- Username: Store the user username used to log into the service.
+</p>
+<p>
+- Password: Hashed password.
+</p>
+<p>
+- Email: User mail ;).
+</p>
+<p>
+- EmailVerified: true if email was verified by user.
+</p>
+<p>
+- Nickname: Name to use in communication channel (by default : username).
+</p>
+<p>
+- First name: User true first name.
+</p>
+<p>
+- Last name: User true last name.
+</p>
+<p>
+- Roles: User role in the organisation (Owner, Admin, User, Invité).
+</p>
+<p>
+- LastPasswordUpdate: Date of the last password modification.
+</p>
+<p>
+- FailedAttemps: Number of fail try to connect to account.
+</p>
+<p>
+- Locale: User favorite langage.
+</p>
+<p>
+- LastActivityAt: Date &amp;&amp; Time of the last activity of the user.
+</p>
+
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+	
+
+	
+
+
+
+
+
