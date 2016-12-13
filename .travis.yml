@@ -7,8 +7,9 @@ services:
 
 script:
   - docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY
+  - docker build -t registry.le-corre.eu:5000/go:base -f docker/go_base.Dockerfile .
   - docker build -t go_test -f docker/go_test.Dockerfile .
-  - docker run --rm go_test
+  - docker run --rm -e WATCHING=1 go_test
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
