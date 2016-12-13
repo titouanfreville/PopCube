@@ -15,4 +15,4 @@ VOLUME /go/
 COPY ./api /go/api
 COPY ./models /go/models
 
-ENTRYPOINT go test -v **/*.go
+ENTRYPOINT go test -v models/*.go
