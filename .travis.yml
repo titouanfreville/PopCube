@@ -7,19 +7,19 @@ services:
 
 script:
   - docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY
-  - docker build -t go_test -f docker/go_test.Dockerfile
+  - docker build -t go_test -f docker/go_test.Dockerfile .
   - docker run --rm go_test
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY;
-    docker build -t go_base -f docker/go_base.Dockerfile;
+    docker build -t go_base -f docker/go_base.Dockerfile .;
     docker tag go_base $DOCKER_REGISTRY/go:base;
     docker push $DOCKER_REGISTRY/go:base;
     fi
   - if [ "$TRAVIS_BRANCH" == "developpement" ]; then
     docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY;
-    docker build -t go_base -f docker/go_base.Dockerfile;
+    docker build -t go_base -f docker/go_base.Dockerfile .;
     docker tag go_base $DOCKER_REGISTRY/go:base-dev;
     docker push $DOCKER_REGISTRY/go:base-dev;
     fi
