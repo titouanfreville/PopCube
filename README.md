@@ -1,4 +1,4 @@
-# ![alt tag](images/logo.png)  PopCube Chat project
+# ![GitHub Logo](images/logo.png) &nbsp;&nbsp;&nbsp; PopCube Chat project
 
 **Branch DEV** [![Build Status](https://travis-ci.com/titouanfreville/PopCube.svg?token=pQ5JuFHLtUEwNb123zaH&branch=development)](https://travis-ci.com/titouanfreville/PopCube)
 
