@@ -293,6 +293,10 @@ func IsValidAlphaNum(s string, allowUnderscores bool) bool {
 	return true
 }
 
+func IsValidUsername(u string) bool {
+	return len(u) != 0 && IsValidAlphaNum(u, true)
+}
+
 // func Etag(parts ...interface{}) string {
 
 // 	etag := CurrentVersion

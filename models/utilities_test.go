@@ -14,7 +14,7 @@ import (
 func TestUtilities(t *testing.T) {
 	Convey("Testing Id generation", t, func() {
 		number_of_generation := 1000
-		assertion := "Checking validity of " + strconv.Itoa(number_of_generation) + "random ids"
+		assertion := "Checking validity of " + strconv.Itoa(number_of_generation) + " random ids"
 
 		Convey(assertion, func() {
 				for i := 0; i < number_of_generation; i++ {
@@ -24,9 +24,9 @@ func TestUtilities(t *testing.T) {
 			})
 	})
 
-	Convey("Test that random String function correctly generate string (1000 generation to test)", t, func() {
+	Convey("Testing random string generation", t, func() {
 		number_of_generation := 1000
-		assertion := "Checking generation of " + strconv.Itoa(number_of_generation) +" random string"
+		assertion := "Checking correct generation of " + strconv.Itoa(number_of_generation) +" random string"
 
 		Convey(assertion, func() {
 			for i := 0; i < number_of_generation; i++ {

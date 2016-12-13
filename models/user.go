@@ -3,14 +3,14 @@
 package model
 
 import (
-	// "encoding/json"
+	"encoding/json"
 	// "fmt"
-	// "io"
+	"io"
 	// "regexp"
-	// "strings"
+	"strings"
 	"unicode/utf8"
-	"golang.org/x/crypto/bcrypt"
 
+	"golang.org/x/crypto/bcrypt"
 )
 
 const (
@@ -20,9 +20,11 @@ const (
 	DEFAULT_LOCALE             = "en"
 	USER_AUTH_SERVICE_EMAIL    = "email"
 	USER_AUTH_SERVICE_USERNAME = "username"
-	USER_CHANNEL 							 = "general"
 )
 
+var (
+	USER_CHANNEL               = []string{"general", "random"}
+)
 // Used in mattermost project ... Don't think they are relevant for us.
 // AuthData           *string   `json:"auth_data,omitempty"`
 // AuthService        string    `json:"auth_service"`
@@ -38,6 +40,8 @@ const (
 // User object
 //
 // - ID: String unique and non null to identify the user.
+//
+// - UpdatedAt: Time of the last update. Used to create tag for browser cache.
 //
 // - Deleted: True if user is deleted.
 //
@@ -69,22 +73,23 @@ const (
 //
 // - LastActivityAt: Date && Time of the last activity of the user.
 type User struct {
-	Id                 string    `json:"id"`
-	Deleted            bool      `json:"deleted"`
-	Username           string    `json:"username"`
-	Password           string    `json:"password,omitempty"`
-	Email              string    `json:"email,omitempty"`
-	EmailVerified      bool      `json:"email_verified,omitempty"`
-	Nickname           string    `json:"nickname"`
-	FirstName          string    `json:"first_name"`
-	LastName           string    `json:"last_name"`
-	Roles              string    `json:"roles,omitempty"`
-	LastPasswordUpdate int64     `json:"last_password_update,omitempty"`
-	FailedAttempts     int       `json:"failed_attempts,omitempty"`
-	Locale             string    `json:"locale"`
-	Channels 					 string 	 `json:"channels,omitempty"`
-	PrivateChannels    string    `json:"private_channels"`
-	LastActivityAt     int64     `db:"-" json:"last_activity_at,omitempty"`
+	Id                 string   `json:"id"`
+	UpdatedAt          int64    `json:"update_at,omitempty"`
+	Deleted            bool     `json:"deleted"`
+	Username           string   `json:"username"`
+	Password           string   `json:"password,omitempty"`
+	Email              string   `json:"email,omitempty"`
+	EmailVerified      bool     `json:"email_verified,omitempty"`
+	Nickname           string   `json:"nickname"`
+	FirstName          string   `json:"first_name"`
+	LastName           string   `json:"last_name"`
+	Roles              string   `json:"roles,omitempty"`
+	LastPasswordUpdate int64    `json:"last_password_update,omitempty"`
+	FailedAttempts     int      `json:"failed_attempts,omitempty"`
+	Locale             string   `json:"locale"`
+	Channels           []string `json:"channels,omitempty"`
+	PrivateChannels    []string `json:"private_channels"`
+	LastActivityAt     int64    `db:"-" json:"last_activity_at,omitempty"`
 }
 
 // IsValid validates the user and returns an error if it isn't configured
@@ -95,11 +100,11 @@ func (u *User) IsValid() *AppError {
 		return NewLocAppError("User.IsValid", "model.user.is_valid.id.app_error", nil, "")
 	}
 
-	if len(u.Username) > 128 {
+	if len(u.Username) > 128 || !IsValidUsername(u.Username) {
 		return NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+u.Id)
 	}
 
-	if len(u.Email) > 128 || len(u.Email) == 0 {
+	if len(u.Email) == 0 || len(u.Email) > 128 || !IsValidEmail(u.Email) {
 		return NewLocAppError("User.IsValid", "model.user.is_valid.email.app_error", nil, "user_id="+u.Id)
 	}
 
@@ -129,6 +134,61 @@ func (u *User) IsValid() *AppError {
 	}
 
 	return nil
+}
+
+// PreSave have to be run before saving user in DB. It will fill necessary information (id, username, etc. ) and hash password
+func (u *User) PreSave() {
+	if u.Id == "" {
+		u.Id = NewId()
+	}
+
+	if u.Username == "" {
+		u.Username = NewId()
+	}
+
+	// if u.AuthData != nil && *u.AuthData == "" {
+	// 	u.AuthData = nil
+	// }
+
+	u.Username = strings.ToLower(u.Username)
+	u.Email = strings.ToLower(u.Email)
+
+	u.UpdatedAt = GetMillis()
+	u.LastPasswordUpdate = u.UpdatedAt
+
+	if u.Locale == "" {
+		u.Locale = DEFAULT_LOCALE
+	}
+
+	if u.Channels == nil || len(u.Channels) == 0 {
+		u.Channels = USER_CHANNEL
+	}
+
+	if len(u.Password) > 0 {
+		u.Password = HashPassword(u.Password)
+	}
+}
+
+// ToJson convert a User to a json string
+func (u *User) ToJson() string {
+	b, err := json.Marshal(u)
+	if err != nil {
+		return ""
+	} else {
+		return string(b)
+	}
+}
+
+// UserFromJson will decode the input and return a User
+func UserFromJson(data io.Reader) *User {
+	decoder := json.NewDecoder(data)
+	var user User
+	err := decoder.Decode(&user)
+	if err == nil {
+		return &user
+	} else {
+		return nil
+	}
 }
 
 // HashPassword generates a hash using the bcrypt.GenerateFromPassword

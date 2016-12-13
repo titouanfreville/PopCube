@@ -1,18 +1,15 @@
-FROM golang:1.7-alpine
+FROM registry.le-corre.eu:5000/go:base
 
+# MAINTAINER FREVILLE Titouan titouanfreville@gmail.com
 
-RUN apk add --update git && \
-		go get -d -v golang.org/x/tools/cmd/goimports && \
-		go get -d -v golang.org/x/tools/cmd/godoc && \
-		go get -d -v github.com/golang/lint/golint && \
-		go get -d -v github.com/smartystreets/goconvey && \
-		go get -d -v golang.org/x/crypto/bcrypt && \
-		go get -d -v github.com/nicksnyder/go-i18n/i18n && \
-		go get -d -v github.com/pborman/uuid && \
-		rm -rf /var/cache/apk/*
+# COPY api /go/api
+# COPY models /go/models
+# COPY utils/go_get.sh /bin/go_get.sh
+# COPY utils/go_test_entrypoint.sh /bin/entrypoint
 
-VOLUME /go/
-COPY api /go/api
-COPY models /go/models
+# RUN apk add --update git bash && \
+# 		go_get.sh && \
+# 		rm -rf /var/cache/apk/* && \
+# 		rm /bin/go_get.sh
 
-ENTRYPOINT go test -v models/*.go
+ENTRYPOINT entrypoint /go
