@@ -32,6 +32,10 @@ func TestUtilities(t *testing.T) {
 			}
 		})
 	})
+
+	Convey("Test that random String function correctly generate string (1000 generation to test)", t, func() {
+
+	})
 }
 
 // func TestAppError(t *testing.T) {
