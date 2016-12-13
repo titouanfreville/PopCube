@@ -7,6 +7,7 @@ package model
 import (
 	"strings"
 	"testing"
+	"strconv"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -46,7 +47,8 @@ func TestUserModel(t *testing.T) {
 		})
 	})
 
-	Convey("Testing Pre Save function", t, func() {
+	Convey("Testing Pre Save and Pre Update function", t, func() {
+		user1 := User{Password: "test"}
 		Convey("Given an incomplete user", func() {
 			user := User{Password: "test"}
 			Convey("Applying PreSave should fill required fields", func() {
@@ -68,6 +70,13 @@ func TestUserModel(t *testing.T) {
 				user.PreSave()
 				So(IsLower(user.Username),ShouldBeTrue)
 				So(IsLower(user.Email),ShouldBeTrue)
+			})
+
+			Convey("Etag should be correctly generated", func() {
+				user.PreSave()
+				etag := user.Etag(true,true)
+				expected := CURRENT_VERSION + "." + user.Id + "." + strconv.FormatInt(user.UpdatedAt, 10) + "." + "true" + "." + "true"
+				So(etag, ShouldEqual, expected)
 			})
 		})
 
@@ -93,6 +102,13 @@ func TestUserModel(t *testing.T) {
 				user.PreSave()
 				So(IsLower(user.Username),ShouldBeTrue)
 				So(IsLower(user.Email),ShouldBeTrue)
+			})
+
+			Convey("Etag should be correctly generated", func() {
+				user.PreSave()
+				etag := user.Etag(true,true)
+				expected := CURRENT_VERSION + "." + user.Id + "." + strconv.FormatInt(user.UpdatedAt, 10) + "." + "true" + "." + "true"
+				So(etag, ShouldEqual, expected)
 			})
 		})
 
@@ -138,21 +154,33 @@ func TestUserModel(t *testing.T) {
 				So(user.PrivateChannels, ShouldResemble, []string{"Newbie"})
 				So(user.LastActivityAt, ShouldEqual, 5)
 			})
+
+			Convey("Etag should be correctly generated", func() {
+				user.PreSave()
+				etag := user.Etag(true,true)
+				expected := CURRENT_VERSION + "." + user.Id + "." + strconv.FormatInt(user.UpdatedAt, 10) + "." + "true" + "." + "true"
+				So(etag, ShouldEqual, expected)
+			})
 		})
 
+		Convey("Given an user.", func() {
+			oldUpdated := user1.UpdatedAt
+			user1.Password = "NewPassword"
+			user1.PreSave()
+
+			Convey("Applying PreSave should correctly update values", func() {
+				So(ComparePassword(user1.Password, "NewPassword"), ShouldBeTrue)
+				So(user1.UpdatedAt, ShouldBeGreaterThan, oldUpdated)
+			})
+
+			Convey("Applying PreSave should correctly format values", func() {
+				So(IsLower(user1.Username), ShouldBeTrue)
+				So(IsLower(user1.Email), ShouldBeTrue)
+			})
+		})
 	})
 }
 
-// func TestUserPreSave(t *testing.T) {
-// 	user := User{Password: "test"}
-// 	user.PreSave()
-// 	user.Etag(true, true)
-// }
-
-// func TestUserPreUpdate(t *testing.T) {
-// 	user := User{Password: "test"}
-// 	user.PreUpdate()
-// }
 
 // func TestUserUpdateMentionKeysFromUsername(t *testing.T) {
 // 	user := User{Username: "user"}

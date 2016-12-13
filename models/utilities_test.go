@@ -93,6 +93,14 @@ func TestUtilities(t *testing.T) {
 		})
 	})
 
+	Convey("Testing Etag creation", t, func () {
+		Convey("Providing two parameters to function should return a string composed of version number.par1.par2", func() {
+			etag := Etag("hello", 24)
+			result := CURRENT_VERSION + ".hello.24"
+			So(etag, ShouldEqual, result)
+			})
+	})
+
 	Convey("Testing Hastags parsing ", t, func() {
 
 		var hashtags = map[string]string{
@@ -144,10 +152,3 @@ func TestUtilities(t *testing.T) {
 		})
 	})
 }
-
-// func TestEtag(t *testing.T) {
-// 	etag := Etag("hello", 24)
-// 	if len(etag) <= 0 {
-// 		t.Fatal()
-// 	}
-// }

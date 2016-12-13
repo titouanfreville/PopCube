@@ -169,6 +169,16 @@ func (u *User) PreSave() {
 	}
 }
 
+// PreSave will set the Id and Username if missing.  It will also fill
+// in the CreateAt, UpdateAt times.  It will also hash the password.  It should
+// be run before saving the user to the db.
+// PreUpdate should be run before updating the user in the db.
+func (u *User) PreUpdate() {
+	u.Username = strings.ToLower(u.Username)
+	u.Email = strings.ToLower(u.Email)
+	u.UpdatedAt = GetMillis()
+}
+
 // ToJson convert a User to a json string
 func (u *User) ToJson() string {
 	b, err := json.Marshal(u)
@@ -189,6 +199,11 @@ func UserFromJson(data io.Reader) *User {
 	} else {
 		return nil
 	}
+}
+
+// Generate a valid strong etag so the browser can cache the results
+func (u *User) Etag(showFullName, showEmail bool) string {
+	return Etag(u.Id, u.UpdatedAt, showFullName, showEmail)
 }
 
 // HashPassword generates a hash using the bcrypt.GenerateFromPassword
