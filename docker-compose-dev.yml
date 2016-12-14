@@ -1,0 +1,14 @@
+version: "2"
+services:
+  front:
+    image: node:4.7-alpine
+    ports:
+      - 80:80
+      - 443:443
+  back:
+    build:
+      context: docker
+      dockerfile: go_base.Dockerfile
+  database:
+    image: mongo:3.4.0
+    hostname: mongo
