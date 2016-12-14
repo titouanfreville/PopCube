@@ -23,8 +23,9 @@ const (
 )
 
 var (
-	USER_CHANNEL               = []string{"general", "random"}
+	USER_CHANNEL = []string{"general", "random"}
 )
+
 // Used in mattermost project ... Don't think they are relevant for us.
 // AuthData           *string   `json:"auth_data,omitempty"`
 // AuthService        string    `json:"auth_service"`
@@ -129,7 +130,7 @@ func (u *User) IsValid() *AppError {
 	// }
 
 	// && u.AuthData != nil && len(*u.AuthData) > 0
-	if len(u.Password) > 0 {
+	if len(u.Password) == 0 {
 		return NewLocAppError("User.IsValid", "model.user.is_valid.auth_data_pwd.app_error", nil, "user_id="+u.Id)
 	}
 
@@ -204,6 +205,17 @@ func UserFromJson(data io.Reader) *User {
 // Generate a valid strong etag so the browser can cache the results
 func (u *User) Etag(showFullName, showEmail bool) string {
 	return Etag(u.Id, u.UpdatedAt, showFullName, showEmail)
+}
+
+// Get full name of the user
+func (u *User) GetFullName() string {
+	if u.LastName == "" {
+		return u.FirstName
+	}
+	if u.FirstName == "" {
+		return u.LastName
+	}
+	return u.FirstName + " " + u.LastName
 }
 
 // HashPassword generates a hash using the bcrypt.GenerateFromPassword

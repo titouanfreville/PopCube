@@ -5,14 +5,14 @@
 package model
 
 import (
+	"strconv"
 	"strings"
 	"testing"
-	"strconv"
+
 	. "github.com/smartystreets/goconvey/convey"
 )
 
 // Test correction test for user ;)
-
 
 // Test Password functionalities from User Model
 func TestUserModel(t *testing.T) {
@@ -20,15 +20,15 @@ func TestUserModel(t *testing.T) {
 		Convey("Given a password", func() {
 			hash := HashPassword("Test")
 
-			Convey("Compare it with correct entry shoud be true", func () {
+			Convey("Compare it with correct entry shoud be true", func() {
 				So(ComparePassword(hash, "Test"), ShouldBeTrue)
 			})
 
-			Convey("Compare it with correct entry shoud be false", func () {
+			Convey("Compare it with correct entry shoud be false", func() {
 				So(ComparePassword(hash, "Test1"), ShouldBeFalse)
 			})
 
-			Convey("Compare it with empty entry shoud be false", func () {
+			Convey("Compare it with empty entry shoud be false", func() {
 				So(ComparePassword(hash, ""), ShouldBeFalse)
 			})
 
@@ -68,13 +68,13 @@ func TestUserModel(t *testing.T) {
 
 			Convey("Data should be correctly formated", func() {
 				user.PreSave()
-				So(IsLower(user.Username),ShouldBeTrue)
-				So(IsLower(user.Email),ShouldBeTrue)
+				So(IsLower(user.Username), ShouldBeTrue)
+				So(IsLower(user.Email), ShouldBeTrue)
 			})
 
 			Convey("Etag should be correctly generated", func() {
 				user.PreSave()
-				etag := user.Etag(true,true)
+				etag := user.Etag(true, true)
 				expected := CURRENT_VERSION + "." + user.Id + "." + strconv.FormatInt(user.UpdatedAt, 10) + "." + "true" + "." + "true"
 				So(etag, ShouldEqual, expected)
 			})
@@ -100,13 +100,13 @@ func TestUserModel(t *testing.T) {
 
 			Convey("Data should be correctly formated", func() {
 				user.PreSave()
-				So(IsLower(user.Username),ShouldBeTrue)
-				So(IsLower(user.Email),ShouldBeTrue)
+				So(IsLower(user.Username), ShouldBeTrue)
+				So(IsLower(user.Email), ShouldBeTrue)
 			})
 
 			Convey("Etag should be correctly generated", func() {
 				user.PreSave()
-				etag := user.Etag(true,true)
+				etag := user.Etag(true, true)
 				expected := CURRENT_VERSION + "." + user.Id + "." + strconv.FormatInt(user.UpdatedAt, 10) + "." + "true" + "." + "true"
 				So(etag, ShouldEqual, expected)
 			})
@@ -114,23 +114,23 @@ func TestUserModel(t *testing.T) {
 
 		Convey("Given a full user entry", func() {
 			user := User{
-				Id: "testId",
-				UpdatedAt: 10,
-				Deleted: true,
-				Username: "TesT",
-				Password: "test",
-				Email: "Test@poPcube.fr",
-				EmailVerified: true,
-				Nickname: "NickName",
-				FirstName: "Test",
-				LastName: "L",
-				Roles: "Owner",
+				Id:                 "testId",
+				UpdatedAt:          10,
+				Deleted:            true,
+				Username:           "TesT",
+				Password:           "test",
+				Email:              "Test@poPcube.fr",
+				EmailVerified:      true,
+				Nickname:           "NickName",
+				FirstName:          "Test",
+				LastName:           "L",
+				Roles:              "Owner",
 				LastPasswordUpdate: 20,
-				FailedAttempts: 1,
-				Locale: "vi",
-				Channels: []string{"chef", "is", "back"},
-				PrivateChannels: []string{"Newbie"},
-				LastActivityAt: 5,
+				FailedAttempts:     1,
+				Locale:             "vi",
+				Channels:           []string{"chef", "is", "back"},
+				PrivateChannels:    []string{"Newbie"},
+				LastActivityAt:     5,
 			}
 
 			Convey("Applying PreSave should only correctly format field and use good time for last Updates", func() {
@@ -157,7 +157,7 @@ func TestUserModel(t *testing.T) {
 
 			Convey("Etag should be correctly generated", func() {
 				user.PreSave()
-				etag := user.Etag(true,true)
+				etag := user.Etag(true, true)
 				expected := CURRENT_VERSION + "." + user.Id + "." + strconv.FormatInt(user.UpdatedAt, 10) + "." + "true" + "." + "true"
 				So(etag, ShouldEqual, expected)
 			})
@@ -183,128 +183,135 @@ func TestUserModel(t *testing.T) {
 	Convey("Testing fonction IsValid", t, func() {
 		Convey("Given a correct user, validation should work", func() {
 			correct_user := User{
-				Username: "TesT",
-				Password: "test",
-				Email: "test@popcube.fr",
-				Nickname: "NickName",
+				Username:  "TesT",
+				Password:  "test",
+				Email:     "test@popcube.fr",
+				Nickname:  "NickName",
 				FirstName: "Test",
-				LastName: "L",
-				Roles: "Owner",
+				LastName:  "L",
+				Roles:     "Owner",
 			}
 			correct_user.PreSave()
-			So(correct_user.IsValid(),ShouldNotBeNil);
+			So(correct_user.IsValid(), ShouldBeNil)
+			So(correct_user.IsValid(), ShouldNotResemble, NewLocAppError("User.IsValid", "model.user.is_valid.id.app_error", nil, ""))
+			So(correct_user.IsValid(), ShouldNotResemble, NewLocAppError("User.IsValid", "model.user.is_valid.email.app_error", nil, "user_id="+correct_user.Id))
+			So(correct_user.IsValid(), ShouldNotResemble, NewLocAppError("User.IsValid", "model.user.is_valid.nickname.app_error", nil, "user_id="+correct_user.Id))
+			So(correct_user.IsValid(), ShouldNotResemble, NewLocAppError("User.IsValid", "model.user.is_valid.first_name.app_error", nil, "user_id="+correct_user.Id))
+			So(correct_user.IsValid(), ShouldNotResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+correct_user.Id))
+			So(correct_user.IsValid(), ShouldNotResemble, NewLocAppError("User.IsValid", "model.user.is_valid.last_name.app_error", nil, "user_id="+correct_user.Id))
+			So(correct_user.IsValid(), ShouldNotResemble, NewLocAppError("User.IsValid", "model.user.auth_data_pwd.username.app_error", nil, "user_id="+correct_user.Id))
 		})
 		Convey("Given an incorrect user, validation should return error message", func() {
 			Convey("Incorrect ID user should return a message invalid id", func() {
 				user := User{
-					Id: "Nimp",
-					Username: "TesT",
-					Password: "test",
-					Email: "test@popcube.fr",
-					Nickname: "NickName",
+					Id:        "Nimp",
+					Username:  "TesT",
+					Password:  "test",
+					Email:     "test@popcube.fr",
+					Nickname:  "NickName",
 					FirstName: "Test",
-					LastName: "L",
-					Roles: "Owner",
+					LastName:  "L",
+					Roles:     "Owner",
 				}
 				So(user.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.id.app_error", nil, ""))
 			})
 			Convey("Incorrect Username user should return error Invalid username", func() {
 				user1 := User{
-					Username: "CeNomDevraitJelespereEtreBeaucoupTropLongPourLatrailleMaximaleDemandeParcequelaJeSuiunPoilFeneantEtDeboussouleSansnuldouteilnyavaitpersone",
-					Password: "test",
-					Email: "test@popcube.fr",
-					Nickname: "NickName",
+					Username:  "CeNomDevraitJelespereEtreBeaucoupTropLongPourLatrailleMaximaleDemandeParcequelaJeSuiunPoilFeneantEtDeboussouleSansnuldouteilnyavaitpersone",
+					Password:  "test",
+					Email:     "test@popcube.fr",
+					Nickname:  "NickName",
 					FirstName: "Test",
-					LastName: "L",
-					Roles: "Owner",
+					LastName:  "L",
+					Roles:     "Owner",
 				}
 				user1.PreSave()
 				So(user1.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user1.Id))
 				user2 := User{
-					Id: NewId(),
-					Password: "test",
-					Email: "test@popcube.fr",
-					Nickname: "NickName",
+					Id:        NewId(),
+					Password:  "test",
+					Email:     "test@popcube.fr",
+					Nickname:  "NickName",
 					FirstName: "Test",
-					LastName: "L",
-					Roles: "Owner",
+					LastName:  "L",
+					Roles:     "Owner",
 				}
 				So(user2.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user2.Id))
 				user3 := User{
-					Id: NewId(),
-					Username: "xD/",
-					Password: "test",
-					Email: "test@popcube.fr",
-					Nickname: "NickName",
+					Id:        NewId(),
+					Username:  "xD/",
+					Password:  "test",
+					Email:     "test@popcube.fr",
+					Nickname:  "NickName",
 					FirstName: "Test",
-					LastName: "L",
-					Roles: "Owner",
+					LastName:  "L",
+					Roles:     "Owner",
 				}
 				So(user3.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user3.Id))
 				user3 = User{
-					Id: NewId(),
-					Username: "xD\\",
-					Password: "test",
-					Email: "test@popcube.fr",
-					Nickname: "NickName",
+					Id:        NewId(),
+					Username:  "xD\\",
+					Password:  "test",
+					Email:     "test@popcube.fr",
+					Nickname:  "NickName",
 					FirstName: "Test",
-					LastName: "L",
-					Roles: "Owner",
+					LastName:  "L",
+					Roles:     "Owner",
 				}
 				So(user3.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user3.Id))
 				user3 = User{
-					Id: NewId(),
-					Username: "xD*",
-					Password: "test",
-					Email: "test@popcube.fr",
-					Nickname: "NickName",
+					Id:        NewId(),
+					Username:  "xD*",
+					Password:  "test",
+					Email:     "test@popcube.fr",
+					Nickname:  "NickName",
 					FirstName: "Test",
-					LastName: "L",
-					Roles: "Owner",
+					LastName:  "L",
+					Roles:     "Owner",
 				}
 				So(user3.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user3.Id))
 				user3 = User{
-					Id: NewId(),
-					Username: "xD{",
-					Password: "test",
-					Email: "test@popcube.fr",
-					Nickname: "NickName",
+					Id:        NewId(),
+					Username:  "xD{",
+					Password:  "test",
+					Email:     "test@popcube.fr",
+					Nickname:  "NickName",
 					FirstName: "Test",
-					LastName: "L",
-					Roles: "Owner",
+					LastName:  "L",
+					Roles:     "Owner",
 				}
 				So(user3.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user3.Id))
 				user3 = User{
-					Id: NewId(),
-					Username: "xD}",
-					Password: "test",
-					Email: "test@popcube.fr",
-					Nickname: "NickName",
+					Id:        NewId(),
+					Username:  "xD}",
+					Password:  "test",
+					Email:     "test@popcube.fr",
+					Nickname:  "NickName",
 					FirstName: "Test",
-					LastName: "L",
-					Roles: "Owner",
+					LastName:  "L",
+					Roles:     "Owner",
 				}
 				So(user3.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user3.Id))
 				user3 = User{
-					Id: NewId(),
-					Username: "xD#",
-					Password: "test",
-					Email: "test@popcube.fr",
-					Nickname: "NickName",
+					Id:        NewId(),
+					Username:  "xD#",
+					Password:  "test",
+					Email:     "test@popcube.fr",
+					Nickname:  "NickName",
 					FirstName: "Test",
-					LastName: "L",
-					Roles: "Owner",
+					LastName:  "L",
+					Roles:     "Owner",
 				}
 				So(user3.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user3.Id))
 				user3 = User{
-					Id: NewId(),
-					Username: "xD_",
-					Password: "test",
-					Email: "test@popcube.fr",
-					Nickname: "NickName",
+					Id:        NewId(),
+					Username:  "xD_",
+					Password:  "test",
+					Email:     "test@popcube.fr",
+					Nickname:  "NickName",
 					FirstName: "Test",
-					LastName: "L",
-					Roles: "Owner",
+					LastName:  "L",
+					Roles:     "Owner",
 				}
 				So(user3.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user3.Id))
 			})
@@ -312,164 +319,122 @@ func TestUserModel(t *testing.T) {
 
 		Convey("Incorrect Email user should return error Invalid email", func() {
 			user := User{
-				Password: "test",
-				Email: "testpopcube.fr",
-				Nickname: "NickName",
+				Password:  "test",
+				Email:     "testpopcube.fr",
+				Nickname:  "NickName",
 				FirstName: "Test",
-				LastName: "L",
-				Roles: "Owner",
+				LastName:  "L",
+				Roles:     "Owner",
 			}
 			user.PreSave()
 			So(user.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.email.app_error", nil, "user_id="+user.Id))
 			user = User{
-				Password: "test",
-				Email: "test/popcube.fr",
-				Nickname: "NickName",
+				Password:  "test",
+				Email:     "test/popcube.fr",
+				Nickname:  "NickName",
 				FirstName: "Test",
-				LastName: "L",
-				Roles: "Owner",
+				LastName:  "L",
+				Roles:     "Owner",
 			}
 			user.PreSave()
 			So(user.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.email.app_error", nil, "user_id="+user.Id))
 			user = User{
-				Password: "test",
-				Email: "CeNomDevraitJelespereEtreBeaucoupTropLongPourLatrailleMaximaleDemandeParcequelaJeSuiunPoilFeneantEtDeboussouleSansnuldouteilnyavaitpersone@popcube.fr",
-				Nickname: "NickName",
+				Password:  "test",
+				Email:     "CeNomDevraitJelespereEtreBeaucoupTropLongPourLatrailleMaximaleDemandeParcequelaJeSuiunPoilFeneantEtDeboussouleSansnuldouteilnyavaitpersone@popcube.fr",
+				Nickname:  "NickName",
 				FirstName: "Test",
-				LastName: "L",
-				Roles: "Owner",
+				LastName:  "L",
+				Roles:     "Owner",
 			}
 			user.PreSave()
 			So(user.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.email.app_error", nil, "user_id="+user.Id))
 		})
 
-		Convey("Nickname, Firstanem and Lastname should be less than 64 characters long", func() {
+		Convey("Nickname, Firstname and Lastname should be less than 64 characters long", func() {
 			user := User{
-				Password: "test",
-				Email: "testpopcube.fr",
-				Nickname: "NickName",
+				Password:  "test",
+				Email:     "test@popcube.fr",
+				Nickname:  "NickNameéèéééééééééééétroplongazdazdzadazdazdzadz_>_<azdazdzadazdazz",
 				FirstName: "Test",
-				LastName: "L",
-				Roles: "Owner",
+				LastName:  "L",
+				Roles:     "Owner",
 			}
 			user.PreSave()
-			So(user.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.email.app_error", nil, "user_id="+user.Id))
+			So(user.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.nickname.app_error", nil, "user_id="+user.Id))
+			user = User{
+				Password:  "test",
+				Email:     "test@popcube.fr",
+				Nickname:  "Nickname",
+				FirstName: "TestéèéèéèéèèéèéèéèéèéèèéèéèéèèéèéèNJnefiznfidsdfnpdsjfazddrfazdzadzadzadzadazd",
+				LastName:  "L",
+				Roles:     "Owner",
+			}
+			user.PreSave()
+			So(user.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.first_name.app_error", nil, "user_id="+user.Id))
+			user = User{
+				Password:  "test",
+				Email:     "test@popcube.fr",
+				Nickname:  "Nickname",
+				FirstName: "Test",
+				LastName:  "TestéèéèéèéèèéèéèéèéèéèèéèéèéèèéèéèNJnefiznfidsdfdazdzadzadzadzadzadzadazdazdazdzadazdzanpdsjf",
+				Roles:     "Owner",
+			}
+			user.PreSave()
+			So(user.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.last_name.app_error", nil, "user_id="+user.Id))
+		})
+
+		Convey("Password can't be empty", func() {
+			user := User{
+				Email:     "test@popcube.fr",
+				Nickname:  "Nickname",
+				FirstName: "Test",
+				LastName:  "L",
+				Roles:     "Owner",
+			}
+			user.PreSave()
+			So(user.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.auth_data_pwd.app_error", nil, "user_id="+user.Id))
+		})
+	})
+
+	Convey("Testing Full Name getter", t, func() {
+		Convey("Providing an user without full name should return an empty string", func() {
+			user := User{}
+			So(user.GetFullName(), ShouldBeBlank)
+			user.Password = "test"
+			user.PreSave()
+			So(user.GetFullName(), ShouldBeBlank)
+		})
+		Convey("Providing only first name should return a string containing only first name", func() {
+			user := User{
+				FirstName: "Test",
+			}
+			So(user.GetFullName(), ShouldEqual, "Test")
+			user.Password = "test"
+			user.PreSave()
+			So(user.GetFullName(), ShouldEqual, "Test")
+		})
+		Convey("Providing only last name should return a string containing only first name", func() {
+			user := User{
+				LastName: "Test",
+			}
+			So(user.GetFullName(), ShouldEqual, "Test")
+			user.Password = "test"
+			user.PreSave()
+			So(user.GetFullName(), ShouldEqual, "Test")
+		})
+		Convey("Providing both first and last name should return a string containing first then last name", func() {
+			user := User{
+				LastName:  "Last",
+				FirstName: "First",
+			}
+			So(user.GetFullName(), ShouldEqual, "First Last")
+			user.Password = "test"
+			user.PreSave()
+			So(user.GetFullName(), ShouldEqual, "First Last")
+		})
+
 	})
 }
-
-
-// func TestUserUpdateMentionKeysFromUsername(t *testing.T) {
-// 	user := User{Username: "user"}
-// 	user.SetDefaultNotifications()
-
-// 	if user.NotifyProps["mention_keys"] != "user,@user" {
-// 		t.Fatal("default mention keys are invalid: %v", user.NotifyProps["mention_keys"])
-// 	}
-
-// 	user.Username = "person"
-// 	user.UpdateMentionKeysFromUsername("user")
-// 	if user.NotifyProps["mention_keys"] != "person,@person" {
-// 		t.Fatal("mention keys are invalid after changing username: %v", user.NotifyProps["mention_keys"])
-// 	}
-
-// 	user.NotifyProps["mention_keys"] += ",mention"
-// 	user.UpdateMentionKeysFromUsername("person")
-// 	if user.NotifyProps["mention_keys"] != "person,@person,mention" {
-// 		t.Fatal("mention keys are invalid after adding extra mention keyword: %v", user.NotifyProps["mention_keys"])
-// 	}
-
-// 	user.Username = "user"
-// 	user.UpdateMentionKeysFromUsername("person")
-// 	if user.NotifyProps["mention_keys"] != "user,@user,mention" {
-// 		t.Fatal("mention keys are invalid after changing username with extra mention keyword: %v", user.NotifyProps["mention_keys"])
-// 	}
-// }
-
-// func TestUserIsValid(t *testing.T) {
-// 	user := User{}
-
-// 	if err := user.IsValid(); err == nil {
-// 		t.Fatal()
-// 	}
-
-// 	user.Id = NewId()
-// 	if err := user.IsValid(); err == nil {
-// 		t.Fatal()
-// 	}
-
-// 	user.CreateAt = GetMillis()
-// 	if err := user.IsValid(); err == nil {
-// 		t.Fatal()
-// 	}
-
-// 	user.UpdateAt = GetMillis()
-// 	if err := user.IsValid(); err == nil {
-// 		t.Fatal()
-// 	}
-
-// 	user.Username = NewId() + "^hello#"
-// 	if err := user.IsValid(); err == nil {
-// 		t.Fatal()
-// 	}
-
-// 	user.Username = NewId()
-// 	user.Email = strings.Repeat("01234567890", 20)
-// 	if err := user.IsValid(); err == nil {
-// 		t.Fatal()
-// 	}
-
-// 	user.Email = "test@nowhere.com"
-// 	user.Nickname = strings.Repeat("01234567890", 20)
-// 	if err := user.IsValid(); err == nil {
-// 		t.Fatal()
-// 	}
-
-// 	user.Nickname = ""
-// 	if err := user.IsValid(); err != nil {
-// 		t.Fatal(err)
-// 	}
-
-// 	user.FirstName = ""
-// 	user.LastName = ""
-// 	if err := user.IsValid(); err != nil {
-// 		t.Fatal(err)
-// 	}
-
-// 	user.FirstName = strings.Repeat("01234567890", 20)
-// 	if err := user.IsValid(); err == nil {
-// 		t.Fatal(err)
-// 	}
-
-// 	user.FirstName = ""
-// 	user.LastName = strings.Repeat("01234567890", 20)
-// 	if err := user.IsValid(); err == nil {
-// 		t.Fatal(err)
-// 	}
-// }
-
-// func TestUserGetFullName(t *testing.T) {
-// 	user := User{}
-
-// 	if fullName := user.GetFullName(); fullName != "" {
-// 		t.Fatal("Full name should be blank")
-// 	}
-
-// 	user.FirstName = "first"
-// 	if fullName := user.GetFullName(); fullName != "first" {
-// 		t.Fatal("Full name should be first name")
-// 	}
-
-// 	user.FirstName = ""
-// 	user.LastName = "last"
-// 	if fullName := user.GetFullName(); fullName != "last" {
-// 		t.Fatal("Full name should be last name")
-// 	}
-
-// 	user.FirstName = "first"
-// 	if fullName := user.GetFullName(); fullName != "first last" {
-// 		t.Fatal("Full name should be first name and last name")
-// 	}
-// }
 
 // func TestUserGetDisplayName(t *testing.T) {
 // 	user := User{Username: "user"}
@@ -556,5 +521,32 @@ func TestUserModel(t *testing.T) {
 
 // 	if IsInRole("admin", "system_admin") {
 // 		t.Fatal()
+// 	}
+// }
+
+// func TestUserUpdateMentionKeysFromUsername(t *testing.T) {
+// 	user := User{Username: "user"}
+// 	user.SetDefaultNotifications()
+
+// 	if user.NotifyProps["mention_keys"] != "user,@user" {
+// 		t.Fatal("default mention keys are invalid: %v", user.NotifyProps["mention_keys"])
+// 	}
+
+// 	user.Username = "person"
+// 	user.UpdateMentionKeysFromUsername("user")
+// 	if user.NotifyProps["mention_keys"] != "person,@person" {
+// 		t.Fatal("mention keys are invalid after changing username: %v", user.NotifyProps["mention_keys"])
+// 	}
+
+// 	user.NotifyProps["mention_keys"] += ",mention"
+// 	user.UpdateMentionKeysFromUsername("person")
+// 	if user.NotifyProps["mention_keys"] != "person,@person,mention" {
+// 		t.Fatal("mention keys are invalid after adding extra mention keyword: %v", user.NotifyProps["mention_keys"])
+// 	}
+
+// 	user.Username = "user"
+// 	user.UpdateMentionKeysFromUsername("person")
+// 	if user.NotifyProps["mention_keys"] != "user,@user,mention" {
+// 		t.Fatal("mention keys are invalid after changing username with extra mention keyword: %v", user.NotifyProps["mention_keys"])
 // 	}
 // }
