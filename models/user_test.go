@@ -179,6 +179,182 @@ func TestUserModel(t *testing.T) {
 			})
 		})
 	})
+
+	Convey("Testing fonction IsValid", t, func() {
+		Convey("Given a correct user, validation should work", func() {
+			correct_user := User{
+				Username: "TesT",
+				Password: "test",
+				Email: "test@popcube.fr",
+				Nickname: "NickName",
+				FirstName: "Test",
+				LastName: "L",
+				Roles: "Owner",
+			}
+			correct_user.PreSave()
+			So(correct_user.IsValid(),ShouldNotBeNil);
+		})
+		Convey("Given an incorrect user, validation should return error message", func() {
+			Convey("Incorrect ID user should return a message invalid id", func() {
+				user := User{
+					Id: "Nimp",
+					Username: "TesT",
+					Password: "test",
+					Email: "test@popcube.fr",
+					Nickname: "NickName",
+					FirstName: "Test",
+					LastName: "L",
+					Roles: "Owner",
+				}
+				So(user.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.id.app_error", nil, ""))
+			})
+			Convey("Incorrect Username user should return error Invalid username", func() {
+				user1 := User{
+					Username: "CeNomDevraitJelespereEtreBeaucoupTropLongPourLatrailleMaximaleDemandeParcequelaJeSuiunPoilFeneantEtDeboussouleSansnuldouteilnyavaitpersone",
+					Password: "test",
+					Email: "test@popcube.fr",
+					Nickname: "NickName",
+					FirstName: "Test",
+					LastName: "L",
+					Roles: "Owner",
+				}
+				user1.PreSave()
+				So(user1.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user1.Id))
+				user2 := User{
+					Id: NewId(),
+					Password: "test",
+					Email: "test@popcube.fr",
+					Nickname: "NickName",
+					FirstName: "Test",
+					LastName: "L",
+					Roles: "Owner",
+				}
+				So(user2.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user2.Id))
+				user3 := User{
+					Id: NewId(),
+					Username: "xD/",
+					Password: "test",
+					Email: "test@popcube.fr",
+					Nickname: "NickName",
+					FirstName: "Test",
+					LastName: "L",
+					Roles: "Owner",
+				}
+				So(user3.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user3.Id))
+				user3 = User{
+					Id: NewId(),
+					Username: "xD\\",
+					Password: "test",
+					Email: "test@popcube.fr",
+					Nickname: "NickName",
+					FirstName: "Test",
+					LastName: "L",
+					Roles: "Owner",
+				}
+				So(user3.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user3.Id))
+				user3 = User{
+					Id: NewId(),
+					Username: "xD*",
+					Password: "test",
+					Email: "test@popcube.fr",
+					Nickname: "NickName",
+					FirstName: "Test",
+					LastName: "L",
+					Roles: "Owner",
+				}
+				So(user3.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user3.Id))
+				user3 = User{
+					Id: NewId(),
+					Username: "xD{",
+					Password: "test",
+					Email: "test@popcube.fr",
+					Nickname: "NickName",
+					FirstName: "Test",
+					LastName: "L",
+					Roles: "Owner",
+				}
+				So(user3.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user3.Id))
+				user3 = User{
+					Id: NewId(),
+					Username: "xD}",
+					Password: "test",
+					Email: "test@popcube.fr",
+					Nickname: "NickName",
+					FirstName: "Test",
+					LastName: "L",
+					Roles: "Owner",
+				}
+				So(user3.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user3.Id))
+				user3 = User{
+					Id: NewId(),
+					Username: "xD#",
+					Password: "test",
+					Email: "test@popcube.fr",
+					Nickname: "NickName",
+					FirstName: "Test",
+					LastName: "L",
+					Roles: "Owner",
+				}
+				So(user3.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user3.Id))
+				user3 = User{
+					Id: NewId(),
+					Username: "xD_",
+					Password: "test",
+					Email: "test@popcube.fr",
+					Nickname: "NickName",
+					FirstName: "Test",
+					LastName: "L",
+					Roles: "Owner",
+				}
+				So(user3.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+user3.Id))
+			})
+		})
+
+		Convey("Incorrect Email user should return error Invalid email", func() {
+			user := User{
+				Password: "test",
+				Email: "testpopcube.fr",
+				Nickname: "NickName",
+				FirstName: "Test",
+				LastName: "L",
+				Roles: "Owner",
+			}
+			user.PreSave()
+			So(user.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.email.app_error", nil, "user_id="+user.Id))
+			user = User{
+				Password: "test",
+				Email: "test/popcube.fr",
+				Nickname: "NickName",
+				FirstName: "Test",
+				LastName: "L",
+				Roles: "Owner",
+			}
+			user.PreSave()
+			So(user.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.email.app_error", nil, "user_id="+user.Id))
+			user = User{
+				Password: "test",
+				Email: "CeNomDevraitJelespereEtreBeaucoupTropLongPourLatrailleMaximaleDemandeParcequelaJeSuiunPoilFeneantEtDeboussouleSansnuldouteilnyavaitpersone@popcube.fr",
+				Nickname: "NickName",
+				FirstName: "Test",
+				LastName: "L",
+				Roles: "Owner",
+			}
+			user.PreSave()
+			So(user.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.email.app_error", nil, "user_id="+user.Id))
+		})
+
+		Convey("Nickname, Firstanem and Lastname should be less than 64 characters long", func() {
+			user := User{
+				Password: "test",
+				Email: "testpopcube.fr",
+				Nickname: "NickName",
+				FirstName: "Test",
+				LastName: "L",
+				Roles: "Owner",
+			}
+			user.PreSave()
+			So(user.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.email.app_error", nil, "user_id="+user.Id))
+	})
 }
 
 
