@@ -8,7 +8,7 @@ import (
 	"crypto/rand"
 	"encoding/base32"
 	"encoding/json"
-	// "fmt"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net/mail"
@@ -26,6 +26,7 @@ const (
 	UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	NUMBERS           = "0123456789"
 	SYMBOLS           = " !\"\\#$%&'()*+,-./:;<=>?@[]^_`|~"
+	CURRENT_VERSION   = "0.0.0"
 )
 
 type StringInterface map[string]interface{}
@@ -293,16 +294,20 @@ func IsValidAlphaNum(s string, allowUnderscores bool) bool {
 	return true
 }
 
-// func Etag(parts ...interface{}) string {
+func IsValidUsername(u string) bool {
+	return len(u) != 0 && IsValidAlphaNum(u, true)
+}
 
-// 	etag := CurrentVersion
+func Etag(parts ...interface{}) string {
 
-// 	for _, part := range parts {
-// 		etag += fmt.Sprintf(".%v", part)
-// 	}
+	etag := CURRENT_VERSION
 
-// 	return etag
-// }
+	for _, part := range parts {
+		etag += fmt.Sprintf(".%v", part)
+	}
+
+	return etag
+}
 
 var validHashtag = regexp.MustCompile(`^(#\pL[\pL\d\-_.]*[\pL\d])$`)
 var puncStart = regexp.MustCompile(`^[^\pL\d\s#]+`)

@@ -1,13 +1,37 @@
 sudo: required
 
 language: bash
+env:
+  DOCKER_COMPOSE_VERSION: 1.9.0
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
 
 services:
   - docker
 
 script:
+  - docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY
+  - docker build -t registry.le-corre.eu:5000/go:base -f docker/go_base.Dockerfile .
   - docker build -t go_test -f docker/go_test.Dockerfile .
-  - docker run --rm go_test
+  - docker run --rm -e WATCHING=1 go_test
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY;
+    docker build -t go_base -f docker/go_base.Dockerfile .;
+    docker tag go_base $DOCKER_REGISTRY/go:base;
+    docker push $DOCKER_REGISTRY/go:base;
+    fi
+  - if [ "$TRAVIS_BRANCH" == "developpement" ]; then
+    docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY;
+    docker build -t go_base -f docker/go_base.Dockerfile .;
+    docker tag go_base $DOCKER_REGISTRY/go:base-dev;
+    docker push $DOCKER_REGISTRY/go:base-dev;
+    fi
 
 notifications:
   slack: societyco:T1mHeYKrOtopvRjIZ68MqOQo
