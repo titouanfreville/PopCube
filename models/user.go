@@ -4,9 +4,10 @@ package model
 
 import (
 	"encoding/json"
+	"fmt"
 	// "fmt"
 	"io"
-	// "regexp"
+	"regexp"
 	"strings"
 	"unicode/utf8"
 
@@ -23,7 +24,14 @@ const (
 )
 
 var (
-	USER_CHANNEL = []string{"general", "random"}
+	USER_CHANNEL        = []string{"general", "random"}
+	restrictedUsernames = []string{
+		"all",
+		"channel",
+		"popcubebot",
+		"here",
+	}
+	validUsernameChars = regexp.MustCompile(`^[a-z0-9\.\-_]+$`)
 )
 
 // Used in mattermost project ... Don't think they are relevant for us.
@@ -101,7 +109,7 @@ func (u *User) IsValid() *AppError {
 		return NewLocAppError("User.IsValid", "model.user.is_valid.id.app_error", nil, "")
 	}
 
-	if len(u.Username) > 128 || !IsValidUsername(u.Username) {
+	if !IsValidUsername(u.Username) {
 		return NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+u.Id)
 	}
 
@@ -202,6 +210,24 @@ func UserFromJson(data io.Reader) *User {
 	}
 }
 
+func IsValidUsername(u string) bool {
+	if len(u) == 0 || len(u) > 64 {
+		return false
+	}
+
+	if !validUsernameChars.MatchString(u) {
+		return false
+	}
+
+	for _, restrictedUsername := range restrictedUsernames {
+		if u == restrictedUsername {
+			return false
+		}
+	}
+
+	return true
+}
+
 // Generate a valid strong etag so the browser can cache the results
 func (u *User) Etag(showFullName, showEmail bool) string {
 	return Etag(u.Id, u.UpdatedAt, showFullName, showEmail)
@@ -216,6 +242,17 @@ func (u *User) GetFullName() string {
 		return u.LastName
 	}
 	return u.FirstName + " " + u.LastName
+}
+
+// Get full name of the user
+func (u *User) GetDisplayName() string {
+	if u.Nickname != "" {
+		return u.Nickname
+	}
+	if u.GetFullName() != "" {
+		return u.GetFullName()
+	}
+	return u.Username
 }
 
 // HashPassword generates a hash using the bcrypt.GenerateFromPassword
@@ -237,4 +274,30 @@ func ComparePassword(hash string, password string) bool {
 
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
+}
+
+// Transform user name to meet requirement
+func CleanUsername(s string) string {
+	s = strings.ToLower(strings.Replace(s, " ", "-", -1))
+
+	for _, value := range reservedName {
+		if s == value {
+			s = strings.Replace(s, value, "", -1)
+		}
+	}
+
+	s = strings.TrimSpace(s)
+
+	for _, c := range s {
+		char := fmt.Sprintf("%c", c)
+		if !validUsernameChars.MatchString(char) {
+			s = strings.Replace(s, char, "-", -1)
+		}
+	}
+
+	if !IsValidUsername(s) {
+		s = "a" + NewId()
+	}
+
+	return s
 }

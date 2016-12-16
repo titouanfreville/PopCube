@@ -383,7 +383,7 @@ func TestUserModel(t *testing.T) {
 			So(user.IsValid(), ShouldResemble, NewLocAppError("User.IsValid", "model.user.is_valid.last_name.app_error", nil, "user_id="+user.Id))
 		})
 
-		Convey("Password can't be empty", func() {
+		Convey("Password can]t be empty", func() {
 			user := User{
 				Email:     "test@popcube.fr",
 				Nickname:  "Nickname",
@@ -434,66 +434,198 @@ func TestUserModel(t *testing.T) {
 		})
 
 	})
+
+	Convey("Testing GetDisplayName function", t, func() {
+		Convey("Given a correct user", func() {
+			u := User{Password: "test", Username: "test"}
+			u.PreSave()
+			Convey("User without First/Last/Nick name should have Username as display name", func() {
+				So(u.GetDisplayName(), ShouldEqual, "test")
+			})
+			Convey("User with First/Last name but no nickname should have full name as displayname", func() {
+				u.LastName = "Troll"
+				So(u.GetDisplayName(), ShouldEqual, "Troll")
+				u.FirstName = "Min"
+				So(u.GetDisplayName(), ShouldEqual, "Min Troll")
+				u.LastName = ""
+				So(u.GetDisplayName(), ShouldEqual, "Min")
+			})
+			Convey("User having a nickname should have their nickname diplayed", func() {
+				u.Nickname = "nOOb"
+				So(u.GetDisplayName(), ShouldEqual, "nOOb")
+			})
+		})
+	})
+
+	Convey("Testing IsValidUsername function", t, func() {
+		Convey("Given an user name :", func() {
+			Convey("Containing caps -> refused", func() {
+				So(IsValidUsername("IamContaingCaps"), ShouldBeFalse)
+				So(IsValidUsername("amContaingCaps"), ShouldBeFalse)
+				So(IsValidUsername("FULLCAPS"), ShouldBeFalse)
+				So(IsValidUsername("capsattheenD"), ShouldBeFalse)
+			})
+			Convey("Reserved -> refused", func() {
+				for _, uname := range restrictedUsernames {
+					So(IsValidUsername(uname), ShouldBeFalse)
+				}
+			})
+			Convey("Containing illegal characters ( * ] \\ space ( ) { } [ ] .... -> refused)", func() {
+				So(IsValidUsername("i contain spaces"), ShouldBeFalse)
+				So(IsValidUsername("one space"), ShouldBeFalse)
+				So(IsValidUsername(" "), ShouldBeFalse)
+				So(IsValidUsername("iama*"), ShouldBeFalse)
+				So(IsValidUsername("*"), ShouldBeFalse)
+				So(IsValidUsername("some*things"), ShouldBeFalse)
+				So(IsValidUsername("]"), ShouldBeFalse)
+				So(IsValidUsername("]citation"), ShouldBeFalse)
+				So(IsValidUsername("ci]tation"), ShouldBeFalse)
+				So(IsValidUsername("citation]"), ShouldBeFalse)
+				So(IsValidUsername("{"), ShouldBeFalse)
+				So(IsValidUsername("{citation"), ShouldBeFalse)
+				So(IsValidUsername("ci{tation"), ShouldBeFalse)
+				So(IsValidUsername("citation{"), ShouldBeFalse)
+				So(IsValidUsername("}"), ShouldBeFalse)
+				So(IsValidUsername("}citation"), ShouldBeFalse)
+				So(IsValidUsername("ci}tation"), ShouldBeFalse)
+				So(IsValidUsername("citation}"), ShouldBeFalse)
+				So(IsValidUsername("("), ShouldBeFalse)
+				So(IsValidUsername("(citation"), ShouldBeFalse)
+				So(IsValidUsername("ci(tation"), ShouldBeFalse)
+				So(IsValidUsername("citation("), ShouldBeFalse)
+				So(IsValidUsername(")"), ShouldBeFalse)
+				So(IsValidUsername(")citation"), ShouldBeFalse)
+				So(IsValidUsername("ci)tation"), ShouldBeFalse)
+				So(IsValidUsername("citation)"), ShouldBeFalse)
+				So(IsValidUsername("["), ShouldBeFalse)
+				So(IsValidUsername("[citation"), ShouldBeFalse)
+				So(IsValidUsername("ci[tation"), ShouldBeFalse)
+				So(IsValidUsername("citation["), ShouldBeFalse)
+				So(IsValidUsername("]"), ShouldBeFalse)
+				So(IsValidUsername("]citation"), ShouldBeFalse)
+				So(IsValidUsername("ci]tation"), ShouldBeFalse)
+				So(IsValidUsername("citation]"), ShouldBeFalse)
+				So(IsValidUsername("\\"), ShouldBeFalse)
+				So(IsValidUsername("\\citation"), ShouldBeFalse)
+				So(IsValidUsername("ci\\tation"), ShouldBeFalse)
+				So(IsValidUsername("citation\\"), ShouldBeFalse)
+			})
+			Convey("Correct -> accepted", func() {
+				So(IsValidUsername("je-suis"), ShouldBeTrue)
+				So(IsValidUsername("je_suis"), ShouldBeTrue)
+				So(IsValidUsername("je-suis_"), ShouldBeTrue)
+				So(IsValidUsername("je-suis-"), ShouldBeTrue)
+				So(IsValidUsername("je_suis-"), ShouldBeTrue)
+				So(IsValidUsername("je_suis_"), ShouldBeTrue)
+				So(IsValidUsername("_jesuis"), ShouldBeTrue)
+				So(IsValidUsername("_je-suis"), ShouldBeTrue)
+				So(IsValidUsername("-jesuis"), ShouldBeTrue)
+				So(IsValidUsername("-je_suis"), ShouldBeTrue)
+				So(IsValidUsername("je.suis"), ShouldBeTrue)
+				So(IsValidUsername("je.suis."), ShouldBeTrue)
+				So(IsValidUsername("jesuis."), ShouldBeTrue)
+				So(IsValidUsername("unnomcommeca"), ShouldBeTrue)
+			})
+		})
+	})
+
+	Convey("Testing Clean Username function function", t, func() {
+		Convey("Given an user name :", func() {
+			Convey("Containing caps -> should lower them", func() {
+				So(CleanUsername("IamContaingCaps"), ShouldEqual, "iamcontaingcaps")
+				So(CleanUsername("amContaingCaps"), ShouldEqual, "amcontaingcaps")
+				So(CleanUsername("FULLCAPS"), ShouldEqual, "fullcaps")
+				So(CleanUsername("capsattheenD"), ShouldEqual, "capsattheend")
+			})
+			Convey("Reserved -> should return a random name starting with a", func() {
+				for _, uname := range restrictedUsernames {
+					So(len(CleanUsername(uname)), ShouldEqual, 27)
+				}
+			})
+			Convey("Containing illegal characters ( * ] \\ space ( ) { } [ ] .... -> should transform them in -)", func() {
+				So(CleanUsername("i contain spaces"), ShouldEqual, "i-contain-spaces")
+				So(CleanUsername("one space"), ShouldEqual, "one-space")
+				So(CleanUsername(" "), ShouldEqual, "-")
+				So(CleanUsername("iama*"), ShouldEqual, "iama-")
+				So(CleanUsername("*"), ShouldEqual, "-")
+				So(CleanUsername("some*things"), ShouldEqual, "some-things")
+				So(CleanUsername("]"), ShouldEqual, "-")
+				So(CleanUsername("]citation"), ShouldEqual, "-citation")
+				So(CleanUsername("ci]tation"), ShouldEqual, "ci-tation")
+				So(CleanUsername("citation]"), ShouldEqual, "citation-")
+				So(CleanUsername("{"), ShouldEqual, "-")
+				So(CleanUsername("{citation"), ShouldEqual, "-citation")
+				So(CleanUsername("ci{tation"), ShouldEqual, "ci-tation")
+				So(CleanUsername("citation{"), ShouldEqual, "citation-")
+				So(CleanUsername("}"), ShouldEqual, "-")
+				So(CleanUsername("}citation"), ShouldEqual, "-citation")
+				So(CleanUsername("ci}tation"), ShouldEqual, "ci-tation")
+				So(CleanUsername("citation}"), ShouldEqual, "citation-")
+				So(CleanUsername("("), ShouldEqual, "-")
+				So(CleanUsername("(citation"), ShouldEqual, "-citation")
+				So(CleanUsername("ci(tation"), ShouldEqual, "ci-tation")
+				So(CleanUsername("citation("), ShouldEqual, "citation-")
+				So(CleanUsername(")"), ShouldEqual, "-")
+				So(CleanUsername(")citation"), ShouldEqual, "-citation")
+				So(CleanUsername("ci)tation"), ShouldEqual, "ci-tation")
+				So(CleanUsername("citation)"), ShouldEqual, "citation-")
+				So(CleanUsername("["), ShouldEqual, "-")
+				So(CleanUsername("[citation"), ShouldEqual, "-citation")
+				So(CleanUsername("ci[tation"), ShouldEqual, "ci-tation")
+				So(CleanUsername("citation["), ShouldEqual, "citation-")
+				So(CleanUsername("]"), ShouldEqual, "-")
+				So(CleanUsername("]citation"), ShouldEqual, "-citation")
+				So(CleanUsername("ci]tation"), ShouldEqual, "ci-tation")
+				So(CleanUsername("citation]"), ShouldEqual, "citation-")
+				So(CleanUsername("\\"), ShouldEqual, "-")
+				So(CleanUsername("\\citation"), ShouldEqual, "-citation")
+				So(CleanUsername("ci\\tation"), ShouldEqual, "ci-tation")
+				So(CleanUsername("citation\\"), ShouldEqual, "citation-")
+			})
+			Convey("Correct -> should stay the same", func() {
+				So(CleanUsername("je-suis"), ShouldEqual, "je-suis")
+				So(CleanUsername("je_suis"), ShouldEqual, "je_suis")
+				So(CleanUsername("je-suis_"), ShouldEqual, "je-suis_")
+				So(CleanUsername("je-suis-"), ShouldEqual, "je-suis-")
+				So(CleanUsername("je_suis-"), ShouldEqual, "je_suis-")
+				So(CleanUsername("je_suis_"), ShouldEqual, "je_suis_")
+				So(CleanUsername("_jesuis"), ShouldEqual, "_jesuis")
+				So(CleanUsername("_je-suis"), ShouldEqual, "_je-suis")
+				So(CleanUsername("-jesuis"), ShouldEqual, "-jesuis")
+				So(CleanUsername("-je_suis"), ShouldEqual, "-je_suis")
+				So(CleanUsername("je.suis"), ShouldEqual, "je.suis")
+				So(CleanUsername("je.suis."), ShouldEqual, "je.suis.")
+				So(CleanUsername("jesuis."), ShouldEqual, "jesuis.")
+				So(CleanUsername("unnomcommeca"), ShouldEqual, "unnomcommeca")
+			})
+		})
+	})
 }
 
-// func TestUserGetDisplayName(t *testing.T) {
+// func TestUserUpdateMentionKeysFromUsername(t *testing.T) {
 // 	user := User{Username: "user"}
+// 	user.SetDefaultNotifications()
 
-// 	if displayName := user.GetDisplayName(); displayName != "user" {
-// 		t.Fatal("Display name should be username")
-// 	}
-
-// 	user.FirstName = "first"
-// 	user.LastName = "last"
-// 	if displayName := user.GetDisplayName(); displayName != "first last" {
-// 		t.Fatal("Display name should be full name")
+// 	if user.NotifyProps["mention_keys"] != "user,@user" {
+// 		t.Fatal("default mention keys are invalid: %v", user.NotifyProps["mention_keys"])
 // 	}
 
-// 	user.Nickname = "nickname"
-// 	if displayName := user.GetDisplayName(); displayName != "nickname" {
-// 		t.Fatal("Display name should be nickname")
+// 	user.Username = "person"
+// 	user.UpdateMentionKeysFromUsername("user")
+// 	if user.NotifyProps["mention_keys"] != "person,@person" {
+// 		t.Fatal("mention keys are invalid after changing username: %v", user.NotifyProps["mention_keys"])
 // 	}
-// }
 
-// var usernames = []struct {
-// 	value    string
-// 	expected bool
-// }{
-// 	{"spin-punch", true},
-// 	{"Spin-punch", false},
-// 	{"spin punch-", false},
-// 	{"spin_punch", true},
-// 	{"spin", true},
-// 	{"PUNCH", false},
-// 	{"spin.punch", true},
-// 	{"spin'punch", false},
-// 	{"spin*punch", false},
-// 	{"all", false},
-// }
+// 	user.NotifyProps["mention_keys"] += ",mention"
+// 	user.UpdateMentionKeysFromUsername("person")
+// 	if user.NotifyProps["mention_keys"] != "person,@person,mention" {
+// 		t.Fatal("mention keys are invalid after adding extra mention keyword: %v", user.NotifyProps["mention_keys"])
+// 	}
 
-// func TestValidUsername(t *testing.T) {
-// 	for _, v := range usernames {
-// 		if IsValidUsername(v.value) != v.expected {
-// 			t.Errorf("expect %v as %v", v.value, v.expected)
-// 		}
-// 	}
-// }
-
-// func TestCleanUsername(t *testing.T) {
-// 	if CleanUsername("Spin-punch") != "spin-punch" {
-// 		t.Fatal("didn't clean name properly")
-// 	}
-// 	if CleanUsername("PUNCH") != "punch" {
-// 		t.Fatal("didn't clean name properly")
-// 	}
-// 	if CleanUsername("spin'punch") != "spin-punch" {
-// 		t.Fatal("didn't clean name properly")
-// 	}
-// 	if CleanUsername("spin") != "spin" {
-// 		t.Fatal("didn't clean name properly")
-// 	}
-// 	if len(CleanUsername("all")) != 27 {
-// 		t.Fatal("didn't clean name properly")
+// 	user.Username = "user"
+// 	user.UpdateMentionKeysFromUsername("person")
+// 	if user.NotifyProps["mention_keys"] != "user,@user,mention" {
+// 		t.Fatal("mention keys are invalid after changing username with extra mention keyword: %v", user.NotifyProps["mention_keys"])
 // 	}
 // }
 
@@ -521,32 +653,5 @@ func TestUserModel(t *testing.T) {
 
 // 	if IsInRole("admin", "system_admin") {
 // 		t.Fatal()
-// 	}
-// }
-
-// func TestUserUpdateMentionKeysFromUsername(t *testing.T) {
-// 	user := User{Username: "user"}
-// 	user.SetDefaultNotifications()
-
-// 	if user.NotifyProps["mention_keys"] != "user,@user" {
-// 		t.Fatal("default mention keys are invalid: %v", user.NotifyProps["mention_keys"])
-// 	}
-
-// 	user.Username = "person"
-// 	user.UpdateMentionKeysFromUsername("user")
-// 	if user.NotifyProps["mention_keys"] != "person,@person" {
-// 		t.Fatal("mention keys are invalid after changing username: %v", user.NotifyProps["mention_keys"])
-// 	}
-
-// 	user.NotifyProps["mention_keys"] += ",mention"
-// 	user.UpdateMentionKeysFromUsername("person")
-// 	if user.NotifyProps["mention_keys"] != "person,@person,mention" {
-// 		t.Fatal("mention keys are invalid after adding extra mention keyword: %v", user.NotifyProps["mention_keys"])
-// 	}
-
-// 	user.Username = "user"
-// 	user.UpdateMentionKeysFromUsername("person")
-// 	if user.NotifyProps["mention_keys"] != "user,@user,mention" {
-// 		t.Fatal("mention keys are invalid after changing username with extra mention keyword: %v", user.NotifyProps["mention_keys"])
 // 	}
 // }
