@@ -20,7 +20,8 @@ script:
   - docker run --rm -e WATCHING=1 go_test
 
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+  - >-
+    if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY;
     docker build -t go_base -f docker/go_base.Dockerfile .;
     docker tag go_base $DOCKER_REGISTRY/go:base;
@@ -41,9 +42,10 @@ after_success:
               }
       },
       "Hostname": "test-master"
-      }' http://${DEPLOY_URL}/deploy
+      }' http://${DEPLOY_URL}/deploy;
     fi
-  - if [ "$TRAVIS_BRANCH" == "developpement" ]; then
+  - >-
+    if [ "$TRAVIS_BRANCH" == "developpement" ]; then
     docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY;
     docker build -t go_base -f docker/go_base.Dockerfile .;
     docker tag go_base $DOCKER_REGISTRY/go:base-dev;
