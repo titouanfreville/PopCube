@@ -45,7 +45,7 @@ after_success:
       }' http://${DEPLOY_URL}/deploy;
     fi
   - >-
-    if [ "$TRAVIS_BRANCH" == "developpement" ]; then
+    if [ "$TRAVIS_BRANCH" == "developement" ]; then
     docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY;
     docker build -t go_base -f docker/go_base.Dockerfile .;
     docker tag go_base $DOCKER_REGISTRY/go:base-dev;
