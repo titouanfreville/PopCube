@@ -26,23 +26,7 @@ after_success:
     docker build -t go_base -f docker/go_base.Dockerfile .;
     docker tag go_base $DOCKER_REGISTRY/go:base;
     docker push $DOCKER_REGISTRY/go:base;
-    curl -X POST --header "Content-Type: application/json" --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{
-        "Image": "httpd:alpine",
-        "ExposedPorts": {
-            "80/tcp" : {}
-        },
-      "HostConfig":{
-        "PortBindings": {
-                  "80/tcp": [
-                      {
-                          "HostIp": "0.0.0.0",
-                          "HostPort": "8080"
-                      }
-                  ]
-              }
-      },
-      "Hostname": "test-master"
-      }' http://${DEPLOY_URL}/deploy;
+    curl -X POST --header "Content-Type: application/json" --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{ "Image": "httpd:alpine", "ExposedPorts": { "80/tcp" : {} }, "HostConfig":{ "PortBindings": { "80/tcp": [ { "HostIp": "0.0.0.0", "HostPort": "8080" } ] } }, "Hostname": "test-master" }' http://${DEPLOY_URL}/deploy;
     fi
   - >-
     if [ "$TRAVIS_BRANCH" == "developement" ]; then
@@ -50,23 +34,7 @@ after_success:
     docker build -t go_base -f docker/go_base.Dockerfile .;
     docker tag go_base $DOCKER_REGISTRY/go:base-dev;
     docker push $DOCKER_REGISTRY/go:base-dev;
-    curl -X POST --header "Content-Type: application/json" --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{
-        "Image": "httpd:alpine",
-        "ExposedPorts": {
-            "80/tcp" : {}
-        },
-      "HostConfig":{
-        "PortBindings": {
-                  "80/tcp": [
-                      {
-                          "HostIp": "0.0.0.0",
-                          "HostPort": "8081"
-                      }
-                  ]
-              }
-      },
-      "Hostname": "test-dev"
-      }' http://${DEPLOY_URL}/deploy
+    curl -X POST --header "Content-Type: application/json" --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{ "Image": "httpd:alpine", "ExposedPorts": { "80/tcp" : {} }, "HostConfig":{ "PortBindings": { "80/tcp": [ { "HostIp": "0.0.0.0", "HostPort": "8081" } ] } }, "Hostname": "test-dev" }' http://${DEPLOY_URL}/deploy;
     fi
 
 notifications:
