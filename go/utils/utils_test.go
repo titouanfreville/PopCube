@@ -62,34 +62,6 @@ func TestUtilsPackage(t *testing.T) {
   })
 }
 
-// func TestStringArrayIntersection(t *testing.T) {
-
-
-//   
-
-//     a := []string{
-//       "abc",
-//       "def",
-//       "ghi",
-//     }
-//     b := []string{
-//       "jkl",
-//     }
-//     c := []string{
-//       "def",
-//     }
-
-//     if len(stringArrayIntersection(a, b)) != 0 {
-//       t.Fatal("should be 0")
-//     }
-
-//     if len(stringArrayIntersection(a, c)) != 1 {
-//       t.Fatal("should be 1")
-//     }
-
-//   })
-// }
-
 // func TestRemoveDuplicatesFromStringArray(t *testing.T) {
 //   a := []string{
 //     "a",
