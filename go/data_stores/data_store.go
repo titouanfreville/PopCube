@@ -3,8 +3,8 @@ package data_store
 import (
 	"time"
 
-	"../model/"
-	l4g "github.com/alecthomas/log4go"
+	"../models/"
+	//l4g "github.com/alecthomas/log4go"
 )
 
 type StoreResult struct {
@@ -17,7 +17,7 @@ type StoreChannel chan StoreResult
 func Must(sc StoreChannel) interface{} {
 	r := <-sc
 	if r.Err != nil {
-		l4g.Close()
+		//l4g.Close()
 		time.Sleep(time.Second)
 		panic(r.Err)
 	}
