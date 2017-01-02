@@ -2,8 +2,6 @@ FROM golang:1.7-alpine
 
 MAINTAINER FREVILLE Titouan titouanfreville@gmail.com
 
-RUN ls /go
-
 COPY go/api /go/api
 COPY go/models /go/models
 COPY go/utils /go/utils

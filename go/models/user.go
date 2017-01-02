@@ -1,6 +1,6 @@
 // Here is the file which describe the user model.
 // It provwebIdes bascis function to manipulate the model.
-package models
+package model
 
 import (
 	"encoding/json"
