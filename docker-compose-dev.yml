@@ -1,14 +1,19 @@
 version: "2"
 services:
   front:
-    image: node:4.7-alpine
+    build:
+      context: .
+      dockerfile: docker/nginx_front.Dockerfile
     ports:
       - 80:80
       - 443:443
+    # volumes:
+    #   - "./app/:/usr/share/nginx/html/app"
+    #   - "./docs/:/usr/share/nginx/html/docs"
   back:
     build:
-      context: docker
-      dockerfile: go_base.Dockerfile
+      context: .
+      dockerfile:  docker/go_base.Dockerfile
   database:
     image: mongo:3.4.0
     hostname: mongo
