@@ -11,4 +11,4 @@ RUN apk add --update git bash && \
 		rm -rf /var/cache/apk/* && \
 		rm /bin/go_get.sh
 
-RUN mv /tmp/go/* /go/
+RUN mv /tmp/go/* /go/ && rm -rf /tmp/go
