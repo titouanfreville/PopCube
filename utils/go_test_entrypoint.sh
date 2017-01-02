@@ -63,6 +63,7 @@ check_file () {
 				*/src*) ;;
 				*)
 					go test -v ${el}/*.go;
+          failures=$[$failures+$?]
 					check_file ${el}
 				;;
 			esac
@@ -71,6 +72,7 @@ check_file () {
 }
 
 watching=${2:-0}
+failures=0
 CMD="check_file ${1}"
 
 if [ $watching -eq 0 ]
@@ -78,6 +80,6 @@ then
 	watcher /go $CMD
 else
 	$CMD
+  exit $failures
 fi
-# go test -v models/*.go
 
