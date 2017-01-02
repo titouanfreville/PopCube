@@ -1,6 +1,5 @@
 // Copyright (c) 2015 Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
-
 package model
 
 import (
@@ -193,6 +192,15 @@ func ArrayFromInterface(data interface{}) []string {
 	return stringArray
 }
 
+func StringInArray(a string, array []string) bool {
+	for _, b := range array {
+		if b == a {
+			return true
+		}
+	}
+	return false
+}
+
 func StringInterfaceToJson(objmap map[string]interface{}) string {
 	if b, err := json.Marshal(objmap); err != nil {
 		return ""
@@ -269,10 +277,6 @@ func IsValidChannelIdentifier(s string) bool {
 		return false
 	}
 
-	if len(s) < 2 {
-		return false
-	}
-
 	return true
 }
 
@@ -292,10 +296,6 @@ func IsValidAlphaNum(s string, allowUnderscores bool) bool {
 	}
 
 	return true
-}
-
-func IsValidUsername(u string) bool {
-	return len(u) != 0 && IsValidAlphaNum(u, true)
 }
 
 func Etag(parts ...interface{}) string {

@@ -95,3 +95,6 @@ _testmain.go
 bin
 pkg
 src
+
+# Workbench
+*.bak
