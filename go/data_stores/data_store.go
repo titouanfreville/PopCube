@@ -2,8 +2,7 @@ package data_store
 
 import (
 	"time"
-
-	"../models/"
+	// "../models/"
 	//l4g "github.com/alecthomas/log4go"
 )
 

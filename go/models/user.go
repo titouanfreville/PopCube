@@ -1,6 +1,6 @@
 // Here is the file which describe the user model.
 // It provwebIdes bascis function to manipulate the model.
-package model
+package models
 
 import (
 	"encoding/json"
@@ -224,7 +224,7 @@ func (u *User) getDisplayName() string {
 	return u.Username
 }
 
-// Hashpassword generates a hash using the bcrypt.GenerateFrompassword
+// hashpassword generates a hash using the bcrypt.GenerateFrompassword
 func hashPassword(password string) string {
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), 10)
 	if err != nil {

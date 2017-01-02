@@ -62,6 +62,7 @@ check_file () {
 				*/pkg*) ;;
 				*/src*) ;;
 				*)
+          echo "Running TEST for :: ${el}"
 					go test -v ${el}/*.go;
           failures=$[$failures+$?]
 					check_file ${el}
