@@ -100,6 +100,23 @@ func TestUtilities(t *testing.T) {
 		})
 	})
 
+	Convey("Testing string into array function", t, func() {
+		Convey("Given an array", func() {
+			array := []string{"test", "dragon", "stupid"}
+			Convey("Searching for existing string should return true", func() {
+				So(StringInArray("test", array), ShouldBeTrue)
+				So(StringInArray("dragon", array), ShouldBeTrue)
+				So(StringInArray("stupid", array), ShouldBeTrue)
+			})
+
+			Convey("Searching non existing strings should return false", func() {
+				So(StringInArray("test", []string{}), ShouldBeFalse)
+				So(StringInArray("libellule", array), ShouldBeFalse)
+				So(StringInArray("man", array), ShouldBeFalse)
+			})
+		})
+	})
+
 	Convey("Testing Hastags parsing ", t, func() {
 
 		var hashtags = map[string]string{

@@ -192,6 +192,15 @@ func ArrayFromInterface(data interface{}) []string {
 	return stringArray
 }
 
+func StringInArray(a string, array []string) bool {
+	for _, b := range array {
+		if b == a {
+			return true
+		}
+	}
+	return false
+}
+
 func StringInterfaceToJson(objmap map[string]interface{}) string {
 	if b, err := json.Marshal(objmap); err != nil {
 		return ""
@@ -265,10 +274,6 @@ var reservedName = []string{
 func IsValidChannelIdentifier(s string) bool {
 
 	if !IsValidAlphaNum(s, true) {
-		return false
-	}
-
-	if len(s) < 2 {
 		return false
 	}
 
