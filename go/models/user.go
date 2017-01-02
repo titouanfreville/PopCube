@@ -1,11 +1,10 @@
 // Here is the file which describe the user model.
-// It provides bascis function to manipulate the model.
+// It provwebIdes bascis function to manipulate the model.
 package model
 
 import (
 	"encoding/json"
 	"fmt"
-	// "fmt"
 	"io"
 	"regexp"
 	"strings"
@@ -15,16 +14,16 @@ import (
 )
 
 const (
-	USER_NOTIFY_ALL            = "all"
-	USER_NOTIFY_MENTION        = "mention"
-	USER_NOTIFY_NONE           = "none"
-	DEFAULT_LOCALE             = "en"
-	USER_AUTH_SERVICE_EMAIL    = "email"
-	USER_AUTH_SERVICE_USERNAME = "username"
+	user_NOTIFY_ALL            = "all"
+	user_NOTIFY_MENTION        = "mention"
+	user_NOTIFY_NONE           = "none"
+	DEFAULT_locale             = "en"
+	user_AUTH_SERVICE_email    = "email"
+	user_AUTH_SERVICE_username = "username"
 )
 
 var (
-	USER_CHANNEL        = []string{"general", "random"}
+	user_CHANNEL        = []string{"general", "random"}
 	restrictedUsernames = []string{
 		"all",
 		"channel",
@@ -35,129 +34,103 @@ var (
 )
 
 // Used in mattermost project ... Don't think they are relevant for us.
-// AuthData           *string   `json:"auth_data,omitempty"`
-// AuthService        string    `json:"auth_service"`
-//	LastPictureUpdate  int64     `json:"last_picture_update,omitempty"`
-//	 Props              StringMap `json:"props,omitempty"`
-// NotifyProps        StringMap `json:"notify_props,omitempty"`
 //	MfaActive          bool      `json:"mfa_active,omitempty"`
 //	MfaSecret          string    `json:"mfa_secret,omitempty"`
-//	CreateAt           int64     `json:"create_at,omitempty"`
-//	UpdateAt           int64     `json:"update_at,omitempty"`
-// AllowMarketing     bool      `json:"allow_marketing,omitempty"`
 
-// User object
+// user object
 //
-// - ID: String unique and non null to identify the user.
+// - webwebId: String unique and non null to webIdentify the user on application services. - REQUIRED
 //
-// - UpdatedAt: Time of the last update. Used to create tag for browser cache.
+// - username: Store the user username used to log into the service. - REQUIRED
 //
-// - Deleted: True if user is deleted.
+// - email: user mail ;). - REQUIRED
 //
-// - Username: Store the user username used to log into the service.
+// - emailVerified: true if email was verified by user. - REQUIRED
 //
-// - Password: Hashed password.
+// - updatedAt: Time of the last update. Used to create tag for browser cache. - REQUIRED
 //
-// - Email: User mail ;).
+// - deleted: True if user is deleted. - REQUIRED
 //
-// - EmailVerified: true if email was verified by user.
+// - password: Hashed password. - REQUIRED
 //
-// - Nickname: Name to use in communication channel (by default : username).
+// - lastpasswordUpdate: Date of the last password modification. - REQUIRED
 //
-// - First name: User true first name.
+// - failedAttemps: Number of fail try to connect to account. - REQUIRED
 //
-// - Last name: User true last name.
+// - locale: user favorite langage. - REQUIRED
 //
-// - Roles: User role in the organisation (Owner, Admin, User, Invité).
+// - role : int referencing a user role existing in the database. - REQUIRED
 //
-// - LastPasswordUpdate: Date of the last password modification.
+// - nickname: Name to use in communication channel (by default : username).
 //
-// - FailedAttemps: Number of fail try to connect to account.
+// - first name: user true first name.
 //
-// - Locale: User favorite langage.
+// - last name: user true last name.
 //
-// - Channels: List of the open channel the user is in.
-//
-// - PrivateChannels: List of the private channel the user is in.
-//
-// - LastActivityAt: Date && Time of the last activity of the user.
+// - lastActivityAt: Date && Time of the last activity of the user.
 type User struct {
-	Id                 string   `json:"id"`
-	UpdatedAt          int64    `json:"update_at,omitempty"`
-	Deleted            bool     `json:"deleted"`
-	Username           string   `json:"username"`
-	Password           string   `json:"password,omitempty"`
-	Email              string   `json:"email,omitempty"`
-	EmailVerified      bool     `json:"email_verified,omitempty"`
-	Nickname           string   `json:"nickname"`
-	FirstName          string   `json:"first_name"`
-	LastName           string   `json:"last_name"`
-	Roles              string   `json:"roles,omitempty"`
-	LastPasswordUpdate int64    `json:"last_password_update,omitempty"`
-	FailedAttempts     int      `json:"failed_attempts,omitempty"`
-	Locale             string   `json:"locale"`
-	Channels           []string `json:"channels,omitempty"`
-	PrivateChannels    []string `json:"private_channels"`
-	LastActivityAt     int64    `db:"-" json:"last_activity_at,omitempty"`
+	WebId              string `json:"webId"`
+	UpdatedAt          int64  `json:"update_at,omitempty"`
+	Deleted            bool   `json:"deleted"`
+	Username           string `json:"username"`
+	Password           string `json:"password,omitempty"`
+	Email              string `json:"email,omitempty"`
+	EmailVerified      bool   `json:"email_verified,omitempty"`
+	Nickname           string `json:"nickname"`
+	FirstName          string `json:"first_name"`
+	LastName           string `json:"last_name"`
+	Avatar             string `json:"avatar"`
+	Role               int64  `json:"roles,omitempty"`
+	LastPasswordUpdate int64  `json:"last_password_update,omitempty"`
+	FailedAttempts     int    `json:"failed_attempts,omitempty"`
+	Locale             string `json:"locale"`
+	LastActivityAt     int64  `db:"-" json:"last_activity_at,omitempty"`
 }
 
-// IsValid validates the user and returns an error if it isn't configured
+// isValid valwebIdates the user and returns an error if it isn't configured
 // correctly.
-func (u *User) IsValid() *AppError {
+func (u *User) isValid() *AppError {
 
-	if len(u.Id) != 26 {
-		return NewLocAppError("User.IsValid", "model.user.is_valid.id.app_error", nil, "")
+	if len(u.WebId) != 26 {
+		return NewLocAppError("user.isValid", "model.user.is_valid.WebId.app_error", nil, "")
 	}
 
-	if !IsValidUsername(u.Username) {
-		return NewLocAppError("User.IsValid", "model.user.is_valid.username.app_error", nil, "user_id="+u.Id)
+	if !isValidUsername(u.Username) {
+		return NewLocAppError("user.isValid", "model.user.is_valid.Username.app_error", nil, "user_webId="+u.WebId)
 	}
 
 	if len(u.Email) == 0 || len(u.Email) > 128 || !IsValidEmail(u.Email) {
-		return NewLocAppError("User.IsValid", "model.user.is_valid.email.app_error", nil, "user_id="+u.Id)
+		return NewLocAppError("user.isValid", "model.user.is_valid.Email.app_error", nil, "user_webId="+u.WebId)
 	}
 
 	if utf8.RuneCountInString(u.Nickname) > 64 {
-		return NewLocAppError("User.IsValid", "model.user.is_valid.nickname.app_error", nil, "user_id="+u.Id)
+		return NewLocAppError("user.isValid", "model.user.is_valid.Nickname.app_error", nil, "user_webId="+u.WebId)
 	}
 
 	if utf8.RuneCountInString(u.FirstName) > 64 {
-		return NewLocAppError("User.IsValid", "model.user.is_valid.first_name.app_error", nil, "user_id="+u.Id)
+		return NewLocAppError("user.isValid", "model.user.is_valid.first_name.app_error", nil, "user_webId="+u.WebId)
 	}
 
 	if utf8.RuneCountInString(u.LastName) > 64 {
-		return NewLocAppError("User.IsValid", "model.user.is_valid.last_name.app_error", nil, "user_id="+u.Id)
+		return NewLocAppError("user.isValid", "model.user.is_valid.last_name.app_error", nil, "user_webId="+u.WebId)
 	}
 
-	// if u.AuthData != nil && len(*u.AuthData) > 128 {
-	// 	return NewLocAppError("User.IsValid", "model.user.is_valid.auth_data.app_error", nil, "user_id="+u.Id)
-	// }
-
-	// if u.AuthData != nil && len(*u.AuthData) > 0 && len(u.AuthService) == 0 {
-	// 	return NewLocAppError("User.IsValid", "model.user.is_valid.auth_data_type.app_error", nil, "user_id="+u.Id)
-	// }
-
-	// && u.AuthData != nil && len(*u.AuthData) > 0
 	if len(u.Password) == 0 {
-		return NewLocAppError("User.IsValid", "model.user.is_valid.auth_data_pwd.app_error", nil, "user_id="+u.Id)
+		return NewLocAppError("user.isValid", "model.user.is_valid.auth_data_pwd.app_error", nil, "user_webId="+u.WebId)
 	}
 
 	return nil
 }
 
-// PreSave have to be run before saving user in DB. It will fill necessary information (id, username, etc. ) and hash password
-func (u *User) PreSave() {
-	if u.Id == "" {
-		u.Id = NewId()
+// preSave have to be run before saving user in DB. It will fill necessary information (webId, username, etc. ) and hash password
+func (u *User) preSave() {
+	if u.WebId == "" {
+		u.WebId = NewId()
 	}
 
 	if u.Username == "" {
 		u.Username = NewId()
 	}
-
-	// if u.AuthData != nil && *u.AuthData == "" {
-	// 	u.AuthData = nil
-	// }
 
 	u.Username = strings.ToLower(u.Username)
 	u.Email = strings.ToLower(u.Email)
@@ -166,30 +139,26 @@ func (u *User) PreSave() {
 	u.LastPasswordUpdate = u.UpdatedAt
 
 	if u.Locale == "" {
-		u.Locale = DEFAULT_LOCALE
-	}
-
-	if u.Channels == nil || len(u.Channels) == 0 {
-		u.Channels = USER_CHANNEL
+		u.Locale = DEFAULT_locale
 	}
 
 	if len(u.Password) > 0 {
-		u.Password = HashPassword(u.Password)
+		u.Password = hashPassword(u.Password)
 	}
 }
 
-// PreSave will set the Id and Username if missing.  It will also fill
+// preSave will set the webId and username if missing.  It will also fill
 // in the CreateAt, UpdateAt times.  It will also hash the password.  It should
 // be run before saving the user to the db.
 // PreUpdate should be run before updating the user in the db.
-func (u *User) PreUpdate() {
+func (u *User) preUpdate() {
 	u.Username = strings.ToLower(u.Username)
 	u.Email = strings.ToLower(u.Email)
 	u.UpdatedAt = GetMillis()
 }
 
-// ToJson convert a User to a json string
-func (u *User) ToJson() string {
+// ToJson convert a user to a json string
+func (u *User) toJson() string {
 	b, err := json.Marshal(u)
 	if err != nil {
 		return ""
@@ -198,8 +167,8 @@ func (u *User) ToJson() string {
 	}
 }
 
-// UserFromJson will decode the input and return a User
-func UserFromJson(data io.Reader) *User {
+// userFromJson will decode the input and return a user
+func userFromJson(data io.Reader) *User {
 	decoder := json.NewDecoder(data)
 	var user User
 	err := decoder.Decode(&user)
@@ -210,7 +179,7 @@ func UserFromJson(data io.Reader) *User {
 	}
 }
 
-func IsValidUsername(u string) bool {
+func isValidUsername(u string) bool {
 	if len(u) == 0 || len(u) > 64 {
 		return false
 	}
@@ -228,13 +197,13 @@ func IsValidUsername(u string) bool {
 	return true
 }
 
-// Generate a valid strong etag so the browser can cache the results
-func (u *User) Etag(showFullName, showEmail bool) string {
-	return Etag(u.Id, u.UpdatedAt, showFullName, showEmail)
+// Generate a valwebId strong etag so the browser can cache the results
+func (u *User) etag(showFullName, showemail bool) string {
+	return Etag(u.WebId, u.UpdatedAt, showFullName, showemail)
 }
 
 // Get full name of the user
-func (u *User) GetFullName() string {
+func (u *User) getFullName() string {
 	if u.LastName == "" {
 		return u.FirstName
 	}
@@ -245,18 +214,18 @@ func (u *User) GetFullName() string {
 }
 
 // Get full name of the user
-func (u *User) GetDisplayName() string {
+func (u *User) getDisplayName() string {
 	if u.Nickname != "" {
 		return u.Nickname
 	}
-	if u.GetFullName() != "" {
-		return u.GetFullName()
+	if u.getFullName() != "" {
+		return u.getFullName()
 	}
 	return u.Username
 }
 
-// HashPassword generates a hash using the bcrypt.GenerateFromPassword
-func HashPassword(password string) string {
+// Hashpassword generates a hash using the bcrypt.GenerateFrompassword
+func hashPassword(password string) string {
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), 10)
 	if err != nil {
 		panic(err)
@@ -265,8 +234,8 @@ func HashPassword(password string) string {
 	return string(hash)
 }
 
-// ComparePassword compares the hash
-func ComparePassword(hash string, password string) bool {
+// Comparepassword compares the hash
+func comparePassword(hash string, password string) bool {
 
 	if len(password) == 0 || len(hash) == 0 {
 		return false
@@ -277,7 +246,7 @@ func ComparePassword(hash string, password string) bool {
 }
 
 // Transform user name to meet requirement
-func CleanUsername(s string) string {
+func cleanUsername(s string) string {
 	s = strings.ToLower(strings.Replace(s, " ", "-", -1))
 
 	for _, value := range reservedName {
@@ -295,7 +264,7 @@ func CleanUsername(s string) string {
 		}
 	}
 
-	if !IsValidUsername(s) {
+	if !isValidUsername(s) {
 		s = "a" + NewId()
 	}
 
