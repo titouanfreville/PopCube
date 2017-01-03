@@ -61,8 +61,17 @@
 			<div id="legend">
 				<span>not tracked</span>
 			
-				<span class="cov0">not covered</span>
-				<span class="cov8">covered</span>
+				<span class="cov0">no coverage</span>
+				<span class="cov1">low coverage</span>
+				<span class="cov2">*</span>
+				<span class="cov3">*</span>
+				<span class="cov4">*</span>
+				<span class="cov5">*</span>
+				<span class="cov6">*</span>
+				<span class="cov7">*</span>
+				<span class="cov8">*</span>
+				<span class="cov9">*</span>
+				<span class="cov10">high coverage</span>
 			
 			</div>
 		</div>
@@ -74,21 +83,21 @@
 //   "os"
 // )
 
-func stringArrayIntersection(arr1, arr2 []string) []string <span class="cov8" title="1">{
+func stringArrayIntersection(arr1, arr2 []string) []string <span class="cov6" title="8">{
         arrMap := map[string]bool{}
         result := []string{}
 
-        for _, value := range arr1 </span><span class="cov8" title="1">{
+        for _, value := range arr1 </span><span class="cov10" title="24">{
                 arrMap[value] = true
         }</span>
 
-        <span class="cov8" title="1">for _, value := range arr2 </span><span class="cov8" title="1">{
-                if arrMap[value] </span><span class="cov8" title="1">{
+        <span class="cov6" title="8">for _, value := range arr2 </span><span class="cov8" title="16">{
+                if arrMap[value] </span><span class="cov7" title="9">{
                         result = append(result, value)
                 }</span>
         }
 
-        <span class="cov8" title="1">return result</span>
+        <span class="cov6" title="8">return result</span>
 }
 
 // func fileExistsInConfigFolder(filename string) bool {

@@ -76,16 +76,16 @@ check_file () {
 check_fixed_packages () {
   echo "Testing FIXED PACKAGES : "
   echo ">>> API "
-  go test -v -cover -coverprofile=/home/coverage/api.cover api
+  go test -v -cover -covermode=count -coverprofile=/home/coverage/api.cover api
   failures=$[$failures+$?]
   echo ">>> DATA_STORES "
-  go test -v -cover -coverprofile=/home/coverage/data_stores.cover data_stores
+  go test -v -cover -covermode=count -coverprofile=/home/coverage/data_stores.cover data_stores
   failures=$[$failures+$?]
   echo ">>> MODELS "
-  go test -v -cover -coverprofile=/home/coverage/models.cover models
+  go test -v -cover -covermode=count -coverprofile=/home/coverage/models.cover models
   failures=$[$failures+$?]
   echo ">>> UTILS "
-  go test -v -cover -coverprofile=/home/coverage/utils.cover utils
+  go test -v -cover -covermode=count -coverprofile=/home/coverage/utils.cover utils
   failures=$[$failures+$?]
   echo "Generating coverage html reports : "
   go tool cover -html=/home/coverage/api.cover -o /home/docs/api_cover.html

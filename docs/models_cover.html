@@ -71,8 +71,17 @@
 			<div id="legend">
 				<span>not tracked</span>
 			
-				<span class="cov0">not covered</span>
-				<span class="cov8">covered</span>
+				<span class="cov0">no coverage</span>
+				<span class="cov1">low coverage</span>
+				<span class="cov2">*</span>
+				<span class="cov3">*</span>
+				<span class="cov4">*</span>
+				<span class="cov5">*</span>
+				<span class="cov6">*</span>
+				<span class="cov7">*</span>
+				<span class="cov8">*</span>
+				<span class="cov9">*</span>
+				<span class="cov10">high coverage</span>
 			
 			</div>
 		</div>
@@ -90,52 +99,52 @@ type Avatar struct {
         Link string `json:"link"`
 }
 
-func (avatar *Avatar) isValid() *AppError <span class="cov8" title="1">{
-        if len(avatar.Name) == 0 || len(avatar.Name) &gt; 64 </span><span class="cov8" title="1">{
+func (avatar *Avatar) isValid() *AppError <span class="cov10" title="6">{
+        if len(avatar.Name) == 0 || len(avatar.Name) &gt; 64 </span><span class="cov4" title="2">{
                 return NewLocAppError("Avatar.IsValid", "model.avatar.name.app_error", nil, "")
         }</span>
 
-        <span class="cov8" title="1">if len(avatar.Link) == 0 </span><span class="cov8" title="1">{
+        <span class="cov7" title="4">if len(avatar.Link) == 0 </span><span class="cov1" title="1">{
                 return NewLocAppError("Avatar.IsValid", "model.avatar.link.app_error", nil, "")
         }</span>
 
-        <span class="cov8" title="1">return nil</span>
+        <span class="cov6" title="3">return nil</span>
 }
 
-func (avatar *Avatar) toJson() string <span class="cov8" title="1">{
+func (avatar *Avatar) toJson() string <span class="cov1" title="1">{
         b, err := json.Marshal(avatar)
         if err != nil </span><span class="cov0" title="0">{
                 return ""
-        }</span><span class="cov8" title="1"> else {
+        }</span><span class="cov1" title="1"> else {
                 return string(b)
         }</span>
 }
 
-func avatarFromJson(data io.Reader) *Avatar <span class="cov8" title="1">{
+func avatarFromJson(data io.Reader) *Avatar <span class="cov1" title="1">{
         decoder := json.NewDecoder(data)
         var avatar Avatar
         err := decoder.Decode(&amp;avatar)
-        if err == nil </span><span class="cov8" title="1">{
+        if err == nil </span><span class="cov1" title="1">{
                 return &amp;avatar
         }</span><span class="cov0" title="0"> else {
                 return nil
         }</span>
 }
 
-func avatarListToJson(avatarList []*Avatar) string <span class="cov8" title="1">{
+func avatarListToJson(avatarList []*Avatar) string <span class="cov1" title="1">{
         b, err := json.Marshal(avatarList)
         if err != nil </span><span class="cov0" title="0">{
                 return ""
-        }</span><span class="cov8" title="1"> else {
+        }</span><span class="cov1" title="1"> else {
                 return string(b)
         }</span>
 }
 
-func avatarListFromJson(data io.Reader) []*Avatar <span class="cov8" title="1">{
+func avatarListFromJson(data io.Reader) []*Avatar <span class="cov1" title="1">{
         decoder := json.NewDecoder(data)
         var avatarList []*Avatar
         err := decoder.Decode(&amp;avatarList)
-        if err == nil </span><span class="cov8" title="1">{
+        if err == nil </span><span class="cov1" title="1">{
                 return avatarList
         }</span><span class="cov0" title="0"> else {
                 return nil
@@ -175,20 +184,20 @@ type Channel struct {
         Avatar      string `json:"avatar,omitempty"`
 }
 
-func (channel *Channel) toJson() string <span class="cov8" title="1">{
+func (channel *Channel) toJson() string <span class="cov1" title="1">{
         b, err := json.Marshal(channel)
         if err != nil </span><span class="cov0" title="0">{
                 return ""
-        }</span><span class="cov8" title="1"> else {
+        }</span><span class="cov1" title="1"> else {
                 return string(b)
         }</span>
 }
 
-func channelFromJson(data io.Reader) *Channel <span class="cov8" title="1">{
+func channelFromJson(data io.Reader) *Channel <span class="cov1" title="1">{
         decoder := json.NewDecoder(data)
         var channel Channel
         err := decoder.Decode(&amp;channel)
-        if err == nil </span><span class="cov8" title="1">{
+        if err == nil </span><span class="cov1" title="1">{
                 return &amp;channel
         }</span><span class="cov0" title="0"> else {
                 return nil
@@ -199,66 +208,66 @@ func (channel *Channel) etag() string <span class="cov0" title="0">{
         return Etag(channel.WebId, channel.UpdatedAt)
 }</span>
 
-func (channel *Channel) isValid() *AppError <span class="cov8" title="1">{
+func (channel *Channel) isValid() *AppError <span class="cov10" title="48">{
 
-        if len(channel.WebId) != 26 </span><span class="cov8" title="1">{
+        if len(channel.WebId) != 26 </span><span class="cov2" title="2">{
                 return NewLocAppError("Channel.IsValid", "model.channel.is_valid.id.app_error", nil, "")
         }</span>
 
-        <span class="cov8" title="1">if channel.UpdatedAt == 0 </span><span class="cov8" title="1">{
+        <span class="cov9" title="46">if channel.UpdatedAt == 0 </span><span class="cov1" title="1">{
                 return NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebId)
         }</span>
 
-        <span class="cov8" title="1">if utf8.RuneCountInString(channel.ChannelName) &gt; CHANNEL_DISPLAY_NAME_MAX_RUNES </span><span class="cov8" title="1">{
+        <span class="cov9" title="45">if utf8.RuneCountInString(channel.ChannelName) &gt; CHANNEL_DISPLAY_NAME_MAX_RUNES </span><span class="cov1" title="1">{
                 return NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebId)
         }</span>
 
-        <span class="cov8" title="1">if !IsValidChannelIdentifier(channel.ChannelName) </span><span class="cov8" title="1">{
+        <span class="cov9" title="44">if !IsValidChannelIdentifier(channel.ChannelName) </span><span class="cov6" title="9">{
                 return NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId)
         }</span>
 
-        <span class="cov8" title="1">if utf8.RuneCountInString(channel.Description) &gt; CHANNEL_DESCRIPTION_MAX_RUNES </span><span class="cov8" title="1">{
+        <span class="cov9" title="35">if utf8.RuneCountInString(channel.Description) &gt; CHANNEL_DESCRIPTION_MAX_RUNES </span><span class="cov1" title="1">{
                 return NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebId)
         }</span>
 
-        <span class="cov8" title="1">if utf8.RuneCountInString(channel.Subject) &gt; CHANNEL_SUBJECT_MAX_RUNES </span><span class="cov8" title="1">{
+        <span class="cov9" title="34">if utf8.RuneCountInString(channel.Subject) &gt; CHANNEL_SUBJECT_MAX_RUNES </span><span class="cov1" title="1">{
                 return NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebId)
         }</span>
 
-        <span class="cov8" title="1">if !StringInArray(channel.Type, CHANNNEL_AVAILABLE_TYPES) </span><span class="cov8" title="1">{
+        <span class="cov9" title="33">if !StringInArray(channel.Type, CHANNNEL_AVAILABLE_TYPES) </span><span class="cov1" title="1">{
                 return NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebId)
         }</span>
 
-        <span class="cov8" title="1">return nil</span>
+        <span class="cov9" title="32">return nil</span>
 }
 
-func (channel *Channel) preSave() <span class="cov8" title="1">{
-        if channel.WebId == "" </span><span class="cov8" title="1">{
+func (channel *Channel) preSave() <span class="cov3" title="3">{
+        if channel.WebId == "" </span><span class="cov2" title="2">{
                 channel.WebId = NewId()
         }</span>
 
-        <span class="cov8" title="1">if channel.ChannelName == "" </span><span class="cov8" title="1">{
+        <span class="cov3" title="3">if channel.ChannelName == "" </span><span class="cov1" title="1">{
                 channel.ChannelName = NewId()
         }</span>
 
-        <span class="cov8" title="1">channel.ChannelName = strings.ToLower(channel.ChannelName)
+        <span class="cov3" title="3">channel.ChannelName = strings.ToLower(channel.ChannelName)
 
         channel.UpdatedAt = GetMillis()
 
-        if channel.Avatar == "" </span><span class="cov8" title="1">{
+        if channel.Avatar == "" </span><span class="cov2" title="2">{
                 channel.Avatar = "default_channel_avatar.svg"
         }</span>
 
-        <span class="cov8" title="1">if channel.Type == "" </span><span class="cov8" title="1">{
+        <span class="cov3" title="3">if channel.Type == "" </span><span class="cov2" title="2">{
                 channel.Type = "text"
         }</span>
 
-        <span class="cov8" title="1">if channel.Type == "direct" </span><span class="cov0" title="0">{
+        <span class="cov3" title="3">if channel.Type == "direct" </span><span class="cov0" title="0">{
                 channel.Private = true
         }</span>
 }
 
-func (channel *Channel) preUpdate() <span class="cov8" title="1">{
+func (channel *Channel) preUpdate() <span class="cov1" title="1">{
         channel.UpdatedAt = GetMillis()
 }</span>
 
@@ -284,56 +293,56 @@ type Emoji struct {
         Link     string `json:"link"`
 }
 
-func (emoji *Emoji) isValid() *AppError <span class="cov8" title="1">{
-        if len(emoji.Name) == 0 || len(emoji.Name) &gt; 64 </span><span class="cov8" title="1">{
+func (emoji *Emoji) isValid() *AppError <span class="cov10" title="9">{
+        if len(emoji.Name) == 0 || len(emoji.Name) &gt; 64 </span><span class="cov3" title="2">{
                 return NewLocAppError("Emoji.IsValid", "model.emoji.name.app_error", nil, "")
         }</span>
 
-        <span class="cov8" title="1">if len(emoji.ShortCut) == 0 || len(emoji.ShortCut) &gt; 20 </span><span class="cov8" title="1">{
+        <span class="cov8" title="7">if len(emoji.ShortCut) == 0 || len(emoji.ShortCut) &gt; 20 </span><span class="cov3" title="2">{
                 return NewLocAppError("Emoji.IsValid", "model.emoji.shortcut.app_error", nil, "")
         }</span>
 
-        <span class="cov8" title="1">if len(emoji.Link) == 0 </span><span class="cov8" title="1">{
+        <span class="cov7" title="5">if len(emoji.Link) == 0 </span><span class="cov1" title="1">{
                 return NewLocAppError("Emoji.IsValid", "model.emoji.link.app_error", nil, "")
         }</span>
 
-        <span class="cov8" title="1">return nil</span>
+        <span class="cov6" title="4">return nil</span>
 }
 
-func (emoji *Emoji) toJson() string <span class="cov8" title="1">{
+func (emoji *Emoji) toJson() string <span class="cov1" title="1">{
         b, err := json.Marshal(emoji)
         if err != nil </span><span class="cov0" title="0">{
                 return ""
-        }</span><span class="cov8" title="1"> else {
+        }</span><span class="cov1" title="1"> else {
                 return string(b)
         }</span>
 }
 
-func emojiFromJson(data io.Reader) *Emoji <span class="cov8" title="1">{
+func emojiFromJson(data io.Reader) *Emoji <span class="cov1" title="1">{
         decoder := json.NewDecoder(data)
         var emoji Emoji
         err := decoder.Decode(&amp;emoji)
-        if err == nil </span><span class="cov8" title="1">{
+        if err == nil </span><span class="cov1" title="1">{
                 return &amp;emoji
         }</span><span class="cov0" title="0"> else {
                 return nil
         }</span>
 }
 
-func emojiListToJson(emojiList []*Emoji) string <span class="cov8" title="1">{
+func emojiListToJson(emojiList []*Emoji) string <span class="cov1" title="1">{
         b, err := json.Marshal(emojiList)
         if err != nil </span><span class="cov0" title="0">{
                 return ""
-        }</span><span class="cov8" title="1"> else {
+        }</span><span class="cov1" title="1"> else {
                 return string(b)
         }</span>
 }
 
-func emojiListFromJson(data io.Reader) []*Emoji <span class="cov8" title="1">{
+func emojiListFromJson(data io.Reader) []*Emoji <span class="cov1" title="1">{
         decoder := json.NewDecoder(data)
         var emojiList []*Emoji
         err := decoder.Decode(&amp;emojiList)
-        if err == nil </span><span class="cov8" title="1">{
+        if err == nil </span><span class="cov1" title="1">{
                 return emojiList
         }</span><span class="cov0" title="0"> else {
                 return nil
@@ -412,72 +421,72 @@ var (
         validRoleNameChars = regexp.MustCompile(`^[a-z]+$`)
 )
 
-func (role *Role) isValid() *AppError <span class="cov8" title="1">{
-        if !isValidRoleName(role.RoleName) </span><span class="cov8" title="1">{
+func (role *Role) isValid() *AppError <span class="cov6" title="9">{
+        if !isValidRoleName(role.RoleName) </span><span class="cov5" title="7">{
                 return NewLocAppError("Role.IsValid", "model.role.rolename.app_error", nil, "")
         }</span>
 
-        <span class="cov8" title="1">return nil</span>
+        <span class="cov2" title="2">return nil</span>
 }
 
-func (role *Role) preSave() <span class="cov8" title="1">{
-        if role.RoleName == "" </span><span class="cov8" title="1">{
+func (role *Role) preSave() <span class="cov1" title="1">{
+        if role.RoleName == "" </span><span class="cov1" title="1">{
                 role.RoleName = NewId()
         }</span>
 }
 
-func (role *Role) toJson() string <span class="cov8" title="1">{
+func (role *Role) toJson() string <span class="cov1" title="1">{
         b, err := json.Marshal(role)
         if err != nil </span><span class="cov0" title="0">{
                 return ""
-        }</span><span class="cov8" title="1"> else {
+        }</span><span class="cov1" title="1"> else {
                 return string(b)
         }</span>
 }
 
-func isValidRoleName(u string) bool <span class="cov8" title="1">{
-        if len(u) == 0 || len(u) &gt; 64 </span><span class="cov8" title="1">{
+func isValidRoleName(u string) bool <span class="cov9" title="23">{
+        if len(u) == 0 || len(u) &gt; 64 </span><span class="cov2" title="2">{
                 return false
         }</span>
 
-        <span class="cov8" title="1">if !validRoleNameChars.MatchString(u) </span><span class="cov8" title="1">{
+        <span class="cov8" title="21">if !validRoleNameChars.MatchString(u) </span><span class="cov7" title="11">{
                 return false
         }</span>
 
-        <span class="cov8" title="1">for _, restrictedRoleName := range restrictedRoleNames </span><span class="cov8" title="1">{
-                if u == restrictedRoleName </span><span class="cov8" title="1">{
+        <span class="cov6" title="10">for _, restrictedRoleName := range restrictedRoleNames </span><span class="cov10" title="34">{
+                if u == restrictedRoleName </span><span class="cov4" title="4">{
                         return false
                 }</span>
         }
 
-        <span class="cov8" title="1">return true</span>
+        <span class="cov5" title="6">return true</span>
 }
 
-func roleFromJson(data io.Reader) *Role <span class="cov8" title="1">{
+func roleFromJson(data io.Reader) *Role <span class="cov1" title="1">{
         decoder := json.NewDecoder(data)
         var role Role
         err := decoder.Decode(&amp;role)
-        if err == nil </span><span class="cov8" title="1">{
+        if err == nil </span><span class="cov1" title="1">{
                 return &amp;role
         }</span><span class="cov0" title="0"> else {
                 return nil
         }</span>
 }
 
-func roleListToJson(roleList []*Role) string <span class="cov8" title="1">{
+func roleListToJson(roleList []*Role) string <span class="cov1" title="1">{
         b, err := json.Marshal(roleList)
         if err != nil </span><span class="cov0" title="0">{
                 return ""
-        }</span><span class="cov8" title="1"> else {
+        }</span><span class="cov1" title="1"> else {
                 return string(b)
         }</span>
 }
 
-func roleListFromJson(data io.Reader) []*Role <span class="cov8" title="1">{
+func roleListFromJson(data io.Reader) []*Role <span class="cov1" title="1">{
         decoder := json.NewDecoder(data)
         var roleList []*Role
         err := decoder.Decode(&amp;roleList)
-        if err == nil </span><span class="cov8" title="1">{
+        if err == nil </span><span class="cov1" title="1">{
                 return roleList
         }</span><span class="cov0" title="0"> else {
                 return nil
@@ -576,60 +585,60 @@ type User struct {
 
 // isValid valwebIdates the user and returns an error if it isn't configured
 // correctly.
-func (u *User) isValid() *AppError <span class="cov8" title="1">{
+func (u *User) isValid() *AppError <span class="cov5" title="25">{
 
-        if len(u.WebId) != 26 </span><span class="cov8" title="1">{
+        if len(u.WebId) != 26 </span><span class="cov1" title="1">{
                 return NewLocAppError("user.isValid", "model.user.is_valid.WebId.app_error", nil, "")
         }</span>
 
-        <span class="cov8" title="1">if !isValidUsername(u.Username) </span><span class="cov8" title="1">{
+        <span class="cov5" title="24">if !isValidUsername(u.Username) </span><span class="cov4" title="9">{
                 return NewLocAppError("user.isValid", "model.user.is_valid.Username.app_error", nil, "user_webId="+u.WebId)
         }</span>
 
-        <span class="cov8" title="1">if len(u.Email) == 0 || len(u.Email) &gt; 128 || !IsValidEmail(u.Email) </span><span class="cov8" title="1">{
+        <span class="cov4" title="15">if len(u.Email) == 0 || len(u.Email) &gt; 128 || !IsValidEmail(u.Email) </span><span class="cov2" title="3">{
                 return NewLocAppError("user.isValid", "model.user.is_valid.Email.app_error", nil, "user_webId="+u.WebId)
         }</span>
 
-        <span class="cov8" title="1">if utf8.RuneCountInString(u.Nickname) &gt; 64 </span><span class="cov8" title="1">{
+        <span class="cov4" title="12">if utf8.RuneCountInString(u.Nickname) &gt; 64 </span><span class="cov1" title="1">{
                 return NewLocAppError("user.isValid", "model.user.is_valid.Nickname.app_error", nil, "user_webId="+u.WebId)
         }</span>
 
-        <span class="cov8" title="1">if utf8.RuneCountInString(u.FirstName) &gt; 64 </span><span class="cov8" title="1">{
+        <span class="cov4" title="11">if utf8.RuneCountInString(u.FirstName) &gt; 64 </span><span class="cov1" title="1">{
                 return NewLocAppError("user.isValid", "model.user.is_valid.first_name.app_error", nil, "user_webId="+u.WebId)
         }</span>
 
-        <span class="cov8" title="1">if utf8.RuneCountInString(u.LastName) &gt; 64 </span><span class="cov8" title="1">{
+        <span class="cov4" title="10">if utf8.RuneCountInString(u.LastName) &gt; 64 </span><span class="cov1" title="1">{
                 return NewLocAppError("user.isValid", "model.user.is_valid.last_name.app_error", nil, "user_webId="+u.WebId)
         }</span>
 
-        <span class="cov8" title="1">if len(u.Password) == 0 </span><span class="cov8" title="1">{
+        <span class="cov4" title="9">if len(u.Password) == 0 </span><span class="cov1" title="1">{
                 return NewLocAppError("user.isValid", "model.user.is_valid.auth_data_pwd.app_error", nil, "user_webId="+u.WebId)
         }</span>
 
-        <span class="cov8" title="1">return nil</span>
+        <span class="cov4" title="8">return nil</span>
 }
 
 // preSave have to be run before saving user in DB. It will fill necessary information (webId, username, etc. ) and hash password
-func (u *User) preSave() <span class="cov8" title="1">{
-        if u.WebId == "" </span><span class="cov8" title="1">{
+func (u *User) preSave() <span class="cov5" title="26">{
+        if u.WebId == "" </span><span class="cov5" title="24">{
                 u.WebId = NewId()
         }</span>
 
-        <span class="cov8" title="1">if u.Username == "" </span><span class="cov8" title="1">{
+        <span class="cov5" title="26">if u.Username == "" </span><span class="cov5" title="16">{
                 u.Username = NewId()
         }</span>
 
-        <span class="cov8" title="1">u.Username = strings.ToLower(u.Username)
+        <span class="cov5" title="26">u.Username = strings.ToLower(u.Username)
         u.Email = strings.ToLower(u.Email)
 
         u.UpdatedAt = GetMillis()
         u.LastPasswordUpdate = u.UpdatedAt
 
-        if u.Locale == "" </span><span class="cov8" title="1">{
+        if u.Locale == "" </span><span class="cov5" title="24">{
                 u.Locale = DEFAULT_locale
         }</span>
 
-        <span class="cov8" title="1">if len(u.Password) &gt; 0 </span><span class="cov8" title="1">{
+        <span class="cov5" title="26">if len(u.Password) &gt; 0 </span><span class="cov5" title="25">{
                 u.Password = hashPassword(u.Password)
         }</span>
 }
@@ -645,117 +654,117 @@ func (u *User) preUpdate() <span class="cov0" title="0">{
 }</span>
 
 // ToJson convert a user to a json string
-func (u *User) toJson() string <span class="cov8" title="1">{
+func (u *User) toJson() string <span class="cov1" title="1">{
         b, err := json.Marshal(u)
         if err != nil </span><span class="cov0" title="0">{
                 return ""
-        }</span><span class="cov8" title="1"> else {
+        }</span><span class="cov1" title="1"> else {
                 return string(b)
         }</span>
 }
 
 // userFromJson will decode the input and return a user
-func userFromJson(data io.Reader) *User <span class="cov8" title="1">{
+func userFromJson(data io.Reader) *User <span class="cov1" title="1">{
         decoder := json.NewDecoder(data)
         var user User
         err := decoder.Decode(&amp;user)
-        if err == nil </span><span class="cov8" title="1">{
+        if err == nil </span><span class="cov1" title="1">{
                 return &amp;user
         }</span><span class="cov0" title="0"> else {
                 return nil
         }</span>
 }
 
-func isValidUsername(u string) bool <span class="cov8" title="1">{
-        if len(u) == 0 || len(u) &gt; 64 </span><span class="cov8" title="1">{
+func isValidUsername(u string) bool <span class="cov8" title="144">{
+        if len(u) == 0 || len(u) &gt; 64 </span><span class="cov2" title="3">{
                 return false
         }</span>
 
-        <span class="cov8" title="1">if !validUsernameChars.MatchString(u) </span><span class="cov8" title="1">{
+        <span class="cov8" title="141">if !validUsernameChars.MatchString(u) </span><span class="cov6" title="49">{
                 return false
         }</span>
 
-        <span class="cov8" title="1">for _, restrictedUsername := range restrictedUsernames </span><span class="cov8" title="1">{
-                if u == restrictedUsername </span><span class="cov8" title="1">{
+        <span class="cov7" title="92">for _, restrictedUsername := range restrictedUsernames </span><span class="cov9" title="358">{
+                if u == restrictedUsername </span><span class="cov3" title="7">{
                         return false
                 }</span>
         }
 
-        <span class="cov8" title="1">return true</span>
+        <span class="cov7" title="85">return true</span>
 }
 
 // Generate a valwebId strong etag so the browser can cache the results
-func (u *User) etag(showFullName, showemail bool) string <span class="cov8" title="1">{
+func (u *User) etag(showFullName, showemail bool) string <span class="cov2" title="3">{
         return Etag(u.WebId, u.UpdatedAt, showFullName, showemail)
 }</span>
 
 // Get full name of the user
-func (u *User) getFullName() string <span class="cov8" title="1">{
-        if u.LastName == "" </span><span class="cov8" title="1">{
+func (u *User) getFullName() string <span class="cov4" title="15">{
+        if u.LastName == "" </span><span class="cov3" title="7">{
                 return u.FirstName
         }</span>
-        <span class="cov8" title="1">if u.FirstName == "" </span><span class="cov8" title="1">{
+        <span class="cov4" title="8">if u.FirstName == "" </span><span class="cov3" title="4">{
                 return u.LastName
         }</span>
-        <span class="cov8" title="1">return u.FirstName + " " + u.LastName</span>
+        <span class="cov3" title="4">return u.FirstName + " " + u.LastName</span>
 }
 
 // Get full name of the user
-func (u *User) getDisplayName() string <span class="cov8" title="1">{
-        if u.Nickname != "" </span><span class="cov8" title="1">{
+func (u *User) getDisplayName() string <span class="cov3" title="5">{
+        if u.Nickname != "" </span><span class="cov1" title="1">{
                 return u.Nickname
         }</span>
-        <span class="cov8" title="1">if u.getFullName() != "" </span><span class="cov8" title="1">{
+        <span class="cov3" title="4">if u.getFullName() != "" </span><span class="cov2" title="3">{
                 return u.getFullName()
         }</span>
-        <span class="cov8" title="1">return u.Username</span>
+        <span class="cov1" title="1">return u.Username</span>
 }
 
 // hashpassword generates a hash using the bcrypt.GenerateFrompassword
-func hashPassword(password string) string <span class="cov8" title="1">{
+func hashPassword(password string) string <span class="cov5" title="28">{
         hash, err := bcrypt.GenerateFromPassword([]byte(password), 10)
         if err != nil </span><span class="cov0" title="0">{
                 panic(err)</span>
         }
 
-        <span class="cov8" title="1">return string(hash)</span>
+        <span class="cov5" title="28">return string(hash)</span>
 }
 
 // Comparepassword compares the hash
-func comparePassword(hash string, password string) bool <span class="cov8" title="1">{
+func comparePassword(hash string, password string) bool <span class="cov3" title="7">{
 
-        if len(password) == 0 || len(hash) == 0 </span><span class="cov8" title="1">{
+        if len(password) == 0 || len(hash) == 0 </span><span class="cov1" title="1">{
                 return false
         }</span>
 
-        <span class="cov8" title="1">err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+        <span class="cov3" title="6">err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
         return err == nil</span>
 }
 
 // Transform user name to meet requirement
-func cleanUsername(s string) string <span class="cov8" title="1">{
+func cleanUsername(s string) string <span class="cov7" title="60">{
         s = strings.ToLower(strings.Replace(s, " ", "-", -1))
 
-        for _, value := range reservedName </span><span class="cov8" title="1">{
-                if s == value </span><span class="cov8" title="1">{
+        for _, value := range reservedName </span><span class="cov9" title="420">{
+                if s == value </span><span class="cov1" title="1">{
                         s = strings.Replace(s, value, "", -1)
                 }</span>
         }
 
-        <span class="cov8" title="1">s = strings.TrimSpace(s)
+        <span class="cov7" title="60">s = strings.TrimSpace(s)
 
-        for _, c := range s </span><span class="cov8" title="1">{
+        for _, c := range s </span><span class="cov10" title="443">{
                 char := fmt.Sprintf("%c", c)
-                if !validUsernameChars.MatchString(char) </span><span class="cov8" title="1">{
+                if !validUsernameChars.MatchString(char) </span><span class="cov6" title="35">{
                         s = strings.Replace(s, char, "-", -1)
                 }</span>
         }
 
-        <span class="cov8" title="1">if !isValidUsername(s) </span><span class="cov8" title="1">{
+        <span class="cov7" title="60">if !isValidUsername(s) </span><span class="cov3" title="4">{
                 s = "a" + NewId()
         }</span>
 
-        <span class="cov8" title="1">return s</span>
+        <span class="cov7" title="60">return s</span>
 }
 </pre>
 		
@@ -805,7 +814,7 @@ type AppError struct {
         params        map[string]interface{} `json:"-"`
 }
 
-func (er *AppError) Error() string <span class="cov8" title="1">{
+func (er *AppError) Error() string <span class="cov1" title="1">{
         return er.Where + ": " + er.Message + ", " + er.DetailedError
 }</span>
 
@@ -825,36 +834,36 @@ func (er *AppError) SystemMessage(T goi18n.TranslateFunc) string <span class="co
         }</span>
 }
 
-func (er *AppError) ToJson() string <span class="cov8" title="1">{
+func (er *AppError) ToJson() string <span class="cov1" title="1">{
         b, err := json.Marshal(er)
         if err != nil </span><span class="cov0" title="0">{
                 return ""
-        }</span><span class="cov8" title="1"> else {
+        }</span><span class="cov1" title="1"> else {
                 return string(b)
         }</span>
 }
 
 // AppErrorFromJson will decode the input and return an AppError
-func AppErrorFromJson(data io.Reader) *AppError <span class="cov8" title="1">{
+func AppErrorFromJson(data io.Reader) *AppError <span class="cov1" title="2">{
         str := ""
         bytes, rerr := ioutil.ReadAll(data)
         if rerr != nil </span><span class="cov0" title="0">{
                 str = rerr.Error()
-        }</span><span class="cov8" title="1"> else {
+        }</span><span class="cov1" title="2"> else {
                 str = string(bytes)
         }</span>
 
-        <span class="cov8" title="1">decoder := json.NewDecoder(strings.NewReader(str))
+        <span class="cov1" title="2">decoder := json.NewDecoder(strings.NewReader(str))
         var er AppError
         err := decoder.Decode(&amp;er)
-        if err == nil </span><span class="cov8" title="1">{
+        if err == nil </span><span class="cov1" title="1">{
                 return &amp;er
-        }</span><span class="cov8" title="1"> else {
+        }</span><span class="cov1" title="1"> else {
                 return NewLocAppError("AppErrorFromJson", "model.utils.decode_json.app_error", nil, "body: "+str)
         }</span>
 }
 
-func NewLocAppError(where string, id string, params map[string]interface{}, details string) *AppError <span class="cov8" title="1">{
+func NewLocAppError(where string, id string, params map[string]interface{}, details string) *AppError <span class="cov7" title="139">{
         ap := &amp;AppError{}
         ap.Id = id
         ap.params = params
@@ -871,7 +880,7 @@ var encoding = base32.NewEncoding("ybndrfg8ejkmcpqxot1uwisza345h769")
 // NewId is a globally unique identifier.  It is a [A-Z0-9] string 26
 // characters long.  It is a UUID version 4 Guid that is zbased32 encoded
 // with the padding stripped off.
-func NewId() string <span class="cov8" title="1">{
+func NewId() string <span class="cov10" title="1068">{
         var b bytes.Buffer
         encoder := base32.NewEncoder(encoding, &amp;b)
         encoder.Write(uuid.NewRandom())
@@ -880,7 +889,7 @@ func NewId() string <span class="cov8" title="1">{
         return b.String()
 }</span>
 
-func NewRandomString(length int) string <span class="cov8" title="1">{
+func NewRandomString(length int) string <span class="cov9" title="1000">{
         var b bytes.Buffer
         str := make([]byte, length+8)
         rand.Read(str)
@@ -892,27 +901,27 @@ func NewRandomString(length int) string <span class="cov8" title="1">{
 }</span>
 
 // GetMillis is a convience method to get milliseconds since epoch.
-func GetMillis() int64 <span class="cov8" title="1">{
+func GetMillis() int64 <span class="cov5" title="46">{
         return time.Now().UnixNano() / int64(time.Millisecond)
 }</span>
 
 // MapToJson converts a map to a json string
-func MapToJson(objmap map[string]string) string <span class="cov8" title="1">{
+func MapToJson(objmap map[string]string) string <span class="cov1" title="1">{
         if b, err := json.Marshal(objmap); err != nil </span><span class="cov0" title="0">{
                 return ""
-        }</span><span class="cov8" title="1"> else {
+        }</span><span class="cov1" title="1"> else {
                 return string(b)
         }</span>
 }
 
 // MapFromJson will decode the key/value pair map
-func MapFromJson(data io.Reader) map[string]string <span class="cov8" title="1">{
+func MapFromJson(data io.Reader) map[string]string <span class="cov1" title="2">{
         decoder := json.NewDecoder(data)
 
         var objmap map[string]string
-        if err := decoder.Decode(&amp;objmap); err != nil </span><span class="cov8" title="1">{
+        if err := decoder.Decode(&amp;objmap); err != nil </span><span class="cov1" title="1">{
                 return make(map[string]string)
-        }</span><span class="cov8" title="1"> else {
+        }</span><span class="cov1" title="1"> else {
                 return objmap
         }</span>
 }
@@ -953,13 +962,13 @@ func ArrayFromInterface(data interface{}) []string <span class="cov0" title="0">
         <span class="cov0" title="0">return stringArray</span>
 }
 
-func StringInArray(a string, array []string) bool <span class="cov8" title="1">{
-        for _, b := range array </span><span class="cov8" title="1">{
-                if b == a </span><span class="cov8" title="1">{
+func StringInArray(a string, array []string) bool <span class="cov5" title="39">{
+        for _, b := range array </span><span class="cov6" title="88">{
+                if b == a </span><span class="cov5" title="35">{
                         return true
                 }</span>
         }
-        <span class="cov8" title="1">return false</span>
+        <span class="cov2" title="4">return false</span>
 }
 
 func StringInterfaceToJson(objmap map[string]interface{}) string <span class="cov0" title="0">{
@@ -1001,25 +1010,25 @@ func StringFromJson(data io.Reader) string <span class="cov0" title="0">{
         }</span>
 }
 
-func IsLower(s string) bool <span class="cov8" title="1">{
-        if strings.ToLower(s) == s </span><span class="cov8" title="1">{
+func IsLower(s string) bool <span class="cov5" title="25">{
+        if strings.ToLower(s) == s </span><span class="cov5" title="23">{
                 return true
         }</span>
 
-        <span class="cov8" title="1">return false</span>
+        <span class="cov1" title="2">return false</span>
 }
 
-func IsValidEmail(email string) bool <span class="cov8" title="1">{
+func IsValidEmail(email string) bool <span class="cov4" title="17">{
 
-        if !IsLower(email) </span><span class="cov8" title="1">{
+        if !IsLower(email) </span><span class="cov1" title="1">{
                 return false
         }</span>
 
-        <span class="cov8" title="1">if _, err := mail.ParseAddress(email); err == nil </span><span class="cov8" title="1">{
+        <span class="cov4" title="16">if _, err := mail.ParseAddress(email); err == nil </span><span class="cov4" title="13">{
                 return true
         }</span>
 
-        <span class="cov8" title="1">return false</span>
+        <span class="cov2" title="3">return false</span>
 }
 
 var reservedName = []string{
@@ -1032,42 +1041,42 @@ var reservedName = []string{
         "oauth",
 }
 
-func IsValidChannelIdentifier(s string) bool <span class="cov8" title="1">{
+func IsValidChannelIdentifier(s string) bool <span class="cov5" title="44">{
 
-        if !IsValidAlphaNum(s, true) </span><span class="cov8" title="1">{
+        if !IsValidAlphaNum(s, true) </span><span class="cov3" title="9">{
                 return false
         }</span>
 
-        <span class="cov8" title="1">return true</span>
+        <span class="cov5" title="35">return true</span>
 }
 
 var validAlphaNumUnderscore = regexp.MustCompile(`^[a-z0-9]+([a-z\-\_0-9]+|(__)?)[a-z0-9]+$`)
 var validAlphaNum = regexp.MustCompile(`^[a-z0-9]+([a-z\-0-9]+|(__)?)[a-z0-9]+$`)
 
-func IsValidAlphaNum(s string, allowUnderscores bool) bool <span class="cov8" title="1">{
+func IsValidAlphaNum(s string, allowUnderscores bool) bool <span class="cov5" title="44">{
         var match bool
-        if allowUnderscores </span><span class="cov8" title="1">{
+        if allowUnderscores </span><span class="cov5" title="44">{
                 match = validAlphaNumUnderscore.MatchString(s)
         }</span><span class="cov0" title="0"> else {
                 match = validAlphaNum.MatchString(s)
         }</span>
 
-        <span class="cov8" title="1">if !match </span><span class="cov8" title="1">{
+        <span class="cov5" title="44">if !match </span><span class="cov3" title="9">{
                 return false
         }</span>
 
-        <span class="cov8" title="1">return true</span>
+        <span class="cov5" title="35">return true</span>
 }
 
-func Etag(parts ...interface{}) string <span class="cov8" title="1">{
+func Etag(parts ...interface{}) string <span class="cov2" title="4">{
 
         etag := CURRENT_VERSION
 
-        for _, part := range parts </span><span class="cov8" title="1">{
+        for _, part := range parts </span><span class="cov4" title="14">{
                 etag += fmt.Sprintf(".%v", part)
         }</span>
 
-        <span class="cov8" title="1">return etag</span>
+        <span class="cov2" title="4">return etag</span>
 }
 
 var validHashtag = regexp.MustCompile(`^(#\pL[\pL\d\-_.]*[\pL\d])$`)
@@ -1075,12 +1084,12 @@ var puncStart = regexp.MustCompile(`^[^\pL\d\s#]+`)
 var hashtagStart = regexp.MustCompile(`^#{2,}`)
 var puncEnd = regexp.MustCompile(`[^\pL\d\s]+$`)
 
-func ParseHashtags(text string) (string, string) <span class="cov8" title="1">{
+func ParseHashtags(text string) (string, string) <span class="cov5" title="38">{
         words := strings.Fields(text)
 
         hashtagString := ""
         plainString := ""
-        for _, word := range words </span><span class="cov8" title="1">{
+        for _, word := range words </span><span class="cov5" title="42">{
                 // trim off surrounding punctuation
                 word = puncStart.ReplaceAllString(word, "")
                 word = puncEnd.ReplaceAllString(word, "")
@@ -1088,14 +1097,14 @@ func ParseHashtags(text string) (string, string) <span class="cov8" title="1">{
                 // and remove extra pound #s
                 word = hashtagStart.ReplaceAllString(word, "#")
 
-                if validHashtag.MatchString(word) </span><span class="cov8" title="1">{
+                if validHashtag.MatchString(word) </span><span class="cov5" title="33">{
                         hashtagString += " " + word
-                }</span><span class="cov8" title="1"> else {
+                }</span><span class="cov3" title="9"> else {
                         plainString += " " + word
                 }</span>
         }
 
-        <span class="cov8" title="1">if len(hashtagString) &gt; 1000 </span><span class="cov0" title="0">{
+        <span class="cov5" title="38">if len(hashtagString) &gt; 1000 </span><span class="cov0" title="0">{
                 hashtagString = hashtagString[:999]
                 lastSpace := strings.LastIndex(hashtagString, " ")
                 if lastSpace &gt; -1 </span><span class="cov0" title="0">{
@@ -1105,7 +1114,7 @@ func ParseHashtags(text string) (string, string) <span class="cov8" title="1">{
                 }</span>
         }
 
-        <span class="cov8" title="1">return strings.TrimSpace(hashtagString), strings.TrimSpace(plainString)</span>
+        <span class="cov5" title="38">return strings.TrimSpace(hashtagString), strings.TrimSpace(plainString)</span>
 }
 
 // func IsFileExtImage(ext string) bool {
