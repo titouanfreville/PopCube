@@ -1,0 +1,6 @@
+version: "2"
+services:
+  front:
+    ports:
+      - 80:80
+      - 443:443

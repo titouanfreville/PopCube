@@ -1,0 +1,8 @@
+version: "2"
+services:
+  back-test:
+    build:
+      context: .
+      dockerfile: docker/go_test.Dockerfile
+    environment:
+      - WATCHING=1

@@ -14,3 +14,5 @@ RUN apk add --update git bash && \
 		rm /bin/go_get.sh
 
 # RUN mv /tmp/go/* /go/ && ls /go && rm -rf /tmp/go
+#
+ENTRYPOINT go run /go/src/api/api.go

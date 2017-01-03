@@ -1,0 +1,10 @@
+version: "2"
+services:
+  front:
+    build:
+      context: .
+      dockerfile: docker/nginx_front.Dockerfile
+
+  database:
+    image: mongo:3.4.0
+    hostname: mongo

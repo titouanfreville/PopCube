@@ -1,0 +1,7 @@
+version: "2"
+services:
+  back:
+    build:
+      context: .
+      dockerfile:  docker/go_base.Dockerfile
+    image: registry.le-corre.eu:5000/go:base
