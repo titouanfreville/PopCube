@@ -27,7 +27,7 @@ after_success:
     docker build -t go_base -f docker/go_base.Dockerfile .;
     docker tag go_base $DOCKER_REGISTRY/go:base;
     docker push $DOCKER_REGISTRY/go:base;
-    docker build -t nginx_front -f docker/go_base.Dockerfile .;
+    docker build -t nginx_front -f docker/nginx_front.Dockerfile .;
     docker tag nginx_front $DOCKER_REGISTRY/nginx_front:latest;
     docker push $DOCKER_REGISTRY/nginx_front:latest;
     curl -X POST --header "Content-Type: application/json" --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{ "Image": "registry.le-corre.eu:5000/nginx_front:latest", "ExposedPorts": { "80/tcp" : {} }, "HostConfig":{ "PortBindings": { "80/tcp": [ { "HostIp": "0.0.0.0", "HostPort": "8080" } ] } }, "Hostname": "nginx_front" }' http://${DEPLOY_URL}/deploy;
@@ -38,7 +38,7 @@ after_success:
     docker build -t go_base -f docker/go_base.Dockerfile .;
     docker tag go_base $DOCKER_REGISTRY/go:base-dev;
     docker push $DOCKER_REGISTRY/go:base-dev;
-    docker build -t nginx_front -f docker/go_base.Dockerfile .;
+    docker build -t nginx_front -f docker/nginx_front.Dockerfile .;
     docker tag nginx_front $DOCKER_REGISTRY/nginx_front:dev;
     docker push $DOCKER_REGISTRY/nginx_front:dev;
     curl -X POST --header "Content-Type: application/json" --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{ "Image": "registry.le-corre.eu:5000/nginx_front:dev", "ExposedPorts": { "80/tcp" : {} }, "HostConfig":{ "PortBindings": { "80/tcp": [ { "HostIp": "0.0.0.0", "HostPort": "8081" } ] } }, "Hostname": "nginx_front-dev" }' http://${DEPLOY_URL}/deploy;
