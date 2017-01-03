@@ -6,3 +6,9 @@ services:
       dockerfile: docker/go_test.Dockerfile
     environment:
       - WATCHING=1
+  front:
+    entrypoint: /bin/sh -c "exit 0"
+  database:
+    entrypoint: /bin/sh -c "exit 0"
+  back:
+    entrypoint: /bin/sh -c "exit 0"
