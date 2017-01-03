@@ -7,6 +7,9 @@ services:
     volumes:
       - "./app/:/usr/share/nginx/html/app"
       - "./docs/:/usr/share/nginx/html/docs"
+  compass:
+    volumes:
+      - "./app/styles:/home/style"
   back-test:
     build:
       context: .

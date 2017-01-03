@@ -1,6 +1,8 @@
 FROM nginx:1.11-alpine
 MAINTAINER Clement LE CORRE <clement@le-corre.eu>
 
+ENV TERM xterm-256color
+
 RUN apk add --no-cache --update nodejs=6.7.0-r0 \
     && rm -rf /var/cache/apk/*
 COPY docs/ /usr/share/nginx/html/docs

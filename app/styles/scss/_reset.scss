@@ -1,0 +1,10 @@
+/**
+ * Resets
+ * --------------------------------------------------
+ * Additional resets
+ */
+@import "compass/reset";
+
+button, input, select {
+  @include reset-focus();
+}
