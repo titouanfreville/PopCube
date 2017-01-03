@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">data_stores/data_store.go (0.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">no coverage</span>
+				<span class="cov1">low coverage</span>
+				<span class="cov2">*</span>
+				<span class="cov3">*</span>
+				<span class="cov4">*</span>
+				<span class="cov5">*</span>
+				<span class="cov6">*</span>
+				<span class="cov7">*</span>
+				<span class="cov8">*</span>
+				<span class="cov9">*</span>
+				<span class="cov10">high coverage</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package data_stores
+
+import (
+        "models"
+        "time"
+        //l4g "github.com/alecthomas/log4go"
+)
+
+type StoreResult struct {
+        Data interface{}
+        Err  *models.AppError
+}
+
+type StoreChannel chan StoreResult
+
+func Must(sc StoreChannel) interface{} <span class="cov0" title="0">{
+        r := &lt;-sc
+        if r.Err != nil </span><span class="cov0" title="0">{
+                //l4g.Close()
+                time.Sleep(time.Second)
+                panic(r.Err)</span>
+        }
+
+        <span class="cov0" title="0">return r.Data</span>
+}
+
+// type Store interface {
+//         Team() TeamStore
+//         Channel() ChannelStore
+//         Post() PostStore
+//         User() UserStore
+//         Audit() AuditStore
+//         Compliance() ComplianceStore
+//         Session() SessionStore
+//         OAuth() OAuthStore
+//         System() SystemStore
+//         Webhook() WebhookStore
+//         Command() CommandStore
+//         Preference() PreferenceStore
+//         License() LicenseStore
+//         PasswordRecovery() PasswordRecoveryStore
+//         Emoji() EmojiStore
+//         Status() StatusStore
+//         FileInfo() FileInfoStore
+//         Reaction() ReactionStore
+//         MarkSystemRanUnitTests()
+//         Close()
+//         DropAllTables()
+//         TotalMasterDbConnections() int
+//         TotalReadDbConnections() int
+// }
+
+type UserStore interface {
+        Save(user *models.User) StoreChannel
+        Update(user *models.User, allowRoleUpdate bool) StoreChannel
+        UpdateLastPictureUpdate(userId string) StoreChannel
+        UpdateUpdateAt(userId string) StoreChannel
+        UpdatePassword(userId, newPassword string) StoreChannel
+        Get(id string) StoreChannel
+        GetAll() StoreChannel
+        InvalidateProfilesInChannelCacheByUser(userId string)
+        InvalidateProfilesInChannelCache(channelId string)
+        GetProfilesInChannel(channelId string, offset int, limit int, allowFromCache bool) StoreChannel
+        GetProfilesNotInChannel(teamId string, channelId string, offset int, limit int) StoreChannel
+        GetProfilesByUsernames(usernames []string, teamId string) StoreChannel
+        GetAllProfiles(offset int, limit int) StoreChannel
+        GetProfiles(teamId string, offset int, limit int) StoreChannel
+        GetProfileByIds(userId []string, allowFromCache bool) StoreChannel
+        InvalidatProfileCacheForUser(userId string)
+        GetByEmail(email string) StoreChannel
+        GetByUsername(username string) StoreChannel
+        GetForLogin(loginId string, allowSignInWithUsername, allowSignInWithEmail, ldapEnabled bool) StoreChannel
+        VerifyEmail(userId string) StoreChannel
+        GetEtagForAllProfiles() StoreChannel
+        GetEtagForProfiles(teamId string) StoreChannel
+        UpdateFailedPasswordAttempts(userId string, attempts int) StoreChannel
+        GetTotalUsersCount() StoreChannel
+        GetSystemAdminProfiles() StoreChannel
+        PermanentDelete(userId string) StoreChannel
+        AnalyticsUniqueUserCount(teamId string) StoreChannel
+        GetUnreadCount(userId string) StoreChannel
+        GetUnreadCountForChannel(userId string, channelId string) StoreChannel
+        GetRecentlyActiveUsersForTeam(teamId string) StoreChannel
+        Search(teamId string, term string, options map[string]bool) StoreChannel
+        SearchInChannel(channelId string, term string, options map[string]bool) StoreChannel
+        SearchNotInChannel(teamId string, channelId string, term string, options map[string]bool) StoreChannel
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

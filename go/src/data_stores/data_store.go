@@ -1,14 +1,14 @@
-package data_store
+package data_stores
 
 import (
-	"../models/"
+	"models"
 	"time"
 	//l4g "github.com/alecthomas/log4go"
 )
 
 type StoreResult struct {
 	Data interface{}
-	Err  *model.AppError
+	Err  *models.AppError
 }
 
 type StoreChannel chan StoreResult
@@ -51,8 +51,8 @@ func Must(sc StoreChannel) interface{} {
 // }
 
 type UserStore interface {
-	Save(user *model.User) StoreChannel
-	Update(user *model.User, allowRoleUpdate bool) StoreChannel
+	Save(user *models.User) StoreChannel
+	Update(user *models.User, allowRoleUpdate bool) StoreChannel
 	UpdateLastPictureUpdate(userId string) StoreChannel
 	UpdateUpdateAt(userId string) StoreChannel
 	UpdatePassword(userId, newPassword string) StoreChannel

@@ -7,13 +7,6 @@ services:
     ports:
       - 80:80
       - 443:443
-    # volumes:
-    #   - "./app/:/usr/share/nginx/html/app"
-    #   - "./docs/:/usr/share/nginx/html/docs"
-  back:
-    build:
-      context: .
-      dockerfile:  docker/go_base.Dockerfile
   database:
     image: mongo:3.4.0
     hostname: mongo
