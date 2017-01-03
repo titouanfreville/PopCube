@@ -60,7 +60,7 @@ check_file () {
 			case ${el} in
 				*/bin*) ;;
 				*/pkg*) ;;
-				*/src*) ;;
+				*.*) ;;
 				*)
           echo "Testing : ${el}"
 					go test -cover -v ${el}/*.go;

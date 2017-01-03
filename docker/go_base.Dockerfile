@@ -2,10 +2,10 @@ FROM golang:1.7-alpine
 
 MAINTAINER FREVILLE Titouan titouanfreville@gmail.com
 
-COPY go/api /go/api
-COPY go/models /go/models
-COPY go/utils /go/utils
-COPY go/data_stores /go/data_stores
+COPY go/src/api /go/src/api
+COPY go/src/models /go/src/models
+COPY go/src/utils /go/src/utils
+COPY go/src/data_stores /go/src/data_stores
 COPY utils/go_get.sh /bin/go_get.sh
 
 RUN apk add --update git bash && \

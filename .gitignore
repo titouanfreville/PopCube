@@ -92,9 +92,12 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
 bin
 pkg
-src
+github.com
+golang.org
+gopkg.in
 
 # Workbench
 *.bak
