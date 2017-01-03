@@ -1,6 +1,5 @@
 #!/bin/bash
 # Variables --------------------------------------------------------------------
-source .env
 VERSION=0
 # ------------------------------------------------------------------------------
 # Version check functions ------------------------------------------------------
@@ -107,7 +106,7 @@ docker_ver () {
   else
     echo -e "$basic ################################################################################"
     echo
-    echo -e "$blue Installation seems good. Setting up."
+    echo -e "$blue Installation seems good. Setting up.$basic"
   fi
   echo
 }
