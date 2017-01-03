@@ -10,3 +10,5 @@ services:
   database:
     image: mongo:3.4.0
     hostname: mongo
+  compass:
+    entrypoint: /bin/sh -c "exit 0"

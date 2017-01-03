@@ -12,3 +12,5 @@ services:
     entrypoint: /bin/sh -c "exit 0"
   back:
     entrypoint: /bin/sh -c "exit 0"
+  compass:
+    entrypoint: /bin/sh -c "exit 0"

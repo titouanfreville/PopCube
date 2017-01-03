@@ -12,3 +12,7 @@ services:
     build:
       context: .
       dockerfile: docker/nginx_front.Dockerfile
+  compass:
+    build:
+      context: .
+      dockerfile: docker/compass.Dockerfile

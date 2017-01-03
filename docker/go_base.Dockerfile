@@ -2,6 +2,8 @@ FROM golang:1.7-alpine
 
 MAINTAINER FREVILLE Titouan titouanfreville@gmail.com
 
+ENV TERM xterm-256color
+
 COPY go/src/api /go/src/api
 COPY go/src/models /go/src/models
 COPY go/src/utils /go/src/utils
