@@ -21,7 +21,7 @@ pids
 lib-cov
 
 # Coverage directory used by tools like istanbul
-coverage
+app/coverage
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
@@ -92,6 +92,12 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
 bin
 pkg
-src
+github.com
+golang.org
+gopkg.in
+
+# Workbench
+*.bak

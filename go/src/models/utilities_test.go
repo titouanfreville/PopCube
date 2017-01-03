@@ -1,14 +1,13 @@
 // Copyright (c) 2015 Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 // Testing base tools for DB models.-
-
-package model
+package models
 
 import (
+	. "github.com/smartystreets/goconvey/convey"
+	"strconv"
 	"strings"
 	"testing"
-	"strconv"
-	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestUtilities(t *testing.T) {
@@ -17,16 +16,16 @@ func TestUtilities(t *testing.T) {
 		assertion := "Checking validity of " + strconv.Itoa(number_of_generation) + " random ids"
 
 		Convey(assertion, func() {
-				for i := 0; i < number_of_generation; i++ {
-					id := NewId()
-					So(len(id), ShouldBeLessThan, 27)
-				}
-			})
+			for i := 0; i < number_of_generation; i++ {
+				id := NewId()
+				So(len(id), ShouldBeLessThan, 27)
+			}
+		})
 	})
 
 	Convey("Testing random string generation", t, func() {
 		number_of_generation := 1000
-		assertion := "Checking correct generation of " + strconv.Itoa(number_of_generation) +" random string"
+		assertion := "Checking correct generation of " + strconv.Itoa(number_of_generation) + " random string"
 
 		Convey(assertion, func() {
 			for i := 0; i < number_of_generation; i++ {
@@ -43,7 +42,7 @@ func TestUtilities(t *testing.T) {
 			json := err.ToJson()
 			rerr := AppErrorFromJson(strings.NewReader(json))
 			err.Error()
-			So(err.Message, ShouldEqual, rerr.Message);
+			So(err.Message, ShouldEqual, rerr.Message)
 		})
 
 		Convey("Generating json error error message from html information should work", func() {
@@ -84,21 +83,38 @@ func TestUtilities(t *testing.T) {
 
 	Convey("Testing Lower case string checker", t, func() {
 
-		Convey("Providing a lower case test to lowercase checker should return true", func () {
+		Convey("Providing a lower case test to lowercase checker should return true", func() {
 			So(IsLower("corey+test@hulen.com"), ShouldBeTrue)
 		})
 
-		Convey("Providing a non lower case test to lowercase checker should return false", func () {
+		Convey("Providing a non lower case test to lowercase checker should return false", func() {
 			So(IsLower("Corey+test@hulen.com"), ShouldBeFalse)
 		})
 	})
 
-	Convey("Testing Etag creation", t, func () {
+	Convey("Testing Etag creation", t, func() {
 		Convey("Providing two parameters to function should return a string composed of version number.par1.par2", func() {
 			etag := Etag("hello", 24)
 			result := CURRENT_VERSION + ".hello.24"
 			So(etag, ShouldEqual, result)
+		})
+	})
+
+	Convey("Testing string into array function", t, func() {
+		Convey("Given an array", func() {
+			array := []string{"test", "dragon", "stupid"}
+			Convey("Searching for existing string should return true", func() {
+				So(StringInArray("test", array), ShouldBeTrue)
+				So(StringInArray("dragon", array), ShouldBeTrue)
+				So(StringInArray("stupid", array), ShouldBeTrue)
 			})
+
+			Convey("Searching non existing strings should return false", func() {
+				So(StringInArray("test", []string{}), ShouldBeFalse)
+				So(StringInArray("libellule", array), ShouldBeFalse)
+				So(StringInArray("man", array), ShouldBeFalse)
+			})
+		})
 	})
 
 	Convey("Testing Hastags parsing ", t, func() {

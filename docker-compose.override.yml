@@ -1,0 +1,17 @@
+version: "2"
+services:
+  front:
+    ports:
+      - 8080:80
+      - 443:443
+    volumes:
+      - "./app/:/usr/share/nginx/html/app"
+      - "./docs/:/usr/share/nginx/html/docs"
+  back-test:
+    build:
+      context: .
+      dockerfile: docker/go_test.Dockerfile
+    volumes:
+      - "./go/src:/go/src"
+      - "./docs:/home/docs"
+      - "./coverage:/home/coverage"
