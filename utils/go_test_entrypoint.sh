@@ -60,6 +60,7 @@ check_file () {
 			case ${el} in
 				*/bin*) ;;
 				*/pkg*) ;;
+        */src) check_file ${el};;
 				*.*) ;;
 				*)
           echo "Testing : ${el}"
