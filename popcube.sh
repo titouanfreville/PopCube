@@ -12,21 +12,10 @@
 #################################################################################
 #################################################################################
 # Local Variables --------------------------------------------------------------
-RETURN_CODE=0
-# ### COLORS ### #
-green="\\033[1;32m"
-red="\\033[1;31m"
-basic="\\033[0;39m"
-blue="\\033[1;34m"
-# ### ### #
-# ### VERSION REQUIRED ### #
-ME=$(whoami)
-# ### ### #
 # ### OPTION DEFAULT VALUES ### #
 quiet=1
 interactive=0
 debug=1
-watching=1
 env_file=
 running_environment="dev"
 # ### ### #
@@ -38,7 +27,7 @@ source "$SCRIPT_EXECUTION_DIR/scripts/env_management.sh"
 ## Running process --------------------------------------------------------------
 # ### Process Variables ### #
 # Get options passed
-TEMP=`getopt -o dhqye:f: --long --debug,help,non-interactive,quiet,env-file: -n 'Softgallery Tools Initialisation' -- "$@"`
+TEMP=$(getopt -o dhqye:f: --long --debug,help,non-interactive,quiet,env-file: -n 'Softgallery Tools Initialisation' -- $*)
 # Help message to print for -h option (or when not providing correctly)
 HELP_MESSAGE="Usage: ./**/init.sh [OPTIONS] [COMMANDS]
 
@@ -58,7 +47,6 @@ Options:
   -q, --quiet             Silencing scripts. Render testing and getting resources non interactive by default.
   -t, --test 							Run for testing only.
   -y, --non-interactive   Run process non interactively.
-  -w, --watch             Make test task watch for modification.
 
 Command:
   all             Running full stack for choosen env.
@@ -71,7 +59,7 @@ Command:
 "
 
 # Set tasks variables to false and quick_conf to interactive (td : docker_verion, te : test_env, b=back, t=test, f=front i: interactivity)
-td=1; se=1; te=1; b=1; f=1; t=1; i=0; dexec=0;
+td=1; se=1; te=1; b=1; f=1; t=1; i=0; dex=0;
 # ### ### #
 ################################################################################
 ##################### GETTING ARGS #############################################
@@ -79,6 +67,9 @@ td=1; se=1; te=1; b=1; f=1; t=1; i=0; dexec=0;
 # ENSURE : args variable setted with value provided by user   ##################
 ################################################################################
 eval set -- "$TEMP"
+echo "Provided arguments AFTER flag reading : $*"
+echo "$#"
+echo "$1"
 while true
 do
   case "${1}" in
@@ -90,8 +81,6 @@ do
       running_environment="prod"; shift;;
     -t| --test)
       running_environment="teste"; shift;;
-    -w|--watch)
-      watching=0;shift;;
     -d|--debug)
       debug=0;shift;;
     -q|--quiet)
@@ -103,7 +92,7 @@ do
     -f|--env-file)
       env_file=$2;shift 2;;
     --) shift; break;;
-    *) echo "You provided a wrong option"; echo $HELP_MESSAGE; exit 1;;
+    *) echo "You provided a wrong option"; echo "$HELP_MESSAGE"; exit 1;;
   esac
 done
 ################################################################################
@@ -114,13 +103,16 @@ done
 # ENSURE : command var are setted to true if command was provided by user ######
 # DEFAULT SETTING : If no command provided, will set all to true          ######
 ################################################################################
-[ $debug -eq 0 ] && echo "Provided arguments AFTER flag reading : $@"
+[ $debug -eq 0 ] && echo "Provided arguments AFTER flag reading : $*"
+echo "Provided arguments AFTER flag reading : $*"
+echo "$#"
+echo "$1"
 if [ $# -eq 0 ]
 then
   [ $debug -eq 0 ] && echo "No command provided. Running all tasks.";
   td=0; se=0; te=0; b=0; f=0; t=0;
 else
-  for cmd in $@
+  for cmd in "$@"
   do
     [ $debug -eq 0 ] && echo "Read command : $cmd";
     case "$cmd" in
@@ -179,25 +171,25 @@ fi
 ##################### Add ENV_VAR from -e ######################################
 # ENSURE : Env var provided from -e flags are added to wished env file #########
 ################################################################################
-if [ ! -z $env_args ]
+if [ ! -z "$env_args" ]
   then
-    [ $debug -eq 0 ] && echo "Provided environement variable through -e tag. Values : ${env_args[@]}"
-    for env in ${env_args[@]}
+    [ $debug -eq 0 ] && echo "Provided environement variable through -e tag. Values : ${env_args[*]}"
+    for env in "${env_args[@]}"
     do
       [ $debug -eq 0 ] && echo  "Readed arguments : $env"
-      echo "$env" >> $env_file
-      [ $debug -eq 0 ] && echo  "Argument should be add to $env_file ::::: cat $env_file $(cat $env_file)"
+      echo "$env" >> "$env_file"
+      [ $debug -eq 0 ] && echo  "Argument should be add to $env_file ::::: cat $env_file $(cat "$env_file")"
     done
 fi
 ################################################################################
 ##################### ENV_FILE SETTING #########################################
 # ENSURE : Setted correctly env file on the wishes one #########################
 ################################################################################
-if [ ! -z $env_file ]
+if [ ! -z "$env_file" ]
   then
     [ $debug -eq 0 ] && echo  "Env file provided. Setting docker compose to use this file"
-    deb_tmp=$(sed "s/#env_file: __ENV_FILE_NAME__/env_file: $env_file/g" *.yml)
-    sed -i "s/#env_file: __ENV_FILE_NAME__/env_file: $env_file/g" *.yml
+    deb_tmp=$(sed "s/#env_file: __ENV_FILE_NAME__/env_file: $env_file/g" -- *.yml)
+    sed -i "s/#env_file: __ENV_FILE_NAME__/env_file: $env_file/g" -- *.yml
     [ $debug -eq 0 ] && echo "Shoul have replaced #env_file:.... with env_file value. :::::: $deb_tmp"
 fi
 ################################################################################
@@ -211,9 +203,9 @@ if [ $quiet -eq 1 ]
     [ $td -eq 0 ] && docker_ver
     [ $se -eq 0 ] && set_env
     [ $te -eq 0 ] && test_env $i
-    [ $b -eq 0 ] && dex=$[$dex+1]
-    [ $f -eq 0 ] && dex=$[$dex+2]
-    [ $t -eq 0 ] && dex=$[$dex+4]
+    [ $b -eq 0 ] && dex=$((dex+1))
+    [ $f -eq 0 ] && dex=$((dex+2))
+    [ $t -eq 0 ] && dex=$((dex+4))
     dockerexec $dex $running_environment $i
   else
     source "./scripts/spinner.sh"
@@ -226,9 +218,9 @@ if [ $quiet -eq 1 ]
     [ $te -eq 0 ] && start_spinner "Checking that environment is correctly setted"
     [ $te -eq 0 ] && test_env 1 > /dev/null
     [ $te -eq 0 ] && stop_spinner $? "Checking that environment is correctly setted"
-    [ $b -eq 0 ] && dex=$[$dex+1]
-    [ $f -eq 0 ] && dex=$[$dex+2]
-    [ $t -eq 0 ] && dex=$[$dex+4]
+    [ $b -eq 0 ] && dex=$((dex+1))
+    [ $f -eq 0 ] && dex=$((dex+2))
+    [ $t -eq 0 ] && dex=$((dex+4))
     start_spinner "Running correct stack"
     dockerexec $dex $running_environment 1
     stop_spinner $? "Running correct stack"

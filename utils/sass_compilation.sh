@@ -19,9 +19,9 @@ then
 	read mode
 
 	case "$mode" in
-	  d) $compass --sass-dir $src --force -s expand $dest;;
-	  *) $compass --sass-dir $src --force -s compressed --no-line-comments $dest;;
+	  d) $compass --sass-dir "$src" --force -s expand "$dest";;
+	  *) $compass --sass-dir "$src" --force -s compressed --no-line-comments "$dest";;
 	esac;
 else
-	[[ $mode -eq 0 ]] && $compass --sass-dir $src --force -s expand $dest || $compass --sass-dir $src --force --no-line-comments $dest
+	[[ $mode -eq 0 ]] && "$compass" --sass-dir "$src" --force -s expand "$dest" || $compass --sass-dir "$src" --force --no-line-comments "$dest"
 fi
