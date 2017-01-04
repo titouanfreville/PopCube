@@ -1,16 +1,31 @@
-// Here is the file which describe the user model.
-// It provwebIdes bascis function to manipulate the model.
+// Created by Titouan FREVILLE <titouanfreville@gmail.com>
+//
+// Inspired by mattermost project
+/*
+	Package Models.
+	This package implements the basics databases models used by PopCube chat api.
+
+	Models
+
+	The following is a list of models described:
+		Avatar: Contain all informations for avatar management
+		Channel: Contain all informations for channel management
+		Emojis: Contain all informations for emojis management
+		Organisation: Contain all informations for organisation management
+		Parameter: Contain all informations for parmeters management
+		Role: Contain all informations for roles management
+		User: Contain all informations for users management
+*/
 package models
 
 import (
 	"encoding/json"
 	"fmt"
+	"golang.org/x/crypto/bcrypt"
 	"io"
 	"regexp"
 	"strings"
 	"unicode/utf8"
-
-	"golang.org/x/crypto/bcrypt"
 )
 
 const (
@@ -23,51 +38,51 @@ const (
 )
 
 var (
-	user_CHANNEL        = []string{"general", "random"}
+	user_CHANNEL = []string{"general", "random"}
+	// Protected user name cause they are taken by system or used for special mentions.
 	restrictedUsernames = []string{
 		"all",
 		"channel",
 		"popcubebot",
 		"here",
 	}
+	// Definition of character user can possess in there names.
 	validUsernameChars = regexp.MustCompile(`^[a-z0-9\.\-_]+$`)
 )
 
-// Used in mattermost project ... Don't think they are relevant for us.
-//	MfaActive          bool      `json:"mfa_active,omitempty"`
-//	MfaSecret          string    `json:"mfa_secret,omitempty"`
+/*
+	User object
 
-// user object
-//
-// - webwebId: String unique and non null to webIdentify the user on application services. - REQUIRED
-//
-// - username: Store the user username used to log into the service. - REQUIRED
-//
-// - email: user mail ;). - REQUIRED
-//
-// - emailVerified: true if email was verified by user. - REQUIRED
-//
-// - updatedAt: Time of the last update. Used to create tag for browser cache. - REQUIRED
-//
-// - deleted: True if user is deleted. - REQUIRED
-//
-// - password: Hashed password. - REQUIRED
-//
-// - lastpasswordUpdate: Date of the last password modification. - REQUIRED
-//
-// - failedAttemps: Number of fail try to connect to account. - REQUIRED
-//
-// - locale: user favorite langage. - REQUIRED
-//
-// - role : int referencing a user role existing in the database. - REQUIRED
-//
-// - nickname: Name to use in communication channel (by default : username).
-//
-// - first name: user true first name.
-//
-// - last name: user true last name.
-//
-// - lastActivityAt: Date && Time of the last activity of the user.
+		- webwebId: String unique and non null to webIdentify the user on application services. - REQUIRED
+
+		- username: Store the user username used to log into the service. - REQUIRED
+
+		- email: user mail ;). - REQUIRED
+
+		- emailVerified: true if email was verified by user. - REQUIRED
+
+		- updatedAt: Time of the last update. Used to create tag for browser cache. - REQUIRED
+
+		- deleted: True if user is deleted. - REQUIRED
+
+		- password: Hashed password. - REQUIRED
+
+		- lastpasswordUpdate: Date of the last password modification. - REQUIRED
+
+		- failedAttemps: Number of fail try to connect to account. - REQUIRED
+
+		- locale: user favorite langage. - REQUIRED
+
+		- role : int referencing a user role existing in the database. - REQUIRED
+
+		- nickname: Name to use in communication channel (by default : username).
+
+		- first name: user true first name.
+
+		- last name: user true last name.
+
+		- lastActivityAt: Date && Time of the last activity of the user.
+*/
 type User struct {
 	WebId              string `json:"webId"`
 	UpdatedAt          int64  `json:"update_at,omitempty"`
@@ -179,6 +194,7 @@ func userFromJson(data io.Reader) *User {
 	}
 }
 
+// isValidUsername will check if provided userName is correct
 func isValidUsername(u string) bool {
 	if len(u) == 0 || len(u) > 64 {
 		return false
