@@ -1,0 +1,10 @@
+version: '2'
+services:
+  whiptails:
+    image: titouanfreville/whiptails:1.0
+    container_name: whiptails
+    command: ./scripts/env_config.sh
+    tty: true
+    volumes:
+      # Mount current directory in container if you need to share scripts.
+      - .:/home/run

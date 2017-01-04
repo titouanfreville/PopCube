@@ -71,7 +71,7 @@ Command:
 "
 
 # Set tasks variables to false and quick_conf to interactive (td : docker_verion, te : test_env, b=back, t=test, f=front i: interactivity)
-td=1; te=1; b=1; f=1; t=1; i=0; dexec=0;
+td=1; se=1; te=1; b=1; f=1; t=1; i=0; dexec=0;
 # ### ### #
 ################################################################################
 ##################### GETTING ARGS #############################################
@@ -118,7 +118,7 @@ done
 if [ $# -eq 0 ]
 then
   [ $debug -eq 0 ] && echo "No command provided. Running all tasks.";
-  td=0; te=0; b=0; f=0; t=0;
+  td=0; se=0; te=0; b=0; f=0; t=0;
 else
   for cmd in $@
   do
@@ -138,6 +138,11 @@ else
         [ $debug -eq 0 ] && echo "Front command readed"
         f=0
         [ $debug -eq 0 ] && echo "Should provide 0 :::: Actual : $f"
+        ;;
+      set_env)
+        [ $debug -eq 0 ] && echo "Set-Env command readed"
+        se=0
+        [ $debug -eq 0 ] && echo "Should provide 0 :::: Actual : $se"
         ;;
       test)
         [ $debug -eq 0 ] && echo "Test command readed"
@@ -166,8 +171,9 @@ fi
 if [ $interactive -eq 1 ]
   then
     [ $debug -eq 0 ] && echo "Non interractive mode activated."
-    i=1;
-    [ $debug -eq 0 ] && echo "Interractive indice should be set to 1. Expect 1 ::::: Actual $se"
+    i=1; se=1;
+    [ $debug -eq 0 ] && echo "Interractive indice should be set to 1. Expect 1 ::::: Actual $i"
+    [ $debug -eq 0 ] && echo "Set service have to be disabled. Expect 1 ::::: Actual $se"
 fi
 ################################################################################
 ##################### Add ENV_VAR from -e ######################################
@@ -203,6 +209,7 @@ if [ $quiet -eq 1 ]
     [ $debug -eq 0 ] && echo "Running script as verbose. You should see output."
     td=0; te=0; b=0; f=0; t=0;
     [ $td -eq 0 ] && docker_ver
+    [ $se -eq 0 ] && set_env
     [ $te -eq 0 ] && test_env $i
     [ $b -eq 0 ] && dex=$[$dex+1]
     [ $f -eq 0 ] && dex=$[$dex+2]
@@ -212,9 +219,9 @@ if [ $quiet -eq 1 ]
     source "./scripts/spinner.sh"
     [ $debug -eq 0 ] && echo "Running script as quiet. You should see spinners."
     # Checking docker
-    [ $dv -eq 0 ] && start_spinner "Checking docker version"
-    [ $dv -eq 0 ] && docker_ver > /dev/null
-    [ $dv -eq 0 ] && stop_spinner $? "Checking docker version"
+    [ $td -eq 0 ] && start_spinner "Checking docker version"
+    [ $td -eq 0 ] && docker_ver > /dev/null
+    [ $td -eq 0 ] && stop_spinner $? "Checking docker version"
     # Testing env
     [ $te -eq 0 ] && start_spinner "Checking that environment is correctly setted"
     [ $te -eq 0 ] && test_env 1 > /dev/null
@@ -222,8 +229,8 @@ if [ $quiet -eq 1 ]
     [ $b -eq 0 ] && dex=$[$dex+1]
     [ $f -eq 0 ] && dex=$[$dex+2]
     [ $t -eq 0 ] && dex=$[$dex+4]
-    [ $te -eq 0 ] && start_spinner "Running correct stack"
+    start_spinner "Running correct stack"
     dockerexec $dex $running_environment 1
-    [ $te -eq 0 ] && stop_spinner $? "Running correct stack"
+    stop_spinner $? "Running correct stack"
 fi
 # ------------------------------------------------------------------------------

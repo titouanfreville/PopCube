@@ -101,3 +101,6 @@ gopkg.in
 
 # Workbench
 *.bak
+
+.env
+.env.old
