@@ -10,7 +10,7 @@ blue="\\033[1;34m"
 source .env
 # Check if 0.0.0.0:80 is free --------------------------------------------------
 echo -e "$blue Checking if 0.0.0.0:$PORT is free ... $basic"
-sudo netstat -tlnp |grep :$PORT
+sudo netstat -tlnp |grep :"$PORT"
 if [ $? -eq 0 ]
 then
   echo -e "$red Please shut the process running.$basic"

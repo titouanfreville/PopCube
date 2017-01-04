@@ -1,6 +1,12 @@
 #!/bin/bash
 ##
-##
+# ### COLORS ### #
+green="\\033[1;32m"
+red="\\033[1;31m"
+basic="\\033[0;39m"
+blue="\\033[0;34m"
+#bblue="\\033[1;34m"
+# ### ### #
 function set_env () {
 	clear
   docker pull titouanfreville/whiptails:1.0
