@@ -56,15 +56,19 @@
 				
 				<option value="file0">models/avatar.go (84.0%)</option>
 				
-				<option value="file1">models/channels.go (83.3%)</option>
+				<option value="file1">models/channels.go (82.5%)</option>
 				
 				<option value="file2">models/emojis.go (85.2%)</option>
 				
-				<option value="file3">models/roles.go (87.9%)</option>
+				<option value="file3">models/organisation.go (90.0%)</option>
 				
-				<option value="file4">models/user.go (92.4%)</option>
+				<option value="file4">models/parameter.go (91.3%)</option>
 				
-				<option value="file5">models/utilities.go (51.2%)</option>
+				<option value="file5">models/roles.go (87.9%)</option>
+				
+				<option value="file6">models/user.go (92.4%)</option>
+				
+				<option value="file7">models/utilities.go (48.4%)</option>
 				
 				</select>
 			</div>
@@ -95,8 +99,9 @@ import (
 )
 
 type Avatar struct {
-        Name string `json:"name"`
-        Link string `json:"link"`
+        AvatarId uint64 `gorm:"primary_key;column:idAvatar;AUTO_INCREMENT" json:"-"`
+        Name     string `gorm:"column:name;not null;unique" json:"name"`
+        Link     string `gorm:"column:link;not null;unique" json:"link"`
 }
 
 func (avatar *Avatar) isValid() *AppError <span class="cov10" title="6">{
@@ -174,14 +179,15 @@ var (
 )
 
 type Channel struct {
-        WebId       string `json:"web_id"`
-        Type        string `json:"type"`
-        ChannelName string `json:"display_name"`
-        UpdatedAt   int64  `json:"updated_at,omitempty"`
-        Private     bool   `json:"private"`
-        Description string `json:"description"`
-        Subject     string `json:"subject"`
-        Avatar      string `json:"avatar,omitempty"`
+        ChannelId   uint64 `gorm:"primary_key;column:idChannel;AUTO_INCREMENT" json:"-"`
+        WebId       string `gorm:"column:webId;not null;unique" json:"web_id"`
+        ChannelName string `gorm:"column:channelName;not null;unique" json:"display_name"`
+        Type        string `gorm:"column:type;not null" json:"type"`
+        UpdatedAt   int64  `gorm:"column:updatedAt;not null" json:"updated_at"`
+        Private     bool   `gorm:"column:private;not null" json:"private"`
+        Description string `gorm:"column:desciption" json:"description,omitempty"`
+        Subject     string `gorm:"column:subject" json:"subject,omitempty"`
+        Avatar      string `gorm:"column:avatar" json:"avatar,omitempty"`
 }
 
 func (channel *Channel) toJson() string <span class="cov1" title="1">{
@@ -208,46 +214,42 @@ func (channel *Channel) etag() string <span class="cov0" title="0">{
         return Etag(channel.WebId, channel.UpdatedAt)
 }</span>
 
-func (channel *Channel) isValid() *AppError <span class="cov10" title="48">{
+func (channel *Channel) isValid() *AppError <span class="cov10" title="46">{
 
         if len(channel.WebId) != 26 </span><span class="cov2" title="2">{
                 return NewLocAppError("Channel.IsValid", "model.channel.is_valid.id.app_error", nil, "")
         }</span>
 
-        <span class="cov9" title="46">if channel.UpdatedAt == 0 </span><span class="cov1" title="1">{
+        <span class="cov9" title="44">if channel.UpdatedAt == 0 </span><span class="cov1" title="1">{
                 return NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebId)
         }</span>
 
-        <span class="cov9" title="45">if utf8.RuneCountInString(channel.ChannelName) &gt; CHANNEL_DISPLAY_NAME_MAX_RUNES </span><span class="cov1" title="1">{
+        <span class="cov9" title="43">if utf8.RuneCountInString(channel.ChannelName) &gt; CHANNEL_DISPLAY_NAME_MAX_RUNES || utf8.RuneCountInString(channel.ChannelName) == 0 </span><span class="cov5" title="7">{
                 return NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebId)
         }</span>
 
-        <span class="cov9" title="44">if !IsValidChannelIdentifier(channel.ChannelName) </span><span class="cov6" title="9">{
+        <span class="cov9" title="36">if !IsValidChannelIdentifier(channel.ChannelName) </span><span class="cov6" title="9">{
                 return NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId)
         }</span>
 
-        <span class="cov9" title="35">if utf8.RuneCountInString(channel.Description) &gt; CHANNEL_DESCRIPTION_MAX_RUNES </span><span class="cov1" title="1">{
+        <span class="cov8" title="27">if utf8.RuneCountInString(channel.Description) &gt; CHANNEL_DESCRIPTION_MAX_RUNES </span><span class="cov1" title="1">{
                 return NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebId)
         }</span>
 
-        <span class="cov9" title="34">if utf8.RuneCountInString(channel.Subject) &gt; CHANNEL_SUBJECT_MAX_RUNES </span><span class="cov1" title="1">{
+        <span class="cov8" title="26">if utf8.RuneCountInString(channel.Subject) &gt; CHANNEL_SUBJECT_MAX_RUNES </span><span class="cov1" title="1">{
                 return NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebId)
         }</span>
 
-        <span class="cov9" title="33">if !StringInArray(channel.Type, CHANNNEL_AVAILABLE_TYPES) </span><span class="cov1" title="1">{
+        <span class="cov8" title="25">if !StringInArray(channel.Type, CHANNNEL_AVAILABLE_TYPES) </span><span class="cov1" title="1">{
                 return NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebId)
         }</span>
 
-        <span class="cov9" title="32">return nil</span>
+        <span class="cov8" title="24">return nil</span>
 }
 
 func (channel *Channel) preSave() <span class="cov3" title="3">{
         if channel.WebId == "" </span><span class="cov2" title="2">{
                 channel.WebId = NewId()
-        }</span>
-
-        <span class="cov3" title="3">if channel.ChannelName == "" </span><span class="cov1" title="1">{
-                channel.ChannelName = NewId()
         }</span>
 
         <span class="cov3" title="3">channel.ChannelName = strings.ToLower(channel.ChannelName)
@@ -288,9 +290,10 @@ import (
 )
 
 type Emoji struct {
-        Name     string `json:"name"`
-        ShortCut string `json:"shortcut"`
-        Link     string `json:"link"`
+        EmojiId  uint64 `gorm:"primary_key;column:idEmoji;AUTO_INCREMENT" json:"-"`
+        Name     string `gorm:"column:name;not null;unique" json:"name"`
+        Shortcut string `gorm:"column:shortcut;not null;unique" json:"shortcut"`
+        Link     string `gorm:"column:link;not null;unique" json:"link"`
 }
 
 func (emoji *Emoji) isValid() *AppError <span class="cov10" title="9">{
@@ -298,7 +301,7 @@ func (emoji *Emoji) isValid() *AppError <span class="cov10" title="9">{
                 return NewLocAppError("Emoji.IsValid", "model.emoji.name.app_error", nil, "")
         }</span>
 
-        <span class="cov8" title="7">if len(emoji.ShortCut) == 0 || len(emoji.ShortCut) &gt; 20 </span><span class="cov3" title="2">{
+        <span class="cov8" title="7">if len(emoji.Shortcut) == 0 || len(emoji.Shortcut) &gt; 20 </span><span class="cov3" title="2">{
                 return NewLocAppError("Emoji.IsValid", "model.emoji.shortcut.app_error", nil, "")
         }</span>
 
@@ -355,18 +358,164 @@ func emojiListFromJson(data io.Reader) []*Emoji <span class="cov1" title="1">{
 import (
         "encoding/json"
         "io"
+        "strconv"
+        "strings"
+        "unicode/utf8"
+)
+
+const (
+        ORGANISATION_DISPLAY_NAME_MAX_RUNES = 64
+        ORGANISATION_NAME_MAX_LENGTH        = 64
+        ORGANISATION_DESCRIPTION_MAX_RUNES  = 1024
+        ORGANISATION_SUBJECT_MAX_RUNES      = 250
+)
+
+type Organisation struct {
+        OrganisationId   uint64 `gorm:"primary_key;column:idOrganisation;AUTO_INCREMENT" json:"-"`
+        DockerStack      int    `gorm:"column:dockerStack;not null;unique" json:"docker_stack"`
+        OrganisationName string `gorm:"column:organisationName;not null;unique" json:"display_name"`
+        Description      string `gorm:"column:desciption" json:"description,omitempty"`
+        Avatar           string `gorm:"column:avatar" json:"avatar,omitempty"`
+        Domain           string `gorm:"column:domain" json:"avatar,omitempty"`
+}
+
+func (organisation *Organisation) toJson() string <span class="cov1" title="1">{
+        b, err := json.Marshal(organisation)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span><span class="cov1" title="1"> else {
+                return string(b)
+        }</span>
+}
+
+func organisationFromJson(data io.Reader) *Organisation <span class="cov1" title="1">{
+        decoder := json.NewDecoder(data)
+        var organisation Organisation
+        err := decoder.Decode(&amp;organisation)
+        if err == nil </span><span class="cov1" title="1">{
+                return &amp;organisation
+        }</span><span class="cov0" title="0"> else {
+                return nil
+        }</span>
+}
+
+func (organisation *Organisation) isValid() *AppError <span class="cov10" title="28">{
+
+        if len(organisation.OrganisationName) == 0 || utf8.RuneCountInString(organisation.OrganisationName) &gt; ORGANISATION_DISPLAY_NAME_MAX_RUNES </span><span class="cov5" title="6">{
+                return NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.OrganisationId, 10))
+        }</span>
+
+        <span class="cov9" title="22">if !IsValidOrganisationIdentifier(organisation.OrganisationName) </span><span class="cov6" title="9">{
+                return NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.OrganisationId, 10))
+        }</span>
+
+        <span class="cov7" title="13">if utf8.RuneCountInString(organisation.Description) &gt; ORGANISATION_DESCRIPTION_MAX_RUNES </span><span class="cov1" title="1">{
+                return NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.description.app_error", nil, "id="+strconv.FormatUint(organisation.OrganisationId, 10))
+        }</span>
+
+        <span class="cov7" title="12">return nil</span>
+}
+
+func (organisation *Organisation) preSave() <span class="cov3" title="3">{
+        organisation.OrganisationName = strings.ToLower(organisation.OrganisationName)
+
+        if organisation.Avatar == "" </span><span class="cov2" title="2">{
+                organisation.Avatar = "default_organisation_avatar.svg"
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package models
+
+import (
+        "encoding/json"
+        "io"
+)
+
+const (
+        DEFAULT_LOCALE     = "fr_FR"
+        DEFAULT_TIMEZONE   = "UTC-0"
+        LOCAL_MAX_SIZE     = 5
+        TIME_ZONE_MAX_SIZE = 6
+        MAX_TIME           = 1440
+)
+
+type Parameter struct {
+        ParameterId uint64 `gorm:"primary_key;column:idParameter;AUTO_INCREMENT" json:"-"`
+        Local       string `gorm:"column:local;not null; unique" json:"local"`
+        TimeZone    string `gorm:"column:timeZone";not null; unique; json:"time_zone"`
+        SleepStart  int    `gorm:"column:sleepStart;not null;unique" json:"sleep_start"`
+        SleepEnd    int    `gorm:"column:sleepEnd;not null;unique" json:"sleep_end"`
+}
+
+func (parameter *Parameter) toJson() string <span class="cov1" title="1">{
+        b, err := json.Marshal(parameter)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span><span class="cov1" title="1"> else {
+                return string(b)
+        }</span>
+}
+
+func parameterFromJson(data io.Reader) *Parameter <span class="cov1" title="1">{
+        decoder := json.NewDecoder(data)
+        var parameter Parameter
+        err := decoder.Decode(&amp;parameter)
+        if err == nil </span><span class="cov1" title="1">{
+                return &amp;parameter
+        }</span><span class="cov0" title="0"> else {
+                return nil
+        }</span>
+}
+
+func (parameter *Parameter) isValid() *AppError <span class="cov10" title="21">{
+
+        if len(parameter.Local) == 0 || len(parameter.Local) &gt; LOCAL_MAX_SIZE </span><span class="cov4" title="3">{
+                return NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_local.app_error", nil, "")
+        }</span>
+
+        <span class="cov9" title="18">if len(parameter.TimeZone) == 0 || len(parameter.TimeZone) &gt; TIME_ZONE_MAX_SIZE </span><span class="cov3" title="2">{
+                return NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_timezone.app_error", nil, "")
+        }</span>
+
+        <span class="cov9" title="16">if parameter.SleepStart &lt; 0 || parameter.SleepStart &gt; MAX_TIME </span><span class="cov3" title="2">{
+                return NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_sleep_start.app_error", nil, "")
+        }</span>
+
+        <span class="cov8" title="14">if parameter.SleepEnd &lt; 0 || parameter.SleepEnd &gt; MAX_TIME </span><span class="cov3" title="2">{
+                return NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_sleep_end.app_error", nil, "")
+        }</span>
+
+        <span class="cov8" title="12">return nil</span>
+}
+
+func (parameter *Parameter) preSave() <span class="cov1" title="1">{
+        if parameter.Local == "" </span><span class="cov1" title="1">{
+                parameter.Local = DEFAULT_LOCALE
+        }</span>
+        <span class="cov1" title="1">if parameter.TimeZone == "" </span><span class="cov1" title="1">{
+                parameter.TimeZone = DEFAULT_TIMEZONE
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package models
+
+import (
+        "encoding/json"
+        "io"
         "regexp"
 )
 
 type Role struct {
-        RoleId        uint   `gorm:"primary_key;column:roleId;AUTO_INCREMENT" json:"-"`
-        RoleName      string `gorm:"column:roleName;unique_index" json:"name"`
-        CanUsePrivate bool   `gorm:"column:canUsePrivate" json:"canUsePrivate"`
-        CanModerate   bool   `gorm:"column:canModerate" json:"canModerate"`
-        CanArchive    bool   `gorm:"column:canArchive" json:"canArchive"`
-        CanInvite     bool   `gorm:"column:canInvite" json:"canInvite"`
-        CanManage     bool   `gorm:"column:canManage" json:"canManage"`
-        CanManageUser bool   `gorm:"column:canManageUser" json:"canManageUser"`
+        RoleId        uint64 `gorm:"primary_key;column:idRole;AUTO_INCREMENT" json:"-"`
+        RoleName      string `gorm:"column:roleName;unique_index;not null;unique" json:"name"`
+        CanUsePrivate bool   `gorm:"column:canUsePrivate;not null" json:"canUsePrivate"`
+        CanModerate   bool   `gorm:"column:canModerate;not null" json:"canModerate"`
+        CanArchive    bool   `gorm:"column:canArchive;not null" json:"canArchive"`
+        CanInvite     bool   `gorm:"column:canInvite;not null" json:"canInvite"`
+        CanManage     bool   `gorm:"column:canManage;not null" json:"canManage"`
+        CanManageUser bool   `gorm:"column:canManageUser;not null" json:"canManageUser"`
 }
 
 var (
@@ -494,7 +643,7 @@ func roleListFromJson(data io.Reader) []*Role <span class="cov1" title="1">{
 }
 </pre>
 		
-		<pre class="file" id="file4" style="display: none">// Here is the file which describe the user model.
+		<pre class="file" id="file6" style="display: none">// Here is the file which describe the user model.
 // It provwebIdes bascis function to manipulate the model.
 package models
 
@@ -768,7 +917,7 @@ func cleanUsername(s string) string <span class="cov7" title="60">{
 }
 </pre>
 		
-		<pre class="file" id="file5" style="display: none">// Copyright (c) 2015 Mattermost, Inc. All Rights Reserved.
+		<pre class="file" id="file7" style="display: none">// Copyright (c) 2015 Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 package models
 
@@ -863,7 +1012,7 @@ func AppErrorFromJson(data io.Reader) *AppError <span class="cov1" title="2">{
         }</span>
 }
 
-func NewLocAppError(where string, id string, params map[string]interface{}, details string) *AppError <span class="cov7" title="139">{
+func NewLocAppError(where string, id string, params map[string]interface{}, details string) *AppError <span class="cov7" title="212">{
         ap := &amp;AppError{}
         ap.Id = id
         ap.params = params
@@ -962,9 +1111,9 @@ func ArrayFromInterface(data interface{}) []string <span class="cov0" title="0">
         <span class="cov0" title="0">return stringArray</span>
 }
 
-func StringInArray(a string, array []string) bool <span class="cov5" title="39">{
-        for _, b := range array </span><span class="cov6" title="88">{
-                if b == a </span><span class="cov5" title="35">{
+func StringInArray(a string, array []string) bool <span class="cov5" title="31">{
+        for _, b := range array </span><span class="cov6" title="72">{
+                if b == a </span><span class="cov5" title="27">{
                         return true
                 }</span>
         }
@@ -1010,26 +1159,18 @@ func StringFromJson(data io.Reader) string <span class="cov0" title="0">{
         }</span>
 }
 
-func IsLower(s string) bool <span class="cov5" title="25">{
-        if strings.ToLower(s) == s </span><span class="cov5" title="23">{
-                return true
-        }</span>
-
-        <span class="cov1" title="2">return false</span>
-}
+func IsLower(s string) bool <span class="cov4" title="22">{
+        return strings.ToLower(s) == s
+}</span>
 
 func IsValidEmail(email string) bool <span class="cov4" title="17">{
+        _, err := mail.ParseAddress(email)
+        return err == nil &amp;&amp; IsLower(email)
+}</span>
 
-        if !IsLower(email) </span><span class="cov1" title="1">{
-                return false
-        }</span>
-
-        <span class="cov4" title="16">if _, err := mail.ParseAddress(email); err == nil </span><span class="cov4" title="13">{
-                return true
-        }</span>
-
-        <span class="cov2" title="3">return false</span>
-}
+func IsValidDomain(domain string) bool <span class="cov0" title="0">{
+        return IsLower(domain) &amp;&amp; IsValidAlphaNum(domain, true)
+}</span>
 
 var reservedName = []string{
         "signup",
@@ -1041,31 +1182,27 @@ var reservedName = []string{
         "oauth",
 }
 
-func IsValidChannelIdentifier(s string) bool <span class="cov5" title="44">{
+func IsValidChannelIdentifier(s string) bool <span class="cov5" title="36">{
+        return IsValidAlphaNum(s, true)
+}</span>
 
-        if !IsValidAlphaNum(s, true) </span><span class="cov3" title="9">{
-                return false
-        }</span>
+func IsValidOrganisationIdentifier(s string) bool <span class="cov4" title="22">{
 
-        <span class="cov5" title="35">return true</span>
-}
+        return IsValidAlphaNum(s, true)
+}</span>
 
 var validAlphaNumUnderscore = regexp.MustCompile(`^[a-z0-9]+([a-z\-\_0-9]+|(__)?)[a-z0-9]+$`)
 var validAlphaNum = regexp.MustCompile(`^[a-z0-9]+([a-z\-0-9]+|(__)?)[a-z0-9]+$`)
 
-func IsValidAlphaNum(s string, allowUnderscores bool) bool <span class="cov5" title="44">{
+func IsValidAlphaNum(s string, allowUnderscores bool) bool <span class="cov6" title="58">{
         var match bool
-        if allowUnderscores </span><span class="cov5" title="44">{
+        if allowUnderscores </span><span class="cov6" title="58">{
                 match = validAlphaNumUnderscore.MatchString(s)
         }</span><span class="cov0" title="0"> else {
                 match = validAlphaNum.MatchString(s)
         }</span>
 
-        <span class="cov5" title="44">if !match </span><span class="cov3" title="9">{
-                return false
-        }</span>
-
-        <span class="cov5" title="35">return true</span>
+        <span class="cov6" title="58">return match</span>
 }
 
 func Etag(parts ...interface{}) string <span class="cov2" title="4">{

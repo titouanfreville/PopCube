@@ -20,14 +20,15 @@ var (
 )
 
 type Channel struct {
-	WebId       string `json:"web_id"`
-	Type        string `json:"type"`
-	ChannelName string `json:"display_name"`
-	UpdatedAt   int64  `json:"updated_at,omitempty"`
-	Private     bool   `json:"private"`
-	Description string `json:"description"`
-	Subject     string `json:"subject"`
-	Avatar      string `json:"avatar,omitempty"`
+	ChannelId   uint64 `gorm:"primary_key;column:idChannel;AUTO_INCREMENT" json:"-"`
+	WebId       string `gorm:"column:webId;not null;unique" json:"web_id"`
+	ChannelName string `gorm:"column:channelName;not null;unique" json:"display_name"`
+	Type        string `gorm:"column:type;not null" json:"type"`
+	UpdatedAt   int64  `gorm:"column:updatedAt;not null" json:"updated_at"`
+	Private     bool   `gorm:"column:private;not null" json:"private"`
+	Description string `gorm:"column:desciption" json:"description,omitempty"`
+	Subject     string `gorm:"column:subject" json:"subject,omitempty"`
+	Avatar      string `gorm:"column:avatar" json:"avatar,omitempty"`
 }
 
 func (channel *Channel) toJson() string {
@@ -64,7 +65,7 @@ func (channel *Channel) isValid() *AppError {
 		return NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebId)
 	}
 
-	if utf8.RuneCountInString(channel.ChannelName) > CHANNEL_DISPLAY_NAME_MAX_RUNES {
+	if utf8.RuneCountInString(channel.ChannelName) > CHANNEL_DISPLAY_NAME_MAX_RUNES || utf8.RuneCountInString(channel.ChannelName) == 0 {
 		return NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebId)
 	}
 
@@ -90,10 +91,6 @@ func (channel *Channel) isValid() *AppError {
 func (channel *Channel) preSave() {
 	if channel.WebId == "" {
 		channel.WebId = NewId()
-	}
-
-	if channel.ChannelName == "" {
-		channel.ChannelName = NewId()
 	}
 
 	channel.ChannelName = strings.ToLower(channel.ChannelName)

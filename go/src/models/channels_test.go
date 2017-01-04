@@ -105,12 +105,10 @@ func TestChannelModel(t *testing.T) {
 
 	Convey("Testing PreSave function", t, func() {
 		channel := Channel{}
-		Convey("If channel is empty, should fill some fields - webId, ChannelName, UpdatedAt, Avatar and type, and user should be valid", func() {
+		Convey("If channel is empty, should fill some fields - webId, ChannelName, UpdatedAt, Avatar and type, and channel should not be valid", func() {
 			channel.preSave()
-			So(channel.isValid(), ShouldBeNil)
+			So(channel.isValid(), ShouldResemble, NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebId))
 			So(channel.isValid(), ShouldNotResemble, NewLocAppError("Channel.IsValid", "model.channel.is_valid.id.app_error", nil, ""))
-			So(channel.isValid(), ShouldNotResemble, NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebId))
-			So(channel.isValid(), ShouldNotResemble, NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId))
 			So(channel.isValid(), ShouldNotResemble, NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebId))
 			So(channel.isValid(), ShouldNotResemble, NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebId))
 			So(channel.isValid(), ShouldNotResemble, NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebId))

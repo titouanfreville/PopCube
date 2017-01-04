@@ -241,24 +241,16 @@ func StringFromJson(data io.Reader) string {
 }
 
 func IsLower(s string) bool {
-	if strings.ToLower(s) == s {
-		return true
-	}
-
-	return false
+	return strings.ToLower(s) == s
 }
 
 func IsValidEmail(email string) bool {
+	_, err := mail.ParseAddress(email)
+	return err == nil && IsLower(email)
+}
 
-	if !IsLower(email) {
-		return false
-	}
-
-	if _, err := mail.ParseAddress(email); err == nil {
-		return true
-	}
-
-	return false
+func IsValidDomain(domain string) bool {
+	return IsLower(domain) && IsValidAlphaNum(domain, true)
 }
 
 var reservedName = []string{
@@ -272,12 +264,12 @@ var reservedName = []string{
 }
 
 func IsValidChannelIdentifier(s string) bool {
+	return IsValidAlphaNum(s, true)
+}
 
-	if !IsValidAlphaNum(s, true) {
-		return false
-	}
+func IsValidOrganisationIdentifier(s string) bool {
 
-	return true
+	return IsValidAlphaNum(s, true)
 }
 
 var validAlphaNumUnderscore = regexp.MustCompile(`^[a-z0-9]+([a-z\-\_0-9]+|(__)?)[a-z0-9]+$`)
@@ -291,11 +283,7 @@ func IsValidAlphaNum(s string, allowUnderscores bool) bool {
 		match = validAlphaNum.MatchString(s)
 	}
 
-	if !match {
-		return false
-	}
-
-	return true
+	return match
 }
 
 func Etag(parts ...interface{}) string {
