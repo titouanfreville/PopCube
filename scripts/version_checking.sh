@@ -106,7 +106,7 @@ docker_ver () {
   echo
   VERSION=0
 
-  if [ $RETURN_CODE -eq 1 ]
+  if [[ $RETURN_CODE -eq 1 ]]
   then
     echo -e "$red They are some problems with your installation, please fix it before trying again$basic"
     return 1

@@ -27,7 +27,7 @@ source "$SCRIPT_EXECUTION_DIR/scripts/env_management.sh"
 ## Running process --------------------------------------------------------------
 # ### Process Variables ### #
 # Get options passed
-TEMP=$(getopt -o dhqye:f: --long --debug,help,non-interactive,quiet,env-file: -n 'Softgallery Tools Initialisation' -- "$*")
+TEMP=$(getopt -o dhqye:f: --long --debug,help,non-interactive,quiet,env-file: -n 'Softgallery Tools Initialisation' -- $*)
 # Help message to print for -h option (or when not providing correctly)
 HELP_MESSAGE="Usage: ./**/init.sh [OPTIONS] [COMMANDS]
 
@@ -67,6 +67,9 @@ td=1; se=1; te=1; b=1; f=1; t=1; i=0; dex=0;
 # ENSURE : args variable setted with value provided by user   ##################
 ################################################################################
 eval set -- "$TEMP"
+echo "Provided arguments AFTER flag reading : $*"
+echo "$#"
+echo "$1"
 while true
 do
   case "${1}" in
@@ -101,6 +104,9 @@ done
 # DEFAULT SETTING : If no command provided, will set all to true          ######
 ################################################################################
 [ $debug -eq 0 ] && echo "Provided arguments AFTER flag reading : $*"
+echo "Provided arguments AFTER flag reading : $*"
+echo "$#"
+echo "$1"
 if [ $# -eq 0 ]
 then
   [ $debug -eq 0 ] && echo "No command provided. Running all tasks.";
