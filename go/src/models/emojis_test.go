@@ -11,7 +11,7 @@ func TestEmojisModel(t *testing.T) {
 		Convey("Given a correct emojis. Should be validated", func() {
 			emoji := Emoji{
 				Name:     "Troll Face",
-				ShortCut: ":troll-face:",
+				Shortcut: ":troll-face:",
 				Link:     "emojis/trollface.svg",
 			}
 			So(emoji.isValid(), ShouldBeNil)
@@ -23,16 +23,16 @@ func TestEmojisModel(t *testing.T) {
 		Convey("Given incorrect emojis. Should be refused", func() {
 			emoji := Emoji{
 				Name:     "Troll Face",
-				ShortCut: ":this-is-a-tool-long-shortcut:",
+				Shortcut: ":this-is-a-tool-long-shortcut:",
 				Link:     "emojis/trollface.svg",
 			}
 
 			Convey("Too long shortcut or empty shorctcut should return Shortcut error", func() {
 				So(emoji.isValid(), ShouldResemble, NewLocAppError("Emoji.IsValid", "model.emoji.shortcut.app_error", nil, ""))
-				emoji.ShortCut = ""
+				emoji.Shortcut = ""
 				So(emoji.isValid(), ShouldResemble, NewLocAppError("Emoji.IsValid", "model.emoji.shortcut.app_error", nil, ""))
 			})
-			emoji.ShortCut = ":goodone:"
+			emoji.Shortcut = ":goodone:"
 			emoji.Name = ""
 			Convey("Too long or empty Name should return name error", func() {
 				So(emoji.isValid(), ShouldResemble, NewLocAppError("Emoji.IsValid", "model.emoji.name.app_error", nil, ""))
@@ -51,7 +51,7 @@ func TestEmojisModel(t *testing.T) {
 		Convey("Given an emoji", func() {
 			emoji := Emoji{
 				Name:     "Troll Face",
-				ShortCut: ":troll-face:",
+				Shortcut: ":troll-face:",
 				Link:     "emojis/trollface.svg",
 			}
 			Convey("Transforming it in JSON then back to EMOJI should provide similar objects", func() {
@@ -64,17 +64,17 @@ func TestEmojisModel(t *testing.T) {
 		Convey("Given an emoji list", func() {
 			emoji1 := Emoji{
 				Name:     "Troll Face",
-				ShortCut: ":troll:",
+				Shortcut: ":troll:",
 				Link:     "emojis/trollface.svg",
 			}
 			emoji2 := Emoji{
 				Name:     "Joy Face",
-				ShortCut: ":)",
+				Shortcut: ":)",
 				Link:     "emojis/joyface.svg",
 			}
 			emoji3 := Emoji{
 				Name:     "Face Palm",
-				ShortCut: ":facepalm:",
+				Shortcut: ":facepalm:",
 				Link:     "emojis/facepalm.svg",
 			}
 			emoji_list := []*Emoji{&emoji1, &emoji2, &emoji3}

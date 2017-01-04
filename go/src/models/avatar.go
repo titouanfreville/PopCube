@@ -6,8 +6,9 @@ import (
 )
 
 type Avatar struct {
-	Name string `json:"name"`
-	Link string `json:"link"`
+	AvatarId uint64 `gorm:"primary_key;column:idAvatar;AUTO_INCREMENT" json:"-"`
+	Name     string `gorm:"column:name;not null;unique" json:"name"`
+	Link     string `gorm:"column:link;not null;unique" json:"link"`
 }
 
 func (avatar *Avatar) isValid() *AppError {

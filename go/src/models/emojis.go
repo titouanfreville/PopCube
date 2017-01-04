@@ -6,9 +6,10 @@ import (
 )
 
 type Emoji struct {
-	Name     string `json:"name"`
-	ShortCut string `json:"shortcut"`
-	Link     string `json:"link"`
+	EmojiId  uint64 `gorm:"primary_key;column:idEmoji;AUTO_INCREMENT" json:"-"`
+	Name     string `gorm:"column:name;not null;unique" json:"name"`
+	Shortcut string `gorm:"column:shortcut;not null;unique" json:"shortcut"`
+	Link     string `gorm:"column:link;not null;unique" json:"link"`
 }
 
 func (emoji *Emoji) isValid() *AppError {
@@ -16,7 +17,7 @@ func (emoji *Emoji) isValid() *AppError {
 		return NewLocAppError("Emoji.IsValid", "model.emoji.name.app_error", nil, "")
 	}
 
-	if len(emoji.ShortCut) == 0 || len(emoji.ShortCut) > 20 {
+	if len(emoji.Shortcut) == 0 || len(emoji.Shortcut) > 20 {
 		return NewLocAppError("Emoji.IsValid", "model.emoji.shortcut.app_error", nil, "")
 	}
 
