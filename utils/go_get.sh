@@ -1,3 +1,4 @@
+#!/bin/sh
 go get -d -v golang.org/x/tools/cmd/goimports && \
 go get -d -v golang.org/x/tools/cmd/godoc && \
 go get -d -v github.com/golang/lint/golint && \

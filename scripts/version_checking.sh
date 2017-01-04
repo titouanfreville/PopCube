@@ -1,10 +1,17 @@
 #!/bin/bash
 # Variables --------------------------------------------------------------------
 VERSION=0
+# ### COLORS ### #
+green="\\033[1;32m"
+red="\\033[1;31m"
+basic="\\033[0;39m"
+blue="\\033[0;34m"
+#bblue="\\033[1;34m"
+# ### ### #
 # ------------------------------------------------------------------------------
 # Version check functions ------------------------------------------------------
 version_comp () {
-    if [[ $1 == $2 ]]
+    if [[ "$1" == "$2" ]]
     then
         return 0
     fi
@@ -35,7 +42,7 @@ version_comp () {
 }
 
 test_version_comp () {
-    version_comp $1 $2
+    version_comp "$1" "$2"
     case $? in
         0) op='>=';;
         *) op='<';;
@@ -60,7 +67,7 @@ docker_ver () {
   VERSION=$(docker version --format '{{.Server.Version}}')
   if [ $? -eq 0 ]
   then
-    test_version_comp $VERSION $DOCKER_REQUIRE
+    test_version_comp "$VERSION" "$DOCKER_REQUIRE"
     if [ $? -eq 0 ]
     then
       echo -e "$green Docker well installed $basic"
@@ -81,7 +88,7 @@ docker_ver () {
   if [ $? -eq 0 ]
   then
     echo
-    test_version_comp $VERSION $COMPOSE_REQUIRE
+    test_version_comp "$VERSION" "$COMPOSE_REQUIRE"
     if [ $? -eq 0 ]
     then
       echo -e "$green Docker well installed $basic"
