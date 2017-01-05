@@ -84,21 +84,22 @@ var (
 		- lastActivityAt: Date && Time of the last activity of the user.
 */
 type User struct {
-	WebId              string `json:"webId"`
-	UpdatedAt          int64  `json:"update_at,omitempty"`
-	Deleted            bool   `json:"deleted"`
-	Username           string `json:"username"`
-	Password           string `json:"password,omitempty"`
-	Email              string `json:"email,omitempty"`
-	EmailVerified      bool   `json:"email_verified,omitempty"`
-	Nickname           string `json:"nickname"`
-	FirstName          string `json:"first_name"`
-	LastName           string `json:"last_name"`
-	Avatar             string `json:"avatar"`
-	Role               int64  `json:"roles,omitempty"`
-	LastPasswordUpdate int64  `json:"last_password_update,omitempty"`
-	FailedAttempts     int    `json:"failed_attempts,omitempty"`
-	Locale             string `json:"locale"`
+	UserId             uint64 `gorm:"primary_key;column:idUser;AUTO_INCREMENT" json:"-"`
+	WebId              string `gorm:"column:webId; not null; unique;" json:"webId"`
+	Username           string `gorm:"column:userName; not null; unique;" json:"username"`
+	Email              string `gorm:"column:email; not null; unique;" json:"email"`
+	EmailVerified      bool   `gorm:"column:emailVerified; not null; unique;" json:"email_verified"`
+	UpdatedAt          int64  `gorm:"column:updatedAt; not null;" json:"update_at"`
+	Deleted            bool   `gorm:"column:deleted; not null;" json:"deleted"`
+	Password           string `gorm:"column:password; not null;" json:"password"`
+	LastPasswordUpdate int64  `gorm:"column:lastPasswordUpdate; not null;" json:"last_password_update"`
+	FailedAttempts     int    `gorm:"column:failedAttempts; not null;" json:"failed_attempts"`
+	Locale             string `gorm:"column:locale; not null;" json:"locale"`
+	Role               Role   `gorm:"column:role; not null;ForeignKey:RoleId;" json:"roles"`
+	Avatar             string `gorm:"column:avatar;" json:"avatar, omitempty"`
+	NickName           string `gorm:"column:nickName;" json:"nickname, omitempty"`
+	FirstName          string `gorm:"column:firstName;" json:"first_name, omitempty"`
+	LastName           string `gorm:"column:lastName;" json:"last_name, omitempty"`
 	LastActivityAt     int64  `db:"-" json:"last_activity_at,omitempty"`
 }
 
@@ -118,8 +119,8 @@ func (u *User) isValid() *AppError {
 		return NewLocAppError("user.isValid", "model.user.is_valid.Email.app_error", nil, "user_webId="+u.WebId)
 	}
 
-	if utf8.RuneCountInString(u.Nickname) > 64 {
-		return NewLocAppError("user.isValid", "model.user.is_valid.Nickname.app_error", nil, "user_webId="+u.WebId)
+	if utf8.RuneCountInString(u.NickName) > 64 {
+		return NewLocAppError("user.isValid", "model.user.is_valid.NickName.app_error", nil, "user_webId="+u.WebId)
 	}
 
 	if utf8.RuneCountInString(u.FirstName) > 64 {
@@ -231,8 +232,8 @@ func (u *User) getFullName() string {
 
 // Get full name of the user
 func (u *User) getDisplayName() string {
-	if u.Nickname != "" {
-		return u.Nickname
+	if u.NickName != "" {
+		return u.NickName
 	}
 	if u.getFullName() != "" {
 		return u.getFullName()

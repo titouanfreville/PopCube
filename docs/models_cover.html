@@ -60,15 +60,17 @@
 				
 				<option value="file2">models/emojis.go (85.2%)</option>
 				
-				<option value="file3">models/organisation.go (90.0%)</option>
+				<option value="file3">models/message.go (0.0%)</option>
 				
-				<option value="file4">models/parameter.go (91.3%)</option>
+				<option value="file4">models/organisation.go (90.0%)</option>
 				
-				<option value="file5">models/roles.go (87.9%)</option>
+				<option value="file5">models/parameter.go (91.3%)</option>
 				
-				<option value="file6">models/user.go (92.4%)</option>
+				<option value="file6">models/roles.go (87.9%)</option>
 				
-				<option value="file7">models/utilities.go (48.4%)</option>
+				<option value="file7">models/user.go (92.4%)</option>
+				
+				<option value="file8">models/utilities.go (48.4%)</option>
 				
 				</select>
 			</div>
@@ -290,7 +292,7 @@ import (
 )
 
 type Emoji struct {
-        EmojiId  uint64 `gorm:"primary_key;column:idEmoji;AUTO_INCREMENT" json:"-"`
+        IdEmoji  uint64 `gorm:"primary_key;column:idEmoji;AUTO_INCREMENT" json:"-"`
         Name     string `gorm:"column:name;not null;unique" json:"name"`
         Shortcut string `gorm:"column:shortcut;not null;unique" json:"shortcut"`
         Link     string `gorm:"column:link;not null;unique" json:"link"`
@@ -354,6 +356,77 @@ func emojiListFromJson(data io.Reader) []*Emoji <span class="cov1" title="1">{
 </pre>
 		
 		<pre class="file" id="file3" style="display: none">package models
+
+import (
+        "encoding/json"
+        "io"
+)
+
+type Message struct {
+        MessageId uint64 `gorm:"primary_key;column:idMessage;AUTO_INCREMENT" json:"-"`
+        Name      string `gorm:"column:name;not null;unique" json:"name"`
+        Shortcut  string `gorm:"column:shortcut;not null;unique" json:"shortcut"`
+        Link      string `gorm:"column:link;not null;unique" json:"link"`
+}
+
+func (message *Message) isValid() *AppError <span class="cov0" title="0">{
+        if len(message.Name) == 0 || len(message.Name) &gt; 64 </span><span class="cov0" title="0">{
+                return NewLocAppError("Message.IsValid", "model.message.name.app_error", nil, "")
+        }</span>
+
+        <span class="cov0" title="0">if len(message.Shortcut) == 0 || len(message.Shortcut) &gt; 20 </span><span class="cov0" title="0">{
+                return NewLocAppError("Message.IsValid", "model.message.shortcut.app_error", nil, "")
+        }</span>
+
+        <span class="cov0" title="0">if len(message.Link) == 0 </span><span class="cov0" title="0">{
+                return NewLocAppError("Message.IsValid", "model.message.link.app_error", nil, "")
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (message *Message) toJson() string <span class="cov0" title="0">{
+        b, err := json.Marshal(message)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span><span class="cov0" title="0"> else {
+                return string(b)
+        }</span>
+}
+
+func messageFromJson(data io.Reader) *Message <span class="cov0" title="0">{
+        decoder := json.NewDecoder(data)
+        var message Message
+        err := decoder.Decode(&amp;message)
+        if err == nil </span><span class="cov0" title="0">{
+                return &amp;message
+        }</span><span class="cov0" title="0"> else {
+                return nil
+        }</span>
+}
+
+func messageListToJson(messageList []*Message) string <span class="cov0" title="0">{
+        b, err := json.Marshal(messageList)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span><span class="cov0" title="0"> else {
+                return string(b)
+        }</span>
+}
+
+func messageListFromJson(data io.Reader) []*Message <span class="cov0" title="0">{
+        decoder := json.NewDecoder(data)
+        var messageList []*Message
+        err := decoder.Decode(&amp;messageList)
+        if err == nil </span><span class="cov0" title="0">{
+                return messageList
+        }</span><span class="cov0" title="0"> else {
+                return nil
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package models
 
 import (
         "encoding/json"
@@ -425,7 +498,7 @@ func (organisation *Organisation) preSave() <span class="cov3" title="3">{
 }
 </pre>
 		
-		<pre class="file" id="file4" style="display: none">package models
+		<pre class="file" id="file5" style="display: none">package models
 
 import (
         "encoding/json"
@@ -443,7 +516,7 @@ const (
 type Parameter struct {
         ParameterId uint64 `gorm:"primary_key;column:idParameter;AUTO_INCREMENT" json:"-"`
         Local       string `gorm:"column:local;not null; unique" json:"local"`
-        TimeZone    string `gorm:"column:timeZone";not null; unique; json:"time_zone"`
+        TimeZone    string `gorm:"column:timeZone;not null; unique;" json:"time_zone"`
         SleepStart  int    `gorm:"column:sleepStart;not null;unique" json:"sleep_start"`
         SleepEnd    int    `gorm:"column:sleepEnd;not null;unique" json:"sleep_end"`
 }
@@ -499,7 +572,7 @@ func (parameter *Parameter) preSave() <span class="cov1" title="1">{
 }
 </pre>
 		
-		<pre class="file" id="file5" style="display: none">package models
+		<pre class="file" id="file6" style="display: none">package models
 
 import (
         "encoding/json"
@@ -643,7 +716,7 @@ func roleListFromJson(data io.Reader) []*Role <span class="cov1" title="1">{
 }
 </pre>
 		
-		<pre class="file" id="file6" style="display: none">// Created by Titouan FREVILLE &lt;titouanfreville@gmail.com&gt;
+		<pre class="file" id="file7" style="display: none">// Created by Titouan FREVILLE &lt;titouanfreville@gmail.com&gt;
 //
 // Inspired by mattermost project
 /*
@@ -729,21 +802,22 @@ var (
                 - lastActivityAt: Date &amp;&amp; Time of the last activity of the user.
 */
 type User struct {
-        WebId              string `json:"webId"`
-        UpdatedAt          int64  `json:"update_at,omitempty"`
-        Deleted            bool   `json:"deleted"`
-        Username           string `json:"username"`
-        Password           string `json:"password,omitempty"`
-        Email              string `json:"email,omitempty"`
-        EmailVerified      bool   `json:"email_verified,omitempty"`
-        Nickname           string `json:"nickname"`
-        FirstName          string `json:"first_name"`
-        LastName           string `json:"last_name"`
-        Avatar             string `json:"avatar"`
-        Role               int64  `json:"roles,omitempty"`
-        LastPasswordUpdate int64  `json:"last_password_update,omitempty"`
-        FailedAttempts     int    `json:"failed_attempts,omitempty"`
-        Locale             string `json:"locale"`
+        UserId             uint64 `gorm:"primary_key;column:idUser;AUTO_INCREMENT" json:"-"`
+        WebId              string `gorm:"column:webId; not null; unique;" json:"webId"`
+        Username           string `gorm:"column:userName; not null; unique;" json:"username"`
+        Email              string `gorm:"column:email; not null; unique;" json:"email"`
+        EmailVerified      bool   `gorm:"column:emailVerified; not null; unique;" json:"email_verified"`
+        UpdatedAt          int64  `gorm:"column:updatedAt; not null;" json:"update_at"`
+        Deleted            bool   `gorm:"column:deleted; not null;" json:"deleted"`
+        Password           string `gorm:"column:password; not null;" json:"password"`
+        LastPasswordUpdate int64  `gorm:"column:lastPasswordUpdate; not null;" json:"last_password_update"`
+        FailedAttempts     int    `gorm:"column:failedAttempts; not null;" json:"failed_attempts"`
+        Locale             string `gorm:"column:locale; not null;" json:"locale"`
+        Role               Role   `gorm:"column:role; not null;ForeignKey:RoleId;" json:"roles"`
+        Avatar             string `gorm:"column:avatar;" json:"avatar, omitempty"`
+        NickName           string `gorm:"column:nickName;" json:"nickname, omitempty"`
+        FirstName          string `gorm:"column:firstName;" json:"first_name, omitempty"`
+        LastName           string `gorm:"column:lastName;" json:"last_name, omitempty"`
         LastActivityAt     int64  `db:"-" json:"last_activity_at,omitempty"`
 }
 
@@ -763,8 +837,8 @@ func (u *User) isValid() *AppError <span class="cov5" title="25">{
                 return NewLocAppError("user.isValid", "model.user.is_valid.Email.app_error", nil, "user_webId="+u.WebId)
         }</span>
 
-        <span class="cov4" title="12">if utf8.RuneCountInString(u.Nickname) &gt; 64 </span><span class="cov1" title="1">{
-                return NewLocAppError("user.isValid", "model.user.is_valid.Nickname.app_error", nil, "user_webId="+u.WebId)
+        <span class="cov4" title="12">if utf8.RuneCountInString(u.NickName) &gt; 64 </span><span class="cov1" title="1">{
+                return NewLocAppError("user.isValid", "model.user.is_valid.NickName.app_error", nil, "user_webId="+u.WebId)
         }</span>
 
         <span class="cov4" title="11">if utf8.RuneCountInString(u.FirstName) &gt; 64 </span><span class="cov1" title="1">{
@@ -876,8 +950,8 @@ func (u *User) getFullName() string <span class="cov4" title="15">{
 
 // Get full name of the user
 func (u *User) getDisplayName() string <span class="cov3" title="5">{
-        if u.Nickname != "" </span><span class="cov1" title="1">{
-                return u.Nickname
+        if u.NickName != "" </span><span class="cov1" title="1">{
+                return u.NickName
         }</span>
         <span class="cov3" title="4">if u.getFullName() != "" </span><span class="cov2" title="3">{
                 return u.getFullName()
@@ -933,7 +1007,7 @@ func cleanUsername(s string) string <span class="cov7" title="60">{
 }
 </pre>
 		
-		<pre class="file" id="file7" style="display: none">package models
+		<pre class="file" id="file8" style="display: none">package models
 
 import (
         "bytes"

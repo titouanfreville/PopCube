@@ -6,7 +6,7 @@ import (
 )
 
 type Emoji struct {
-	EmojiId  uint64 `gorm:"primary_key;column:idEmoji;AUTO_INCREMENT" json:"-"`
+	IdEmoji  uint64 `gorm:"primary_key;column:idEmoji;AUTO_INCREMENT" json:"-"`
 	Name     string `gorm:"column:name;not null;unique" json:"name"`
 	Shortcut string `gorm:"column:shortcut;not null;unique" json:"shortcut"`
 	Link     string `gorm:"column:link;not null;unique" json:"link"`

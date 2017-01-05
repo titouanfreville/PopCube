@@ -16,7 +16,7 @@ const (
 type Parameter struct {
 	ParameterId uint64 `gorm:"primary_key;column:idParameter;AUTO_INCREMENT" json:"-"`
 	Local       string `gorm:"column:local;not null; unique" json:"local"`
-	TimeZone    string `gorm:"column:timeZone";not null; unique; json:"time_zone"`
+	TimeZone    string `gorm:"column:timeZone;not null; unique;" json:"time_zone"`
 	SleepStart  int    `gorm:"column:sleepStart;not null;unique" json:"sleep_start"`
 	SleepEnd    int    `gorm:"column:sleepEnd;not null;unique" json:"sleep_end"`
 }

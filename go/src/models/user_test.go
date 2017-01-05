@@ -116,10 +116,10 @@ func TestUserModel(t *testing.T) {
 				Password:           "test",
 				Email:              "Test@poPcube.fr",
 				EmailVerified:      true,
-				Nickname:           "NickName",
+				NickName:           "NickName",
 				FirstName:          "Test",
 				LastName:           "L",
-				Role:               1,
+				Role:               OWNER,
 				LastPasswordUpdate: 20,
 				FailedAttempts:     1,
 				Locale:             "vi",
@@ -135,10 +135,10 @@ func TestUserModel(t *testing.T) {
 				So(comparePassword(user.Password, "test"), ShouldBeTrue)
 				So(user.Email, ShouldEqual, "test@popcube.fr")
 				So(user.EmailVerified, ShouldBeTrue)
-				So(user.Nickname, ShouldEqual, "NickName")
+				So(user.NickName, ShouldEqual, "NickName")
 				So(user.FirstName, ShouldEqual, "Test")
 				So(user.LastName, ShouldEqual, "L")
-				So(user.Role, ShouldEqual, 1)
+				So(user.Role, ShouldResemble, OWNER)
 				So(user.LastPasswordUpdate, ShouldNotEqual, 20)
 				So(user.LastPasswordUpdate, ShouldEqual, user.UpdatedAt)
 				So(user.FailedAttempts, ShouldEqual, 1)
@@ -177,16 +177,16 @@ func TestUserModel(t *testing.T) {
 				Username:  "TesT",
 				Password:  "test",
 				Email:     "test@popcube.fr",
-				Nickname:  "NickName",
+				NickName:  "NickName",
 				FirstName: "Test",
 				LastName:  "L",
-				Role:      1,
+				Role:      OWNER,
 			}
 			correct_user.preSave()
 			So(correct_user.isValid(), ShouldBeNil)
 			So(correct_user.isValid(), ShouldNotResemble, NewLocAppError("user.isValid", "model.user.is_valid.WebId.app_error", nil, ""))
 			So(correct_user.isValid(), ShouldNotResemble, NewLocAppError("user.isValid", "model.user.is_valid.Email.app_error", nil, "user_webId="+correct_user.WebId))
-			So(correct_user.isValid(), ShouldNotResemble, NewLocAppError("user.isValid", "model.user.is_valid.Nickname.app_error", nil, "user_webId="+correct_user.WebId))
+			So(correct_user.isValid(), ShouldNotResemble, NewLocAppError("user.isValid", "model.user.is_valid.NickName.app_error", nil, "user_webId="+correct_user.WebId))
 			So(correct_user.isValid(), ShouldNotResemble, NewLocAppError("user.isValid", "model.user.is_valid.first_name.app_error", nil, "user_webId="+correct_user.WebId))
 			So(correct_user.isValid(), ShouldNotResemble, NewLocAppError("user.isValid", "model.user.is_valid.Username.app_error", nil, "user_webId="+correct_user.WebId))
 			So(correct_user.isValid(), ShouldNotResemble, NewLocAppError("user.isValid", "model.user.is_valid.last_name.app_error", nil, "user_webId="+correct_user.WebId))
@@ -199,10 +199,10 @@ func TestUserModel(t *testing.T) {
 					Username:  "TesT",
 					Password:  "test",
 					Email:     "test@popcube.fr",
-					Nickname:  "NickName",
+					NickName:  "NickName",
 					FirstName: "Test",
 					LastName:  "L",
-					Role:      1,
+					Role:      OWNER,
 				}
 				So(user.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.WebId.app_error", nil, ""))
 			})
@@ -211,10 +211,10 @@ func TestUserModel(t *testing.T) {
 					Username:  "CeNomDevraitJelespereEtreBeaucoupTropLongPourLatrailleMaximaleDemandeParcequelaJeSuiunPoilFeneantEtDeboussouleSansnuldouteilnyavaitpersone",
 					Password:  "test",
 					Email:     "test@popcube.fr",
-					Nickname:  "NickName",
+					NickName:  "NickName",
 					FirstName: "Test",
 					LastName:  "L",
-					Role:      1,
+					Role:      OWNER,
 				}
 				user1.preSave()
 				So(user1.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.Username.app_error", nil, "user_webId="+user1.WebId))
@@ -222,10 +222,10 @@ func TestUserModel(t *testing.T) {
 					WebId:     NewId(),
 					Password:  "test",
 					Email:     "test@popcube.fr",
-					Nickname:  "NickName",
+					NickName:  "NickName",
 					FirstName: "Test",
 					LastName:  "L",
-					Role:      1,
+					Role:      OWNER,
 				}
 				So(user2.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.Username.app_error", nil, "user_webId="+user2.WebId))
 				user3 := User{
@@ -233,10 +233,10 @@ func TestUserModel(t *testing.T) {
 					Username:  "xD/",
 					Password:  "test",
 					Email:     "test@popcube.fr",
-					Nickname:  "NickName",
+					NickName:  "NickName",
 					FirstName: "Test",
 					LastName:  "L",
-					Role:      1,
+					Role:      OWNER,
 				}
 				So(user3.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.Username.app_error", nil, "user_webId="+user3.WebId))
 				user3 = User{
@@ -244,10 +244,10 @@ func TestUserModel(t *testing.T) {
 					Username:  "xD\\",
 					Password:  "test",
 					Email:     "test@popcube.fr",
-					Nickname:  "NickName",
+					NickName:  "NickName",
 					FirstName: "Test",
 					LastName:  "L",
-					Role:      1,
+					Role:      OWNER,
 				}
 				So(user3.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.Username.app_error", nil, "user_webId="+user3.WebId))
 				user3 = User{
@@ -255,10 +255,10 @@ func TestUserModel(t *testing.T) {
 					Username:  "xD*",
 					Password:  "test",
 					Email:     "test@popcube.fr",
-					Nickname:  "NickName",
+					NickName:  "NickName",
 					FirstName: "Test",
 					LastName:  "L",
-					Role:      1,
+					Role:      OWNER,
 				}
 				So(user3.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.Username.app_error", nil, "user_webId="+user3.WebId))
 				user3 = User{
@@ -266,10 +266,10 @@ func TestUserModel(t *testing.T) {
 					Username:  "xD{",
 					Password:  "test",
 					Email:     "test@popcube.fr",
-					Nickname:  "NickName",
+					NickName:  "NickName",
 					FirstName: "Test",
 					LastName:  "L",
-					Role:      1,
+					Role:      OWNER,
 				}
 				So(user3.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.Username.app_error", nil, "user_webId="+user3.WebId))
 				user3 = User{
@@ -277,10 +277,10 @@ func TestUserModel(t *testing.T) {
 					Username:  "xD}",
 					Password:  "test",
 					Email:     "test@popcube.fr",
-					Nickname:  "NickName",
+					NickName:  "NickName",
 					FirstName: "Test",
 					LastName:  "L",
-					Role:      1,
+					Role:      OWNER,
 				}
 				So(user3.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.Username.app_error", nil, "user_webId="+user3.WebId))
 				user3 = User{
@@ -288,10 +288,10 @@ func TestUserModel(t *testing.T) {
 					Username:  "xD#",
 					Password:  "test",
 					Email:     "test@popcube.fr",
-					Nickname:  "NickName",
+					NickName:  "NickName",
 					FirstName: "Test",
 					LastName:  "L",
-					Role:      1,
+					Role:      OWNER,
 				}
 				So(user3.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.Username.app_error", nil, "user_webId="+user3.WebId))
 				user3 = User{
@@ -299,10 +299,10 @@ func TestUserModel(t *testing.T) {
 					Username:  "xD_",
 					Password:  "test",
 					Email:     "test@popcube.fr",
-					Nickname:  "NickName",
+					NickName:  "NickName",
 					FirstName: "Test",
 					LastName:  "L",
-					Role:      1,
+					Role:      OWNER,
 				}
 				So(user3.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.Username.app_error", nil, "user_webId="+user3.WebId))
 			})
@@ -312,63 +312,63 @@ func TestUserModel(t *testing.T) {
 			user := User{
 				Password:  "test",
 				Email:     "testpopcube.fr",
-				Nickname:  "NickName",
+				NickName:  "NickName",
 				FirstName: "Test",
 				LastName:  "L",
-				Role:      1,
+				Role:      OWNER,
 			}
 			user.preSave()
 			So(user.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.Email.app_error", nil, "user_webId="+user.WebId))
 			user = User{
 				Password:  "test",
 				Email:     "test/popcube.fr",
-				Nickname:  "NickName",
+				NickName:  "NickName",
 				FirstName: "Test",
 				LastName:  "L",
-				Role:      1,
+				Role:      OWNER,
 			}
 			user.preSave()
 			So(user.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.Email.app_error", nil, "user_webId="+user.WebId))
 			user = User{
 				Password:  "test",
 				Email:     "CeNomDevraitJelespereEtreBeaucoupTropLongPourLatrailleMaximaleDemandeParcequelaJeSuiunPoilFeneantEtDeboussouleSansnuldouteilnyavaitpersone@popcube.fr",
-				Nickname:  "NickName",
+				NickName:  "NickName",
 				FirstName: "Test",
 				LastName:  "L",
-				Role:      1,
+				Role:      OWNER,
 			}
 			user.preSave()
 			So(user.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.Email.app_error", nil, "user_webId="+user.WebId))
 		})
 
-		Convey("Nickname, FirstName: and Lastname should be less than 64 characters long", func() {
+		Convey("NickName, FirstName: and Lastname should be less than 64 characters long", func() {
 			user := User{
 				Password:  "test",
 				Email:     "test@popcube.fr",
-				Nickname:  "NickNameéèéééééééééééétroplongazdazdzadazdazdzadz_>_<azdazdzadazdazz",
+				NickName:  "NickNameéèéééééééééééétroplongazdazdzadazdazdzadz_>_<azdazdzadazdazz",
 				FirstName: "Test",
 				LastName:  "L",
-				Role:      1,
+				Role:      OWNER,
 			}
 			user.preSave()
-			So(user.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.Nickname.app_error", nil, "user_webId="+user.WebId))
+			So(user.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.NickName.app_error", nil, "user_webId="+user.WebId))
 			user = User{
 				Password:  "test",
 				Email:     "test@popcube.fr",
-				Nickname:  "Nickname",
+				NickName:  "NickName",
 				FirstName: "TestéèéèéèéèèéèéèéèéèéèèéèéèéèèéèéèNJnefiznfidsdfnpdsjfazddrfazdzadzadzadzadazd",
 				LastName:  "L",
-				Role:      1,
+				Role:      OWNER,
 			}
 			user.preSave()
 			So(user.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.first_name.app_error", nil, "user_webId="+user.WebId))
 			user = User{
 				Password:  "test",
 				Email:     "test@popcube.fr",
-				Nickname:  "Nickname",
+				NickName:  "NickName",
 				FirstName: "Test",
 				LastName:  "TestéèéèéèéèèéèéèéèéèéèèéèéèéèèéèéèNJnefiznfidsdfdazdzadzadzadzadzadzadazdazdazdzadazdzanpdsjf",
-				Role:      1,
+				Role:      OWNER,
 			}
 			user.preSave()
 			So(user.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.last_name.app_error", nil, "user_webId="+user.WebId))
@@ -377,10 +377,10 @@ func TestUserModel(t *testing.T) {
 		Convey("Password can]t be empty", func() {
 			user := User{
 				Email:     "test@popcube.fr",
-				Nickname:  "Nickname",
+				NickName:  "NickName",
 				FirstName: "Test",
 				LastName:  "L",
-				Role:      1,
+				Role:      OWNER,
 			}
 			user.preSave()
 			So(user.isValid(), ShouldResemble, NewLocAppError("user.isValid", "model.user.is_valid.auth_data_pwd.app_error", nil, "user_webId="+user.WebId))
@@ -442,7 +442,7 @@ func TestUserModel(t *testing.T) {
 				So(u.getDisplayName(), ShouldEqual, "Min")
 			})
 			Convey("user having a nickname should have their nickname diplayed", func() {
-				u.Nickname = "nOOb"
+				u.NickName = "nOOb"
 				So(u.getDisplayName(), ShouldEqual, "nOOb")
 			})
 		})
@@ -592,57 +592,3 @@ func TestUserModel(t *testing.T) {
 		})
 	})
 }
-
-// func TestuserUpdateMentionKeysFromusername(t *testing.T) {
-// 	user := User{Username: "user"}
-// 	user.SetDefaultNotifications()
-
-// 	if user.NotifyProps["mention_keys"] != "user,@user" {
-// 		t.Fatal("default mention keys are invalWebId: %v", user.NotifyProps["mention_keys"])
-// 	}
-
-// 	user.Username = "person"
-// 	user.UpdateMentionKeysFromusername("user")
-// 	if user.NotifyProps["mention_keys"] != "person,@person" {
-// 		t.Fatal("mention keys are invalid after changing Username: %v", user.NotifyProps["mention_keys"])
-// 	}
-
-// 	user.NotifyProps["mention_keys"] += ",mention"
-// 	user.UpdateMentionKeysFromusername("person")
-// 	if user.NotifyProps["mention_keys"] != "person,@person,mention" {
-// 		t.Fatal("mention keys are invalid after adding extra mention keyword: %v", user.NotifyProps["mention_keys"])
-// 	}
-
-// 	user.Username = "user"
-// 	user.UpdateMentionKeysFromusername("person")
-// 	if user.NotifyProps["mention_keys"] != "user,@user,mention" {
-// 		t.Fatal("mention keys are invalid after changing username with extra mention keyword: %v", user.NotifyProps["mention_keys"])
-// 	}
-// }
-
-// func TestRoles(t *testing.T) {
-
-// 	if IsValiduserRoles("admin") {
-// 		t.Fatal()
-// 	}
-
-// 	if IsValiduserRoles("junk") {
-// 		t.Fatal()
-// 	}
-
-// 	if !IsValiduserRoles("system_user system_admin") {
-// 		t.Fatal()
-// 	}
-
-// 	if IsInRole("system_admin junk", "admin") {
-// 		t.Fatal()
-// 	}
-
-// 	if !IsInRole("system_admin junk", "system_admin") {
-// 		t.Fatal()
-// 	}
-
-// 	if IsInRole("admin", "system_admin") {
-// 		t.Fatal()
-// 	}
-// }

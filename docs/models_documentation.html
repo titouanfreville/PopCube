@@ -203,6 +203,11 @@ The following is a list of models described:
 				
 			
 				
+				<dd><a href="#Message">type Message</a></dd>
+				
+				
+			
+				
 				<dd><a href="#Organisation">type Organisation</a></dd>
 				
 				
@@ -253,6 +258,8 @@ The following is a list of models described:
 				<a href="/src/channels.go">channels.go</a>
 			
 				<a href="/src/emojis.go">emojis.go</a>
+			
+				<a href="/src/message.go">message.go</a>
 			
 				<a href="/src/organisation.go">organisation.go</a>
 			
@@ -879,7 +886,7 @@ AppErrorFromJson will decode the input and return an AppError
 			</h2>
 			
 			<pre>type Emoji struct {
-<span id="Emoji.EmojiId"></span>    EmojiId  <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idEmoji;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="Emoji.IdEmoji"></span>    IdEmoji  <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idEmoji;AUTO_INCREMENT&#34; json:&#34;-&#34;`
 <span id="Emoji.Name"></span>    Name     <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:name;not null;unique&#34; json:&#34;name&#34;`
 <span id="Emoji.Shortcut"></span>    Shortcut <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:shortcut;not null;unique&#34; json:&#34;shortcut&#34;`
 <span id="Emoji.Link"></span>    Link     <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:link;not null;unique&#34; json:&#34;link&#34;`
@@ -904,6 +911,31 @@ AppErrorFromJson will decode the input and return an AppError
 			</h2>
 			
 			<pre>type EncryptStringMap map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a></pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Message">type <a href="/src/models/message.go?s=51:363#L1">Message</a>
+				<a class="permalink" href="#Message">&#xb6;</a>
+			</h2>
+			
+			<pre>type Message struct {
+<span id="Message.MessageId"></span>    MessageId <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idMessage;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="Message.Name"></span>    Name      <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:name;not null;unique&#34; json:&#34;name&#34;`
+<span id="Message.Shortcut"></span>    Shortcut  <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:shortcut;not null;unique&#34; json:&#34;shortcut&#34;`
+<span id="Message.Link"></span>    Link      <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:link;not null;unique&#34; json:&#34;link&#34;`
+}</pre>
 
 			
 
@@ -953,7 +985,7 @@ AppErrorFromJson will decode the input and return an AppError
 			<pre>type Parameter struct {
 <span id="Parameter.ParameterId"></span>    ParameterId <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idParameter;AUTO_INCREMENT&#34; json:&#34;-&#34;`
 <span id="Parameter.Local"></span>    Local       <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:local;not null; unique&#34; json:&#34;local&#34;`
-<span id="Parameter.TimeZone"></span>    TimeZone    <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:timeZone&#34;;not null; unique; json:&#34;time_zone&#34;`
+<span id="Parameter.TimeZone"></span>    TimeZone    <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:timeZone;not null; unique;&#34; json:&#34;time_zone&#34;`
 <span id="Parameter.SleepStart"></span>    SleepStart  <a href="/pkg/builtin/#int">int</a>    `gorm:&#34;column:sleepStart;not null;unique&#34; json:&#34;sleep_start&#34;`
 <span id="Parameter.SleepEnd"></span>    SleepEnd    <a href="/pkg/builtin/#int">int</a>    `gorm:&#34;column:sleepEnd;not null;unique&#34; json:&#34;sleep_end&#34;`
 }</pre>
@@ -1061,7 +1093,7 @@ AppErrorFromJson will decode the input and return an AppError
 		
 			
 			
-			<h2 id="User">type <a href="/src/models/user.go?s=2358:3208#L76">User</a>
+			<h2 id="User">type <a href="/src/models/user.go?s=2358:3796#L76">User</a>
 				<a class="permalink" href="#User">&#xb6;</a>
 			</h2>
 			<p>
@@ -1099,21 +1131,22 @@ User object
 </pre>
 
 			<pre>type User struct {
-<span id="User.WebId"></span>    WebId              <a href="/pkg/builtin/#string">string</a> `json:&#34;webId&#34;`
-<span id="User.UpdatedAt"></span>    UpdatedAt          <a href="/pkg/builtin/#int64">int64</a>  `json:&#34;update_at,omitempty&#34;`
-<span id="User.Deleted"></span>    Deleted            <a href="/pkg/builtin/#bool">bool</a>   `json:&#34;deleted&#34;`
-<span id="User.Username"></span>    Username           <a href="/pkg/builtin/#string">string</a> `json:&#34;username&#34;`
-<span id="User.Password"></span>    Password           <a href="/pkg/builtin/#string">string</a> `json:&#34;password,omitempty&#34;`
-<span id="User.Email"></span>    Email              <a href="/pkg/builtin/#string">string</a> `json:&#34;email,omitempty&#34;`
-<span id="User.EmailVerified"></span>    EmailVerified      <a href="/pkg/builtin/#bool">bool</a>   `json:&#34;email_verified,omitempty&#34;`
-<span id="User.Nickname"></span>    Nickname           <a href="/pkg/builtin/#string">string</a> `json:&#34;nickname&#34;`
-<span id="User.FirstName"></span>    FirstName          <a href="/pkg/builtin/#string">string</a> `json:&#34;first_name&#34;`
-<span id="User.LastName"></span>    LastName           <a href="/pkg/builtin/#string">string</a> `json:&#34;last_name&#34;`
-<span id="User.Avatar"></span>    Avatar             <a href="/pkg/builtin/#string">string</a> `json:&#34;avatar&#34;`
-<span id="User.Role"></span>    Role               <a href="/pkg/builtin/#int64">int64</a>  `json:&#34;roles,omitempty&#34;`
-<span id="User.LastPasswordUpdate"></span>    LastPasswordUpdate <a href="/pkg/builtin/#int64">int64</a>  `json:&#34;last_password_update,omitempty&#34;`
-<span id="User.FailedAttempts"></span>    FailedAttempts     <a href="/pkg/builtin/#int">int</a>    `json:&#34;failed_attempts,omitempty&#34;`
-<span id="User.Locale"></span>    Locale             <a href="/pkg/builtin/#string">string</a> `json:&#34;locale&#34;`
+<span id="User.UserId"></span>    UserId             <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idUser;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="User.WebId"></span>    WebId              <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:webId; not null; unique;&#34; json:&#34;webId&#34;`
+<span id="User.Username"></span>    Username           <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:userName; not null; unique;&#34; json:&#34;username&#34;`
+<span id="User.Email"></span>    Email              <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:email; not null; unique;&#34; json:&#34;email&#34;`
+<span id="User.EmailVerified"></span>    EmailVerified      <a href="/pkg/builtin/#bool">bool</a>   `gorm:&#34;column:emailVerified; not null; unique;&#34; json:&#34;email_verified&#34;`
+<span id="User.UpdatedAt"></span>    UpdatedAt          <a href="/pkg/builtin/#int64">int64</a>  `gorm:&#34;column:updatedAt; not null;&#34; json:&#34;update_at&#34;`
+<span id="User.Deleted"></span>    Deleted            <a href="/pkg/builtin/#bool">bool</a>   `gorm:&#34;column:deleted; not null;&#34; json:&#34;deleted&#34;`
+<span id="User.Password"></span>    Password           <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:password; not null;&#34; json:&#34;password&#34;`
+<span id="User.LastPasswordUpdate"></span>    LastPasswordUpdate <a href="/pkg/builtin/#int64">int64</a>  `gorm:&#34;column:lastPasswordUpdate; not null;&#34; json:&#34;last_password_update&#34;`
+<span id="User.FailedAttempts"></span>    FailedAttempts     <a href="/pkg/builtin/#int">int</a>    `gorm:&#34;column:failedAttempts; not null;&#34; json:&#34;failed_attempts&#34;`
+<span id="User.Locale"></span>    Locale             <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:locale; not null;&#34; json:&#34;locale&#34;`
+<span id="User.Role"></span>    Role               <a href="#Role">Role</a>   `gorm:&#34;column:role; not null;ForeignKey:RoleId;&#34; json:&#34;roles&#34;`
+<span id="User.Avatar"></span>    Avatar             <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:avatar;&#34; json:&#34;avatar, omitempty&#34;`
+<span id="User.NickName"></span>    NickName           <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:nickName;&#34; json:&#34;nickname, omitempty&#34;`
+<span id="User.FirstName"></span>    FirstName          <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:firstName;&#34; json:&#34;first_name, omitempty&#34;`
+<span id="User.LastName"></span>    LastName           <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:lastName;&#34; json:&#34;last_name, omitempty&#34;`
 <span id="User.LastActivityAt"></span>    LastActivityAt     <a href="/pkg/builtin/#int64">int64</a>  `db:&#34;-&#34; json:&#34;last_activity_at,omitempty&#34;`
 }</pre>
 
