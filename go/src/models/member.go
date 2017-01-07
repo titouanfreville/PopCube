@@ -1,10 +1,5 @@
 package models
 
-import (
-	"encoding/json"
-	"io"
-)
-
 type Member struct {
 	User    User    `gorm:"column:user; not null;ForeignKey:IdUser;" json:"-`
 	Channel Channel `gorm:"column:channel; not null;ForeignKey:IdChannel;" json:"-"`

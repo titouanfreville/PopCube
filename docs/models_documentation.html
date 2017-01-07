@@ -203,6 +203,16 @@ The following is a list of models described:
 				
 			
 				
+				<dd><a href="#Folder">type Folder</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Member">type Member</a></dd>
+				
+				
+			
+				
 				<dd><a href="#Message">type Message</a></dd>
 				
 				
@@ -258,6 +268,10 @@ The following is a list of models described:
 				<a href="/src/channels.go">channels.go</a>
 			
 				<a href="/src/emojis.go">emojis.go</a>
+			
+				<a href="/src/folders.go">folders.go</a>
+			
+				<a href="/src/member.go">member.go</a>
 			
 				<a href="/src/message.go">message.go</a>
 			
@@ -911,6 +925,56 @@ AppErrorFromJson will decode the input and return an AppError
 			</h2>
 			
 			<pre>type EncryptStringMap map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a></pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Folder">type <a href="/src/models/folders.go?s=51:430#L1">Folder</a>
+				<a class="permalink" href="#Folder">&#xb6;</a>
+			</h2>
+			
+			<pre>type Folder struct {
+<span id="Folder.IdFolder"></span>    IdFolder <a href="/pkg/builtin/#uint64">uint64</a>  `gorm:&#34;primary_key;column:idFolder;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="Folder.Link"></span>    Link     <a href="/pkg/builtin/#string">string</a>  `gorm:&#34;column:link;not null;unique&#34; json:&#34;link&#34;`
+<span id="Folder.Name"></span>    Name     <a href="/pkg/builtin/#string">string</a>  `gorm:&#34;column:name;not null;unique&#34; json:&#34;name&#34;`
+<span id="Folder.Type"></span>    Type     <a href="/pkg/builtin/#string">string</a>  `gorm:&#34;column:type;not null;&#34; json:&#34;type&#34;`
+<span id="Folder.Message"></span>    Message  <a href="#Message">Message</a> `gorm:&#34;column:message; not null;ForeignKey:IdMessage;&#34; json:&#34;-&#34;`
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Member">type <a href="/src/models/member.go?s=16:262#L1">Member</a>
+				<a class="permalink" href="#Member">&#xb6;</a>
+			</h2>
+			
+			<pre>type Member struct {
+<span id="Member.User"></span>    User    <a href="#User">User</a>    `gorm:&#34;column:user; not null;ForeignKey:IdUser;&#34; json:&#34;-`
+<span id="Member.Channel"></span>    Channel <a href="#Channel">Channel</a> `gorm:&#34;column:channel; not null;ForeignKey:IdChannel;&#34; json:&#34;-&#34;`
+<span id="Member.Role"></span>    Role    <a href="#Role">Role</a>    `gorm:&#34;column:role; ForeignKey:IdRole;&#34; json:&#34;-&#34;`
+}</pre>
 
 			
 
