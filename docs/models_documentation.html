@@ -832,7 +832,7 @@ AppErrorFromJson will decode the input and return an AppError
 			</h2>
 			
 			<pre>type Avatar struct {
-<span id="Avatar.AvatarId"></span>    AvatarId <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idAvatar;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="Avatar.IdAvatar"></span>    IdAvatar <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idAvatar;AUTO_INCREMENT&#34; json:&#34;-&#34;`
 <span id="Avatar.Name"></span>    Name     <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:name;not null;unique&#34; json:&#34;name&#34;`
 <span id="Avatar.Link"></span>    Link     <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:link;not null;unique&#34; json:&#34;link&#34;`
 }</pre>
@@ -926,15 +926,16 @@ AppErrorFromJson will decode the input and return an AppError
 		
 			
 			
-			<h2 id="Message">type <a href="/src/models/message.go?s=51:363#L1">Message</a>
+			<h2 id="Message">type <a href="/src/models/message.go?s=51:453#L1">Message</a>
 				<a class="permalink" href="#Message">&#xb6;</a>
 			</h2>
 			
 			<pre>type Message struct {
-<span id="Message.MessageId"></span>    MessageId <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idMessage;AUTO_INCREMENT&#34; json:&#34;-&#34;`
-<span id="Message.Name"></span>    Name      <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:name;not null;unique&#34; json:&#34;name&#34;`
-<span id="Message.Shortcut"></span>    Shortcut  <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:shortcut;not null;unique&#34; json:&#34;shortcut&#34;`
-<span id="Message.Link"></span>    Link      <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:link;not null;unique&#34; json:&#34;link&#34;`
+<span id="Message.IdMessage"></span>    IdMessage <a href="/pkg/builtin/#uint64">uint64</a>  `gorm:&#34;primary_key;column:idMessage;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="Message.Date"></span>    Date      <a href="/pkg/builtin/#int64">int64</a>   `gorm:&#34;column:date;not null&#34; json:&#34;date&#34;`
+<span id="Message.Content"></span>    Content   <a href="/pkg/builtin/#string">string</a>  `gorm:&#34;column:content;type:longtext&#34; json:&#34;content&#34;`
+<span id="Message.Creator"></span>    Creator   <a href="#User">User</a>    `gorm:&#34;column:creator; not null;ForeignKey:IdUser;&#34; json:&#34;-&#34;`
+<span id="Message.Channel"></span>    Channel   <a href="#Channel">Channel</a> `gorm:&#34;column:channel; not null;ForeignKey:IdChannel;&#34; json:&#34;-&#34;`
 }</pre>
 
 			
@@ -956,7 +957,7 @@ AppErrorFromJson will decode the input and return an AppError
 			</h2>
 			
 			<pre>type Organisation struct {
-<span id="Organisation.OrganisationId"></span>    OrganisationId   <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idOrganisation;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="Organisation.IdOrganisation"></span>    IdOrganisation   <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idOrganisation;AUTO_INCREMENT&#34; json:&#34;-&#34;`
 <span id="Organisation.DockerStack"></span>    DockerStack      <a href="/pkg/builtin/#int">int</a>    `gorm:&#34;column:dockerStack;not null;unique&#34; json:&#34;docker_stack&#34;`
 <span id="Organisation.OrganisationName"></span>    OrganisationName <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:organisationName;not null;unique&#34; json:&#34;display_name&#34;`
 <span id="Organisation.Description"></span>    Description      <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:desciption&#34; json:&#34;description,omitempty&#34;`
@@ -983,7 +984,7 @@ AppErrorFromJson will decode the input and return an AppError
 			</h2>
 			
 			<pre>type Parameter struct {
-<span id="Parameter.ParameterId"></span>    ParameterId <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idParameter;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="Parameter.IdParameter"></span>    IdParameter <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idParameter;AUTO_INCREMENT&#34; json:&#34;-&#34;`
 <span id="Parameter.Local"></span>    Local       <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:local;not null; unique&#34; json:&#34;local&#34;`
 <span id="Parameter.TimeZone"></span>    TimeZone    <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:timeZone;not null; unique;&#34; json:&#34;time_zone&#34;`
 <span id="Parameter.SleepStart"></span>    SleepStart  <a href="/pkg/builtin/#int">int</a>    `gorm:&#34;column:sleepStart;not null;unique&#34; json:&#34;sleep_start&#34;`
@@ -1009,7 +1010,7 @@ AppErrorFromJson will decode the input and return an AppError
 			</h2>
 			
 			<pre>type Role struct {
-<span id="Role.RoleId"></span>    RoleId        <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idRole;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="Role.IdRole"></span>    IdRole        <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idRole;AUTO_INCREMENT&#34; json:&#34;-&#34;`
 <span id="Role.RoleName"></span>    RoleName      <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:roleName;unique_index;not null;unique&#34; json:&#34;name&#34;`
 <span id="Role.CanUsePrivate"></span>    CanUsePrivate <a href="/pkg/builtin/#bool">bool</a>   `gorm:&#34;column:canUsePrivate;not null&#34; json:&#34;canUsePrivate&#34;`
 <span id="Role.CanModerate"></span>    CanModerate   <a href="/pkg/builtin/#bool">bool</a>   `gorm:&#34;column:canModerate;not null&#34; json:&#34;canModerate&#34;`
@@ -1093,7 +1094,7 @@ AppErrorFromJson will decode the input and return an AppError
 		
 			
 			
-			<h2 id="User">type <a href="/src/models/user.go?s=2358:3796#L76">User</a>
+			<h2 id="User">type <a href="/src/models/user.go?s=2358:3793#L76">User</a>
 				<a class="permalink" href="#User">&#xb6;</a>
 			</h2>
 			<p>
@@ -1132,7 +1133,7 @@ User object
 
 			<pre>type User struct {
 <span id="User.UserId"></span>    UserId             <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idUser;AUTO_INCREMENT&#34; json:&#34;-&#34;`
-<span id="User.WebId"></span>    WebId              <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:webId; not null; unique;&#34; json:&#34;webId&#34;`
+<span id="User.WebId"></span>    WebId              <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:webId; not null; unique;&#34; json:&#34;web_id&#34;`
 <span id="User.Username"></span>    Username           <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:userName; not null; unique;&#34; json:&#34;username&#34;`
 <span id="User.Email"></span>    Email              <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:email; not null; unique;&#34; json:&#34;email&#34;`
 <span id="User.EmailVerified"></span>    EmailVerified      <a href="/pkg/builtin/#bool">bool</a>   `gorm:&#34;column:emailVerified; not null; unique;&#34; json:&#34;email_verified&#34;`
@@ -1142,7 +1143,7 @@ User object
 <span id="User.LastPasswordUpdate"></span>    LastPasswordUpdate <a href="/pkg/builtin/#int64">int64</a>  `gorm:&#34;column:lastPasswordUpdate; not null;&#34; json:&#34;last_password_update&#34;`
 <span id="User.FailedAttempts"></span>    FailedAttempts     <a href="/pkg/builtin/#int">int</a>    `gorm:&#34;column:failedAttempts; not null;&#34; json:&#34;failed_attempts&#34;`
 <span id="User.Locale"></span>    Locale             <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:locale; not null;&#34; json:&#34;locale&#34;`
-<span id="User.Role"></span>    Role               <a href="#Role">Role</a>   `gorm:&#34;column:role; not null;ForeignKey:RoleId;&#34; json:&#34;roles&#34;`
+<span id="User.Role"></span>    Role               <a href="#Role">Role</a>   `gorm:&#34;column:role; not null;ForeignKey:IdRole;&#34; json:&#34;-&#34;`
 <span id="User.Avatar"></span>    Avatar             <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:avatar;&#34; json:&#34;avatar, omitempty&#34;`
 <span id="User.NickName"></span>    NickName           <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:nickName;&#34; json:&#34;nickname, omitempty&#34;`
 <span id="User.FirstName"></span>    FirstName          <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:firstName;&#34; json:&#34;first_name, omitempty&#34;`

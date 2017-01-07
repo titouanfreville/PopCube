@@ -7,7 +7,7 @@ import (
 )
 
 type Role struct {
-	RoleId        uint64 `gorm:"primary_key;column:idRole;AUTO_INCREMENT" json:"-"`
+	IdRole        uint64 `gorm:"primary_key;column:idRole;AUTO_INCREMENT" json:"-"`
 	RoleName      string `gorm:"column:roleName;unique_index;not null;unique" json:"name"`
 	CanUsePrivate bool   `gorm:"column:canUsePrivate;not null" json:"canUsePrivate"`
 	CanModerate   bool   `gorm:"column:canModerate;not null" json:"canModerate"`

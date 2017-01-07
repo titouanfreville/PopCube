@@ -60,7 +60,7 @@
 				
 				<option value="file2">models/emojis.go (85.2%)</option>
 				
-				<option value="file3">models/message.go (0.0%)</option>
+				<option value="file3">models/message.go (85.7%)</option>
 				
 				<option value="file4">models/organisation.go (90.0%)</option>
 				
@@ -101,7 +101,7 @@ import (
 )
 
 type Avatar struct {
-        AvatarId uint64 `gorm:"primary_key;column:idAvatar;AUTO_INCREMENT" json:"-"`
+        IdAvatar uint64 `gorm:"primary_key;column:idAvatar;AUTO_INCREMENT" json:"-"`
         Name     string `gorm:"column:name;not null;unique" json:"name"`
         Link     string `gorm:"column:link;not null;unique" json:"link"`
 }
@@ -363,62 +363,68 @@ import (
 )
 
 type Message struct {
-        MessageId uint64 `gorm:"primary_key;column:idMessage;AUTO_INCREMENT" json:"-"`
-        Name      string `gorm:"column:name;not null;unique" json:"name"`
-        Shortcut  string `gorm:"column:shortcut;not null;unique" json:"shortcut"`
-        Link      string `gorm:"column:link;not null;unique" json:"link"`
+        IdMessage uint64  `gorm:"primary_key;column:idMessage;AUTO_INCREMENT" json:"-"`
+        Date      int64   `gorm:"column:date;not null" json:"date"`
+        Content   string  `gorm:"column:content;type:longtext" json:"content"`
+        Creator   User    `gorm:"column:creator; not null;ForeignKey:IdUser;" json:"-"`
+        Channel   Channel `gorm:"column:channel; not null;ForeignKey:IdChannel;" json:"-"`
 }
 
-func (message *Message) isValid() *AppError <span class="cov0" title="0">{
-        if len(message.Name) == 0 || len(message.Name) &gt; 64 </span><span class="cov0" title="0">{
-                return NewLocAppError("Message.IsValid", "model.message.name.app_error", nil, "")
+// isValid function is used to check that the provided message correspond to the message model. It has to be use before tring to store it in the db.
+func (message *Message) isValid() *AppError <span class="cov10" title="20">{
+        if message.Date == 0 </span><span class="cov7" title="8">{
+                return NewLocAppError("Message.IsValid", "model.message.date.app_error", nil, "")
+        }</span>
+        <span class="cov8" title="12">if message.Creator == (User{}) </span><span class="cov5" title="4">{
+                return NewLocAppError("Message.IsValid", "model.message.creator.app_error", nil, "")
+        }</span>
+        <span class="cov7" title="8">if message.Channel == (Channel{}) </span><span class="cov5" title="4">{
+                return NewLocAppError("Message.IsValid", "model.message.channel.app_error", nil, "")
         }</span>
 
-        <span class="cov0" title="0">if len(message.Shortcut) == 0 || len(message.Shortcut) &gt; 20 </span><span class="cov0" title="0">{
-                return NewLocAppError("Message.IsValid", "model.message.shortcut.app_error", nil, "")
-        }</span>
-
-        <span class="cov0" title="0">if len(message.Link) == 0 </span><span class="cov0" title="0">{
-                return NewLocAppError("Message.IsValid", "model.message.link.app_error", nil, "")
-        }</span>
-
-        <span class="cov0" title="0">return nil</span>
+        <span class="cov5" title="4">return nil</span>
 }
 
-func (message *Message) toJson() string <span class="cov0" title="0">{
+// preSave need to be called before saving a new or an updated mesage in the DB so it will have good time store.
+func (message *Message) preSave() <span class="cov5" title="5">{
+        message.Date = GetMillis()
+}</span>
+
+// toJson take the message object and transfor it into a json object for api usage.
+func (message *Message) toJson() string <span class="cov1" title="1">{
         b, err := json.Marshal(message)
         if err != nil </span><span class="cov0" title="0">{
                 return ""
-        }</span><span class="cov0" title="0"> else {
+        }</span><span class="cov1" title="1"> else {
                 return string(b)
         }</span>
 }
 
-func messageFromJson(data io.Reader) *Message <span class="cov0" title="0">{
+func messageFromJson(data io.Reader) *Message <span class="cov1" title="1">{
         decoder := json.NewDecoder(data)
         var message Message
         err := decoder.Decode(&amp;message)
-        if err == nil </span><span class="cov0" title="0">{
+        if err == nil </span><span class="cov1" title="1">{
                 return &amp;message
         }</span><span class="cov0" title="0"> else {
                 return nil
         }</span>
 }
 
-func messageListToJson(messageList []*Message) string <span class="cov0" title="0">{
+func messageListToJson(messageList []*Message) string <span class="cov1" title="1">{
         b, err := json.Marshal(messageList)
         if err != nil </span><span class="cov0" title="0">{
                 return ""
-        }</span><span class="cov0" title="0"> else {
+        }</span><span class="cov1" title="1"> else {
                 return string(b)
         }</span>
 }
 
-func messageListFromJson(data io.Reader) []*Message <span class="cov0" title="0">{
+func messageListFromJson(data io.Reader) []*Message <span class="cov1" title="1">{
         decoder := json.NewDecoder(data)
         var messageList []*Message
         err := decoder.Decode(&amp;messageList)
-        if err == nil </span><span class="cov0" title="0">{
+        if err == nil </span><span class="cov1" title="1">{
                 return messageList
         }</span><span class="cov0" title="0"> else {
                 return nil
@@ -444,7 +450,7 @@ const (
 )
 
 type Organisation struct {
-        OrganisationId   uint64 `gorm:"primary_key;column:idOrganisation;AUTO_INCREMENT" json:"-"`
+        IdOrganisation   uint64 `gorm:"primary_key;column:idOrganisation;AUTO_INCREMENT" json:"-"`
         DockerStack      int    `gorm:"column:dockerStack;not null;unique" json:"docker_stack"`
         OrganisationName string `gorm:"column:organisationName;not null;unique" json:"display_name"`
         Description      string `gorm:"column:desciption" json:"description,omitempty"`
@@ -475,15 +481,15 @@ func organisationFromJson(data io.Reader) *Organisation <span class="cov1" title
 func (organisation *Organisation) isValid() *AppError <span class="cov10" title="28">{
 
         if len(organisation.OrganisationName) == 0 || utf8.RuneCountInString(organisation.OrganisationName) &gt; ORGANISATION_DISPLAY_NAME_MAX_RUNES </span><span class="cov5" title="6">{
-                return NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.OrganisationId, 10))
+                return NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10))
         }</span>
 
         <span class="cov9" title="22">if !IsValidOrganisationIdentifier(organisation.OrganisationName) </span><span class="cov6" title="9">{
-                return NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.OrganisationId, 10))
+                return NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10))
         }</span>
 
         <span class="cov7" title="13">if utf8.RuneCountInString(organisation.Description) &gt; ORGANISATION_DESCRIPTION_MAX_RUNES </span><span class="cov1" title="1">{
-                return NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.description.app_error", nil, "id="+strconv.FormatUint(organisation.OrganisationId, 10))
+                return NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.description.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10))
         }</span>
 
         <span class="cov7" title="12">return nil</span>
@@ -514,7 +520,7 @@ const (
 )
 
 type Parameter struct {
-        ParameterId uint64 `gorm:"primary_key;column:idParameter;AUTO_INCREMENT" json:"-"`
+        IdParameter uint64 `gorm:"primary_key;column:idParameter;AUTO_INCREMENT" json:"-"`
         Local       string `gorm:"column:local;not null; unique" json:"local"`
         TimeZone    string `gorm:"column:timeZone;not null; unique;" json:"time_zone"`
         SleepStart  int    `gorm:"column:sleepStart;not null;unique" json:"sleep_start"`
@@ -581,7 +587,7 @@ import (
 )
 
 type Role struct {
-        RoleId        uint64 `gorm:"primary_key;column:idRole;AUTO_INCREMENT" json:"-"`
+        IdRole        uint64 `gorm:"primary_key;column:idRole;AUTO_INCREMENT" json:"-"`
         RoleName      string `gorm:"column:roleName;unique_index;not null;unique" json:"name"`
         CanUsePrivate bool   `gorm:"column:canUsePrivate;not null" json:"canUsePrivate"`
         CanModerate   bool   `gorm:"column:canModerate;not null" json:"canModerate"`
@@ -803,7 +809,7 @@ var (
 */
 type User struct {
         UserId             uint64 `gorm:"primary_key;column:idUser;AUTO_INCREMENT" json:"-"`
-        WebId              string `gorm:"column:webId; not null; unique;" json:"webId"`
+        WebId              string `gorm:"column:webId; not null; unique;" json:"web_id"`
         Username           string `gorm:"column:userName; not null; unique;" json:"username"`
         Email              string `gorm:"column:email; not null; unique;" json:"email"`
         EmailVerified      bool   `gorm:"column:emailVerified; not null; unique;" json:"email_verified"`
@@ -813,7 +819,7 @@ type User struct {
         LastPasswordUpdate int64  `gorm:"column:lastPasswordUpdate; not null;" json:"last_password_update"`
         FailedAttempts     int    `gorm:"column:failedAttempts; not null;" json:"failed_attempts"`
         Locale             string `gorm:"column:locale; not null;" json:"locale"`
-        Role               Role   `gorm:"column:role; not null;ForeignKey:RoleId;" json:"roles"`
+        Role               Role   `gorm:"column:role; not null;ForeignKey:IdRole;" json:"-"`
         Avatar             string `gorm:"column:avatar;" json:"avatar, omitempty"`
         NickName           string `gorm:"column:nickName;" json:"nickname, omitempty"`
         FirstName          string `gorm:"column:firstName;" json:"first_name, omitempty"`
@@ -1051,7 +1057,7 @@ type AppError struct {
         params        map[string]interface{} `json:"-"`
 }
 
-func (er *AppError) Error() string <span class="cov1" title="1">{
+func (er *AppError) Error() string <span class="cov3" title="5">{
         return er.Where + ": " + er.Message + ", " + er.DetailedError
 }</span>
 
@@ -1100,7 +1106,7 @@ func AppErrorFromJson(data io.Reader) *AppError <span class="cov1" title="2">{
         }</span>
 }
 
-func NewLocAppError(where string, id string, params map[string]interface{}, details string) *AppError <span class="cov7" title="212">{
+func NewLocAppError(where string, id string, params map[string]interface{}, details string) *AppError <span class="cov8" title="243">{
         ap := &amp;AppError{}
         ap.Id = id
         ap.params = params
@@ -1117,7 +1123,7 @@ var encoding = base32.NewEncoding("ybndrfg8ejkmcpqxot1uwisza345h769")
 // NewId is a globally unique identifier.  It is a [A-Z0-9] string 26
 // characters long.  It is a UUID version 4 Guid that is zbased32 encoded
 // with the padding stripped off.
-func NewId() string <span class="cov10" title="1068">{
+func NewId() string <span class="cov10" title="1070">{
         var b bytes.Buffer
         encoder := base32.NewEncoder(encoding, &amp;b)
         encoder.Write(uuid.NewRandom())
@@ -1138,7 +1144,7 @@ func NewRandomString(length int) string <span class="cov9" title="1000">{
 }</span>
 
 // GetMillis is a convience method to get milliseconds since epoch.
-func GetMillis() int64 <span class="cov5" title="46">{
+func GetMillis() int64 <span class="cov6" title="65">{
         return time.Now().UnixNano() / int64(time.Millisecond)
 }</span>
 

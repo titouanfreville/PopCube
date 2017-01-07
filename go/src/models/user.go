@@ -85,7 +85,7 @@ var (
 */
 type User struct {
 	UserId             uint64 `gorm:"primary_key;column:idUser;AUTO_INCREMENT" json:"-"`
-	WebId              string `gorm:"column:webId; not null; unique;" json:"webId"`
+	WebId              string `gorm:"column:webId; not null; unique;" json:"web_id"`
 	Username           string `gorm:"column:userName; not null; unique;" json:"username"`
 	Email              string `gorm:"column:email; not null; unique;" json:"email"`
 	EmailVerified      bool   `gorm:"column:emailVerified; not null; unique;" json:"email_verified"`
@@ -95,7 +95,7 @@ type User struct {
 	LastPasswordUpdate int64  `gorm:"column:lastPasswordUpdate; not null;" json:"last_password_update"`
 	FailedAttempts     int    `gorm:"column:failedAttempts; not null;" json:"failed_attempts"`
 	Locale             string `gorm:"column:locale; not null;" json:"locale"`
-	Role               Role   `gorm:"column:role; not null;ForeignKey:RoleId;" json:"roles"`
+	Role               Role   `gorm:"column:role; not null;ForeignKey:IdRole;" json:"-"`
 	Avatar             string `gorm:"column:avatar;" json:"avatar, omitempty"`
 	NickName           string `gorm:"column:nickName;" json:"nickname, omitempty"`
 	FirstName          string `gorm:"column:firstName;" json:"first_name, omitempty"`

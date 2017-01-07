@@ -6,28 +6,34 @@ import (
 )
 
 type Message struct {
-	MessageId uint64 `gorm:"primary_key;column:idMessage;AUTO_INCREMENT" json:"-"`
-	Name      string `gorm:"column:name;not null;unique" json:"name"`
-	Shortcut  string `gorm:"column:shortcut;not null;unique" json:"shortcut"`
-	Link      string `gorm:"column:link;not null;unique" json:"link"`
+	IdMessage uint64  `gorm:"primary_key;column:idMessage;AUTO_INCREMENT" json:"-"`
+	Date      int64   `gorm:"column:date;not null" json:"date"`
+	Content   string  `gorm:"column:content;type:longtext" json:"content"`
+	Creator   User    `gorm:"column:creator; not null;ForeignKey:IdUser;" json:"-"`
+	Channel   Channel `gorm:"column:channel; not null;ForeignKey:IdChannel;" json:"-"`
 }
 
+// isValid function is used to check that the provided message correspond to the message model. It has to be use before tring to store it in the db.
 func (message *Message) isValid() *AppError {
-	if len(message.Name) == 0 || len(message.Name) > 64 {
-		return NewLocAppError("Message.IsValid", "model.message.name.app_error", nil, "")
+	if message.Date == 0 {
+		return NewLocAppError("Message.IsValid", "model.message.date.app_error", nil, "")
 	}
-
-	if len(message.Shortcut) == 0 || len(message.Shortcut) > 20 {
-		return NewLocAppError("Message.IsValid", "model.message.shortcut.app_error", nil, "")
+	if message.Creator == (User{}) {
+		return NewLocAppError("Message.IsValid", "model.message.creator.app_error", nil, "")
 	}
-
-	if len(message.Link) == 0 {
-		return NewLocAppError("Message.IsValid", "model.message.link.app_error", nil, "")
+	if message.Channel == (Channel{}) {
+		return NewLocAppError("Message.IsValid", "model.message.channel.app_error", nil, "")
 	}
 
 	return nil
 }
 
+// preSave need to be called before saving a new or an updated mesage in the DB so it will have good time store.
+func (message *Message) preSave() {
+	message.Date = GetMillis()
+}
+
+// toJson take the message object and transfor it into a json object for api usage.
 func (message *Message) toJson() string {
 	b, err := json.Marshal(message)
 	if err != nil {

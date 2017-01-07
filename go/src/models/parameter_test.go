@@ -36,9 +36,9 @@ func TestParameterModel(t *testing.T) {
 				SleepEnd:   12,
 			}
 			So(parameter.isValid(), ShouldBeNil)
-			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_name.app_error", nil, "id="+strconv.FormatUint(parameter.ParameterId, 10)))
-			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.not_alphanum_parameter_name.app_error", nil, "id="+strconv.FormatUint(parameter.ParameterId, 10)))
-			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.description.app_error", nil, "id="+strconv.FormatUint(parameter.ParameterId, 10)))
+			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_name.app_error", nil, "id="+strconv.FormatUint(parameter.IdParameter, 10)))
+			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.not_alphanum_parameter_name.app_error", nil, "id="+strconv.FormatUint(parameter.IdParameter, 10)))
+			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.description.app_error", nil, "id="+strconv.FormatUint(parameter.IdParameter, 10)))
 		})
 		Convey("Given an incorrect parameter. Parameter should be refused", func() {
 			empty := Parameter{}
@@ -84,9 +84,9 @@ func TestParameterModel(t *testing.T) {
 		Convey("If parameter is empty, should fill some fields - webId, ParameterName, UpdatedAt, Avatar and type, and parameter should be valid", func() {
 			parameter.preSave()
 			So(parameter.isValid(), ShouldBeNil)
-			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_name.app_error", nil, "id="+strconv.FormatUint(parameter.ParameterId, 10)))
-			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.not_alphanum_parameter_name.app_error", nil, "id="+strconv.FormatUint(parameter.ParameterId, 10)))
-			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.description.app_error", nil, "id="+strconv.FormatUint(parameter.ParameterId, 10)))
+			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_name.app_error", nil, "id="+strconv.FormatUint(parameter.IdParameter, 10)))
+			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.not_alphanum_parameter_name.app_error", nil, "id="+strconv.FormatUint(parameter.IdParameter, 10)))
+			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.description.app_error", nil, "id="+strconv.FormatUint(parameter.IdParameter, 10)))
 			So(parameter.Local, ShouldEqual, "fr_FR")
 			So(parameter.TimeZone, ShouldEqual, "UTC-0")
 		})
@@ -98,9 +98,9 @@ func TestParameterModel(t *testing.T) {
 				SleepEnd:   12,
 			}
 			So(parameter.isValid(), ShouldBeNil)
-			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_name.app_error", nil, "id="+strconv.FormatUint(parameter.ParameterId, 10)))
-			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.not_alphanum_parameter_name.app_error", nil, "id="+strconv.FormatUint(parameter.ParameterId, 10)))
-			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.description.app_error", nil, "id="+strconv.FormatUint(parameter.ParameterId, 10)))
+			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_name.app_error", nil, "id="+strconv.FormatUint(parameter.IdParameter, 10)))
+			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.not_alphanum_parameter_name.app_error", nil, "id="+strconv.FormatUint(parameter.IdParameter, 10)))
+			So(parameter.isValid(), ShouldNotResemble, NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.description.app_error", nil, "id="+strconv.FormatUint(parameter.IdParameter, 10)))
 			So(parameter.Local, ShouldEqual, "en_EN")
 			So(parameter.TimeZone, ShouldEqual, "UTC+2")
 			So(parameter.SleepStart, ShouldEqual, 280)

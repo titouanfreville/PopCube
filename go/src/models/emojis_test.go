@@ -84,7 +84,6 @@ func TestEmojisModel(t *testing.T) {
 				new_emoji_list := emojiListFromJson(strings.NewReader(json))
 				So(new_emoji_list, ShouldResemble, emoji_list)
 			})
-
 		})
 	})
 
