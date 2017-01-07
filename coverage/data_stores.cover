@@ -1,4 +1,6 @@
 mode: count
-data_stores/data_store.go:16.40,18.18 2 0
-data_stores/data_store.go:24.2,24.15 1 0
-data_stores/data_store.go:18.18,21.15 2 0
+data_stores/data_store.go:23.40,25.18 2 0
+data_stores/data_store.go:31.2,31.15 1 0
+data_stores/data_store.go:25.18,28.15 3 0
+data_stores/data_store.go:34.82,42.2 5 2
+data_stores/data_store.go:44.40,48.2 3 1

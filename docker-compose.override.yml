@@ -19,3 +19,8 @@ services:
       - "./go/src:/go/src"
       - "./docs:/home/docs"
       - "./coverage:/home/coverage"
+  database:
+    env_file: .env
+    ports:
+      - 3306:3306
+

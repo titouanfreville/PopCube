@@ -1,10 +1,17 @@
 package data_stores
 
 import (
+	l4g "github.com/alecthomas/log4go"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
 	"models"
 	"time"
-	//l4g "github.com/alecthomas/log4go"
 )
+
+type DataStore struct {
+	Db  *gorm.DB
+	Err error
+}
 
 type StoreResult struct {
 	Data interface{}
@@ -16,12 +23,28 @@ type StoreChannel chan StoreResult
 func Must(sc StoreChannel) interface{} {
 	r := <-sc
 	if r.Err != nil {
-		//l4g.Close()
+		l4g.Close()
 		time.Sleep(time.Second)
 		panic(r.Err)
 	}
 
 	return r.Data
+}
+
+func (ds *DataStore) initConnection(user string, dbname string, password string) {
+	connection_chain := user + ":" + password + "@/" + dbname + "?charset=utf8&parseTime=True&loc=Local"
+	db, err := gorm.Open("mysql", connection_chain)
+	db.AutoMigrate(&models.Avatar{}, &models.Channel{}, &models.Emoji{}, &models.Folder{},
+		&models.Member{}, &models.Message{}, &models.Organisation{}, &models.Parameter{},
+		&models.Role{}, &models.User{})
+	ds.Db = db
+	ds.Err = err
+}
+
+func (ds *DataStore) closeConnection() {
+	db := *ds.Db
+	defer db.Close()
+	ds.Db = &gorm.DB{}
 }
 
 // type Store interface {

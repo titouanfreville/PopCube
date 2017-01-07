@@ -54,7 +54,7 @@
 			<div id="nav">
 				<select id="files">
 				
-				<option value="file0">data_stores/data_store.go (0.0%)</option>
+				<option value="file0">data_stores/data_store.go (57.1%)</option>
 				
 				</select>
 			</div>
@@ -80,10 +80,17 @@
 		<pre class="file" id="file0" style="display: none">package data_stores
 
 import (
+        l4g "github.com/alecthomas/log4go"
+        _ "github.com/go-sql-driver/mysql"
+        "github.com/jinzhu/gorm"
         "models"
         "time"
-        //l4g "github.com/alecthomas/log4go"
 )
+
+type DataStore struct {
+        Db  *gorm.DB
+        Err error
+}
 
 type StoreResult struct {
         Data interface{}
@@ -95,13 +102,29 @@ type StoreChannel chan StoreResult
 func Must(sc StoreChannel) interface{} <span class="cov0" title="0">{
         r := &lt;-sc
         if r.Err != nil </span><span class="cov0" title="0">{
-                //l4g.Close()
+                l4g.Close()
                 time.Sleep(time.Second)
                 panic(r.Err)</span>
         }
 
         <span class="cov0" title="0">return r.Data</span>
 }
+
+func (ds *DataStore) initConnection(user string, dbname string, password string) <span class="cov10" title="2">{
+        connection_chain := user + ":" + password + "@/" + dbname + "?charset=utf8&amp;parseTime=True&amp;loc=Local"
+        db, err := gorm.Open("mysql", connection_chain)
+        db.AutoMigrate(&amp;models.Avatar{}, &amp;models.Channel{}, &amp;models.Emoji{}, &amp;models.Folder{},
+                &amp;models.Member{}, &amp;models.Message{}, &amp;models.Organisation{}, &amp;models.Parameter{},
+                &amp;models.Role{}, &amp;models.User{})
+        ds.Db = db
+        ds.Err = err
+}</span>
+
+func (ds *DataStore) closeConnection() <span class="cov1" title="1">{
+        db := *ds.Db
+        defer db.Close()
+        ds.Db = &amp;gorm.DB{}
+}</span>
 
 // type Store interface {
 //         Team() TeamStore
