@@ -10,6 +10,13 @@ services:
   compass:
     volumes:
       - "./app/styles:/home/style"
+  goconvey:
+    build:
+      context: .
+      dockerfile: docker/goconvey.Dockerfile
+    env_file: .env
+    ports:
+      - 8082:8080
   back-test:
     build:
       context: .
