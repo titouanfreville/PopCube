@@ -93,11 +93,21 @@ func (ds *DataStore) closeConnection() {
 // 	TotalReadDbConnections() int
 // }
 
-// Organisation is unique in the database.
+// Organisation is unique in the database. So they are no use of providing an user to get.
+// Delete is useless as we will down the docker stack in case an organisation leace.
 type OrganisationStore interface {
 	Save(organisation *models.Organisation, ds DataStore) *AppError
-	Update(organisation *models.Organisation) *AppError
-	Get(organisationName string) *AppError
+	Update(organisation *models.Organisation, new_organisation *models.Organisation, ds DataStore) *AppError
+	Get(ds DataStore) *models.Organisation
+}
+
+type AvatarStore interface {
+	Save(avatar *models.Avatar, ds DataStore) *AppError
+	Update(avatar *models.Avatar, new_avatar *models.Avatar, ds DataStore) *AppError
+	GetByName(avatarName string, ds DataStore) *models.Avatar
+	GetByLink(avatarLink string, ds DataStore) *models.Avatar
+	GetAll(ds DataStore) *models.Avatar
+	Delete(avatar *models.Avatar, ds DataStore) *AppError
 }
 
 // type UserStore interface {
