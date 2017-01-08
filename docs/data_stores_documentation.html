@@ -1,0 +1,250 @@
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script type='text/javascript'>
+	document.ANALYSIS_DATA = ;
+	document.CALLGRAPH = ;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "."</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				
+			</div>
+		</div>
+		
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+				
+				<dd><a href="#Must">func Must(sc StoreChannel) interface{}</a></dd>
+			
+			
+				
+				<dd><a href="#StoreChannel">type StoreChannel</a></dd>
+				
+				
+			
+				
+				<dd><a href="#StoreResult">type StoreResult</a></dd>
+				
+				
+			
+				
+				<dd><a href="#UserStore">type UserStore</a></dd>
+				
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h4>Package files</h4>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="/src/data_store.go">data_store.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		<div id="pkg-callgraph" class="toggle" style="display: none">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Internal Call Graph section">Internal call graph ▹</h2>
+		</div> <!-- .expanded -->
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Internal Call Graph section">Internal call graph ▾</h2>
+			<p>
+			  In the call graph viewer below, each node
+			  is a function belonging to this package
+			  and its children are the functions it
+			  calls&mdash;perhaps dynamically.
+			</p>
+			<p>
+			  The root nodes are the entry points of the
+			  package: functions that may be called from
+			  outside the package.
+			  There may be non-exported or anonymous
+			  functions among them if they are called
+			  dynamically from another package.
+			</p>
+			<p>
+			  Click a node to visit that function's source code.
+			  From there you can visit its callers by
+			  clicking its declaring <code>func</code>
+			  token.
+			</p>
+			<p>
+			  Functions may be omitted if they were
+			  determined to be unreachable in the
+			  particular programs or tests that were
+			  analyzed.
+			</p>
+			<!-- Zero means show all package entry points. -->
+			<ul style="margin-left: 0.5in" id="callgraph-0" class="treeview"></ul>
+		</div>
+		</div> <!-- #pkg-callgraph -->
+
+		
+		
+		
+			
+			
+			<h2 id="Must">func <a href="/src/data_stores/data_store.go?s=195:233#L6">Must</a>
+				<a class="permalink" href="#Must">&#xb6;</a>
+			</h2>
+			<pre>func Must(sc <a href="#StoreChannel">StoreChannel</a>) interface{}</pre>
+			
+			
+			
+
+		
+		
+			
+			
+			<h2 id="StoreChannel">type <a href="/src/data_stores/data_store.go?s=159:193#L4">StoreChannel</a>
+				<a class="permalink" href="#StoreChannel">&#xb6;</a>
+			</h2>
+			
+			<pre>type StoreChannel chan <a href="#StoreResult">StoreResult</a></pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="StoreResult">type <a href="/src/data_stores/data_store.go?s=89:157#L1">StoreResult</a>
+				<a class="permalink" href="#StoreResult">&#xb6;</a>
+			</h2>
+			
+			<pre>type StoreResult struct {
+<span id="StoreResult.Data"></span>    Data interface{}
+<span id="StoreResult.Err"></span>    Err  *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#AppError">AppError</a>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="UserStore">type <a href="/src/data_stores/data_store.go?s=992:2927#L43">UserStore</a>
+				<a class="permalink" href="#UserStore">&#xb6;</a>
+			</h2>
+			
+			<pre>type UserStore interface {
+    Save(user *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#User">User</a>) <a href="#StoreChannel">StoreChannel</a>
+    Update(user *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#User">User</a>, allowRoleUpdate <a href="/pkg/builtin/#bool">bool</a>) <a href="#StoreChannel">StoreChannel</a>
+    UpdateLastPictureUpdate(userId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
+    UpdateUpdateAt(userId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
+    UpdatePassword(userId, newPassword <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
+    Get(id <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
+    GetAll() <a href="#StoreChannel">StoreChannel</a>
+    InvalidateProfilesInChannelCacheByUser(userId <a href="/pkg/builtin/#string">string</a>)
+    InvalidateProfilesInChannelCache(channelId <a href="/pkg/builtin/#string">string</a>)
+    GetProfilesInChannel(channelId <a href="/pkg/builtin/#string">string</a>, offset <a href="/pkg/builtin/#int">int</a>, limit <a href="/pkg/builtin/#int">int</a>, allowFromCache <a href="/pkg/builtin/#bool">bool</a>) <a href="#StoreChannel">StoreChannel</a>
+    GetProfilesNotInChannel(teamId <a href="/pkg/builtin/#string">string</a>, channelId <a href="/pkg/builtin/#string">string</a>, offset <a href="/pkg/builtin/#int">int</a>, limit <a href="/pkg/builtin/#int">int</a>) <a href="#StoreChannel">StoreChannel</a>
+    GetProfilesByUsernames(usernames []<a href="/pkg/builtin/#string">string</a>, teamId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
+    GetAllProfiles(offset <a href="/pkg/builtin/#int">int</a>, limit <a href="/pkg/builtin/#int">int</a>) <a href="#StoreChannel">StoreChannel</a>
+    GetProfiles(teamId <a href="/pkg/builtin/#string">string</a>, offset <a href="/pkg/builtin/#int">int</a>, limit <a href="/pkg/builtin/#int">int</a>) <a href="#StoreChannel">StoreChannel</a>
+    GetProfileByIds(userId []<a href="/pkg/builtin/#string">string</a>, allowFromCache <a href="/pkg/builtin/#bool">bool</a>) <a href="#StoreChannel">StoreChannel</a>
+    InvalidatProfileCacheForUser(userId <a href="/pkg/builtin/#string">string</a>)
+    GetByEmail(email <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
+    GetByUsername(username <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
+    GetForLogin(loginId <a href="/pkg/builtin/#string">string</a>, allowSignInWithUsername, allowSignInWithEmail, ldapEnabled <a href="/pkg/builtin/#bool">bool</a>) <a href="#StoreChannel">StoreChannel</a>
+    VerifyEmail(userId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
+    GetEtagForAllProfiles() <a href="#StoreChannel">StoreChannel</a>
+    GetEtagForProfiles(teamId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
+    UpdateFailedPasswordAttempts(userId <a href="/pkg/builtin/#string">string</a>, attempts <a href="/pkg/builtin/#int">int</a>) <a href="#StoreChannel">StoreChannel</a>
+    GetTotalUsersCount() <a href="#StoreChannel">StoreChannel</a>
+    GetSystemAdminProfiles() <a href="#StoreChannel">StoreChannel</a>
+    PermanentDelete(userId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
+    AnalyticsUniqueUserCount(teamId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
+    GetUnreadCount(userId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
+    GetUnreadCountForChannel(userId <a href="/pkg/builtin/#string">string</a>, channelId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
+    GetRecentlyActiveUsersForTeam(teamId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
+    Search(teamId <a href="/pkg/builtin/#string">string</a>, term <a href="/pkg/builtin/#string">string</a>, options map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#bool">bool</a>) <a href="#StoreChannel">StoreChannel</a>
+    SearchInChannel(channelId <a href="/pkg/builtin/#string">string</a>, term <a href="/pkg/builtin/#string">string</a>, options map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#bool">bool</a>) <a href="#StoreChannel">StoreChannel</a>
+    SearchNotInChannel(teamId <a href="/pkg/builtin/#string">string</a>, channelId <a href="/pkg/builtin/#string">string</a>, term <a href="/pkg/builtin/#string">string</a>, options map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#bool">bool</a>) <a href="#StoreChannel">StoreChannel</a>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+	
+
+	
+
+
+
+
+

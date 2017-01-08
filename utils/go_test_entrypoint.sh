@@ -90,6 +90,11 @@ check_fixed_packages () {
   go tool cover -html=/home/coverage/data_stores.cover -o /home/docs/data_stores_cover.html
   go tool cover -html=/home/coverage/models.cover -o /home/docs/models_cover.html
   go tool cover -html=/home/coverage/utils.cover -o /home/docs/utils_cover.html
+  godoc -html cmd/api > /home/docs/api_documentation.html
+  godoc -html cmd/data_stores > /home/docs/data_stores_documentation.html
+  godoc -html cmd/models > /home/docs/models_documentation.html
+  godoc -html cmd/utils > /home/docs/utils_documentation.html
+
 }
 
 watching=${2:-0}

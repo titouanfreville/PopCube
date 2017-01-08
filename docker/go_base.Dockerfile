@@ -11,6 +11,7 @@ COPY go/src/data_stores /go/src/data_stores
 COPY utils/go_get.sh /bin/go_get.sh
 
 RUN apk add --update git bash && \
+		cd /go/ && \
 		go_get.sh && \
 		rm -rf /var/cache/apk/* && \
 		rm /bin/go_get.sh

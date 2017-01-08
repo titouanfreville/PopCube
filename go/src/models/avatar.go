@@ -6,7 +6,7 @@ import (
 )
 
 type Avatar struct {
-	AvatarId uint64 `gorm:"primary_key;column:idAvatar;AUTO_INCREMENT" json:"-"`
+	IdAvatar uint64 `gorm:"primary_key;column:idAvatar;AUTO_INCREMENT" json:"-"`
 	Name     string `gorm:"column:name;not null;unique" json:"name"`
 	Link     string `gorm:"column:link;not null;unique" json:"link"`
 }

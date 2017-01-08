@@ -1,16 +1,31 @@
-// Here is the file which describe the user model.
-// It provwebIdes bascis function to manipulate the model.
+// Created by Titouan FREVILLE <titouanfreville@gmail.com>
+//
+// Inspired by mattermost project
+/*
+	Package Models.
+	This package implements the basics databases models used by PopCube chat api.
+
+	Models
+
+	The following is a list of models described:
+		Avatar: Contain all informations for avatar management
+		Channel: Contain all informations for channel management
+		Emojis: Contain all informations for emojis management
+		Organisation: Contain all informations for organisation management
+		Parameter: Contain all informations for parmeters management
+		Role: Contain all informations for roles management
+		User: Contain all informations for users management
+*/
 package models
 
 import (
 	"encoding/json"
 	"fmt"
+	"golang.org/x/crypto/bcrypt"
 	"io"
 	"regexp"
 	"strings"
 	"unicode/utf8"
-
-	"golang.org/x/crypto/bcrypt"
 )
 
 const (
@@ -23,67 +38,68 @@ const (
 )
 
 var (
-	user_CHANNEL        = []string{"general", "random"}
+	user_CHANNEL = []string{"general", "random"}
+	// Protected user name cause they are taken by system or used for special mentions.
 	restrictedUsernames = []string{
 		"all",
 		"channel",
 		"popcubebot",
 		"here",
 	}
+	// Definition of character user can possess in there names.
 	validUsernameChars = regexp.MustCompile(`^[a-z0-9\.\-_]+$`)
 )
 
-// Used in mattermost project ... Don't think they are relevant for us.
-//	MfaActive          bool      `json:"mfa_active,omitempty"`
-//	MfaSecret          string    `json:"mfa_secret,omitempty"`
+/*
+	User object
 
-// user object
-//
-// - webwebId: String unique and non null to webIdentify the user on application services. - REQUIRED
-//
-// - username: Store the user username used to log into the service. - REQUIRED
-//
-// - email: user mail ;). - REQUIRED
-//
-// - emailVerified: true if email was verified by user. - REQUIRED
-//
-// - updatedAt: Time of the last update. Used to create tag for browser cache. - REQUIRED
-//
-// - deleted: True if user is deleted. - REQUIRED
-//
-// - password: Hashed password. - REQUIRED
-//
-// - lastpasswordUpdate: Date of the last password modification. - REQUIRED
-//
-// - failedAttemps: Number of fail try to connect to account. - REQUIRED
-//
-// - locale: user favorite langage. - REQUIRED
-//
-// - role : int referencing a user role existing in the database. - REQUIRED
-//
-// - nickname: Name to use in communication channel (by default : username).
-//
-// - first name: user true first name.
-//
-// - last name: user true last name.
-//
-// - lastActivityAt: Date && Time of the last activity of the user.
+		- webwebId: String unique and non null to webIdentify the user on application services. - REQUIRED
+
+		- username: Store the user username used to log into the service. - REQUIRED
+
+		- email: user mail ;). - REQUIRED
+
+		- emailVerified: true if email was verified by user. - REQUIRED
+
+		- updatedAt: Time of the last update. Used to create tag for browser cache. - REQUIRED
+
+		- deleted: True if user is deleted. - REQUIRED
+
+		- password: Hashed password. - REQUIRED
+
+		- lastpasswordUpdate: Date of the last password modification. - REQUIRED
+
+		- failedAttemps: Number of fail try to connect to account. - REQUIRED
+
+		- locale: user favorite langage. - REQUIRED
+
+		- role : int referencing a user role existing in the database. - REQUIRED
+
+		- nickname: Name to use in communication channel (by default : username).
+
+		- first name: user true first name.
+
+		- last name: user true last name.
+
+		- lastActivityAt: Date && Time of the last activity of the user.
+*/
 type User struct {
-	WebId              string `json:"webId"`
-	UpdatedAt          int64  `json:"update_at,omitempty"`
-	Deleted            bool   `json:"deleted"`
-	Username           string `json:"username"`
-	Password           string `json:"password,omitempty"`
-	Email              string `json:"email,omitempty"`
-	EmailVerified      bool   `json:"email_verified,omitempty"`
-	Nickname           string `json:"nickname"`
-	FirstName          string `json:"first_name"`
-	LastName           string `json:"last_name"`
-	Avatar             string `json:"avatar"`
-	Role               int64  `json:"roles,omitempty"`
-	LastPasswordUpdate int64  `json:"last_password_update,omitempty"`
-	FailedAttempts     int    `json:"failed_attempts,omitempty"`
-	Locale             string `json:"locale"`
+	UserId             uint64 `gorm:"primary_key;column:idUser;AUTO_INCREMENT" json:"-"`
+	WebId              string `gorm:"column:webId; not null; unique;" json:"web_id"`
+	Username           string `gorm:"column:userName; not null; unique;" json:"username"`
+	Email              string `gorm:"column:email; not null; unique;" json:"email"`
+	EmailVerified      bool   `gorm:"column:emailVerified; not null; unique;" json:"email_verified"`
+	UpdatedAt          int64  `gorm:"column:updatedAt; not null;" json:"update_at"`
+	Deleted            bool   `gorm:"column:deleted; not null;" json:"deleted"`
+	Password           string `gorm:"column:password; not null;" json:"password"`
+	LastPasswordUpdate int64  `gorm:"column:lastPasswordUpdate; not null;" json:"last_password_update"`
+	FailedAttempts     int    `gorm:"column:failedAttempts; not null;" json:"failed_attempts"`
+	Locale             string `gorm:"column:locale; not null;" json:"locale"`
+	Role               Role   `gorm:"column:role; not null;ForeignKey:IdRole;" json:"-"`
+	Avatar             string `gorm:"column:avatar;" json:"avatar, omitempty"`
+	NickName           string `gorm:"column:nickName;" json:"nickname, omitempty"`
+	FirstName          string `gorm:"column:firstName;" json:"first_name, omitempty"`
+	LastName           string `gorm:"column:lastName;" json:"last_name, omitempty"`
 	LastActivityAt     int64  `db:"-" json:"last_activity_at,omitempty"`
 }
 
@@ -103,8 +119,8 @@ func (u *User) isValid() *AppError {
 		return NewLocAppError("user.isValid", "model.user.is_valid.Email.app_error", nil, "user_webId="+u.WebId)
 	}
 
-	if utf8.RuneCountInString(u.Nickname) > 64 {
-		return NewLocAppError("user.isValid", "model.user.is_valid.Nickname.app_error", nil, "user_webId="+u.WebId)
+	if utf8.RuneCountInString(u.NickName) > 64 {
+		return NewLocAppError("user.isValid", "model.user.is_valid.NickName.app_error", nil, "user_webId="+u.WebId)
 	}
 
 	if utf8.RuneCountInString(u.FirstName) > 64 {
@@ -179,6 +195,7 @@ func userFromJson(data io.Reader) *User {
 	}
 }
 
+// isValidUsername will check if provided userName is correct
 func isValidUsername(u string) bool {
 	if len(u) == 0 || len(u) > 64 {
 		return false
@@ -215,8 +232,8 @@ func (u *User) getFullName() string {
 
 // Get full name of the user
 func (u *User) getDisplayName() string {
-	if u.Nickname != "" {
-		return u.Nickname
+	if u.NickName != "" {
+		return u.NickName
 	}
 	if u.getFullName() != "" {
 		return u.getFullName()
