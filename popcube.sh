@@ -27,7 +27,7 @@ source "$SCRIPT_EXECUTION_DIR/scripts/env_management.sh"
 ## Running process --------------------------------------------------------------
 # ### Process Variables ### #
 # Get options passed
-TEMP=$(getopt -o dhqye:f: --long --debug,help,non-interactive,quiet,env-file: -n 'Softgallery Tools Initialisation' -- $*)
+TEMP=$(getopt -o dhqptye:f: --long --debug,help,non-interactive,quiet,--dev,--prod,--quiet,env-file: -n 'Popcube Tools Initialisation' -- $*)
 # Help message to print for -h option (or when not providing correctly)
 HELP_MESSAGE="Usage: ./**/init.sh [OPTIONS] [COMMANDS]
 
