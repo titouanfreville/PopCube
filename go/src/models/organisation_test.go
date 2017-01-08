@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+	u "utils"
 )
 
 func TestOrganisationModel(t *testing.T) {
@@ -12,14 +13,14 @@ func TestOrganisationModel(t *testing.T) {
 		Convey("Given a organisation", func() {
 			organisation := Organisation{OrganisationName: NewId()}
 			Convey("Converting organisation to json then json to organisation should provide same organisation information", func() {
-				json := organisation.toJson()
-				test_organisation := organisationFromJson(strings.NewReader(json))
+				json := organisation.ToJson()
+				test_organisation := OganisationFromJson(strings.NewReader(json))
 				So(organisation.OrganisationName, ShouldEqual, test_organisation.OrganisationName)
 			})
 		})
 	})
 
-	Convey("Testing isValid function", t, func() {
+	Convey("Testing IsValid function", t, func() {
 		Convey("Given a correct organisation. Organisation should be validate", func() {
 			organisation := Organisation{
 				IdOrganisation:   0,
@@ -29,10 +30,10 @@ func TestOrganisationModel(t *testing.T) {
 				Avatar:           "jesuiscool.svg",
 				Domain:           "electra.popcube",
 			}
-			So(organisation.isValid(), ShouldBeNil)
-			So(organisation.isValid(), ShouldNotResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
-			So(organisation.isValid(), ShouldNotResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
-			So(organisation.isValid(), ShouldNotResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.description.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+			So(organisation.IsValid(), ShouldBeNil)
+			So(organisation.IsValid(), ShouldNotResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+			So(organisation.IsValid(), ShouldNotResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+			So(organisation.IsValid(), ShouldNotResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.description.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
 		})
 		Convey("Given an incorrect organisation. Organisation should be refused", func() {
 			empty := Organisation{}
@@ -44,38 +45,38 @@ func TestOrganisationModel(t *testing.T) {
 				Domain:         "electra.popcube",
 			}
 			Convey("Empty organisation or no Organisation Name organisation should return No name error", func() {
-				So(empty.isValid(), ShouldResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
-				So(organisation.isValid(), ShouldResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+				So(empty.IsValid(), ShouldResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+				So(organisation.IsValid(), ShouldResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
 			})
 			organisation.OrganisationName = strings.ToLower("ThisShouldBeAFreakingLongEnougthStringToRefuse.BahNon, pas tout seul. C'est long 64 caractères en vrai  ~#~")
 			Convey("Too long organisation name should return Too Long organisation name error", func() {
-				So(organisation.isValid(), ShouldResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+				So(organisation.IsValid(), ShouldResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
 			})
 			Convey("Incorect Alpha Num organisation name should be refused (no CAPS)", func() {
 				organisation.OrganisationName = "JeSuisCaps"
-				So(organisation.isValid(), ShouldResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+				So(organisation.IsValid(), ShouldResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
 				organisation.OrganisationName = "?/+*"
-				So(organisation.isValid(), ShouldResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+				So(organisation.IsValid(), ShouldResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
 				organisation.OrganisationName = "("
-				So(organisation.isValid(), ShouldResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+				So(organisation.IsValid(), ShouldResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
 				organisation.OrganisationName = "{"
-				So(organisation.isValid(), ShouldResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+				So(organisation.IsValid(), ShouldResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
 				organisation.OrganisationName = "}"
-				So(organisation.isValid(), ShouldResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+				So(organisation.IsValid(), ShouldResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
 				organisation.OrganisationName = ")"
-				So(organisation.isValid(), ShouldResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+				So(organisation.IsValid(), ShouldResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
 				organisation.OrganisationName = "["
-				So(organisation.isValid(), ShouldResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+				So(organisation.IsValid(), ShouldResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
 				organisation.OrganisationName = "]"
-				So(organisation.isValid(), ShouldResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+				So(organisation.IsValid(), ShouldResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
 				organisation.OrganisationName = " "
-				So(organisation.isValid(), ShouldResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+				So(organisation.IsValid(), ShouldResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
 			})
 			organisation.OrganisationName = "electra"
 
 			organisation.Description = "Il Me faut beaucoup trop de character  ..... 1024, c'est grand. Très grand. Comme l'infini. C'est long. Surtout à la fin. Et puis même après tout ça, je suis pas sur que ce soit assez .... Compteur ??? Vous êtes la ? :p :'( :docker: :troll-face: Alors, la, c'était 250 en fait .... Du coup, on va multiplier par 4 un ? OK ? l Me faut beaucoup trop de character  ..... 1024, c'est grand. Très grand. Comme l'infini. C'est long. Surtout à la fin. Et puis même après tout ça, je suis pas sur que ce soit assez .... Compteur ??? Vous êtes la ? :p :'( :docker: :troll-face: Alors, la, c'était 250 en fait .... Du coup, on va multiplier par 4 un ? OK ? l Me faut beaucoup trop de character  ..... 1024, c'est grand. Très grand. Comme l'infini. C'est long. Surtout à la fin. Et puis même après tout ça, je suis pas sur que ce soit assez .... Compteur ??? Vous êtes la ? :p :'( :docker: :troll-face: Alors, la, c'était 250 en fait .... Du coup, on va multiplier par 4 un ? OK ? l Me faut beaucoup trop de character  ..... 1024, c'est grand. Très grand. Comme l'infini. C'est long. Surtout à la fin. Et puis même après tout ça, je suis pas sur que ce soit assez .... Compteur ??? Vous êtes la ? :p :'( :docker: :troll-face:"
 			Convey("Given a too long description, should return too long description error :p", func() {
-				So(organisation.isValid(), ShouldResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.description.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+				So(organisation.IsValid(), ShouldResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.description.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
 			})
 			organisation.Description = "Stoppppppp"
 		})
@@ -84,26 +85,26 @@ func TestOrganisationModel(t *testing.T) {
 	Convey("Testing PreSave function", t, func() {
 		organisation := Organisation{}
 		Convey("If organisation is empty, should fill some fields - webId, OrganisationName, UpdatedAt, Avatar and type, and organisation should not be valid", func() {
-			organisation.preSave()
-			So(organisation.isValid(), ShouldResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
-			So(organisation.isValid(), ShouldNotResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
-			So(organisation.isValid(), ShouldNotResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.description.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+			organisation.PreSave()
+			So(organisation.IsValid(), ShouldResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+			So(organisation.IsValid(), ShouldNotResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+			So(organisation.IsValid(), ShouldNotResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.description.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
 			So(organisation.Avatar, ShouldEqual, "default_organisation_avatar.svg")
 		})
 		Convey("If provided OrganisationName contain caps, they should be lowered", func() {
 			organisation.OrganisationName = "JeSuisCaps"
-			organisation.preSave()
-			So(organisation.isValid(), ShouldBeNil)
-			So(organisation.isValid(), ShouldNotResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
-			So(organisation.isValid(), ShouldNotResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
-			So(organisation.isValid(), ShouldNotResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.description.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+			organisation.PreSave()
+			So(organisation.IsValid(), ShouldBeNil)
+			So(organisation.IsValid(), ShouldNotResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+			So(organisation.IsValid(), ShouldNotResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+			So(organisation.IsValid(), ShouldNotResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.description.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
 			So(organisation.OrganisationName, ShouldEqual, "jesuiscaps")
 			organisation.OrganisationName = "nocapsshouldnotbemodified"
-			organisation.preSave()
-			So(organisation.isValid(), ShouldBeNil)
-			So(organisation.isValid(), ShouldNotResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
-			So(organisation.isValid(), ShouldNotResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
-			So(organisation.isValid(), ShouldNotResemble, NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.description.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+			organisation.PreSave()
+			So(organisation.IsValid(), ShouldBeNil)
+			So(organisation.IsValid(), ShouldNotResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+			So(organisation.IsValid(), ShouldNotResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
+			So(organisation.IsValid(), ShouldNotResemble, u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.description.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10)))
 			So(organisation.OrganisationName, ShouldEqual, "nocapsshouldnotbemodified")
 		})
 	})

@@ -35,7 +35,27 @@
 			</div>
 			<div class="expanded">
 				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
-				
+				<p>
+Created by Titouan FREVILLE &lt;titouanfreville@gmail.com&gt;
+</p>
+<p>
+Inspired by mattermost project
+</p>
+<pre>Package Data Stores.
+This package implements the basics databases communication functions used by PopCube chat api.
+
+Stores
+
+The following is a list of stores described:
+	Avatar: Contain all informations for avatar management
+	Channel: Contain all informations for channel management
+	Emojis: Contain all informations for emojis management
+	Organisation: Contain all informations for organisation management
+	Parameter: Contain all informations for parmeters management
+	Role: Contain all informations for roles management
+	User: Contain all informations for users management
+</pre>
+
 			</div>
 		</div>
 		
@@ -53,23 +73,29 @@
 			
 			
 			
-				
-				<dd><a href="#Must">func Must(sc StoreChannel) interface{}</a></dd>
-			
 			
 				
-				<dd><a href="#StoreChannel">type StoreChannel</a></dd>
+				<dd><a href="#DataStore">type DataStore</a></dd>
 				
 				
 			
 				
-				<dd><a href="#StoreResult">type StoreResult</a></dd>
+				<dd><a href="#OrganisationStore">type OrganisationStore</a></dd>
 				
 				
 			
 				
-				<dd><a href="#UserStore">type UserStore</a></dd>
+				<dd><a href="#OrganisationStoreImpl">type OrganisationStoreImpl</a></dd>
 				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#OrganisationStoreImpl.Get">func (osi OrganisationStoreImpl) Get(ds DataStore) *models.Organisation</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#OrganisationStoreImpl.Save">func (osi OrganisationStoreImpl) Save(organisation *models.Organisation, ds DataStore) *AppError</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#OrganisationStoreImpl.Update">func (osi OrganisationStoreImpl) Update(organisation *models.Organisation, new_organisation *models.Organisation, ds DataStore) *AppError</a></dd>
 				
 			
 			
@@ -84,6 +110,8 @@
 			<span style="font-size:90%">
 			
 				<a href="/src/data_store.go">data_store.go</a>
+			
+				<a href="/src/organisation_store.go">organisation_store.go</a>
 			
 			</span>
 			</p>
@@ -131,47 +159,16 @@
 		
 		
 		
-			
-			
-			<h2 id="Must">func <a href="/src/data_stores/data_store.go?s=195:233#L6">Must</a>
-				<a class="permalink" href="#Must">&#xb6;</a>
-			</h2>
-			<pre>func Must(sc <a href="#StoreChannel">StoreChannel</a>) interface{}</pre>
-			
-			
-			
-
-		
 		
 			
 			
-			<h2 id="StoreChannel">type <a href="/src/data_stores/data_store.go?s=159:193#L4">StoreChannel</a>
-				<a class="permalink" href="#StoreChannel">&#xb6;</a>
+			<h2 id="DataStore">type <a href="/src/data_stores/data_store.go?s=855:905#L20">DataStore</a>
+				<a class="permalink" href="#DataStore">&#xb6;</a>
 			</h2>
 			
-			<pre>type StoreChannel chan <a href="#StoreResult">StoreResult</a></pre>
-
-			
-
-			
-
-			
-			
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="StoreResult">type <a href="/src/data_stores/data_store.go?s=89:157#L1">StoreResult</a>
-				<a class="permalink" href="#StoreResult">&#xb6;</a>
-			</h2>
-			
-			<pre>type StoreResult struct {
-<span id="StoreResult.Data"></span>    Data interface{}
-<span id="StoreResult.Err"></span>    Err  *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#AppError">AppError</a>
+			<pre>type DataStore struct {
+<span id="DataStore.Db"></span>    Db  *<a href="/pkg/github.com/jinzhu/gorm/">gorm</a>.<a href="/pkg/github.com/jinzhu/gorm/#DB">DB</a>
+<span id="DataStore.Err"></span>    Err <a href="/pkg/builtin/#error">error</a>
 }</pre>
 
 			
@@ -188,44 +185,17 @@
 		
 			
 			
-			<h2 id="UserStore">type <a href="/src/data_stores/data_store.go?s=992:2927#L43">UserStore</a>
-				<a class="permalink" href="#UserStore">&#xb6;</a>
+			<h2 id="OrganisationStore">type <a href="/src/data_stores/data_store.go?s=2522:2716#L87">OrganisationStore</a>
+				<a class="permalink" href="#OrganisationStore">&#xb6;</a>
 			</h2>
-			
-			<pre>type UserStore interface {
-    Save(user *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#User">User</a>) <a href="#StoreChannel">StoreChannel</a>
-    Update(user *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#User">User</a>, allowRoleUpdate <a href="/pkg/builtin/#bool">bool</a>) <a href="#StoreChannel">StoreChannel</a>
-    UpdateLastPictureUpdate(userId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
-    UpdateUpdateAt(userId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
-    UpdatePassword(userId, newPassword <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
-    Get(id <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
-    GetAll() <a href="#StoreChannel">StoreChannel</a>
-    InvalidateProfilesInChannelCacheByUser(userId <a href="/pkg/builtin/#string">string</a>)
-    InvalidateProfilesInChannelCache(channelId <a href="/pkg/builtin/#string">string</a>)
-    GetProfilesInChannel(channelId <a href="/pkg/builtin/#string">string</a>, offset <a href="/pkg/builtin/#int">int</a>, limit <a href="/pkg/builtin/#int">int</a>, allowFromCache <a href="/pkg/builtin/#bool">bool</a>) <a href="#StoreChannel">StoreChannel</a>
-    GetProfilesNotInChannel(teamId <a href="/pkg/builtin/#string">string</a>, channelId <a href="/pkg/builtin/#string">string</a>, offset <a href="/pkg/builtin/#int">int</a>, limit <a href="/pkg/builtin/#int">int</a>) <a href="#StoreChannel">StoreChannel</a>
-    GetProfilesByUsernames(usernames []<a href="/pkg/builtin/#string">string</a>, teamId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
-    GetAllProfiles(offset <a href="/pkg/builtin/#int">int</a>, limit <a href="/pkg/builtin/#int">int</a>) <a href="#StoreChannel">StoreChannel</a>
-    GetProfiles(teamId <a href="/pkg/builtin/#string">string</a>, offset <a href="/pkg/builtin/#int">int</a>, limit <a href="/pkg/builtin/#int">int</a>) <a href="#StoreChannel">StoreChannel</a>
-    GetProfileByIds(userId []<a href="/pkg/builtin/#string">string</a>, allowFromCache <a href="/pkg/builtin/#bool">bool</a>) <a href="#StoreChannel">StoreChannel</a>
-    InvalidatProfileCacheForUser(userId <a href="/pkg/builtin/#string">string</a>)
-    GetByEmail(email <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
-    GetByUsername(username <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
-    GetForLogin(loginId <a href="/pkg/builtin/#string">string</a>, allowSignInWithUsername, allowSignInWithEmail, ldapEnabled <a href="/pkg/builtin/#bool">bool</a>) <a href="#StoreChannel">StoreChannel</a>
-    VerifyEmail(userId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
-    GetEtagForAllProfiles() <a href="#StoreChannel">StoreChannel</a>
-    GetEtagForProfiles(teamId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
-    UpdateFailedPasswordAttempts(userId <a href="/pkg/builtin/#string">string</a>, attempts <a href="/pkg/builtin/#int">int</a>) <a href="#StoreChannel">StoreChannel</a>
-    GetTotalUsersCount() <a href="#StoreChannel">StoreChannel</a>
-    GetSystemAdminProfiles() <a href="#StoreChannel">StoreChannel</a>
-    PermanentDelete(userId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
-    AnalyticsUniqueUserCount(teamId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
-    GetUnreadCount(userId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
-    GetUnreadCountForChannel(userId <a href="/pkg/builtin/#string">string</a>, channelId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
-    GetRecentlyActiveUsersForTeam(teamId <a href="/pkg/builtin/#string">string</a>) <a href="#StoreChannel">StoreChannel</a>
-    Search(teamId <a href="/pkg/builtin/#string">string</a>, term <a href="/pkg/builtin/#string">string</a>, options map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#bool">bool</a>) <a href="#StoreChannel">StoreChannel</a>
-    SearchInChannel(channelId <a href="/pkg/builtin/#string">string</a>, term <a href="/pkg/builtin/#string">string</a>, options map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#bool">bool</a>) <a href="#StoreChannel">StoreChannel</a>
-    SearchNotInChannel(teamId <a href="/pkg/builtin/#string">string</a>, channelId <a href="/pkg/builtin/#string">string</a>, term <a href="/pkg/builtin/#string">string</a>, options map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#bool">bool</a>) <a href="#StoreChannel">StoreChannel</a>
+			<p>
+Organisation is unique in the database.
+</p>
+
+			<pre>type OrganisationStore interface {
+    Save(organisation *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Organisation">Organisation</a>, ds <a href="#DataStore">DataStore</a>) *<a href="#AppError">AppError</a>
+    Update(organisation *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Organisation">Organisation</a>) *<a href="#AppError">AppError</a>
+    Get(organisationName <a href="/pkg/builtin/#string">string</a>) *<a href="#AppError">AppError</a>
 }</pre>
 
 			
@@ -238,6 +208,67 @@
 
 			
 
+			
+		
+			
+			
+			<h2 id="OrganisationStoreImpl">type <a href="/src/data_stores/organisation_store.go?s=169:225#L2">OrganisationStoreImpl</a>
+				<a class="permalink" href="#OrganisationStoreImpl">&#xb6;</a>
+			</h2>
+			
+			<pre>type OrganisationStoreImpl struct {
+    <a href="#OrganisationStore">OrganisationStore</a>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+				
+				<h3 id="OrganisationStoreImpl.Get">func (OrganisationStoreImpl) <a href="/src/data_stores/organisation_store.go?s=2055:2126#L49">Get</a>
+					<a class="permalink" href="#OrganisationStoreImpl.Get">&#xb6;</a>
+				</h3>
+				<pre>func (osi <a href="#OrganisationStoreImpl">OrganisationStoreImpl</a>) Get(ds <a href="#DataStore">DataStore</a>) *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Organisation">Organisation</a></pre>
+				<p>
+Used to get organisation from DB
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="OrganisationStoreImpl.Save">func (OrganisationStoreImpl) <a href="/src/data_stores/organisation_store.go?s=253:349#L7">Save</a>
+					<a class="permalink" href="#OrganisationStoreImpl.Save">&#xb6;</a>
+				</h3>
+				<pre>func (osi <a href="#OrganisationStoreImpl">OrganisationStoreImpl</a>) Save(organisation *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Organisation">Organisation</a>, ds <a href="#DataStore">DataStore</a>) *<a href="#AppError">AppError</a></pre>
+				<p>
+Use to save data in BB
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="OrganisationStoreImpl.Update">func (OrganisationStoreImpl) <a href="/src/data_stores/organisation_store.go?s=1115:1252#L28">Update</a>
+					<a class="permalink" href="#OrganisationStoreImpl.Update">&#xb6;</a>
+				</h3>
+				<pre>func (osi <a href="#OrganisationStoreImpl">OrganisationStoreImpl</a>) Update(organisation *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Organisation">Organisation</a>, new_organisation *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Organisation">Organisation</a>, ds <a href="#DataStore">DataStore</a>) *<a href="#AppError">AppError</a></pre>
+				<p>
+Used to update data in DB
+</p>
+
+				
+				
+				
 			
 		
 	

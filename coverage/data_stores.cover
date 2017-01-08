@@ -1,4 +1,18 @@
 mode: count
-data_stores/data_store.go:16.40,18.18 2 0
-data_stores/data_store.go:24.2,24.15 1 0
-data_stores/data_store.go:18.18,21.15 2 0
+data_stores/data_store.go:53.82,62.2 5 4
+data_stores/data_store.go:64.40,68.2 3 1
+data_stores/organisation_store.go:17.98,21.57 4 22
+data_stores/organisation_store.go:25.2,25.42 1 10
+data_stores/organisation_store.go:29.2,29.64 1 9
+data_stores/organisation_store.go:33.2,34.12 2 9
+data_stores/organisation_store.go:21.57,24.3 2 12
+data_stores/organisation_store.go:25.42,28.3 2 1
+data_stores/organisation_store.go:29.64,32.3 2 0
+data_stores/organisation_store.go:38.139,42.57 4 13
+data_stores/organisation_store.go:46.2,46.61 1 13
+data_stores/organisation_store.go:50.2,50.90 1 1
+data_stores/organisation_store.go:54.2,55.12 2 1
+data_stores/organisation_store.go:42.57,45.3 2 0
+data_stores/organisation_store.go:46.61,49.3 2 12
+data_stores/organisation_store.go:50.90,53.3 2 0
+data_stores/organisation_store.go:59.73,64.2 4 2

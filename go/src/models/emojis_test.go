@@ -4,20 +4,21 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"strings"
 	"testing"
+	u "utils"
 )
 
 func TestEmojisModel(t *testing.T) {
-	Convey("Testing isValid function", t, func() {
+	Convey("Testing IsValid function", t, func() {
 		Convey("Given a correct emojis. Should be validated", func() {
 			emoji := Emoji{
 				Name:     "Troll Face",
 				Shortcut: ":troll-face:",
 				Link:     "emojis/trollface.svg",
 			}
-			So(emoji.isValid(), ShouldBeNil)
-			So(emoji.isValid(), ShouldNotResemble, NewLocAppError("Emoji.IsValid", "model.emoji.name.app_error", nil, ""))
-			So(emoji.isValid(), ShouldNotResemble, NewLocAppError("Emoji.IsValid", "model.emoji.shortcut.app_error", nil, ""))
-			So(emoji.isValid(), ShouldNotResemble, NewLocAppError("Emoji.IsValid", "model.emoji.link.app_error", nil, ""))
+			So(emoji.IsValid(), ShouldBeNil)
+			So(emoji.IsValid(), ShouldNotResemble, u.NewLocAppError("Emoji.IsValid", "model.emoji.name.app_error", nil, ""))
+			So(emoji.IsValid(), ShouldNotResemble, u.NewLocAppError("Emoji.IsValid", "model.emoji.shortcut.app_error", nil, ""))
+			So(emoji.IsValid(), ShouldNotResemble, u.NewLocAppError("Emoji.IsValid", "model.emoji.link.app_error", nil, ""))
 		})
 
 		Convey("Given incorrect emojis. Should be refused", func() {
@@ -28,21 +29,21 @@ func TestEmojisModel(t *testing.T) {
 			}
 
 			Convey("Too long shortcut or empty shorctcut should return Shortcut error", func() {
-				So(emoji.isValid(), ShouldResemble, NewLocAppError("Emoji.IsValid", "model.emoji.shortcut.app_error", nil, ""))
+				So(emoji.IsValid(), ShouldResemble, u.NewLocAppError("Emoji.IsValid", "model.emoji.shortcut.app_error", nil, ""))
 				emoji.Shortcut = ""
-				So(emoji.isValid(), ShouldResemble, NewLocAppError("Emoji.IsValid", "model.emoji.shortcut.app_error", nil, ""))
+				So(emoji.IsValid(), ShouldResemble, u.NewLocAppError("Emoji.IsValid", "model.emoji.shortcut.app_error", nil, ""))
 			})
 			emoji.Shortcut = ":goodone:"
 			emoji.Name = ""
 			Convey("Too long or empty Name should return name error", func() {
-				So(emoji.isValid(), ShouldResemble, NewLocAppError("Emoji.IsValid", "model.emoji.name.app_error", nil, ""))
+				So(emoji.IsValid(), ShouldResemble, u.NewLocAppError("Emoji.IsValid", "model.emoji.name.app_error", nil, ""))
 				emoji.Name = "thishastobeatoolongname.For this, it need to be more than 64 char lenght .............. So long. Plus it should be alpha numeric. I'll add the test later on."
-				So(emoji.isValid(), ShouldResemble, NewLocAppError("Emoji.IsValid", "model.emoji.name.app_error", nil, ""))
+				So(emoji.IsValid(), ShouldResemble, u.NewLocAppError("Emoji.IsValid", "model.emoji.name.app_error", nil, ""))
 			})
 			emoji.Name = "Correct Name"
 			emoji.Link = ""
 			Convey("Empty link should result in link error", func() {
-				So(emoji.isValid(), ShouldResemble, NewLocAppError("Emoji.IsValid", "model.emoji.link.app_error", nil, ""))
+				So(emoji.IsValid(), ShouldResemble, u.NewLocAppError("Emoji.IsValid", "model.emoji.link.app_error", nil, ""))
 			})
 		})
 	})
@@ -55,8 +56,8 @@ func TestEmojisModel(t *testing.T) {
 				Link:     "emojis/trollface.svg",
 			}
 			Convey("Transforming it in JSON then back to EMOJI should provide similar objects", func() {
-				json := emoji.toJson()
-				new_emoji := emojiFromJson(strings.NewReader(json))
+				json := emoji.ToJson()
+				new_emoji := EmojiFromJson(strings.NewReader(json))
 				So(new_emoji, ShouldResemble, &emoji)
 			})
 		})
@@ -80,8 +81,8 @@ func TestEmojisModel(t *testing.T) {
 			emoji_list := []*Emoji{&emoji1, &emoji2, &emoji3}
 
 			Convey("Transfoming it in JSON then back to EMOJI LIST shoud give ressembling objects", func() {
-				json := emojiListToJson(emoji_list)
-				new_emoji_list := emojiListFromJson(strings.NewReader(json))
+				json := EmojiListToJson(emoji_list)
+				new_emoji_list := EmojiListFromJson(strings.NewReader(json))
 				So(new_emoji_list, ShouldResemble, emoji_list)
 			})
 		})

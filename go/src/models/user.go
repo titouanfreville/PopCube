@@ -26,6 +26,7 @@ import (
 	"regexp"
 	"strings"
 	"unicode/utf8"
+	u "utils"
 )
 
 const (
@@ -103,79 +104,79 @@ type User struct {
 	LastActivityAt     int64  `db:"-" json:"last_activity_at,omitempty"`
 }
 
-// isValid valwebIdates the user and returns an error if it isn't configured
+// IsValid valwebIdates the user and returns an error if it isn't configured
 // correctly.
-func (u *User) isValid() *AppError {
+func (user *User) IsValid() *u.AppError {
 
-	if len(u.WebId) != 26 {
-		return NewLocAppError("user.isValid", "model.user.is_valid.WebId.app_error", nil, "")
+	if len(user.WebId) != 26 {
+		return u.NewLocAppError("user.IsValid", "model.user.is_valid.WebId.app_error", nil, "")
 	}
 
-	if !isValidUsername(u.Username) {
-		return NewLocAppError("user.isValid", "model.user.is_valid.Username.app_error", nil, "user_webId="+u.WebId)
+	if !IsValidUsername(user.Username) {
+		return u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webId="+user.WebId)
 	}
 
-	if len(u.Email) == 0 || len(u.Email) > 128 || !IsValidEmail(u.Email) {
-		return NewLocAppError("user.isValid", "model.user.is_valid.Email.app_error", nil, "user_webId="+u.WebId)
+	if len(user.Email) == 0 || len(user.Email) > 128 || !IsValidEmail(user.Email) {
+		return u.NewLocAppError("user.IsValid", "model.user.is_valid.Email.app_error", nil, "user_webId="+user.WebId)
 	}
 
-	if utf8.RuneCountInString(u.NickName) > 64 {
-		return NewLocAppError("user.isValid", "model.user.is_valid.NickName.app_error", nil, "user_webId="+u.WebId)
+	if utf8.RuneCountInString(user.NickName) > 64 {
+		return u.NewLocAppError("user.IsValid", "model.user.is_valid.NickName.app_error", nil, "user_webId="+user.WebId)
 	}
 
-	if utf8.RuneCountInString(u.FirstName) > 64 {
-		return NewLocAppError("user.isValid", "model.user.is_valid.first_name.app_error", nil, "user_webId="+u.WebId)
+	if utf8.RuneCountInString(user.FirstName) > 64 {
+		return u.NewLocAppError("user.IsValid", "model.user.is_valid.first_name.app_error", nil, "user_webId="+user.WebId)
 	}
 
-	if utf8.RuneCountInString(u.LastName) > 64 {
-		return NewLocAppError("user.isValid", "model.user.is_valid.last_name.app_error", nil, "user_webId="+u.WebId)
+	if utf8.RuneCountInString(user.LastName) > 64 {
+		return u.NewLocAppError("user.IsValid", "model.user.is_valid.last_name.app_error", nil, "user_webId="+user.WebId)
 	}
 
-	if len(u.Password) == 0 {
-		return NewLocAppError("user.isValid", "model.user.is_valid.auth_data_pwd.app_error", nil, "user_webId="+u.WebId)
+	if len(user.Password) == 0 {
+		return u.NewLocAppError("user.IsValid", "model.user.is_valid.auth_data_pwd.app_error", nil, "user_webId="+user.WebId)
 	}
 
 	return nil
 }
 
-// preSave have to be run before saving user in DB. It will fill necessary information (webId, username, etc. ) and hash password
-func (u *User) preSave() {
-	if u.WebId == "" {
-		u.WebId = NewId()
+// PreSave have to be run before saving user in DB. It will fill necessary information (webId, username, etc. ) and hash password
+func (user *User) PreSave() {
+	if user.WebId == "" {
+		user.WebId = NewId()
 	}
 
-	if u.Username == "" {
-		u.Username = NewId()
+	if user.Username == "" {
+		user.Username = NewId()
 	}
 
-	u.Username = strings.ToLower(u.Username)
-	u.Email = strings.ToLower(u.Email)
+	user.Username = strings.ToLower(user.Username)
+	user.Email = strings.ToLower(user.Email)
 
-	u.UpdatedAt = GetMillis()
-	u.LastPasswordUpdate = u.UpdatedAt
+	user.UpdatedAt = GetMillis()
+	user.LastPasswordUpdate = user.UpdatedAt
 
-	if u.Locale == "" {
-		u.Locale = DEFAULT_locale
+	if user.Locale == "" {
+		user.Locale = DEFAULT_locale
 	}
 
-	if len(u.Password) > 0 {
-		u.Password = hashPassword(u.Password)
+	if len(user.Password) > 0 {
+		user.Password = HashPassword(user.Password)
 	}
 }
 
-// preSave will set the webId and username if missing.  It will also fill
+// PreSave will set the webId and username if missing.  It will also fill
 // in the CreateAt, UpdateAt times.  It will also hash the password.  It should
 // be run before saving the user to the db.
 // PreUpdate should be run before updating the user in the db.
-func (u *User) preUpdate() {
-	u.Username = strings.ToLower(u.Username)
-	u.Email = strings.ToLower(u.Email)
-	u.UpdatedAt = GetMillis()
+func (user *User) PreUpdate() {
+	user.Username = strings.ToLower(user.Username)
+	user.Email = strings.ToLower(user.Email)
+	user.UpdatedAt = GetMillis()
 }
 
 // ToJson convert a user to a json string
-func (u *User) toJson() string {
-	b, err := json.Marshal(u)
+func (user *User) ToJson() string {
+	b, err := json.Marshal(user)
 	if err != nil {
 		return ""
 	} else {
@@ -183,8 +184,8 @@ func (u *User) toJson() string {
 	}
 }
 
-// userFromJson will decode the input and return a user
-func userFromJson(data io.Reader) *User {
+// UserFromJson will decode the input and return a user
+func UserFromJson(data io.Reader) *User {
 	decoder := json.NewDecoder(data)
 	var user User
 	err := decoder.Decode(&user)
@@ -195,18 +196,18 @@ func userFromJson(data io.Reader) *User {
 	}
 }
 
-// isValidUsername will check if provided userName is correct
-func isValidUsername(u string) bool {
-	if len(u) == 0 || len(u) > 64 {
+// IsValidUsername will check if provided userName is correct
+func IsValidUsername(user string) bool {
+	if len(user) == 0 || len(user) > 64 {
 		return false
 	}
 
-	if !validUsernameChars.MatchString(u) {
+	if !validUsernameChars.MatchString(user) {
 		return false
 	}
 
 	for _, restrictedUsername := range restrictedUsernames {
-		if u == restrictedUsername {
+		if user == restrictedUsername {
 			return false
 		}
 	}
@@ -214,35 +215,35 @@ func isValidUsername(u string) bool {
 	return true
 }
 
-// Generate a valwebId strong etag so the browser can cache the results
-func (u *User) etag(showFullName, showemail bool) string {
-	return Etag(u.WebId, u.UpdatedAt, showFullName, showemail)
+// Generate a valwebId strong Etag so the browser can cache the results
+func (user *User) Etag(showFullName, showemail bool) string {
+	return Etag(user.WebId, user.UpdatedAt, showFullName, showemail)
 }
 
 // Get full name of the user
-func (u *User) getFullName() string {
-	if u.LastName == "" {
-		return u.FirstName
+func (user *User) GetFullName() string {
+	if user.LastName == "" {
+		return user.FirstName
 	}
-	if u.FirstName == "" {
-		return u.LastName
+	if user.FirstName == "" {
+		return user.LastName
 	}
-	return u.FirstName + " " + u.LastName
+	return user.FirstName + " " + user.LastName
 }
 
 // Get full name of the user
-func (u *User) getDisplayName() string {
-	if u.NickName != "" {
-		return u.NickName
+func (user *User) GetDisplayName() string {
+	if user.NickName != "" {
+		return user.NickName
 	}
-	if u.getFullName() != "" {
-		return u.getFullName()
+	if user.GetFullName() != "" {
+		return user.GetFullName()
 	}
-	return u.Username
+	return user.Username
 }
 
 // hashpassword generates a hash using the bcrypt.GenerateFrompassword
-func hashPassword(password string) string {
+func HashPassword(password string) string {
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), 10)
 	if err != nil {
 		panic(err)
@@ -252,7 +253,7 @@ func hashPassword(password string) string {
 }
 
 // Comparepassword compares the hash
-func comparePassword(hash string, password string) bool {
+func ComparePassword(hash string, password string) bool {
 
 	if len(password) == 0 || len(hash) == 0 {
 		return false
@@ -263,7 +264,7 @@ func comparePassword(hash string, password string) bool {
 }
 
 // Transform user name to meet requirement
-func cleanUsername(s string) string {
+func CleanUsername(s string) string {
 	s = strings.ToLower(strings.Replace(s, " ", "-", -1))
 
 	for _, value := range reservedName {
@@ -281,7 +282,7 @@ func cleanUsername(s string) string {
 		}
 	}
 
-	if !isValidUsername(s) {
+	if !IsValidUsername(s) {
 		s = "a" + NewId()
 	}
 

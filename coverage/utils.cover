@@ -1,4 +1,21 @@
 mode: count
+utils/apperrors.go:22.36,24.2 1 1
+utils/apperrors.go:26.55,27.22 1 0
+utils/apperrors.go:27.22,29.3 1 0
+utils/apperrors.go:29.3,31.3 1 0
+utils/apperrors.go:34.66,35.22 1 0
+utils/apperrors.go:35.22,37.3 1 0
+utils/apperrors.go:37.3,39.3 1 0
+utils/apperrors.go:42.37,44.16 2 1
+utils/apperrors.go:44.16,46.3 1 0
+utils/apperrors.go:46.3,48.3 1 1
+utils/apperrors.go:52.49,55.17 3 2
+utils/apperrors.go:61.2,64.16 4 2
+utils/apperrors.go:55.17,57.3 1 0
+utils/apperrors.go:57.3,59.3 1 2
+utils/apperrors.go:64.16,66.3 1 1
+utils/apperrors.go:66.3,68.3 1 1
+utils/apperrors.go:71.103,81.2 9 2
 utils/utils.go:7.60,11.29 3 8
 utils/utils.go:15.2,15.29 1 8
 utils/utils.go:21.2,21.15 1 8

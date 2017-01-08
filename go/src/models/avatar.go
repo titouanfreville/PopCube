@@ -3,6 +3,7 @@ package models
 import (
 	"encoding/json"
 	"io"
+	u "utils"
 )
 
 type Avatar struct {
@@ -11,19 +12,19 @@ type Avatar struct {
 	Link     string `gorm:"column:link;not null;unique" json:"link"`
 }
 
-func (avatar *Avatar) isValid() *AppError {
+func (avatar *Avatar) IsValid() *u.AppError {
 	if len(avatar.Name) == 0 || len(avatar.Name) > 64 {
-		return NewLocAppError("Avatar.IsValid", "model.avatar.name.app_error", nil, "")
+		return u.NewLocAppError("Avatar.IsValid", "model.avatar.name.app_error", nil, "")
 	}
 
 	if len(avatar.Link) == 0 {
-		return NewLocAppError("Avatar.IsValid", "model.avatar.link.app_error", nil, "")
+		return u.NewLocAppError("Avatar.IsValid", "model.avatar.link.app_error", nil, "")
 	}
 
 	return nil
 }
 
-func (avatar *Avatar) toJson() string {
+func (avatar *Avatar) ToJson() string {
 	b, err := json.Marshal(avatar)
 	if err != nil {
 		return ""
@@ -32,7 +33,7 @@ func (avatar *Avatar) toJson() string {
 	}
 }
 
-func avatarFromJson(data io.Reader) *Avatar {
+func AvatarFromJson(data io.Reader) *Avatar {
 	decoder := json.NewDecoder(data)
 	var avatar Avatar
 	err := decoder.Decode(&avatar)
@@ -43,7 +44,7 @@ func avatarFromJson(data io.Reader) *Avatar {
 	}
 }
 
-func avatarListToJson(avatarList []*Avatar) string {
+func AvatarListToJson(avatarList []*Avatar) string {
 	b, err := json.Marshal(avatarList)
 	if err != nil {
 		return ""
@@ -52,7 +53,7 @@ func avatarListToJson(avatarList []*Avatar) string {
 	}
 }
 
-func avatarListFromJson(data io.Reader) []*Avatar {
+func AvatarListFromJson(data io.Reader) []*Avatar {
 	decoder := json.NewDecoder(data)
 	var avatarList []*Avatar
 	err := decoder.Decode(&avatarList)

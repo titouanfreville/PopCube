@@ -3,6 +3,7 @@ package models
 import (
 	"encoding/json"
 	"io"
+	u "utils"
 )
 
 type Folder struct {
@@ -13,24 +14,24 @@ type Folder struct {
 	Message  Message `gorm:"column:message; not null;ForeignKey:IdMessage;" json:"-"`
 }
 
-func (folder *Folder) isValid() *AppError {
+func (folder *Folder) IsValid() *u.AppError {
 	if len(folder.Name) == 0 {
-		return NewLocAppError("Folder.IsValid", "model.folder.name.app_error", nil, "")
+		return u.NewLocAppError("Folder.IsValid", "model.folder.name.app_error", nil, "")
 	}
 
 	if len(folder.Link) == 0 {
-		return NewLocAppError("Folder.IsValid", "model.folder.link.app_error", nil, "")
+		return u.NewLocAppError("Folder.IsValid", "model.folder.link.app_error", nil, "")
 	}
 	if len(folder.Type) == 0 {
-		return NewLocAppError("Folder.IsValid", "model.folder.type.app_error", nil, "")
+		return u.NewLocAppError("Folder.IsValid", "model.folder.type.app_error", nil, "")
 	}
 	if folder.Message == (Message{}) {
-		return NewLocAppError("Folder.IsValid", "model.folder.message.app_error", nil, "")
+		return u.NewLocAppError("Folder.IsValid", "model.folder.message.app_error", nil, "")
 	}
 	return nil
 }
 
-func (folder *Folder) toJson() string {
+func (folder *Folder) ToJson() string {
 	b, err := json.Marshal(folder)
 	if err != nil {
 		return ""
@@ -39,7 +40,7 @@ func (folder *Folder) toJson() string {
 	}
 }
 
-func folderFromJson(data io.Reader) *Folder {
+func FolderFromJson(data io.Reader) *Folder {
 	decoder := json.NewDecoder(data)
 	var folder Folder
 	err := decoder.Decode(&folder)
@@ -50,7 +51,7 @@ func folderFromJson(data io.Reader) *Folder {
 	}
 }
 
-func folderListToJson(folderList []*Folder) string {
+func FolderListToJson(folderList []*Folder) string {
 	b, err := json.Marshal(folderList)
 	if err != nil {
 		return ""
@@ -59,7 +60,7 @@ func folderListToJson(folderList []*Folder) string {
 	}
 }
 
-func folderListFromJson(data io.Reader) []*Folder {
+func FolderListFromJson(data io.Reader) []*Folder {
 	decoder := json.NewDecoder(data)
 	var folderList []*Folder
 	err := decoder.Decode(&folderList)

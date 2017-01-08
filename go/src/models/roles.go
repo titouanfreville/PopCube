@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"regexp"
+	u "utils"
 )
 
 type Role struct {
@@ -69,21 +70,21 @@ var (
 	validRoleNameChars = regexp.MustCompile(`^[a-z]+$`)
 )
 
-func (role *Role) isValid() *AppError {
-	if !isValidRoleName(role.RoleName) {
-		return NewLocAppError("Role.IsValid", "model.role.rolename.app_error", nil, "")
+func (role *Role) IsValid() *u.AppError {
+	if !IsValidRoleName(role.RoleName) {
+		return u.NewLocAppError("Role.IsValid", "model.role.rolename.app_error", nil, "")
 	}
 
 	return nil
 }
 
-func (role *Role) preSave() {
+func (role *Role) PreSave() {
 	if role.RoleName == "" {
 		role.RoleName = NewId()
 	}
 }
 
-func (role *Role) toJson() string {
+func (role *Role) ToJson() string {
 	b, err := json.Marshal(role)
 	if err != nil {
 		return ""
@@ -92,7 +93,7 @@ func (role *Role) toJson() string {
 	}
 }
 
-func isValidRoleName(u string) bool {
+func IsValidRoleName(u string) bool {
 	if len(u) == 0 || len(u) > 64 {
 		return false
 	}
@@ -110,7 +111,7 @@ func isValidRoleName(u string) bool {
 	return true
 }
 
-func roleFromJson(data io.Reader) *Role {
+func RoleFromJson(data io.Reader) *Role {
 	decoder := json.NewDecoder(data)
 	var role Role
 	err := decoder.Decode(&role)
@@ -121,7 +122,7 @@ func roleFromJson(data io.Reader) *Role {
 	}
 }
 
-func roleListToJson(roleList []*Role) string {
+func RoleListToJson(roleList []*Role) string {
 	b, err := json.Marshal(roleList)
 	if err != nil {
 		return ""
@@ -130,7 +131,7 @@ func roleListToJson(roleList []*Role) string {
 	}
 }
 
-func roleListFromJson(data io.Reader) []*Role {
+func RoleListFromJson(data io.Reader) []*Role {
 	decoder := json.NewDecoder(data)
 	var roleList []*Role
 	err := decoder.Decode(&roleList)
