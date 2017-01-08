@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"unicode/utf8"
+	u "utils"
 )
 
 const (
@@ -24,7 +25,7 @@ type Organisation struct {
 	Domain           string `gorm:"column:domain" json:"avatar,omitempty"`
 }
 
-func (organisation *Organisation) toJson() string {
+func (organisation *Organisation) ToJson() string {
 	b, err := json.Marshal(organisation)
 	if err != nil {
 		return ""
@@ -33,7 +34,7 @@ func (organisation *Organisation) toJson() string {
 	}
 }
 
-func organisationFromJson(data io.Reader) *Organisation {
+func OganisationFromJson(data io.Reader) *Organisation {
 	decoder := json.NewDecoder(data)
 	var organisation Organisation
 	err := decoder.Decode(&organisation)
@@ -44,24 +45,24 @@ func organisationFromJson(data io.Reader) *Organisation {
 	}
 }
 
-func (organisation *Organisation) isValid() *AppError {
+func (organisation *Organisation) IsValid() *u.AppError {
 
 	if len(organisation.OrganisationName) == 0 || utf8.RuneCountInString(organisation.OrganisationName) > ORGANISATION_DISPLAY_NAME_MAX_RUNES {
-		return NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10))
+		return u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10))
 	}
 
 	if !IsValidOrganisationIdentifier(organisation.OrganisationName) {
-		return NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10))
+		return u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10))
 	}
 
 	if utf8.RuneCountInString(organisation.Description) > ORGANISATION_DESCRIPTION_MAX_RUNES {
-		return NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.description.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10))
+		return u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.description.app_error", nil, "id="+strconv.FormatUint(organisation.IdOrganisation, 10))
 	}
 
 	return nil
 }
 
-func (organisation *Organisation) preSave() {
+func (organisation *Organisation) PreSave() {
 	organisation.OrganisationName = strings.ToLower(organisation.OrganisationName)
 
 	if organisation.Avatar == "" {

@@ -54,6 +54,29 @@
 			
 			
 			
+				
+				<dd><a href="#AppError">type AppError</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#AppErrorFromJson">func AppErrorFromJson(data io.Reader) *AppError</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewLocAppError">func NewLocAppError(where string, id string, params map[string]interface{}, details string) *AppError</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#AppError.Error">func (er *AppError) Error() string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#AppError.SystemMessage">func (er *AppError) SystemMessage(T goi18n.TranslateFunc) string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#AppError.ToJson">func (er *AppError) ToJson() string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#AppError.Translate">func (er *AppError) Translate(T goi18n.TranslateFunc)</a></dd>
+				
+			
 			
 			</dl>
 			</div><!-- #manual-nav -->
@@ -64,6 +87,8 @@
 			<h4>Package files</h4>
 			<p>
 			<span style="font-size:90%">
+			
+				<a href="/src/apperrors.go">apperrors.go</a>
 			
 				<a href="/src/utils.go">utils.go</a>
 			
@@ -113,6 +138,96 @@
 		
 		
 		
+		
+			
+			
+			<h2 id="AppError">type <a href="/src/utils/apperrors.go?s=119:945#L1">AppError</a>
+				<a class="permalink" href="#AppError">&#xb6;</a>
+			</h2>
+			
+			<pre>type AppError struct {
+<span id="AppError.Id"></span>    Id            <a href="/pkg/builtin/#string">string</a> `json:&#34;id&#34;`
+<span id="AppError.Message"></span>    Message       <a href="/pkg/builtin/#string">string</a> `json:&#34;message&#34;`               <span class="comment">// Message to be display to the end user without debugging information</span>
+<span id="AppError.DetailedError"></span>    DetailedError <a href="/pkg/builtin/#string">string</a> `json:&#34;detailed_error&#34;`        <span class="comment">// Internal error string to help the developer</span>
+<span id="AppError.RequestId"></span>    RequestId     <a href="/pkg/builtin/#string">string</a> `json:&#34;request_id,omitempty&#34;`  <span class="comment">// The RequestId that&#39;s also set in the header</span>
+<span id="AppError.StatusCode"></span>    StatusCode    <a href="/pkg/builtin/#int">int</a>    `json:&#34;status_code,omitempty&#34;` <span class="comment">// The http status code</span>
+<span id="AppError.Where"></span>    Where         <a href="/pkg/builtin/#string">string</a> `json:&#34;-&#34;`                     <span class="comment">// The function where it happened in the form of Struct.Func</span>
+<span id="AppError.IsOAuth"></span>    IsOAuth       <a href="/pkg/builtin/#bool">bool</a>   `json:&#34;is_oauth,omitempty&#34;`    <span class="comment">// Whether the error is OAuth specific</span>
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="AppErrorFromJson">func <a href="/src/utils/apperrors.go?s=1552:1599#L42">AppErrorFromJson</a>
+					<a class="permalink" href="#AppErrorFromJson">&#xb6;</a>
+				</h3>
+				<pre>func AppErrorFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#AppError">AppError</a></pre>
+				<p>
+AppErrorFromJson will decode the input and return an AppError
+</p>
+
+				
+				
+			
+				
+				<h3 id="NewLocAppError">func <a href="/src/utils/apperrors.go?s=1968:2069#L61">NewLocAppError</a>
+					<a class="permalink" href="#NewLocAppError">&#xb6;</a>
+				</h3>
+				<pre>func NewLocAppError(where <a href="/pkg/builtin/#string">string</a>, id <a href="/pkg/builtin/#string">string</a>, params map[<a href="/pkg/builtin/#string">string</a>]interface{}, details <a href="/pkg/builtin/#string">string</a>) *<a href="#AppError">AppError</a></pre>
+				
+				
+				
+			
+
+			
+				
+				<h3 id="AppError.Error">func (*AppError) <a href="/src/utils/apperrors.go?s=947:981#L12">Error</a>
+					<a class="permalink" href="#AppError.Error">&#xb6;</a>
+				</h3>
+				<pre>func (er *<a href="#AppError">AppError</a>) Error() <a href="/pkg/builtin/#string">string</a></pre>
+				
+				
+				
+				
+			
+				
+				<h3 id="AppError.SystemMessage">func (*AppError) <a href="/src/utils/apperrors.go?s=1204:1268#L24">SystemMessage</a>
+					<a class="permalink" href="#AppError.SystemMessage">&#xb6;</a>
+				</h3>
+				<pre>func (er *<a href="#AppError">AppError</a>) SystemMessage(T <a href="/pkg/github.com/nicksnyder/go-i18n/i18n/">goi18n</a>.<a href="/pkg/github.com/nicksnyder/go-i18n/i18n/#TranslateFunc">TranslateFunc</a>) <a href="/pkg/builtin/#string">string</a></pre>
+				
+				
+				
+				
+			
+				
+				<h3 id="AppError.ToJson">func (*AppError) <a href="/src/utils/apperrors.go?s=1357:1392#L32">ToJson</a>
+					<a class="permalink" href="#AppError.ToJson">&#xb6;</a>
+				</h3>
+				<pre>func (er *<a href="#AppError">AppError</a>) ToJson() <a href="/pkg/builtin/#string">string</a></pre>
+				
+				
+				
+				
+			
+				
+				<h3 id="AppError.Translate">func (*AppError) <a href="/src/utils/apperrors.go?s=1050:1103#L16">Translate</a>
+					<a class="permalink" href="#AppError.Translate">&#xb6;</a>
+				</h3>
+				<pre>func (er *<a href="#AppError">AppError</a>) Translate(T <a href="/pkg/github.com/nicksnyder/go-i18n/i18n/">goi18n</a>.<a href="/pkg/github.com/nicksnyder/go-i18n/i18n/#TranslateFunc">TranslateFunc</a>)</pre>
+				
+				
+				
+				
+			
 		
 	
 

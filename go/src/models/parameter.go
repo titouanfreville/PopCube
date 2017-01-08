@@ -3,6 +3,7 @@ package models
 import (
 	"encoding/json"
 	"io"
+	u "utils"
 )
 
 const (
@@ -21,7 +22,7 @@ type Parameter struct {
 	SleepEnd    int    `gorm:"column:sleepEnd;not null;unique" json:"sleep_end"`
 }
 
-func (parameter *Parameter) toJson() string {
+func (parameter *Parameter) ToJson() string {
 	b, err := json.Marshal(parameter)
 	if err != nil {
 		return ""
@@ -30,7 +31,7 @@ func (parameter *Parameter) toJson() string {
 	}
 }
 
-func parameterFromJson(data io.Reader) *Parameter {
+func ParameterFromJson(data io.Reader) *Parameter {
 	decoder := json.NewDecoder(data)
 	var parameter Parameter
 	err := decoder.Decode(&parameter)
@@ -41,28 +42,28 @@ func parameterFromJson(data io.Reader) *Parameter {
 	}
 }
 
-func (parameter *Parameter) isValid() *AppError {
+func (parameter *Parameter) IsValid() *u.AppError {
 
 	if len(parameter.Local) == 0 || len(parameter.Local) > LOCAL_MAX_SIZE {
-		return NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_local.app_error", nil, "")
+		return u.NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_local.app_error", nil, "")
 	}
 
 	if len(parameter.TimeZone) == 0 || len(parameter.TimeZone) > TIME_ZONE_MAX_SIZE {
-		return NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_timezone.app_error", nil, "")
+		return u.NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_timezone.app_error", nil, "")
 	}
 
 	if parameter.SleepStart < 0 || parameter.SleepStart > MAX_TIME {
-		return NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_sleep_start.app_error", nil, "")
+		return u.NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_sleep_start.app_error", nil, "")
 	}
 
 	if parameter.SleepEnd < 0 || parameter.SleepEnd > MAX_TIME {
-		return NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_sleep_end.app_error", nil, "")
+		return u.NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_sleep_end.app_error", nil, "")
 	}
 
 	return nil
 }
 
-func (parameter *Parameter) preSave() {
+func (parameter *Parameter) PreSave() {
 	if parameter.Local == "" {
 		parameter.Local = DEFAULT_LOCALE
 	}

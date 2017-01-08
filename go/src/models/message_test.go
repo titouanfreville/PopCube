@@ -4,6 +4,7 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"strings"
 	"testing"
+	u "utils"
 )
 
 func TestMessageModel(t *testing.T) {
@@ -45,8 +46,8 @@ func TestMessageModel(t *testing.T) {
 			}
 
 			Convey("Converting message to json then json to message should provide same message information (empty fields if ignore in JSON).", func() {
-				json := message.toJson()
-				test_message := messageFromJson(strings.NewReader(json))
+				json := message.ToJson()
+				test_message := MessageFromJson(strings.NewReader(json))
 				So(test_message.Date, ShouldEqual, message.Date)
 				So(test_message.Content, ShouldEqual, message.Content)
 				So(test_message.Creator, ShouldResemble, User{})
@@ -68,8 +69,8 @@ func TestMessageModel(t *testing.T) {
 			message_list := []*Message{&message1, &message2, &message3}
 
 			Convey("Transfoming it in JSON then back to EMOJI LIST shoud give ressembling objects", func() {
-				json := messageListToJson(message_list)
-				new_message_list := messageListFromJson(strings.NewReader(json))
+				json := MessageListToJson(message_list)
+				new_message_list := MessageListFromJson(strings.NewReader(json))
 				So(new_message_list, ShouldResemble, message_list)
 			})
 		})
@@ -83,15 +84,15 @@ func TestMessageModel(t *testing.T) {
 			m4 := Message{Content: "Test presave"}
 			m5 := Message{Date: 20, Content: "Test presave", Creator: user_test, Channel: channel_test}
 			d1 := GetMillis()
-			m1.preSave()
+			m1.PreSave()
 			d2 := GetMillis()
-			m2.preSave()
+			m2.PreSave()
 			d3 := GetMillis()
-			m3.preSave()
+			m3.PreSave()
 			d4 := GetMillis()
-			m4.preSave()
+			m4.PreSave()
 			d5 := GetMillis()
-			m5.preSave()
+			m5.PreSave()
 			So(m1.Date, ShouldEqual, d1)
 			So(m2.Date, ShouldEqual, d2)
 			So(m3.Date, ShouldEqual, d3)
@@ -100,7 +101,7 @@ func TestMessageModel(t *testing.T) {
 		})
 	})
 
-	Convey("Testing isValid function", t, func() {
+	Convey("Testing IsValid function", t, func() {
 		Convey("Given a correct message. Message should be validate", func() {
 			message := Message{
 				Date:    GetMillis(),
@@ -108,10 +109,10 @@ func TestMessageModel(t *testing.T) {
 				Creator: user_test,
 				Channel: channel_test,
 			}
-			So(message.isValid(), ShouldBeNil)
-			So(message.isValid(), ShouldNotResemble, NewLocAppError("Message.IsValid", "model.message.date.app_error", nil, ""))
-			So(message.isValid(), ShouldNotResemble, NewLocAppError("Message.IsValid", "model.message.creator.app_error", nil, ""))
-			So(message.isValid(), ShouldNotResemble, NewLocAppError("Message.IsValid", "model.message.channel.app_error", nil, ""))
+			So(message.IsValid(), ShouldBeNil)
+			So(message.IsValid(), ShouldNotResemble, u.NewLocAppError("Message.IsValid", "model.message.date.app_error", nil, ""))
+			So(message.IsValid(), ShouldNotResemble, u.NewLocAppError("Message.IsValid", "model.message.creator.app_error", nil, ""))
+			So(message.IsValid(), ShouldNotResemble, u.NewLocAppError("Message.IsValid", "model.message.channel.app_error", nil, ""))
 		})
 		Convey("Given an incorrect message. Message should be refused", func() {
 			empty := Message{}
@@ -122,34 +123,34 @@ func TestMessageModel(t *testing.T) {
 			}
 
 			Convey("Empty message or no date message should return No Date error", func() {
-				So(empty.isValid(), ShouldNotBeNil)
-				So(empty.isValid(), ShouldResemble, NewLocAppError("Message.IsValid", "model.message.date.app_error", nil, ""))
-				So(empty.isValid(), ShouldNotResemble, NewLocAppError("Message.IsValid", "model.message.creator.app_error", nil, ""))
-				So(empty.isValid(), ShouldNotResemble, NewLocAppError("Message.IsValid", "model.message.channel.app_error", nil, ""))
-				So(message.isValid(), ShouldNotBeNil)
-				So(message.isValid(), ShouldResemble, NewLocAppError("Message.IsValid", "model.message.date.app_error", nil, ""))
-				So(message.isValid(), ShouldNotResemble, NewLocAppError("Message.IsValid", "model.message.creator.app_error", nil, ""))
-				So(message.isValid(), ShouldNotResemble, NewLocAppError("Message.IsValid", "model.message.channel.app_error", nil, ""))
+				So(empty.IsValid(), ShouldNotBeNil)
+				So(empty.IsValid(), ShouldResemble, u.NewLocAppError("Message.IsValid", "model.message.date.app_error", nil, ""))
+				So(empty.IsValid(), ShouldNotResemble, u.NewLocAppError("Message.IsValid", "model.message.creator.app_error", nil, ""))
+				So(empty.IsValid(), ShouldNotResemble, u.NewLocAppError("Message.IsValid", "model.message.channel.app_error", nil, ""))
+				So(message.IsValid(), ShouldNotBeNil)
+				So(message.IsValid(), ShouldResemble, u.NewLocAppError("Message.IsValid", "model.message.date.app_error", nil, ""))
+				So(message.IsValid(), ShouldNotResemble, u.NewLocAppError("Message.IsValid", "model.message.creator.app_error", nil, ""))
+				So(message.IsValid(), ShouldNotResemble, u.NewLocAppError("Message.IsValid", "model.message.channel.app_error", nil, ""))
 			})
 
 			message.Date = GetMillis()
 			message.Creator = User{}
 
 			Convey("Empty creator messages must return creator error", func() {
-				So(message.isValid(), ShouldNotBeNil)
-				So(message.isValid(), ShouldResemble, NewLocAppError("Message.IsValid", "model.message.creator.app_error", nil, ""))
-				So(message.isValid(), ShouldNotResemble, NewLocAppError("Message.IsValid", "model.message.date.app_error", nil, ""))
-				So(message.isValid(), ShouldNotResemble, NewLocAppError("Message.IsValid", "model.message.channel.app_error", nil, ""))
+				So(message.IsValid(), ShouldNotBeNil)
+				So(message.IsValid(), ShouldResemble, u.NewLocAppError("Message.IsValid", "model.message.creator.app_error", nil, ""))
+				So(message.IsValid(), ShouldNotResemble, u.NewLocAppError("Message.IsValid", "model.message.date.app_error", nil, ""))
+				So(message.IsValid(), ShouldNotResemble, u.NewLocAppError("Message.IsValid", "model.message.channel.app_error", nil, ""))
 			})
 
 			message.Creator = user_test
 			message.Channel = Channel{}
 
 			Convey("Empty channel message must return channel error", func() {
-				So(message.isValid(), ShouldNotBeNil)
-				So(message.isValid(), ShouldResemble, NewLocAppError("Message.IsValid", "model.message.channel.app_error", nil, ""))
-				So(message.isValid(), ShouldNotResemble, NewLocAppError("Message.IsValid", "model.message.date.app_error", nil, ""))
-				So(message.isValid(), ShouldNotResemble, NewLocAppError("Message.IsValid", "model.message.creator.app_error", nil, ""))
+				So(message.IsValid(), ShouldNotBeNil)
+				So(message.IsValid(), ShouldResemble, u.NewLocAppError("Message.IsValid", "model.message.channel.app_error", nil, ""))
+				So(message.IsValid(), ShouldNotResemble, u.NewLocAppError("Message.IsValid", "model.message.date.app_error", nil, ""))
+				So(message.IsValid(), ShouldNotResemble, u.NewLocAppError("Message.IsValid", "model.message.creator.app_error", nil, ""))
 			})
 		})
 	})

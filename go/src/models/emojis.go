@@ -3,6 +3,7 @@ package models
 import (
 	"encoding/json"
 	"io"
+	u "utils"
 )
 
 type Emoji struct {
@@ -12,23 +13,23 @@ type Emoji struct {
 	Link     string `gorm:"column:link;not null;unique" json:"link"`
 }
 
-func (emoji *Emoji) isValid() *AppError {
+func (emoji *Emoji) IsValid() *u.AppError {
 	if len(emoji.Name) == 0 || len(emoji.Name) > 64 {
-		return NewLocAppError("Emoji.IsValid", "model.emoji.name.app_error", nil, "")
+		return u.NewLocAppError("Emoji.IsValid", "model.emoji.name.app_error", nil, "")
 	}
 
 	if len(emoji.Shortcut) == 0 || len(emoji.Shortcut) > 20 {
-		return NewLocAppError("Emoji.IsValid", "model.emoji.shortcut.app_error", nil, "")
+		return u.NewLocAppError("Emoji.IsValid", "model.emoji.shortcut.app_error", nil, "")
 	}
 
 	if len(emoji.Link) == 0 {
-		return NewLocAppError("Emoji.IsValid", "model.emoji.link.app_error", nil, "")
+		return u.NewLocAppError("Emoji.IsValid", "model.emoji.link.app_error", nil, "")
 	}
 
 	return nil
 }
 
-func (emoji *Emoji) toJson() string {
+func (emoji *Emoji) ToJson() string {
 	b, err := json.Marshal(emoji)
 	if err != nil {
 		return ""
@@ -37,7 +38,7 @@ func (emoji *Emoji) toJson() string {
 	}
 }
 
-func emojiFromJson(data io.Reader) *Emoji {
+func EmojiFromJson(data io.Reader) *Emoji {
 	decoder := json.NewDecoder(data)
 	var emoji Emoji
 	err := decoder.Decode(&emoji)
@@ -48,7 +49,7 @@ func emojiFromJson(data io.Reader) *Emoji {
 	}
 }
 
-func emojiListToJson(emojiList []*Emoji) string {
+func EmojiListToJson(emojiList []*Emoji) string {
 	b, err := json.Marshal(emojiList)
 	if err != nil {
 		return ""
@@ -57,7 +58,7 @@ func emojiListToJson(emojiList []*Emoji) string {
 	}
 }
 
-func emojiListFromJson(data io.Reader) []*Emoji {
+func EmojiListFromJson(data io.Reader) []*Emoji {
 	decoder := json.NewDecoder(data)
 	var emojiList []*Emoji
 	err := decoder.Decode(&emojiList)

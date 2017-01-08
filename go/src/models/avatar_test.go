@@ -4,18 +4,19 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"strings"
 	"testing"
+	u "utils"
 )
 
 func TestAvatarsModel(t *testing.T) {
-	Convey("Testing isValid function", t, func() {
+	Convey("Testing IsValid function", t, func() {
 		Convey("Given a correct avatars. Should be validated", func() {
 			avatar := Avatar{
 				Name: "Troll Face",
 				Link: "avatars/trollface.svg",
 			}
-			So(avatar.isValid(), ShouldBeNil)
-			So(avatar.isValid(), ShouldNotResemble, NewLocAppError("Avatar.IsValid", "model.avatar.name.app_error", nil, ""))
-			So(avatar.isValid(), ShouldNotResemble, NewLocAppError("Avatar.IsValid", "model.avatar.link.app_error", nil, ""))
+			So(avatar.IsValid(), ShouldBeNil)
+			So(avatar.IsValid(), ShouldNotResemble, u.NewLocAppError("Avatar.IsValid", "model.avatar.name.app_error", nil, ""))
+			So(avatar.IsValid(), ShouldNotResemble, u.NewLocAppError("Avatar.IsValid", "model.avatar.link.app_error", nil, ""))
 		})
 
 		Convey("Given incorrect avatars. Should be refused", func() {
@@ -27,16 +28,16 @@ func TestAvatarsModel(t *testing.T) {
 			avatar.Name = ""
 
 			Convey("Too long or empty Name should return name error", func() {
-				So(avatar.isValid(), ShouldResemble, NewLocAppError("Avatar.IsValid", "model.avatar.name.app_error", nil, ""))
+				So(avatar.IsValid(), ShouldResemble, u.NewLocAppError("Avatar.IsValid", "model.avatar.name.app_error", nil, ""))
 				avatar.Name = "thishastobeatoolongname.For this, it need to be more than 64 char lenght .............. So long. Plus it should be alpha numeric. I'll add the test later on."
-				So(avatar.isValid(), ShouldResemble, NewLocAppError("Avatar.IsValid", "model.avatar.name.app_error", nil, ""))
+				So(avatar.IsValid(), ShouldResemble, u.NewLocAppError("Avatar.IsValid", "model.avatar.name.app_error", nil, ""))
 			})
 
 			avatar.Name = "Correct Name"
 			avatar.Link = ""
 
 			Convey("Empty link should result in link error", func() {
-				So(avatar.isValid(), ShouldResemble, NewLocAppError("Avatar.IsValid", "model.avatar.link.app_error", nil, ""))
+				So(avatar.IsValid(), ShouldResemble, u.NewLocAppError("Avatar.IsValid", "model.avatar.link.app_error", nil, ""))
 			})
 		})
 	})
@@ -48,8 +49,8 @@ func TestAvatarsModel(t *testing.T) {
 				Link: "avatars/trollface.svg",
 			}
 			Convey("Transforming it in JSON then back to EMOJI should provide similar objects", func() {
-				json := avatar.toJson()
-				new_avatar := avatarFromJson(strings.NewReader(json))
+				json := avatar.ToJson()
+				new_avatar := AvatarFromJson(strings.NewReader(json))
 				So(new_avatar, ShouldResemble, &avatar)
 			})
 		})
@@ -70,8 +71,8 @@ func TestAvatarsModel(t *testing.T) {
 			avatar_list := []*Avatar{&avatar1, &avatar2, &avatar3}
 
 			Convey("Transfoming it in JSON then back to EMOJI LIST shoud give ressembling objects", func() {
-				json := avatarListToJson(avatar_list)
-				new_avatar_list := avatarListFromJson(strings.NewReader(json))
+				json := AvatarListToJson(avatar_list)
+				new_avatar_list := AvatarListFromJson(strings.NewReader(json))
 				So(new_avatar_list, ShouldResemble, avatar_list)
 			})
 

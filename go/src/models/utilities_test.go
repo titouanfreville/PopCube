@@ -33,22 +33,6 @@ func TestUtilities(t *testing.T) {
 		})
 	})
 
-	Convey("Testing message error formating", t, func() {
-
-		Convey("From an error formated error generating a json formated from the error and but it back as error formated error should give the same object", func() {
-			err := NewLocAppError("TestAppError", "message", nil, "")
-			json := err.ToJson()
-			rerr := AppErrorFromJson(strings.NewReader(json))
-			err.Error()
-			So(err.Message, ShouldEqual, rerr.Message)
-		})
-
-		Convey("Generating json error error message from html information should work", func() {
-			rerr := AppErrorFromJson(strings.NewReader("<html><body>This is a broken test</body></html>"))
-			So("body: <html><body>This is a broken test</body></html>", ShouldEqual, rerr.DetailedError)
-		})
-	})
-
 	Convey("Testing Map from/to Json conversions", t, func() {
 
 		Convey("Convert a map to json then back to map should provide same map", func() {
@@ -92,9 +76,9 @@ func TestUtilities(t *testing.T) {
 
 	Convey("Testing Etag creation", t, func() {
 		Convey("Providing two parameters to function should return a string composed of version number.par1.par2", func() {
-			etag := Etag("hello", 24)
+			Etag := Etag("hello", 24)
 			result := CURRENT_VERSION + ".hello.24"
-			So(etag, ShouldEqual, result)
+			So(Etag, ShouldEqual, result)
 		})
 	})
 

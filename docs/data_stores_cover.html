@@ -54,7 +54,9 @@
 			<div id="nav">
 				<select id="files">
 				
-				<option value="file0">data_stores/data_store.go (57.1%)</option>
+				<option value="file0">data_stores/data_store.go (100.0%)</option>
+				
+				<option value="file1">data_stores/organisation_store.go (0.0%)</option>
 				
 				</select>
 			</div>
@@ -77,14 +79,33 @@
 		</div>
 		<div id="content">
 		
-		<pre class="file" id="file0" style="display: none">package data_stores
+		<pre class="file" id="file0" style="display: none">// Created by Titouan FREVILLE &lt;titouanfreville@gmail.com&gt;
+//
+// Inspired by mattermost project
+/*
+        Package Data Stores.
+        This package implements the basics databases communication functions used by PopCube chat api.
+
+        Stores
+
+        The following is a list of stores described:
+                Avatar: Contain all informations for avatar management
+                Channel: Contain all informations for channel management
+                Emojis: Contain all informations for emojis management
+                Organisation: Contain all informations for organisation management
+                Parameter: Contain all informations for parmeters management
+                Role: Contain all informations for roles management
+                User: Contain all informations for users management
+*/
+package data_stores
 
 import (
-        l4g "github.com/alecthomas/log4go"
+        // l4g "github.com/alecthomas/log4go"
         _ "github.com/go-sql-driver/mysql"
         "github.com/jinzhu/gorm"
         "models"
-        "time"
+        . "utils"
+        // "time"
 )
 
 type DataStore struct {
@@ -92,23 +113,23 @@ type DataStore struct {
         Err error
 }
 
-type StoreResult struct {
-        Data interface{}
-        Err  *models.AppError
-}
+// type StoreResult struct {
+//         Data interface{}
+//         Err  *models.AppError
+// }
 
-type StoreChannel chan StoreResult
+// type StoreChannel chan StoreResult
 
-func Must(sc StoreChannel) interface{} <span class="cov0" title="0">{
-        r := &lt;-sc
-        if r.Err != nil </span><span class="cov0" title="0">{
-                l4g.Close()
-                time.Sleep(time.Second)
-                panic(r.Err)</span>
-        }
+// func Must(sc StoreChannel) interface{} {
+//         r := &lt;-sc
+//         if r.Err != nil {
+//                 l4g.Close()
+//                 time.Sleep(time.Second)
+//                 panic(r.Err)
+//         }
 
-        <span class="cov0" title="0">return r.Data</span>
-}
+//         return r.Data
+// }
 
 func (ds *DataStore) initConnection(user string, dbname string, password string) <span class="cov10" title="2">{
         connection_chain := user + ":" + password + "@/" + dbname + "?charset=utf8&amp;parseTime=True&amp;loc=Local"
@@ -152,41 +173,88 @@ func (ds *DataStore) closeConnection() <span class="cov1" title="1">{
 //         TotalReadDbConnections() int
 // }
 
-type UserStore interface {
-        Save(user *models.User) StoreChannel
-        Update(user *models.User, allowRoleUpdate bool) StoreChannel
-        UpdateLastPictureUpdate(userId string) StoreChannel
-        UpdateUpdateAt(userId string) StoreChannel
-        UpdatePassword(userId, newPassword string) StoreChannel
-        Get(id string) StoreChannel
-        GetAll() StoreChannel
-        InvalidateProfilesInChannelCacheByUser(userId string)
-        InvalidateProfilesInChannelCache(channelId string)
-        GetProfilesInChannel(channelId string, offset int, limit int, allowFromCache bool) StoreChannel
-        GetProfilesNotInChannel(teamId string, channelId string, offset int, limit int) StoreChannel
-        GetProfilesByUsernames(usernames []string, teamId string) StoreChannel
-        GetAllProfiles(offset int, limit int) StoreChannel
-        GetProfiles(teamId string, offset int, limit int) StoreChannel
-        GetProfileByIds(userId []string, allowFromCache bool) StoreChannel
-        InvalidatProfileCacheForUser(userId string)
-        GetByEmail(email string) StoreChannel
-        GetByUsername(username string) StoreChannel
-        GetForLogin(loginId string, allowSignInWithUsername, allowSignInWithEmail, ldapEnabled bool) StoreChannel
-        VerifyEmail(userId string) StoreChannel
-        GetEtagForAllProfiles() StoreChannel
-        GetEtagForProfiles(teamId string) StoreChannel
-        UpdateFailedPasswordAttempts(userId string, attempts int) StoreChannel
-        GetTotalUsersCount() StoreChannel
-        GetSystemAdminProfiles() StoreChannel
-        PermanentDelete(userId string) StoreChannel
-        AnalyticsUniqueUserCount(teamId string) StoreChannel
-        GetUnreadCount(userId string) StoreChannel
-        GetUnreadCountForChannel(userId string, channelId string) StoreChannel
-        GetRecentlyActiveUsersForTeam(teamId string) StoreChannel
-        Search(teamId string, term string, options map[string]bool) StoreChannel
-        SearchInChannel(channelId string, term string, options map[string]bool) StoreChannel
-        SearchNotInChannel(teamId string, channelId string, term string, options map[string]bool) StoreChannel
+type OrganisationStore interface {
+        Save(organisation *models.Organisation, ds DataStore) *AppError
+        Update(organisation *models.Organisation) *AppError
+        Get(organisationName string) *AppError
+        GetAll() *AppError
 }
+
+// type UserStore interface {
+//         Save(user *models.User) StoreChannel
+//         Update(user *models.User, allowRoleUpdate bool) StoreChannel
+//         UpdateLastPictureUpdate(userId string) StoreChannel
+//         UpdateUpdateAt(userId string) StoreChannel
+//         UpdatePassword(userId, newPassword string) StoreChannel
+//         Get(id string) StoreChannel
+//         GetAll() StoreChannel
+//         InvalidateProfilesInChannelCacheByUser(userId string)
+//         InvalidateProfilesInChannelCache(channelId string)
+//         GetProfilesInChannel(channelId string, offset int, limit int, allowFromCache bool) StoreChannel
+//         GetProfilesNotInChannel(teamId string, channelId string, offset int, limit int) StoreChannel
+//         GetProfilesByUsernames(usernames []string, teamId string) StoreChannel
+//         GetAllProfiles(offset int, limit int) StoreChannel
+//         GetProfiles(teamId string, offset int, limit int) StoreChannel
+//         GetProfileByIds(userId []string, allowFromCache bool) StoreChannel
+//         InvalidatProfileCacheForUser(userId string)
+//         GetByEmail(email string) StoreChannel
+//         GetByUsername(username string) StoreChannel
+//         GetForLogin(loginId string, allowSignInWithUsername, allowSignInWithEmail, ldapEnabled bool) StoreChannel
+//         VerifyEmail(userId string) StoreChannel
+//         GetEtagForAllProfiles() StoreChannel
+//         GetEtagForProfiles(teamId string) StoreChannel
+//         UpdateFailedPasswordAttempts(userId string, attempts int) StoreChannel
+//         GetTotalUsersCount() StoreChannel
+//         GetSystemAdminProfiles() StoreChannel
+//         PermanentDelete(userId string) StoreChannel
+//         AnalyticsUniqueUserCount(teamId string) StoreChannel
+//         GetUnreadCount(userId string) StoreChannel
+//         GetUnreadCountForChannel(userId string, channelId string) StoreChannel
+//         GetRecentlyActiveUsersForTeam(teamId string) StoreChannel
+//         Search(teamId string, term string, options map[string]bool) StoreChannel
+//         SearchInChannel(channelId string, term string, options map[string]bool) StoreChannel
+//         SearchNotInChannel(teamId string, channelId string, term string, options map[string]bool) StoreChannel
+// }
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package data_stores
+
+import (
+        // l4g "github.com/alecthomas/log4go"
+        _ "github.com/go-sql-driver/mysql"
+        // "github.com/jinzhu/gorm"
+        "models"
+        . "utils"
+        // "time"
+)
+
+func Save(organisation *models.Organisation, ds DataStore) *AppError <span class="cov0" title="0">{
+        db := *ds.Db
+        transaction := db.Begin()
+        organisation.PreSave()
+        appError := organisation.IsValid()
+        if appError == nil </span><span class="cov0" title="0">{
+                if transaction.NewRecord(organisation) </span><span class="cov0" title="0">{
+                        transaction.Create(&amp;organisation)
+                        return nil
+                }</span><span class="cov0" title="0"> else {
+                        return nil
+                }</span>
+        }
+        <span class="cov0" title="0">return nil</span>
+}
+
+// func Update() {
+
+// }
+
+// func Get() {
+
+// }
+
+// func GetAll() {
+
+// }
 </pre>
 		
 		</div>

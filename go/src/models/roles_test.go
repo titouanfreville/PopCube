@@ -4,10 +4,11 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"strings"
 	"testing"
+	u "utils"
 )
 
 func TestRolesModel(t *testing.T) {
-	Convey("Testing isValid function", t, func() {
+	Convey("Testing IsValid function", t, func() {
 		Convey("Given a correct roles. Should be validated", func() {
 			role := Role{
 				RoleName:      "testrole",
@@ -18,8 +19,8 @@ func TestRolesModel(t *testing.T) {
 				CanManage:     false,
 				CanManageUser: true,
 			}
-			So(role.isValid(), ShouldBeNil)
-			So(role.isValid(), ShouldNotResemble, NewLocAppError("Role.IsValid", "model.role.rolename.app_error", nil, ""))
+			So(role.IsValid(), ShouldBeNil)
+			So(role.IsValid(), ShouldNotResemble, u.NewLocAppError("Role.IsValid", "model.role.rolename.app_error", nil, ""))
 		})
 
 		Convey("Given incorrect roles. Should be refused", func() {
@@ -33,66 +34,66 @@ func TestRolesModel(t *testing.T) {
 				CanManageUser: true,
 			}
 			Convey("If rolename is not a lower case char, it should be refused", func() {
-				So(role.isValid(), ShouldResemble, NewLocAppError("Role.IsValid", "model.role.rolename.app_error", nil, ""))
+				So(role.IsValid(), ShouldResemble, u.NewLocAppError("Role.IsValid", "model.role.rolename.app_error", nil, ""))
 				role.RoleName = "+alpha"
-				So(role.isValid(), ShouldResemble, NewLocAppError("Role.IsValid", "model.role.rolename.app_error", nil, ""))
+				So(role.IsValid(), ShouldResemble, u.NewLocAppError("Role.IsValid", "model.role.rolename.app_error", nil, ""))
 				role.RoleName = "alpha-numerique"
-				So(role.isValid(), ShouldResemble, NewLocAppError("Role.IsValid", "model.role.rolename.app_error", nil, ""))
+				So(role.IsValid(), ShouldResemble, u.NewLocAppError("Role.IsValid", "model.role.rolename.app_error", nil, ""))
 			})
 		})
 	})
 
 	Convey("Basics roles must not be valid roles", t, func() {
 		for _, role := range BASICS_ROLES {
-			So(role.isValid(), ShouldResemble, NewLocAppError("Role.IsValid", "model.role.rolename.app_error", nil, ""))
+			So(role.IsValid(), ShouldResemble, u.NewLocAppError("Role.IsValid", "model.role.rolename.app_error", nil, ""))
 		}
 	})
 
 	Convey("Testing json VS role transformations", t, func() {
 		Convey("Given an role", func() {
 			Convey("Transforming it in JSON then back to EMOJI should provide similar objects", func() {
-				json := ADMIN.toJson()
-				new_role := roleFromJson(strings.NewReader(json))
+				json := ADMIN.ToJson()
+				new_role := RoleFromJson(strings.NewReader(json))
 				So(new_role, ShouldResemble, &ADMIN)
 			})
 		})
 
 		Convey("Given an role list", func() {
 			Convey("Transfoming it in JSON then back to EMOJI LIST shoud give ressembling objects", func() {
-				json := roleListToJson(BASICS_ROLES)
-				new_role_list := roleListFromJson(strings.NewReader(json))
+				json := RoleListToJson(BASICS_ROLES)
+				new_role_list := RoleListFromJson(strings.NewReader(json))
 				So(new_role_list, ShouldResemble, BASICS_ROLES)
 			})
 
 		})
 	})
 
-	Convey("Testing isValidRoleName", t, func() {
+	Convey("Testing IsValidRoleName", t, func() {
 		Convey("Given a correct role name", func() {
 			Convey("It should be validate", func() {
-				So(isValidRoleName("u"), ShouldBeTrue)
-				So(isValidRoleName("another"), ShouldBeTrue)
-				So(isValidRoleName("world"), ShouldBeTrue)
-				So(isValidRoleName("xdealdex"), ShouldBeTrue)
+				So(IsValidRoleName("u"), ShouldBeTrue)
+				So(IsValidRoleName("another"), ShouldBeTrue)
+				So(IsValidRoleName("world"), ShouldBeTrue)
+				So(IsValidRoleName("xdealdex"), ShouldBeTrue)
 			})
 		})
 
 		Convey("Given an incorrect role name", func() {
 			Convey("Contain CAPS should be refused", func() {
-				So(isValidRoleName("U"), ShouldBeFalse)
-				So(isValidRoleName("anoTher"), ShouldBeFalse)
-				So(isValidRoleName("worlD"), ShouldBeFalse)
-				So(isValidRoleName("xDeAldEx"), ShouldBeFalse)
+				So(IsValidRoleName("U"), ShouldBeFalse)
+				So(IsValidRoleName("anoTher"), ShouldBeFalse)
+				So(IsValidRoleName("worlD"), ShouldBeFalse)
+				So(IsValidRoleName("xDeAldEx"), ShouldBeFalse)
 			})
 			Convey("EMPTY or too long be refused", func() {
-				So(isValidRoleName(""), ShouldBeFalse)
-				So(isValidRoleName("thismustbeaverylongnamecontainingonlylowercasealphabeticalcharacterstobesurelengthistoomuch"), ShouldBeFalse)
+				So(IsValidRoleName(""), ShouldBeFalse)
+				So(IsValidRoleName("thismustbeaverylongnamecontainingonlylowercasealphabeticalcharacterstobesurelengthistoomuch"), ShouldBeFalse)
 			})
 			Convey("Containing non alphabetics caracters", func() {
-				So(isValidRoleName("random2"), ShouldBeFalse)
-				So(isValidRoleName("random*"), ShouldBeFalse)
-				So(isValidRoleName("random?"), ShouldBeFalse)
-				So(isValidRoleName("random/"), ShouldBeFalse)
+				So(IsValidRoleName("random2"), ShouldBeFalse)
+				So(IsValidRoleName("random*"), ShouldBeFalse)
+				So(IsValidRoleName("random?"), ShouldBeFalse)
+				So(IsValidRoleName("random/"), ShouldBeFalse)
 			})
 		})
 	})
@@ -101,7 +102,7 @@ func TestRolesModel(t *testing.T) {
 		Convey("Given a role", func() {
 			role := Role{}
 			Convey("Empty : Should be filled with a random RoleName and false for every rights", func() {
-				role.preSave()
+				role.PreSave()
 				So(len(role.RoleName), ShouldBeGreaterThan, 0)
 				So(role.CanUsePrivate, ShouldBeFalse)
 				So(role.CanModerate, ShouldBeFalse)

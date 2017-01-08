@@ -5,6 +5,7 @@ import (
 	"io"
 	"strings"
 	"unicode/utf8"
+	u "utils"
 )
 
 const (
@@ -31,7 +32,7 @@ type Channel struct {
 	Avatar      string `gorm:"column:avatar" json:"avatar,omitempty"`
 }
 
-func (channel *Channel) toJson() string {
+func (channel *Channel) ToJson() string {
 	b, err := json.Marshal(channel)
 	if err != nil {
 		return ""
@@ -40,7 +41,7 @@ func (channel *Channel) toJson() string {
 	}
 }
 
-func channelFromJson(data io.Reader) *Channel {
+func ChannelFromJson(data io.Reader) *Channel {
 	decoder := json.NewDecoder(data)
 	var channel Channel
 	err := decoder.Decode(&channel)
@@ -51,44 +52,44 @@ func channelFromJson(data io.Reader) *Channel {
 	}
 }
 
-func (channel *Channel) etag() string {
+func (channel *Channel) Etag() string {
 	return Etag(channel.WebId, channel.UpdatedAt)
 }
 
-func (channel *Channel) isValid() *AppError {
+func (channel *Channel) IsValid() *u.AppError {
 
 	if len(channel.WebId) != 26 {
-		return NewLocAppError("Channel.IsValid", "model.channel.is_valid.id.app_error", nil, "")
+		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.id.app_error", nil, "")
 	}
 
 	if channel.UpdatedAt == 0 {
-		return NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebId)
+		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebId)
 	}
 
 	if utf8.RuneCountInString(channel.ChannelName) > CHANNEL_DISPLAY_NAME_MAX_RUNES || utf8.RuneCountInString(channel.ChannelName) == 0 {
-		return NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebId)
+		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebId)
 	}
 
 	if !IsValidChannelIdentifier(channel.ChannelName) {
-		return NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId)
+		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId)
 	}
 
 	if utf8.RuneCountInString(channel.Description) > CHANNEL_DESCRIPTION_MAX_RUNES {
-		return NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebId)
+		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebId)
 	}
 
 	if utf8.RuneCountInString(channel.Subject) > CHANNEL_SUBJECT_MAX_RUNES {
-		return NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebId)
+		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebId)
 	}
 
 	if !StringInArray(channel.Type, CHANNNEL_AVAILABLE_TYPES) {
-		return NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebId)
+		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebId)
 	}
 
 	return nil
 }
 
-func (channel *Channel) preSave() {
+func (channel *Channel) PreSave() {
 	if channel.WebId == "" {
 		channel.WebId = NewId()
 	}
@@ -110,11 +111,11 @@ func (channel *Channel) preSave() {
 	}
 }
 
-func (channel *Channel) preUpdate() {
+func (channel *Channel) PreUpdate() {
 	channel.UpdatedAt = GetMillis()
 }
 
-func getDMNameFromIds(userId1, userId2 string) string {
+func GetDMNameFromIds(userId1, userId2 string) string {
 	if userId1 > userId2 {
 		return userId2 + "__" + userId1
 	} else {
