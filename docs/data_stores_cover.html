@@ -56,7 +56,7 @@
 				
 				<option value="file0">data_stores/data_store.go (100.0%)</option>
 				
-				<option value="file1">data_stores/organisation_store.go (0.0%)</option>
+				<option value="file1">data_stores/organisation_store.go (81.2%)</option>
 				
 				</select>
 			</div>
@@ -131,12 +131,13 @@ type DataStore struct {
 //         return r.Data
 // }
 
-func (ds *DataStore) initConnection(user string, dbname string, password string) <span class="cov10" title="2">{
-        connection_chain := user + ":" + password + "@/" + dbname + "?charset=utf8&amp;parseTime=True&amp;loc=Local"
+func (ds *DataStore) initConnection(user string, dbname string, password string) <span class="cov10" title="4">{
+        connection_chain := user + ":" + password + "@(database:3306)/" + dbname + "?charset=utf8&amp;parseTime=True&amp;loc=Local"
         db, err := gorm.Open("mysql", connection_chain)
-        db.AutoMigrate(&amp;models.Avatar{}, &amp;models.Channel{}, &amp;models.Emoji{}, &amp;models.Folder{},
-                &amp;models.Member{}, &amp;models.Message{}, &amp;models.Organisation{}, &amp;models.Parameter{},
-                &amp;models.Role{}, &amp;models.User{})
+        // db.AutoMigrate(&amp;models.Avatar{}, &amp;models.Channel{}, &amp;models.Emoji{}, &amp;models.Folder{},
+        //         &amp;models.Member{}, &amp;models.Message{}, &amp;models.Organisation{}, &amp;models.Parameter{},
+        //         &amp;models.Role{}, &amp;models.User{})
+        db.AutoMigrate(&amp;models.Organisation{})
         ds.Db = db
         ds.Err = err
 }</span>
@@ -173,11 +174,11 @@ func (ds *DataStore) closeConnection() <span class="cov1" title="1">{
 //         TotalReadDbConnections() int
 // }
 
+// Organisation is unique in the database.
 type OrganisationStore interface {
         Save(organisation *models.Organisation, ds DataStore) *AppError
         Update(organisation *models.Organisation) *AppError
         Get(organisationName string) *AppError
-        GetAll() *AppError
 }
 
 // type UserStore interface {
@@ -228,33 +229,59 @@ import (
         // "time"
 )
 
-func Save(organisation *models.Organisation, ds DataStore) *AppError <span class="cov0" title="0">{
+type OrganisationStoreImpl struct {
+        OrganisationStore
+}
+
+// Use to save data in BB
+func (osi OrganisationStoreImpl) Save(organisation *models.Organisation, ds DataStore) *AppError <span class="cov10" title="22">{
         db := *ds.Db
         transaction := db.Begin()
         organisation.PreSave()
-        appError := organisation.IsValid()
-        if appError == nil </span><span class="cov0" title="0">{
-                if transaction.NewRecord(organisation) </span><span class="cov0" title="0">{
-                        transaction.Create(&amp;organisation)
-                        return nil
-                }</span><span class="cov0" title="0"> else {
-                        return nil
-                }</span>
-        }
-        <span class="cov0" title="0">return nil</span>
+        if appError := organisation.IsValid(); appError != nil </span><span class="cov8" title="12">{
+                transaction.Rollback()
+                return NewLocAppError("organisation_store_impl.Save.organisation.PreSave", appError.Id, nil, appError.DetailedError)
+        }</span>
+        <span class="cov7" title="10">if !transaction.NewRecord(organisation) </span><span class="cov1" title="1">{
+                transaction.Rollback()
+                return NewLocAppError("organisation_store_impl.Save", "save.transaction.create.already_exist", nil, "Organisation Name: "+organisation.OrganisationName)
+        }</span>
+        <span class="cov7" title="9">if err := transaction.Create(&amp;organisation).Error; err != nil </span><span class="cov0" title="0">{
+                transaction.Rollback()
+                return NewLocAppError("organisation_store_impl.Save", "save.transaction.create.encounter_error", nil, "")
+        }</span>
+        <span class="cov7" title="9">transaction.Commit()
+        return nil</span>
 }
 
-// func Update() {
+// Used to update data in DB
+func (osi OrganisationStoreImpl) Update(organisation *models.Organisation, new_organisation *models.Organisation, ds DataStore) *AppError <span class="cov8" title="13">{
+        db := *ds.Db
+        transaction := db.Begin()
+        new_organisation.PreSave()
+        if appError := organisation.IsValid(); appError != nil </span><span class="cov0" title="0">{
+                transaction.Rollback()
+                return NewLocAppError("organisation_store_impl.Update.organisation_old.PreSave", appError.Id, nil, appError.DetailedError)
+        }</span>
+        <span class="cov8" title="13">if appError := new_organisation.IsValid(); appError != nil </span><span class="cov8" title="12">{
+                transaction.Rollback()
+                return NewLocAppError("organisation_store_impl.Update.organisation_new.PreSave", appError.Id, nil, appError.DetailedError)
+        }</span>
+        <span class="cov1" title="1">if err := transaction.Model(&amp;organisation).Updates(&amp;new_organisation).Error; err != nil </span><span class="cov0" title="0">{
+                transaction.Rollback()
+                return NewLocAppError("organisation_store_impl.Update", "update.transaction.updates.encounter_error", nil, "")
+        }</span>
+        <span class="cov1" title="1">transaction.Commit()
+        return nil</span>
+}
 
-// }
-
-// func Get() {
-
-// }
-
-// func GetAll() {
-
-// }
+// Used to get organisation from DB
+func (osi OrganisationStoreImpl) Get(ds DataStore) *models.Organisation <span class="cov3" title="2">{
+        db := *ds.Db
+        organisation := models.Organisation{}
+        db.First(&amp;organisation)
+        return &amp;organisation
+}</span>
 </pre>
 		
 		</div>

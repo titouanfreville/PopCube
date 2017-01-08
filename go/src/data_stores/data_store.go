@@ -51,11 +51,12 @@ type DataStore struct {
 // }
 
 func (ds *DataStore) initConnection(user string, dbname string, password string) {
-	connection_chain := user + ":" + password + "@/" + dbname + "?charset=utf8&parseTime=True&loc=Local"
+	connection_chain := user + ":" + password + "@(database:3306)/" + dbname + "?charset=utf8&parseTime=True&loc=Local"
 	db, err := gorm.Open("mysql", connection_chain)
-	db.AutoMigrate(&models.Avatar{}, &models.Channel{}, &models.Emoji{}, &models.Folder{},
-		&models.Member{}, &models.Message{}, &models.Organisation{}, &models.Parameter{},
-		&models.Role{}, &models.User{})
+	// db.AutoMigrate(&models.Avatar{}, &models.Channel{}, &models.Emoji{}, &models.Folder{},
+	// 	&models.Member{}, &models.Message{}, &models.Organisation{}, &models.Parameter{},
+	// 	&models.Role{}, &models.User{})
+	db.AutoMigrate(&models.Organisation{})
 	ds.Db = db
 	ds.Err = err
 }
@@ -92,11 +93,11 @@ func (ds *DataStore) closeConnection() {
 // 	TotalReadDbConnections() int
 // }
 
+// Organisation is unique in the database.
 type OrganisationStore interface {
 	Save(organisation *models.Organisation, ds DataStore) *AppError
 	Update(organisation *models.Organisation) *AppError
 	Get(organisationName string) *AppError
-	GetAll() *AppError
 }
 
 // type UserStore interface {

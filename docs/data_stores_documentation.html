@@ -73,9 +73,6 @@ The following is a list of stores described:
 			
 			
 			
-				
-				<dd><a href="#Save">func Save(organisation *models.Organisation, ds DataStore) *AppError</a></dd>
-			
 			
 				
 				<dd><a href="#DataStore">type DataStore</a></dd>
@@ -85,6 +82,20 @@ The following is a list of stores described:
 				
 				<dd><a href="#OrganisationStore">type OrganisationStore</a></dd>
 				
+				
+			
+				
+				<dd><a href="#OrganisationStoreImpl">type OrganisationStoreImpl</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#OrganisationStoreImpl.Get">func (osi OrganisationStoreImpl) Get(ds DataStore) *models.Organisation</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#OrganisationStoreImpl.Save">func (osi OrganisationStoreImpl) Save(organisation *models.Organisation, ds DataStore) *AppError</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#OrganisationStoreImpl.Update">func (osi OrganisationStoreImpl) Update(organisation *models.Organisation, new_organisation *models.Organisation, ds DataStore) *AppError</a></dd>
 				
 			
 			
@@ -148,17 +159,6 @@ The following is a list of stores described:
 		
 		
 		
-			
-			
-			<h2 id="Save">func <a href="/src/data_stores/organisation_store.go?s=169:237#L2">Save</a>
-				<a class="permalink" href="#Save">&#xb6;</a>
-			</h2>
-			<pre>func Save(organisation *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Organisation">Organisation</a>, ds <a href="#DataStore">DataStore</a>) *<a href="#AppError">AppError</a></pre>
-			
-			
-			
-
-		
 		
 			
 			
@@ -185,15 +185,17 @@ The following is a list of stores described:
 		
 			
 			
-			<h2 id="OrganisationStore">type <a href="/src/data_stores/data_store.go?s=2415:2629#L85">OrganisationStore</a>
+			<h2 id="OrganisationStore">type <a href="/src/data_stores/data_store.go?s=2522:2716#L87">OrganisationStore</a>
 				<a class="permalink" href="#OrganisationStore">&#xb6;</a>
 			</h2>
-			
+			<p>
+Organisation is unique in the database.
+</p>
+
 			<pre>type OrganisationStore interface {
     Save(organisation *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Organisation">Organisation</a>, ds <a href="#DataStore">DataStore</a>) *<a href="#AppError">AppError</a>
     Update(organisation *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Organisation">Organisation</a>) *<a href="#AppError">AppError</a>
     Get(organisationName <a href="/pkg/builtin/#string">string</a>) *<a href="#AppError">AppError</a>
-    GetAll() *<a href="#AppError">AppError</a>
 }</pre>
 
 			
@@ -206,6 +208,67 @@ The following is a list of stores described:
 
 			
 
+			
+		
+			
+			
+			<h2 id="OrganisationStoreImpl">type <a href="/src/data_stores/organisation_store.go?s=169:225#L2">OrganisationStoreImpl</a>
+				<a class="permalink" href="#OrganisationStoreImpl">&#xb6;</a>
+			</h2>
+			
+			<pre>type OrganisationStoreImpl struct {
+    <a href="#OrganisationStore">OrganisationStore</a>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+				
+				<h3 id="OrganisationStoreImpl.Get">func (OrganisationStoreImpl) <a href="/src/data_stores/organisation_store.go?s=2055:2126#L49">Get</a>
+					<a class="permalink" href="#OrganisationStoreImpl.Get">&#xb6;</a>
+				</h3>
+				<pre>func (osi <a href="#OrganisationStoreImpl">OrganisationStoreImpl</a>) Get(ds <a href="#DataStore">DataStore</a>) *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Organisation">Organisation</a></pre>
+				<p>
+Used to get organisation from DB
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="OrganisationStoreImpl.Save">func (OrganisationStoreImpl) <a href="/src/data_stores/organisation_store.go?s=253:349#L7">Save</a>
+					<a class="permalink" href="#OrganisationStoreImpl.Save">&#xb6;</a>
+				</h3>
+				<pre>func (osi <a href="#OrganisationStoreImpl">OrganisationStoreImpl</a>) Save(organisation *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Organisation">Organisation</a>, ds <a href="#DataStore">DataStore</a>) *<a href="#AppError">AppError</a></pre>
+				<p>
+Use to save data in BB
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="OrganisationStoreImpl.Update">func (OrganisationStoreImpl) <a href="/src/data_stores/organisation_store.go?s=1115:1252#L28">Update</a>
+					<a class="permalink" href="#OrganisationStoreImpl.Update">&#xb6;</a>
+				</h3>
+				<pre>func (osi <a href="#OrganisationStoreImpl">OrganisationStoreImpl</a>) Update(organisation *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Organisation">Organisation</a>, new_organisation *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Organisation">Organisation</a>, ds <a href="#DataStore">DataStore</a>) *<a href="#AppError">AppError</a></pre>
+				<p>
+Used to update data in DB
+</p>
+
+				
+				
+				
 			
 		
 	

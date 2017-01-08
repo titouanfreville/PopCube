@@ -15,6 +15,13 @@ services:
       context: .
       dockerfile: docker/goconvey.Dockerfile
     env_file: .env
+    volumes:
+      - "./go/src/api:/go/src/api"
+      - "./go/src/data_stores:/go/src/data_stores"
+      - "./go/src/models:/go/src/models"
+      - "./go/src/utils:/go/src/utils"
+      - "./docs:/home/docs"
+      - "./coverage:/home/coverage"
     ports:
       - 8082:8080
   back-test:
@@ -23,7 +30,10 @@ services:
       dockerfile: docker/go_test.Dockerfile
     env_file: .env
     volumes:
-      - "./go/src:/go/src"
+      - "./go/src/api:/go/src/api"
+      - "./go/src/data_stores:/go/src/data_stores"
+      - "./go/src/models:/go/src/models"
+      - "./go/src/utils:/go/src/utils"
       - "./docs:/home/docs"
       - "./coverage:/home/coverage"
   database:
