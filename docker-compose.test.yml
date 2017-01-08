@@ -4,13 +4,11 @@ services:
     build:
       context: .
       dockerfile: docker/go_test.Dockerfile
-    env_file: .env
-    environment:
-      - WATCHING=1
+    env_file: .env.test
   front:
     entrypoint: /bin/sh -c "exit 0"
   database:
-    entrypoint: /bin/sh -c "exit 0"
+    env_file: .env.test
   back:
     entrypoint: /bin/sh -c "exit 0"
   compass:

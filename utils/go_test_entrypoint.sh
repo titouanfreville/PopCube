@@ -94,7 +94,22 @@ check_fixed_packages () {
   godoc -html cmd/data_stores > /home/docs/data_stores_documentation.html
   godoc -html cmd/models > /home/docs/models_documentation.html
   godoc -html cmd/utils > /home/docs/utils_documentation.html
+}
 
+check_fixed_packages_no_generation () {
+  echo "Testing FIXED PACKAGES : "
+  echo ">>> API "
+  go test -v api
+  failures=$((failures+$?))
+  echo ">>> DATA_STORES "
+  go test -v data_stores
+  failures=$((failures+$?))
+  echo ">>> MODELS "
+  go test -v models
+  failures=$((failures+$?))
+  echo ">>> UTILS "
+  go test -v utils
+  failures=$((failures+$?))
 }
 
 watching=${2:-0}
@@ -110,7 +125,7 @@ if [ "$watching" -eq 0 ]
 then
 	watcher /go "$CMD"
 else
-	"$CMD"
+	check_fixed_packages_no_generation
   exit "$failures"
 fi
 
