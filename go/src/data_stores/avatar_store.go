@@ -27,7 +27,7 @@ func (asi AvatarStoreImpl) Save(avatar *models.Avatar, ds DataStore) *AppError {
 	}
 	if err := transaction.Create(&avatar).Error; err != nil {
 		transaction.Rollback()
-		return NewLocAppError("avatar_store_impl.Save", "save.transaction.create.encounter_error", nil, "")
+		return NewLocAppError("avatar_store_impl.Save", "save.transaction.create.encounter_error :"+err.Error(), nil, "")
 	}
 	transaction.Commit()
 	return nil
@@ -47,7 +47,7 @@ func (asi AvatarStoreImpl) Update(avatar *models.Avatar, new_avatar *models.Avat
 	}
 	if err := transaction.Model(&avatar).Updates(&new_avatar).Error; err != nil {
 		transaction.Rollback()
-		return NewLocAppError("avatar_store_impl.Update", "update.transaction.updates.encounter_error", nil, "")
+		return NewLocAppError("avatar_store_impl.Update", "update.transaction.updates.encounter_error :"+err.Error(), nil, "")
 	}
 	transaction.Commit()
 	return nil
@@ -87,7 +87,7 @@ func (asi AvatarStoreImpl) Delete(avatar *models.Avatar, ds DataStore) *AppError
 	}
 	if err := transaction.Delete(&avatar).Error; err != nil {
 		transaction.Rollback()
-		return NewLocAppError("avatar_store_impl.Delete", "update.transaction.delete.encounter_error", nil, "")
+		return NewLocAppError("avatar_store_impl.Delete", "update.transaction.delete.encounter_error :"+err.Error(), nil, "")
 	}
 	transaction.Commit()
 	return nil

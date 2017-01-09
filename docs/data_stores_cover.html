@@ -58,7 +58,9 @@
 				
 				<option value="file1">data_stores/data_store.go (100.0%)</option>
 				
-				<option value="file2">data_stores/organisation_store.go (87.5%)</option>
+				<option value="file2">data_stores/emojis_store.go (0.0%)</option>
+				
+				<option value="file3">data_stores/organisation_store.go (87.5%)</option>
 				
 				</select>
 			</div>
@@ -110,7 +112,7 @@ func (asi AvatarStoreImpl) Save(avatar *models.Avatar, ds DataStore) *AppError <
         }</span>
         <span class="cov9" title="39">if err := transaction.Create(&amp;avatar).Error; err != nil </span><span class="cov0" title="0">{
                 transaction.Rollback()
-                return NewLocAppError("avatar_store_impl.Save", "save.transaction.create.encounter_error", nil, "")
+                return NewLocAppError("avatar_store_impl.Save", "save.transaction.create.encounter_error :"+err.Error(), nil, "")
         }</span>
         <span class="cov9" title="39">transaction.Commit()
         return nil</span>
@@ -130,7 +132,7 @@ func (asi AvatarStoreImpl) Update(avatar *models.Avatar, new_avatar *models.Avat
         }</span>
         <span class="cov5" title="6">if err := transaction.Model(&amp;avatar).Updates(&amp;new_avatar).Error; err != nil </span><span class="cov0" title="0">{
                 transaction.Rollback()
-                return NewLocAppError("avatar_store_impl.Update", "update.transaction.updates.encounter_error", nil, "")
+                return NewLocAppError("avatar_store_impl.Update", "update.transaction.updates.encounter_error :"+err.Error(), nil, "")
         }</span>
         <span class="cov5" title="6">transaction.Commit()
         return nil</span>
@@ -170,7 +172,7 @@ func (asi AvatarStoreImpl) Delete(avatar *models.Avatar, ds DataStore) *AppError
         }</span>
         <span class="cov1" title="1">if err := transaction.Delete(&amp;avatar).Error; err != nil </span><span class="cov0" title="0">{
                 transaction.Rollback()
-                return NewLocAppError("avatar_store_impl.Delete", "update.transaction.delete.encounter_error", nil, "")
+                return NewLocAppError("avatar_store_impl.Delete", "update.transaction.delete.encounter_error :"+err.Error(), nil, "")
         }</span>
         <span class="cov1" title="1">transaction.Commit()
         return nil</span>
@@ -232,10 +234,10 @@ type DataStore struct {
 func (ds *DataStore) initConnection(user string, dbname string, password string) <span class="cov10" title="5">{
         connection_chain := user + ":" + password + "@(database:3306)/" + dbname + "?charset=utf8&amp;parseTime=True&amp;loc=Local"
         db, err := gorm.Open("mysql", connection_chain)
-        // db.AutoMigrate(&amp;models.Avatar{}, &amp;models.Channel{}, &amp;models.Emoji{}, &amp;models.Folder{},
+        // db.AutoMigrate( &amp;models.Channel{}, &amp;models.Emoji{}, &amp;models.Folder{},
         //         &amp;models.Member{}, &amp;models.Message{}, &amp;models.Organisation{}, &amp;models.Parameter{},
         //         &amp;models.Role{}, &amp;models.User{})
-        db.AutoMigrate(&amp;models.Organisation{})
+        db.AutoMigrate(&amp;models.Avatar{}, &amp;models.Emoji{}, &amp;models.Organisation{})
         ds.Db = db
         ds.Err = err
 }</span>
@@ -289,6 +291,16 @@ type AvatarStore interface {
         Delete(avatar *models.Avatar, ds DataStore) *AppError
 }
 
+type EmojiStore interface {
+        Save(emoji *models.Avatar, ds DataStore) *AppError
+        Update(emoji *models.Avatar, new_emoji *models.Avatar, ds DataStore) *AppError
+        GetByName(emojiName string, ds DataStore) *models.Avatar
+        GetByShortcut(emojiShortcut string, ds DataStore) *models.Avatar
+        GetByLink(emojiLink string, ds DataStore) *models.Avatar
+        GetAll(ds DataStore) *models.Avatar
+        Delete(emoji *models.Avatar, ds DataStore) *AppError
+}
+
 // type UserStore interface {
 //         Save(user *models.User) StoreChannel
 //         Update(user *models.User, allowRoleUpdate bool) StoreChannel
@@ -327,6 +339,102 @@ type AvatarStore interface {
 </pre>
 		
 		<pre class="file" id="file2" style="display: none">package data_stores
+
+import (
+        // l4g "github.com/alecthomas/log4go"
+        _ "github.com/go-sql-driver/mysql"
+        // "github.com/jinzhu/gorm"
+        "models"
+        . "utils"
+        // "time"
+)
+
+type EmojiStoreImpl struct {
+        EmojiStore
+}
+
+// Use to save emoji in BB
+func (asi EmojiStoreImpl) Save(emoji *models.Emoji, ds DataStore) *AppError <span class="cov0" title="0">{
+        db := *ds.Db
+        transaction := db.Begin()
+        if appError := emoji.IsValid(); appError != nil </span><span class="cov0" title="0">{
+                transaction.Rollback()
+                return NewLocAppError("emoji_store_impl.Save.emoji.PreSave", appError.Id, nil, appError.DetailedError)
+        }</span>
+        <span class="cov0" title="0">if !transaction.NewRecord(emoji) </span><span class="cov0" title="0">{
+                transaction.Rollback()
+                return NewLocAppError("emoji_store_impl.Save", "save.transaction.create.already_exist", nil, "Emoji Name: "+emoji.Name)
+        }</span>
+        <span class="cov0" title="0">if err := transaction.Create(&amp;emoji).Error; err != nil </span><span class="cov0" title="0">{
+                transaction.Rollback()
+                return NewLocAppError("emoji_store_impl.Save", "save.transaction.create.encounter_error :"+err.Error(), nil, "")
+        }</span>
+        <span class="cov0" title="0">transaction.Commit()
+        return nil</span>
+}
+
+// Used to update emoji in DB
+func (asi EmojiStoreImpl) Update(emoji *models.Emoji, new_emoji *models.Emoji, ds DataStore) *AppError <span class="cov0" title="0">{
+        db := *ds.Db
+        transaction := db.Begin()
+        if appError := emoji.IsValid(); appError != nil </span><span class="cov0" title="0">{
+                transaction.Rollback()
+                return NewLocAppError("emoji_store_impl.Update.emoji_old.PreSave", appError.Id, nil, appError.DetailedError)
+        }</span>
+        <span class="cov0" title="0">if appError := new_emoji.IsValid(); appError != nil </span><span class="cov0" title="0">{
+                transaction.Rollback()
+                return NewLocAppError("emoji_store_impl.Update.emoji_new.PreSave", appError.Id, nil, appError.DetailedError)
+        }</span>
+        <span class="cov0" title="0">if err := transaction.Model(&amp;emoji).Updates(&amp;new_emoji).Error; err != nil </span><span class="cov0" title="0">{
+                transaction.Rollback()
+                return NewLocAppError("emoji_store_impl.Update", "update.transaction.updates.encounter_error :"+err.Error(), nil, "")
+        }</span>
+        <span class="cov0" title="0">transaction.Commit()
+        return nil</span>
+}
+
+// Used to get emoji from DB
+func (asi EmojiStoreImpl) GetAll(ds DataStore) *[]models.Emoji <span class="cov0" title="0">{
+        db := *ds.Db
+        emojis := []models.Emoji{}
+        db.Find(&amp;emojis)
+        return &amp;emojis
+}</span>
+
+// Used to get emoji from DB
+func (asi EmojiStoreImpl) GetByName(emojiName string, ds DataStore) *models.Emoji <span class="cov0" title="0">{
+        db := *ds.Db
+        emoji := models.Emoji{}
+        db.Where("name = ?", emojiName).First(&amp;emoji)
+        return &amp;emoji
+}</span>
+
+// Used to get emoji from DB
+func (asi EmojiStoreImpl) GetByLink(emojiLink string, ds DataStore) *models.Emoji <span class="cov0" title="0">{
+        db := *ds.Db
+        emoji := models.Emoji{}
+        db.Where("link = ?", emojiLink).First(&amp;emoji)
+        return &amp;emoji
+}</span>
+
+// Used to get emoji from DB
+func (asi EmojiStoreImpl) Delete(emoji *models.Emoji, ds DataStore) *AppError <span class="cov0" title="0">{
+        db := *ds.Db
+        transaction := db.Begin()
+        if appError := emoji.IsValid(); appError != nil </span><span class="cov0" title="0">{
+                transaction.Rollback()
+                return NewLocAppError("emoji_store_impl.Delete.emoji.PreSave", appError.Id, nil, appError.DetailedError)
+        }</span>
+        <span class="cov0" title="0">if err := transaction.Delete(&amp;emoji).Error; err != nil </span><span class="cov0" title="0">{
+                transaction.Rollback()
+                return NewLocAppError("emoji_store_impl.Delete", "update.transaction.delete.encounter_error :"+err.Error(), nil, "")
+        }</span>
+        <span class="cov0" title="0">transaction.Commit()
+        return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package data_stores
 
 import (
         // l4g "github.com/alecthomas/log4go"
