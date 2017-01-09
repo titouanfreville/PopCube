@@ -9,20 +9,22 @@ import (
 )
 
 const (
-	DEFAULT_CHANNEL                = "general"
-	CHANNEL_DISPLAY_NAME_MAX_RUNES = 64
-	CHANNEL_NAME_MAX_LENGTH        = 64
-	CHANNEL_DESCRIPTION_MAX_RUNES  = 1024
-	CHANNEL_SUBJECT_MAX_RUNES      = 250
+	defaultChannel             = "general"
+	channelDislayNameMaxRunes  = 64
+	channelNameMaxLength       = 64
+	channelDescriptionMaxRunes = 1024
+	channelSubjectMaxRunes     = 250
 )
 
 var (
-	CHANNNEL_AVAILABLE_TYPES = []string{"direct", "text", "audio", "video"}
+	// ChannelAvailableTypes Used to have knowsledge on type a channel can take
+	ChannelAvailableTypes = []string{"direct", "text", "audio", "video"}
 )
 
+// Channel type is a model for DB Channel table
 type Channel struct {
-	ChannelId   uint64 `gorm:"primary_key;column:idChannel;AUTO_INCREMENT" json:"-"`
-	WebId       string `gorm:"column:webId;not null;unique" json:"web_id"`
+	ChannelID   uint64 `gorm:"primary_key;column:idChannel;AUTO_INCREMENT" json:"-"`
+	WebID       string `gorm:"column:webID;not null;unique" json:"web_id"`
 	ChannelName string `gorm:"column:channelName;not null;unique" json:"display_name"`
 	Type        string `gorm:"column:type;not null" json:"type"`
 	UpdatedAt   int64  `gorm:"column:updatedAt;not null" json:"updated_at"`
@@ -32,66 +34,69 @@ type Channel struct {
 	Avatar      string `gorm:"column:avatar" json:"avatar,omitempty"`
 }
 
-func (channel *Channel) ToJson() string {
+// ToJSON Take a channel and convert it into json
+func (channel *Channel) ToJSON() string {
 	b, err := json.Marshal(channel)
 	if err != nil {
 		return ""
-	} else {
-		return string(b)
 	}
+	return string(b)
 }
 
-func ChannelFromJson(data io.Reader) *Channel {
+// ChannelFromJSON try to parse a json object as channel object
+func ChannelFromJSON(data io.Reader) *Channel {
 	decoder := json.NewDecoder(data)
 	var channel Channel
 	err := decoder.Decode(&channel)
 	if err == nil {
 		return &channel
-	} else {
-		return nil
 	}
+	return nil
 }
 
+// Etag is a small function used to create cache ID
 func (channel *Channel) Etag() string {
-	return Etag(channel.WebId, channel.UpdatedAt)
+	return Etag(channel.WebID, channel.UpdatedAt)
 }
 
+// IsValid check the correctness of a channel object
 func (channel *Channel) IsValid() *u.AppError {
 
-	if len(channel.WebId) != 26 {
+	if len(channel.WebID) != 26 {
 		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.id.app_error", nil, "")
 	}
 
 	if channel.UpdatedAt == 0 {
-		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebId)
+		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebID)
 	}
 
-	if utf8.RuneCountInString(channel.ChannelName) > CHANNEL_DISPLAY_NAME_MAX_RUNES || utf8.RuneCountInString(channel.ChannelName) == 0 {
-		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebId)
+	if utf8.RuneCountInString(channel.ChannelName) > channelDislayNameMaxRunes || utf8.RuneCountInString(channel.ChannelName) == 0 {
+		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebID)
 	}
 
-	if !IsValidChannelIdentifier(channel.ChannelName) {
-		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId)
+	if !IsValidChannelIDentifier(channel.ChannelName) {
+		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebID)
 	}
 
-	if utf8.RuneCountInString(channel.Description) > CHANNEL_DESCRIPTION_MAX_RUNES {
-		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebId)
+	if utf8.RuneCountInString(channel.Description) > channelDescriptionMaxRunes {
+		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebID)
 	}
 
-	if utf8.RuneCountInString(channel.Subject) > CHANNEL_SUBJECT_MAX_RUNES {
-		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebId)
+	if utf8.RuneCountInString(channel.Subject) > channelSubjectMaxRunes {
+		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebID)
 	}
 
-	if !StringInArray(channel.Type, CHANNNEL_AVAILABLE_TYPES) {
-		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebId)
+	if !StringInArray(channel.Type, ChannelAvailableTypes) {
+		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebID)
 	}
 
 	return nil
 }
 
+// PreSave Is used to add default values to channel before saving it in DB
 func (channel *Channel) PreSave() {
-	if channel.WebId == "" {
-		channel.WebId = NewId()
+	if channel.WebID == "" {
+		channel.WebID = NewID()
 	}
 
 	channel.ChannelName = strings.ToLower(channel.ChannelName)
@@ -111,14 +116,16 @@ func (channel *Channel) PreSave() {
 	}
 }
 
+// PreUpdate Is used to add default values to channel before updating it in DB
 func (channel *Channel) PreUpdate() {
 	channel.UpdatedAt = GetMillis()
 }
 
-func GetDMNameFromIds(userId1, userId2 string) string {
-	if userId1 > userId2 {
-		return userId2 + "__" + userId1
-	} else {
-		return userId1 + "__" + userId2
+// GetDMNameFromIDs Create Direct message name from 2 userIDs
+func GetDMNameFromIDs(userID1, userID2 string) string {
+	if userID1 > userID2 {
+		return userID2 + "__" + userID1
 	}
+	return userID1 + "__" + userID2
+
 }

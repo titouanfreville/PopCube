@@ -44,7 +44,7 @@ func TestRolesModel(t *testing.T) {
 	})
 
 	Convey("Basics roles must not be valid roles", t, func() {
-		for _, role := range BASICS_ROLES {
+		for _, role := range BasicsRoles {
 			So(role.IsValid(), ShouldResemble, u.NewLocAppError("Role.IsValid", "model.role.rolename.app_error", nil, ""))
 		}
 	})
@@ -52,17 +52,17 @@ func TestRolesModel(t *testing.T) {
 	Convey("Testing json VS role transformations", t, func() {
 		Convey("Given an role", func() {
 			Convey("Transforming it in JSON then back to EMOJI should provide similar objects", func() {
-				json := ADMIN.ToJson()
-				new_role := RoleFromJson(strings.NewReader(json))
-				So(new_role, ShouldResemble, &ADMIN)
+				json := Admin.ToJSON()
+				newRole := RoleFromJSON(strings.NewReader(json))
+				So(newRole, ShouldResemble, &Admin)
 			})
 		})
 
 		Convey("Given an role list", func() {
 			Convey("Transfoming it in JSON then back to EMOJI LIST shoud give ressembling objects", func() {
-				json := RoleListToJson(BASICS_ROLES)
-				new_role_list := RoleListFromJson(strings.NewReader(json))
-				So(new_role_list, ShouldResemble, BASICS_ROLES)
+				json := RoleListToJSON(BasicsRoles)
+				newRoleList := RoleListFromJSON(strings.NewReader(json))
+				So(newRoleList, ShouldResemble, BasicsRoles)
 			})
 
 		})

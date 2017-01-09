@@ -8,7 +8,7 @@ import (
 )
 
 type Role struct {
-	IdRole        uint64 `gorm:"primary_key;column:idRole;AUTO_INCREMENT" json:"-"`
+	IDRole        uint64 `gorm:"primary_key;column:idRole;AUTO_INCREMENT" json:"-"`
 	RoleName      string `gorm:"column:roleName;unique_index;not null;unique" json:"name"`
 	CanUsePrivate bool   `gorm:"column:canUsePrivate;not null" json:"canUsePrivate"`
 	CanModerate   bool   `gorm:"column:canModerate;not null" json:"canModerate"`
@@ -19,7 +19,7 @@ type Role struct {
 }
 
 var (
-	OWNER = Role{
+	Owner = Role{
 		RoleName:      "owner",
 		CanUsePrivate: true,
 		CanModerate:   true,
@@ -28,7 +28,7 @@ var (
 		CanManage:     true,
 		CanManageUser: true,
 	}
-	ADMIN = Role{
+	Admin = Role{
 		RoleName:      "admin",
 		CanUsePrivate: true,
 		CanModerate:   true,
@@ -37,7 +37,7 @@ var (
 		CanManage:     true,
 		CanManageUser: true,
 	}
-	STANDART = Role{
+	Standart = Role{
 		RoleName:      "standart",
 		CanUsePrivate: true,
 		CanModerate:   true,
@@ -46,7 +46,7 @@ var (
 		CanManage:     false,
 		CanManageUser: false,
 	}
-	GUEST = Role{
+	Guest = Role{
 		RoleName:      "guest",
 		CanUsePrivate: false,
 		CanModerate:   false,
@@ -55,11 +55,11 @@ var (
 		CanManage:     false,
 		CanManageUser: false,
 	}
-	BASICS_ROLES = []*Role{
-		&OWNER,
-		&ADMIN,
-		&STANDART,
-		&GUEST,
+	BasicsRoles = []*Role{
+		&Owner,
+		&Admin,
+		&Standart,
+		&Guest,
 	}
 	restrictedRoleNames = []string{
 		"owner",
@@ -80,11 +80,11 @@ func (role *Role) IsValid() *u.AppError {
 
 func (role *Role) PreSave() {
 	if role.RoleName == "" {
-		role.RoleName = NewId()
+		role.RoleName = NewID()
 	}
 }
 
-func (role *Role) ToJson() string {
+func (role *Role) ToJSON() string {
 	b, err := json.Marshal(role)
 	if err != nil {
 		return ""
@@ -111,7 +111,7 @@ func IsValidRoleName(u string) bool {
 	return true
 }
 
-func RoleFromJson(data io.Reader) *Role {
+func RoleFromJSON(data io.Reader) *Role {
 	decoder := json.NewDecoder(data)
 	var role Role
 	err := decoder.Decode(&role)
@@ -122,7 +122,7 @@ func RoleFromJson(data io.Reader) *Role {
 	}
 }
 
-func RoleListToJson(roleList []*Role) string {
+func RoleListToJSON(roleList []*Role) string {
 	b, err := json.Marshal(roleList)
 	if err != nil {
 		return ""
@@ -131,7 +131,7 @@ func RoleListToJson(roleList []*Role) string {
 	}
 }
 
-func RoleListFromJson(data io.Reader) []*Role {
+func RoleListFromJSON(data io.Reader) []*Role {
 	decoder := json.NewDecoder(data)
 	var roleList []*Role
 	err := decoder.Decode(&roleList)

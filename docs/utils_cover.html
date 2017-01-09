@@ -89,48 +89,49 @@ import (
         "strings"
 )
 
+// AppError Type used to structure error reporting for popcube chat project.
 type AppError struct {
-        Id            string                 `json:"id"`
+        ID            string                 `json:"id"`
         Message       string                 `json:"message"`               // Message to be display to the end user without debugging information
         DetailedError string                 `json:"detailed_error"`        // Internal error string to help the developer
-        RequestId     string                 `json:"request_id,omitempty"`  // The RequestId that's also set in the header
+        RequestID     string                 `json:"request_id,omitempty"`  // The RequestID that's also set in the header
         StatusCode    int                    `json:"status_code,omitempty"` // The http status code
         Where         string                 `json:"-"`                     // The function where it happened in the form of Struct.Func
         IsOAuth       bool                   `json:"is_oauth,omitempty"`    // Whether the error is OAuth specific
         params        map[string]interface{} `json:"-"`
 }
 
+// Error return a string for AppError Type
 func (er *AppError) Error() string <span class="cov1" title="1">{
         return er.Where + ": " + er.Message + ", " + er.DetailedError
 }</span>
 
-func (er *AppError) Translate(T goi18n.TranslateFunc) <span class="cov0" title="0">{
+func (er *AppError) translate(T goi18n.TranslateFunc) <span class="cov0" title="0">{
         if er.params == nil </span><span class="cov0" title="0">{
-                er.Message = T(er.Id)
-        }</span><span class="cov0" title="0"> else {
-                er.Message = T(er.Id, er.params)
+                er.Message = T(er.ID)
         }</span>
+        <span class="cov0" title="0">er.Message = T(er.ID, er.params)</span>
+
 }
 
-func (er *AppError) SystemMessage(T goi18n.TranslateFunc) string <span class="cov0" title="0">{
+func (er *AppError) systemMessage(T goi18n.TranslateFunc) string <span class="cov0" title="0">{
         if er.params == nil </span><span class="cov0" title="0">{
-                return T(er.Id)
-        }</span><span class="cov0" title="0"> else {
-                return T(er.Id, er.params)
+                return T(er.ID)
         }</span>
+        <span class="cov0" title="0">return T(er.ID, er.params)</span>
 }
 
-func (er *AppError) ToJson() string <span class="cov1" title="1">{
+// ToJSON function to transform AppError
+func (er *AppError) ToJSON() string <span class="cov1" title="1">{
         b, err := json.Marshal(er)
         if err != nil </span><span class="cov0" title="0">{
                 return ""
-        }</span><span class="cov1" title="1"> else {
-                return string(b)
         }</span>
+        <span class="cov1" title="1">return string(b)</span>
 }
 
-// AppErrorFromJson will decode the input and return an AppError
-func AppErrorFromJson(data io.Reader) *AppError <span class="cov10" title="2">{
+// AppErrorFromJSON will decode the input and return an AppError
+func AppErrorFromJSON(data io.Reader) *AppError <span class="cov10" title="2">{
         str := ""
         bytes, rerr := ioutil.ReadAll(data)
         if rerr != nil </span><span class="cov0" title="0">{
@@ -144,14 +145,15 @@ func AppErrorFromJson(data io.Reader) *AppError <span class="cov10" title="2">{
         err := decoder.Decode(&amp;er)
         if err == nil </span><span class="cov1" title="1">{
                 return &amp;er
-        }</span><span class="cov1" title="1"> else {
-                return NewLocAppError("AppErrorFromJson", "model.utils.decode_json.app_error", nil, "body: "+str)
         }</span>
+        <span class="cov1" title="1">return NewLocAppError("AppErrorFromJSON", "model.utils.decode_json.app_error", nil, "body: "+str)</span>
+
 }
 
+// NewLocAppError is used to generate server errors
 func NewLocAppError(where string, id string, params map[string]interface{}, details string) *AppError <span class="cov10" title="2">{
         ap := &amp;AppError{}
-        ap.Id = id
+        ap.ID = id
         ap.params = params
         ap.Message = id
         ap.Where = where

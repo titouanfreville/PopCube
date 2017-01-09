@@ -1,7 +1,7 @@
 // This file is used to test if user model is working correctly.
 // A user is always linked to an organisation
 // He has basic channel to join
-package data_stores
+package datastores
 
 import (
 	"github.com/jinzhu/gorm"
@@ -19,7 +19,7 @@ func TestDataStores(t *testing.T) {
 			Convey("Initialising should provide a db", func() {
 				ds.initConnection("root", "popcube_test", "popcube_dev")
 				db, _ := gorm.Open("mysql", "root:popcube_dev@/?charset=utf8&parseTime=True&loc=Local")
-				// Should nor resemble cause of Channel IDs. 2 Objects have 2 Ids :'('
+				// Should nor resemble cause of Channel IDs. 2 Objects have 2 IDs :'('
 				So(ds.Db, ShouldNotResemble, db)
 				So(ds.Db.Value, ShouldEqual, db.Value)
 				So(ds.Db.Error, ShouldEqual, db.Error)
@@ -29,7 +29,7 @@ func TestDataStores(t *testing.T) {
 
 				ds.initConnection("test_user", "popcube_test", "test")
 				db, _ = gorm.Open("mysql", "test_user:test@/?popcube_test?charset=utf8&parseTime=True&loc=Local")
-				// Should nor resemble cause of Channel IDs. 2 Objects have 2 Ids :'('
+				// Should nor resemble cause of Channel IDs. 2 Objects have 2 IDs :'('
 				So(ds.Db, ShouldNotResemble, db)
 				So(ds.Db.Value, ShouldEqual, db.Value)
 				So(ds.Db.Error, ShouldEqual, db.Error)

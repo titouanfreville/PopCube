@@ -49,9 +49,9 @@ func TestAvatarsModel(t *testing.T) {
 				Link: "avatars/trollface.svg",
 			}
 			Convey("Transforming it in JSON then back to EMOJI should provide similar objects", func() {
-				json := avatar.ToJson()
-				new_avatar := AvatarFromJson(strings.NewReader(json))
-				So(new_avatar, ShouldResemble, &avatar)
+				json := avatar.ToJSON()
+				newAvatar := AvatarFromJSON(strings.NewReader(json))
+				So(newAvatar, ShouldResemble, &avatar)
 			})
 		})
 
@@ -68,12 +68,12 @@ func TestAvatarsModel(t *testing.T) {
 				Name: "Face Palm",
 				Link: "avatars/facepalm.svg",
 			}
-			avatar_list := []*Avatar{&avatar1, &avatar2, &avatar3}
+			avatarList := []*Avatar{&avatar1, &avatar2, &avatar3}
 
 			Convey("Transfoming it in JSON then back to EMOJI LIST shoud give ressembling objects", func() {
-				json := AvatarListToJson(avatar_list)
-				new_avatar_list := AvatarListFromJson(strings.NewReader(json))
-				So(new_avatar_list, ShouldResemble, avatar_list)
+				json := AvatarListToJSON(avatarList)
+				newAvatarList := AvatarListFromJSON(strings.NewReader(json))
+				So(newAvatarList, ShouldResemble, avatarList)
 			})
 
 		})

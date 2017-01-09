@@ -77,7 +77,7 @@ check_fixed_packages () {
   go test -v -cover -covermode=count -coverprofile=/home/coverage/api.cover api
   failures=$((failures+$?))
   echo ">>> DATA_STORES "
-  go test -v -cover -covermode=count -coverprofile=/home/coverage/data_stores.cover data_stores
+  go test -v -cover -covermode=count -coverprofile=/home/coverage/datastores.cover datastores
   failures=$((failures+$?))
   echo ">>> MODELS "
   go test -v -cover -covermode=count -coverprofile=/home/coverage/models.cover models
@@ -87,11 +87,11 @@ check_fixed_packages () {
   failures=$((failures+$?))
   echo "Generating coverage html reports"
   go tool cover -html=/home/coverage/api.cover -o /home/docs/api_cover.html
-  go tool cover -html=/home/coverage/data_stores.cover -o /home/docs/data_stores_cover.html
+  go tool cover -html=/home/coverage/datastores.cover -o /home/docs/datastores_cover.html
   go tool cover -html=/home/coverage/models.cover -o /home/docs/models_cover.html
   go tool cover -html=/home/coverage/utils.cover -o /home/docs/utils_cover.html
   godoc -html cmd/api > /home/docs/api_documentation.html
-  godoc -html cmd/data_stores > /home/docs/data_stores_documentation.html
+  godoc -html cmd/datastores > /home/docs/datastores_documentation.html
   godoc -html cmd/models > /home/docs/models_documentation.html
   godoc -html cmd/utils > /home/docs/utils_documentation.html
 }
@@ -102,7 +102,7 @@ check_fixed_packages_no_generation () {
   go test -v api
   failures=$((failures+$?))
   echo ">>> DATA_STORES "
-  go test -v data_stores
+  go test -v datastores
   failures=$((failures+$?))
   echo ">>> MODELS "
   go test -v models

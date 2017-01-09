@@ -16,11 +16,11 @@ import (
 )
 
 const (
-	LOWERCASE_LETTERS = "abcdefghijklmnopqrstuvwxyz"
-	UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	NUMBERS           = "0123456789"
-	SYMBOLS           = " !\"\\#$%&'()*+,-./:;<=>?@[]^_`|~"
-	CURRENT_VERSION   = "0.0.0"
+	lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz"
+	upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	numbers          = "0123456789"
+	symbols          = " !\"\\#$%&'()*+,-./:;<=>?@[]^_`|~"
+	CurrentVersion   = "0.0.0"
 )
 
 type StringInterface map[string]interface{}
@@ -30,10 +30,10 @@ type EncryptStringMap map[string]string
 
 var encoding = base32.NewEncoding("ybndrfg8ejkmcpqxot1uwisza345h769")
 
-// NewId is a globally unique identifier.  It is a [A-Z0-9] string 26
+// NewID is a globally unique identifier.  It is a [A-Z0-9] string 26
 // characters long.  It is a UUID version 4 Guid that is zbased32 encoded
 // with the padding stripped off.
-func NewId() string {
+func NewID() string {
 	var b bytes.Buffer
 	encoder := base32.NewEncoder(encoding, &b)
 	encoder.Write(uuid.NewRandom())
@@ -58,8 +58,8 @@ func GetMillis() int64 {
 	return time.Now().UnixNano() / int64(time.Millisecond)
 }
 
-// MapToJson converts a map to a json string
-func MapToJson(objmap map[string]string) string {
+// MapToJSON converts a map to a json string
+func MapToJSON(objmap map[string]string) string {
 	if b, err := json.Marshal(objmap); err != nil {
 		return ""
 	} else {
@@ -67,8 +67,8 @@ func MapToJson(objmap map[string]string) string {
 	}
 }
 
-// MapFromJson will decode the key/value pair map
-func MapFromJson(data io.Reader) map[string]string {
+// MapFromJSON will decode the key/value pair map
+func MapFromJSON(data io.Reader) map[string]string {
 	decoder := json.NewDecoder(data)
 
 	var objmap map[string]string
@@ -79,7 +79,7 @@ func MapFromJson(data io.Reader) map[string]string {
 	}
 }
 
-func ArrayToJson(objmap []string) string {
+func ArrayToJSON(objmap []string) string {
 	if b, err := json.Marshal(objmap); err != nil {
 		return ""
 	} else {
@@ -87,7 +87,7 @@ func ArrayToJson(objmap []string) string {
 	}
 }
 
-func ArrayFromJson(data io.Reader) []string {
+func ArrayFromJSON(data io.Reader) []string {
 	decoder := json.NewDecoder(data)
 
 	var objmap []string
@@ -124,7 +124,7 @@ func StringInArray(a string, array []string) bool {
 	return false
 }
 
-func StringInterfaceToJson(objmap map[string]interface{}) string {
+func StringInterfaceToJSON(objmap map[string]interface{}) string {
 	if b, err := json.Marshal(objmap); err != nil {
 		return ""
 	} else {
@@ -132,7 +132,7 @@ func StringInterfaceToJson(objmap map[string]interface{}) string {
 	}
 }
 
-func StringInterfaceFromJson(data io.Reader) map[string]interface{} {
+func StringInterfaceFromJSON(data io.Reader) map[string]interface{} {
 	decoder := json.NewDecoder(data)
 
 	var objmap map[string]interface{}
@@ -143,7 +143,7 @@ func StringInterfaceFromJson(data io.Reader) map[string]interface{} {
 	}
 }
 
-func StringToJson(s string) string {
+func StringToJSON(s string) string {
 	b, err := json.Marshal(s)
 	if err != nil {
 		return ""
@@ -152,7 +152,7 @@ func StringToJson(s string) string {
 	}
 }
 
-func StringFromJson(data io.Reader) string {
+func StringFromJSON(data io.Reader) string {
 	decoder := json.NewDecoder(data)
 
 	var s string
@@ -186,11 +186,11 @@ var reservedName = []string{
 	"oauth",
 }
 
-func IsValidChannelIdentifier(s string) bool {
+func IsValidChannelIDentifier(s string) bool {
 	return IsValidAlphaNum(s, true)
 }
 
-func IsValidOrganisationIdentifier(s string) bool {
+func IsValidOrganisationIDentifier(s string) bool {
 
 	return IsValidAlphaNum(s, true)
 }
@@ -211,7 +211,7 @@ func IsValidAlphaNum(s string, allowUnderscores bool) bool {
 
 func Etag(parts ...interface{}) string {
 
-	Etag := CURRENT_VERSION
+	Etag := CurrentVersion
 
 	for _, part := range parts {
 		Etag += fmt.Sprintf(".%v", part)
@@ -283,41 +283,41 @@ func ClearMentionTags(post string) string {
 	return post
 }
 
-var UrlRegex = regexp.MustCompile(`^((?:[a-z]+:\/\/)?(?:(?:[a-z0-9\-]+\.)+(?:[a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|local|internal))(:[0-9]{1,5})?(?:\/[a-z0-9_\-\.~]+)*(\/([a-z0-9_\-\.]*)(?:\?[a-z0-9+_~\-\.%=&amp;]*)?)?(?:#[a-zA-Z0-9!$&'()*+.=-_~:@/?]*)?)(?:\s+|$)$`)
-var PartialUrlRegex = regexp.MustCompile(`/([A-Za-z0-9]{26})/([A-Za-z0-9]{26})/((?:[A-Za-z0-9]{26})?.+(?:\.[A-Za-z0-9]{3,})?)`)
+var URLRegex = regexp.MustCompile(`^((?:[a-z]+:\/\/)?(?:(?:[a-z0-9\-]+\.)+(?:[a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|local|internal))(:[0-9]{1,5})?(?:\/[a-z0-9_\-\.~]+)*(\/([a-z0-9_\-\.]*)(?:\?[a-z0-9+_~\-\.%=&amp;]*)?)?(?:#[a-zA-Z0-9!$&'()*+.=-_~:@/?]*)?)(?:\s+|$)$`)
+var PartialURLRegex = regexp.MustCompile(`/([A-Za-z0-9]{26})/([A-Za-z0-9]{26})/((?:[A-Za-z0-9]{26})?.+(?:\.[A-Za-z0-9]{3,})?)`)
 
 var SplitRunes = map[rune]bool{',': true, ' ': true, '.': true, '!': true, '?': true, ':': true, ';': true, '\n': true, '<': true, '>': true, '(': true, ')': true, '{': true, '}': true, '[': true, ']': true, '+': true, '/': true, '\\': true}
 
-func IsValidHttpUrl(rawUrl string) bool {
-	if strings.Index(rawUrl, "http://") != 0 && strings.Index(rawUrl, "https://") != 0 {
+func IsValidHTTPURL(rawURL string) bool {
+	if strings.Index(rawURL, "http://") != 0 && strings.Index(rawURL, "https://") != 0 {
 		return false
 	}
 
-	if _, err := url.ParseRequestURI(rawUrl); err != nil {
-		return false
-	}
-
-	return true
-}
-
-func IsValidHttpsUrl(rawUrl string) bool {
-	if strings.Index(rawUrl, "https://") != 0 {
-		return false
-	}
-
-	if _, err := url.ParseRequestURI(rawUrl); err != nil {
+	if _, err := url.ParseRequestURI(rawURL); err != nil {
 		return false
 	}
 
 	return true
 }
 
-func IsValidTurnOrStunServer(rawUri string) bool {
-	if strings.Index(rawUri, "turn:") != 0 && strings.Index(rawUri, "stun:") != 0 {
+func IsValidHTTPSURL(rawURL string) bool {
+	if strings.Index(rawURL, "https://") != 0 {
 		return false
 	}
 
-	if _, err := url.ParseRequestURI(rawUri); err != nil {
+	if _, err := url.ParseRequestURI(rawURL); err != nil {
+		return false
+	}
+
+	return true
+}
+
+func IsValidTurnOrStunServer(rawURI string) bool {
+	if strings.Index(rawURI, "turn:") != 0 && strings.Index(rawURI, "stun:") != 0 {
+		return false
+	}
+
+	if _, err := url.ParseRequestURI(rawURI); err != nil {
 		return false
 	}
 
@@ -326,7 +326,7 @@ func IsValidTurnOrStunServer(rawUri string) bool {
 
 func IsSafeLink(link *string) bool {
 	if link != nil {
-		if IsValidHttpUrl(*link) {
+		if IsValidHTTPURL(*link) {
 			return true
 		} else if strings.HasPrefix(*link, "/") {
 			return true
@@ -338,12 +338,12 @@ func IsSafeLink(link *string) bool {
 	return true
 }
 
-func IsValidWebsocketUrl(rawUrl string) bool {
-	if strings.Index(rawUrl, "ws://") != 0 && strings.Index(rawUrl, "wss://") != 0 {
+func IsValidWebsocketURL(rawURL string) bool {
+	if strings.Index(rawURL, "ws://") != 0 && strings.Index(rawURL, "wss://") != 0 {
 		return false
 	}
 
-	if _, err := url.ParseRequestURI(rawUrl); err != nil {
+	if _, err := url.ParseRequestURI(rawURL); err != nil {
 		return false
 	}
 

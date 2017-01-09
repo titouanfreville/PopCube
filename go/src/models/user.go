@@ -30,16 +30,15 @@ import (
 )
 
 const (
-	user_NOTIFY_ALL            = "all"
-	user_NOTIFY_MENTION        = "mention"
-	user_NOTIFY_NONE           = "none"
-	DEFAULT_locale             = "en"
-	user_AUTH_SERVICE_email    = "email"
-	user_AUTH_SERVICE_username = "username"
+	userNotifyAll           = "all"
+	userNotifyMention       = "mention"
+	userNotifyNone          = "none"
+	userAuthServiceEmail    = "email"
+	userAuthServiceUsername = "username"
 )
 
 var (
-	user_CHANNEL = []string{"general", "random"}
+	userChannel = []string{"general", "random"}
 	// Protected user name cause they are taken by system or used for special mentions.
 	restrictedUsernames = []string{
 		"all",
@@ -54,7 +53,7 @@ var (
 /*
 	User object
 
-		- webwebId: String unique and non null to webIdentify the user on application services. - REQUIRED
+		- webwebID: String unique and non null to webIDentify the user on application services. - REQUIRED
 
 		- username: Store the user username used to log into the service. - REQUIRED
 
@@ -85,8 +84,8 @@ var (
 		- lastActivityAt: Date && Time of the last activity of the user.
 */
 type User struct {
-	UserId             uint64 `gorm:"primary_key;column:idUser;AUTO_INCREMENT" json:"-"`
-	WebId              string `gorm:"column:webId; not null; unique;" json:"web_id"`
+	UserID             uint64 `gorm:"primary_key;column:idUser;AUTO_INCREMENT" json:"-"`
+	WebID              string `gorm:"column:webID; not null; unique;" json:"web_id"`
 	Username           string `gorm:"column:userName; not null; unique;" json:"username"`
 	Email              string `gorm:"column:email; not null; unique;" json:"email"`
 	EmailVerified      bool   `gorm:"column:emailVerified; not null; unique;" json:"email_verified"`
@@ -96,7 +95,7 @@ type User struct {
 	LastPasswordUpdate int64  `gorm:"column:lastPasswordUpdate; not null;" json:"last_password_update"`
 	FailedAttempts     int    `gorm:"column:failedAttempts; not null;" json:"failed_attempts"`
 	Locale             string `gorm:"column:locale; not null;" json:"locale"`
-	Role               Role   `gorm:"column:role; not null;ForeignKey:IdRole;" json:"-"`
+	Role               Role   `gorm:"column:role; not null;ForeignKey:IDRole;" json:"-"`
 	Avatar             string `gorm:"column:avatar;" json:"avatar, omitempty"`
 	NickName           string `gorm:"column:nickName;" json:"nickname, omitempty"`
 	FirstName          string `gorm:"column:firstName;" json:"first_name, omitempty"`
@@ -104,49 +103,49 @@ type User struct {
 	LastActivityAt     int64  `db:"-" json:"last_activity_at,omitempty"`
 }
 
-// IsValid valwebIdates the user and returns an error if it isn't configured
+// IsValid valwebIDates the user and returns an error if it isn't configured
 // correctly.
 func (user *User) IsValid() *u.AppError {
 
-	if len(user.WebId) != 26 {
-		return u.NewLocAppError("user.IsValid", "model.user.is_valid.WebId.app_error", nil, "")
+	if len(user.WebID) != 26 {
+		return u.NewLocAppError("user.IsValid", "model.user.is_valid.WebID.app_error", nil, "")
 	}
 
 	if !IsValidUsername(user.Username) {
-		return u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webId="+user.WebId)
+		return u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user.WebID)
 	}
 
 	if len(user.Email) == 0 || len(user.Email) > 128 || !IsValidEmail(user.Email) {
-		return u.NewLocAppError("user.IsValid", "model.user.is_valid.Email.app_error", nil, "user_webId="+user.WebId)
+		return u.NewLocAppError("user.IsValid", "model.user.is_valid.Email.app_error", nil, "user_webID="+user.WebID)
 	}
 
 	if utf8.RuneCountInString(user.NickName) > 64 {
-		return u.NewLocAppError("user.IsValid", "model.user.is_valid.NickName.app_error", nil, "user_webId="+user.WebId)
+		return u.NewLocAppError("user.IsValid", "model.user.is_valid.NickName.app_error", nil, "user_webID="+user.WebID)
 	}
 
 	if utf8.RuneCountInString(user.FirstName) > 64 {
-		return u.NewLocAppError("user.IsValid", "model.user.is_valid.first_name.app_error", nil, "user_webId="+user.WebId)
+		return u.NewLocAppError("user.IsValid", "model.user.is_valid.first_name.app_error", nil, "user_webID="+user.WebID)
 	}
 
 	if utf8.RuneCountInString(user.LastName) > 64 {
-		return u.NewLocAppError("user.IsValid", "model.user.is_valid.last_name.app_error", nil, "user_webId="+user.WebId)
+		return u.NewLocAppError("user.IsValid", "model.user.is_valid.last_name.app_error", nil, "user_webID="+user.WebID)
 	}
 
 	if len(user.Password) == 0 {
-		return u.NewLocAppError("user.IsValid", "model.user.is_valid.auth_data_pwd.app_error", nil, "user_webId="+user.WebId)
+		return u.NewLocAppError("user.IsValid", "model.user.is_valid.auth_data_pwd.app_error", nil, "user_webID="+user.WebID)
 	}
 
 	return nil
 }
 
-// PreSave have to be run before saving user in DB. It will fill necessary information (webId, username, etc. ) and hash password
+// PreSave have to be run before saving user in DB. It will fill necessary information (webID, username, etc. ) and hash password
 func (user *User) PreSave() {
-	if user.WebId == "" {
-		user.WebId = NewId()
+	if user.WebID == "" {
+		user.WebID = NewID()
 	}
 
 	if user.Username == "" {
-		user.Username = NewId()
+		user.Username = NewID()
 	}
 
 	user.Username = strings.ToLower(user.Username)
@@ -156,7 +155,7 @@ func (user *User) PreSave() {
 	user.LastPasswordUpdate = user.UpdatedAt
 
 	if user.Locale == "" {
-		user.Locale = DEFAULT_locale
+		user.Locale = DefaultLocale
 	}
 
 	if len(user.Password) > 0 {
@@ -164,7 +163,7 @@ func (user *User) PreSave() {
 	}
 }
 
-// PreSave will set the webId and username if missing.  It will also fill
+// PreSave will set the webID and username if missing.  It will also fill
 // in the CreateAt, UpdateAt times.  It will also hash the password.  It should
 // be run before saving the user to the db.
 // PreUpdate should be run before updating the user in the db.
@@ -174,8 +173,8 @@ func (user *User) PreUpdate() {
 	user.UpdatedAt = GetMillis()
 }
 
-// ToJson convert a user to a json string
-func (user *User) ToJson() string {
+// ToJSON convert a user to a json string
+func (user *User) ToJSON() string {
 	b, err := json.Marshal(user)
 	if err != nil {
 		return ""
@@ -184,8 +183,8 @@ func (user *User) ToJson() string {
 	}
 }
 
-// UserFromJson will decode the input and return a user
-func UserFromJson(data io.Reader) *User {
+// UserFromJSON will decode the input and return a user
+func UserFromJSON(data io.Reader) *User {
 	decoder := json.NewDecoder(data)
 	var user User
 	err := decoder.Decode(&user)
@@ -215,9 +214,9 @@ func IsValidUsername(user string) bool {
 	return true
 }
 
-// Generate a valwebId strong Etag so the browser can cache the results
+// Generate a valwebID strong Etag so the browser can cache the results
 func (user *User) Etag(showFullName, showemail bool) string {
-	return Etag(user.WebId, user.UpdatedAt, showFullName, showemail)
+	return Etag(user.WebID, user.UpdatedAt, showFullName, showemail)
 }
 
 // Get full name of the user
@@ -283,7 +282,7 @@ func CleanUsername(s string) string {
 	}
 
 	if !IsValidUsername(s) {
-		s = "a" + NewId()
+		s = "a" + NewID()
 	}
 
 	return s
