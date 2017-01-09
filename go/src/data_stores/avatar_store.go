@@ -1,12 +1,9 @@
 package data_stores
 
 import (
-	// l4g "github.com/alecthomas/log4go"
 	_ "github.com/go-sql-driver/mysql"
-	// "github.com/jinzhu/gorm"
 	"models"
 	. "utils"
-	// "time"
 )
 
 type AvatarStoreImpl struct {

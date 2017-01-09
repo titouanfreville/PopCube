@@ -1,12 +1,9 @@
 package data_stores
 
 import (
-	// l4g "github.com/alecthomas/log4go"
 	_ "github.com/go-sql-driver/mysql"
-	// "github.com/jinzhu/gorm"
 	"models"
 	. "utils"
-	// "time"
 )
 
 type OrganisationStoreImpl struct {
@@ -28,7 +25,7 @@ func (osi OrganisationStoreImpl) Save(organisation *models.Organisation, ds Data
 	}
 	if err := transaction.Create(&organisation).Error; err != nil {
 		transaction.Rollback()
-		return NewLocAppError("organisation_store_impl.Save", "save.transaction.create.encounter_error", nil, "")
+		return NewLocAppError("organisation_store_impl.Save", "save.transaction.create.encounter_error: "+err.Error(), nil, "")
 	}
 	transaction.Commit()
 	return nil
@@ -49,7 +46,7 @@ func (osi OrganisationStoreImpl) Update(organisation *models.Organisation, new_o
 	}
 	if err := transaction.Model(&organisation).Updates(&new_organisation).Error; err != nil {
 		transaction.Rollback()
-		return NewLocAppError("organisation_store_impl.Update", "update.transaction.updates.encounter_error", nil, "")
+		return NewLocAppError("organisation_store_impl.Update", "update.transaction.updates.encounter_error: "+err.Error(), nil, "")
 	}
 	transaction.Commit()
 	return nil

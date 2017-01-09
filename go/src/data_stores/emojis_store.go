@@ -70,6 +70,14 @@ func (asi EmojiStoreImpl) GetByName(emojiName string, ds DataStore) *models.Emoj
 }
 
 // Used to get emoji from DB
+func (asi EmojiStoreImpl) GetByShortcut(EmojiShortcut string, ds DataStore) *models.Emoji {
+	db := *ds.Db
+	emoji := models.Emoji{}
+	db.Where("shortcut = ?", EmojiShortcut).First(&emoji)
+	return &emoji
+}
+
+// Used to get emoji from DB
 func (asi EmojiStoreImpl) GetByLink(emojiLink string, ds DataStore) *models.Emoji {
 	db := *ds.Db
 	emoji := models.Emoji{}

@@ -57,8 +57,8 @@ func TestEmojisModel(t *testing.T) {
 			}
 			Convey("Transforming it in JSON then back to EMOJI should provide similar objects", func() {
 				json := emoji.ToJson()
-				new_emoji := EmojiFromJson(strings.NewReader(json))
-				So(new_emoji, ShouldResemble, &emoji)
+				newEmoji := EmojiFromJson(strings.NewReader(json))
+				So(newEmoji, ShouldResemble, &emoji)
 			})
 		})
 
@@ -78,12 +78,12 @@ func TestEmojisModel(t *testing.T) {
 				Shortcut: ":facepalm:",
 				Link:     "emojis/facepalm.svg",
 			}
-			emoji_list := []*Emoji{&emoji1, &emoji2, &emoji3}
+			emojiList := []*Emoji{&emoji1, &emoji2, &emoji3}
 
 			Convey("Transfoming it in JSON then back to EMOJI LIST shoud give ressembling objects", func() {
-				json := EmojiListToJson(emoji_list)
-				new_emoji_list := EmojiListFromJson(strings.NewReader(json))
-				So(new_emoji_list, ShouldResemble, emoji_list)
+				json := EmojiListToJson(emojiList)
+				newEmojiList := EmojiListFromJson(strings.NewReader(json))
+				So(newEmojiList, ShouldResemble, emojiList)
 			})
 		})
 	})
