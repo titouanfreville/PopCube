@@ -11,7 +11,7 @@ import (
 )
 
 func TestEmojiStore(t *testing.T) {
-	ds := DataStore{}
+	ds := dbStore{}
 	ds.InitConnection("root", "popcube_test", "popcube_dev")
 	db := *ds.Db
 	asi := EmojiStoreImpl{}

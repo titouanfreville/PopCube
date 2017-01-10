@@ -11,7 +11,7 @@ type AvatarStoreImpl struct {
 }
 
 // Save Use to save avatar in BB
-func (asi AvatarStoreImpl) Save(avatar *models.Avatar, ds DataStore) *u.AppError {
+func (asi AvatarStoreImpl) Save(avatar *models.Avatar, ds dbStore) *u.AppError {
 	db := *ds.Db
 	transaction := db.Begin()
 	if appError := avatar.IsValid(); appError != nil {
@@ -31,7 +31,7 @@ func (asi AvatarStoreImpl) Save(avatar *models.Avatar, ds DataStore) *u.AppError
 }
 
 // Update Used to update avatar in DB
-func (asi AvatarStoreImpl) Update(avatar *models.Avatar, newAvatar *models.Avatar, ds DataStore) *u.AppError {
+func (asi AvatarStoreImpl) Update(avatar *models.Avatar, newAvatar *models.Avatar, ds dbStore) *u.AppError {
 	db := *ds.Db
 	transaction := db.Begin()
 	if appError := avatar.IsValid(); appError != nil {
@@ -51,7 +51,7 @@ func (asi AvatarStoreImpl) Update(avatar *models.Avatar, newAvatar *models.Avata
 }
 
 // GetAll Used to get avatar from DB
-func (asi AvatarStoreImpl) GetAll(ds DataStore) *[]models.Avatar {
+func (asi AvatarStoreImpl) GetAll(ds dbStore) *[]models.Avatar {
 	db := *ds.Db
 	avatars := []models.Avatar{}
 	db.Find(&avatars)
@@ -59,7 +59,7 @@ func (asi AvatarStoreImpl) GetAll(ds DataStore) *[]models.Avatar {
 }
 
 // GetByName Used to get avatar from DB
-func (asi AvatarStoreImpl) GetByName(avatarName string, ds DataStore) *models.Avatar {
+func (asi AvatarStoreImpl) GetByName(avatarName string, ds dbStore) *models.Avatar {
 	db := *ds.Db
 	avatar := models.Avatar{}
 	db.Where("name = ?", avatarName).First(&avatar)
@@ -67,7 +67,7 @@ func (asi AvatarStoreImpl) GetByName(avatarName string, ds DataStore) *models.Av
 }
 
 // GetByLink Used to get avatar from DB
-func (asi AvatarStoreImpl) GetByLink(avatarLink string, ds DataStore) *models.Avatar {
+func (asi AvatarStoreImpl) GetByLink(avatarLink string, ds dbStore) *models.Avatar {
 	db := *ds.Db
 	avatar := models.Avatar{}
 	db.Where("link = ?", avatarLink).First(&avatar)
@@ -75,7 +75,7 @@ func (asi AvatarStoreImpl) GetByLink(avatarLink string, ds DataStore) *models.Av
 }
 
 // Delete Used to get avatar from DB
-func (asi AvatarStoreImpl) Delete(avatar *models.Avatar, ds DataStore) *u.AppError {
+func (asi AvatarStoreImpl) Delete(avatar *models.Avatar, ds dbStore) *u.AppError {
 	db := *ds.Db
 	transaction := db.Begin()
 	if appError := avatar.IsValid(); appError != nil {
