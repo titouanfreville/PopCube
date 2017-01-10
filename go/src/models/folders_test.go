@@ -8,8 +8,8 @@ import (
 )
 
 func TestFolderModel(t *testing.T) {
-	user_test := User{
-		WebId:              NewId(),
+	userTest := User{
+		WebID:              NewID(),
 		UpdatedAt:          10,
 		Deleted:            true,
 		Username:           "l",
@@ -19,14 +19,14 @@ func TestFolderModel(t *testing.T) {
 		NickName:           "NickName",
 		FirstName:          "Test",
 		LastName:           "L",
-		Role:               OWNER,
+		Role:               Owner,
 		LastPasswordUpdate: 20,
 		FailedAttempts:     1,
 		Locale:             "vi",
 	}
 
-	channel_test := Channel{
-		WebId:       NewId(),
+	channelTest := Channel{
+		WebID:       NewID(),
 		ChannelName: "electra",
 		UpdatedAt:   GetMillis(),
 		Type:        "audio",
@@ -36,30 +36,30 @@ func TestFolderModel(t *testing.T) {
 		Avatar:      "jesuiscool.svg",
 	}
 
-	message_test := Message{
+	messageTest := Message{
 		Date:    GetMillis(),
 		Content: "Message test",
-		Creator: user_test,
-		Channel: channel_test,
+		Creator: userTest,
+		Channel: channelTest,
 	}
 
 	Convey("Testing IsValid function", t, func() {
-		name_error := u.NewLocAppError("Folder.IsValid", "model.folder.name.app_error", nil, "")
-		link_error := u.NewLocAppError("Folder.IsValid", "model.folder.link.app_error", nil, "")
-		type_error := u.NewLocAppError("Folder.IsValid", "model.folder.type.app_error", nil, "")
-		message_error := u.NewLocAppError("Folder.IsValid", "model.folder.message.app_error", nil, "")
+		nameError := u.NewLocAppError("Folder.IsValid", "model.folder.name.app_error", nil, "")
+		linkError := u.NewLocAppError("Folder.IsValid", "model.folder.link.app_error", nil, "")
+		typeError := u.NewLocAppError("Folder.IsValid", "model.folder.type.app_error", nil, "")
+		messageError := u.NewLocAppError("Folder.IsValid", "model.folder.message.app_error", nil, "")
 		Convey("Given a correct folders. Should be validated", func() {
 			folder := Folder{
 				Name:    "Je suis .... Cailloux",
 				Link:    "folders/youtube.com/watch?v=1JQE4YZS1Cg&t=1966s",
 				Type:    "Video",
-				Message: message_test,
+				Message: messageTest,
 			}
 			So(folder.IsValid(), ShouldBeNil)
-			So(folder.IsValid(), ShouldNotResemble, name_error)
-			So(folder.IsValid(), ShouldNotResemble, link_error)
-			So(folder.IsValid(), ShouldNotResemble, type_error)
-			So(folder.IsValid(), ShouldNotResemble, message_error)
+			So(folder.IsValid(), ShouldNotResemble, nameError)
+			So(folder.IsValid(), ShouldNotResemble, linkError)
+			So(folder.IsValid(), ShouldNotResemble, typeError)
+			So(folder.IsValid(), ShouldNotResemble, messageError)
 		})
 
 		Convey("Given incorrect folders. Should be refused", func() {
@@ -67,22 +67,22 @@ func TestFolderModel(t *testing.T) {
 				Name:    "Je suis .... Cailloux",
 				Link:    "folders/youtube.com/watch?v=1JQE4YZS1Cg&t=1966s",
 				Type:    "Video",
-				Message: message_test,
+				Message: messageTest,
 			}
 			empty := Folder{}
 			folder.Name = ""
 
 			Convey("empty Name or folder should return name error", func() {
 				So(folder.IsValid(), ShouldNotBeNil)
-				So(folder.IsValid(), ShouldResemble, name_error)
-				So(folder.IsValid(), ShouldNotResemble, link_error)
-				So(folder.IsValid(), ShouldNotResemble, type_error)
-				So(folder.IsValid(), ShouldNotResemble, message_error)
+				So(folder.IsValid(), ShouldResemble, nameError)
+				So(folder.IsValid(), ShouldNotResemble, linkError)
+				So(folder.IsValid(), ShouldNotResemble, typeError)
+				So(folder.IsValid(), ShouldNotResemble, messageError)
 				So(empty.IsValid(), ShouldNotBeNil)
-				So(empty.IsValid(), ShouldResemble, name_error)
-				So(empty.IsValid(), ShouldNotResemble, link_error)
-				So(empty.IsValid(), ShouldNotResemble, type_error)
-				So(empty.IsValid(), ShouldNotResemble, message_error)
+				So(empty.IsValid(), ShouldResemble, nameError)
+				So(empty.IsValid(), ShouldNotResemble, linkError)
+				So(empty.IsValid(), ShouldNotResemble, typeError)
+				So(empty.IsValid(), ShouldNotResemble, messageError)
 			})
 
 			folder.Name = "Correct Name"
@@ -90,10 +90,10 @@ func TestFolderModel(t *testing.T) {
 
 			Convey("Empty link should result in link error", func() {
 				So(folder.IsValid(), ShouldNotBeNil)
-				So(folder.IsValid(), ShouldNotResemble, name_error)
-				So(folder.IsValid(), ShouldResemble, link_error)
-				So(folder.IsValid(), ShouldNotResemble, type_error)
-				So(folder.IsValid(), ShouldNotResemble, message_error)
+				So(folder.IsValid(), ShouldNotResemble, nameError)
+				So(folder.IsValid(), ShouldResemble, linkError)
+				So(folder.IsValid(), ShouldNotResemble, typeError)
+				So(folder.IsValid(), ShouldNotResemble, messageError)
 			})
 
 			folder.Link = "folder/corretc.xml"
@@ -101,10 +101,10 @@ func TestFolderModel(t *testing.T) {
 
 			Convey("Empty type should result in type error", func() {
 				So(folder.IsValid(), ShouldNotBeNil)
-				So(folder.IsValid(), ShouldNotResemble, name_error)
-				So(folder.IsValid(), ShouldNotResemble, link_error)
-				So(folder.IsValid(), ShouldResemble, type_error)
-				So(folder.IsValid(), ShouldNotResemble, message_error)
+				So(folder.IsValid(), ShouldNotResemble, nameError)
+				So(folder.IsValid(), ShouldNotResemble, linkError)
+				So(folder.IsValid(), ShouldResemble, typeError)
+				So(folder.IsValid(), ShouldNotResemble, messageError)
 			})
 
 			folder.Type = "xml"
@@ -112,10 +112,10 @@ func TestFolderModel(t *testing.T) {
 
 			Convey("Empty message should result in message", func() {
 				So(folder.IsValid(), ShouldNotBeNil)
-				So(folder.IsValid(), ShouldNotResemble, name_error)
-				So(folder.IsValid(), ShouldNotResemble, link_error)
-				So(folder.IsValid(), ShouldNotResemble, type_error)
-				So(folder.IsValid(), ShouldResemble, message_error)
+				So(folder.IsValid(), ShouldNotResemble, nameError)
+				So(folder.IsValid(), ShouldNotResemble, linkError)
+				So(folder.IsValid(), ShouldNotResemble, typeError)
+				So(folder.IsValid(), ShouldResemble, messageError)
 			})
 		})
 	})
@@ -128,9 +128,9 @@ func TestFolderModel(t *testing.T) {
 				Type: "Video",
 			}
 			Convey("Transforming it in JSON then back to FOLDER should provide similar objects", func() {
-				json := folder.ToJson()
-				new_folder := FolderFromJson(strings.NewReader(json))
-				So(new_folder, ShouldResemble, &folder)
+				json := folder.ToJSON()
+				newFolder := FolderFromJSON(strings.NewReader(json))
+				So(newFolder, ShouldResemble, &folder)
 			})
 		})
 
@@ -150,12 +150,12 @@ func TestFolderModel(t *testing.T) {
 				Link: "folders/facepalm.svg",
 				Type: "facepalm?",
 			}
-			folder_list := []*Folder{&folder1, &folder2, &folder3}
+			folderList := []*Folder{&folder1, &folder2, &folder3}
 
 			Convey("Transfoming it in JSON then back to FOLDER LIST shoud give ressembling objects", func() {
-				json := FolderListToJson(folder_list)
-				new_folder_list := FolderListFromJson(strings.NewReader(json))
-				So(new_folder_list, ShouldResemble, folder_list)
+				json := FolderListToJSON(folderList)
+				newFolderList := FolderListFromJSON(strings.NewReader(json))
+				So(newFolderList, ShouldResemble, folderList)
 			})
 
 		})

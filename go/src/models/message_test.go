@@ -8,8 +8,8 @@ import (
 )
 
 func TestMessageModel(t *testing.T) {
-	user_test := User{
-		WebId:              NewId(),
+	userTest := User{
+		WebID:              NewID(),
 		UpdatedAt:          10,
 		Deleted:            true,
 		Username:           "l",
@@ -19,14 +19,14 @@ func TestMessageModel(t *testing.T) {
 		NickName:           "NickName",
 		FirstName:          "Test",
 		LastName:           "L",
-		Role:               OWNER,
+		Role:               Owner,
 		LastPasswordUpdate: 20,
 		FailedAttempts:     1,
 		Locale:             "vi",
 	}
 
-	channel_test := Channel{
-		WebId:       NewId(),
+	channelTest := Channel{
+		WebID:       NewID(),
 		ChannelName: "electra",
 		UpdatedAt:   GetMillis(),
 		Type:        "audio",
@@ -41,17 +41,17 @@ func TestMessageModel(t *testing.T) {
 			message := Message{
 				Date:    GetMillis(),
 				Content: "Message test",
-				Creator: user_test,
-				Channel: channel_test,
+				Creator: userTest,
+				Channel: channelTest,
 			}
 
 			Convey("Converting message to json then json to message should provide same message information (empty fields if ignore in JSON).", func() {
-				json := message.ToJson()
-				test_message := MessageFromJson(strings.NewReader(json))
-				So(test_message.Date, ShouldEqual, message.Date)
-				So(test_message.Content, ShouldEqual, message.Content)
-				So(test_message.Creator, ShouldResemble, User{})
-				So(test_message.Channel, ShouldResemble, Channel{})
+				json := message.ToJSON()
+				testMessage := MessageFromJSON(strings.NewReader(json))
+				So(testMessage.Date, ShouldEqual, message.Date)
+				So(testMessage.Content, ShouldEqual, message.Content)
+				So(testMessage.Creator, ShouldResemble, User{})
+				So(testMessage.Channel, ShouldResemble, Channel{})
 			})
 		})
 
@@ -66,12 +66,12 @@ func TestMessageModel(t *testing.T) {
 				Date:    GetMillis(),
 				Content: "Message test",
 			}
-			message_list := []*Message{&message1, &message2, &message3}
+			messageList := []*Message{&message1, &message2, &message3}
 
 			Convey("Transfoming it in JSON then back to EMOJI LIST shoud give ressembling objects", func() {
-				json := MessageListToJson(message_list)
-				new_message_list := MessageListFromJson(strings.NewReader(json))
-				So(new_message_list, ShouldResemble, message_list)
+				json := MessageListToJSON(messageList)
+				newMessageList := MessageListFromJSON(strings.NewReader(json))
+				So(newMessageList, ShouldResemble, messageList)
 			})
 		})
 	})
@@ -82,7 +82,7 @@ func TestMessageModel(t *testing.T) {
 			m2 := Message{Date: 10}
 			m3 := Message{Date: 20, Content: "Test presave"}
 			m4 := Message{Content: "Test presave"}
-			m5 := Message{Date: 20, Content: "Test presave", Creator: user_test, Channel: channel_test}
+			m5 := Message{Date: 20, Content: "Test presave", Creator: userTest, Channel: channelTest}
 			d1 := GetMillis()
 			m1.PreSave()
 			d2 := GetMillis()
@@ -106,8 +106,8 @@ func TestMessageModel(t *testing.T) {
 			message := Message{
 				Date:    GetMillis(),
 				Content: "Message test",
-				Creator: user_test,
-				Channel: channel_test,
+				Creator: userTest,
+				Channel: channelTest,
 			}
 			So(message.IsValid(), ShouldBeNil)
 			So(message.IsValid(), ShouldNotResemble, u.NewLocAppError("Message.IsValid", "model.message.date.app_error", nil, ""))
@@ -118,8 +118,8 @@ func TestMessageModel(t *testing.T) {
 			empty := Message{}
 			message := Message{
 				Content: "Message test",
-				Creator: user_test,
-				Channel: channel_test,
+				Creator: userTest,
+				Channel: channelTest,
 			}
 
 			Convey("Empty message or no date message should return No Date error", func() {
@@ -143,7 +143,7 @@ func TestMessageModel(t *testing.T) {
 				So(message.IsValid(), ShouldNotResemble, u.NewLocAppError("Message.IsValid", "model.message.channel.app_error", nil, ""))
 			})
 
-			message.Creator = user_test
+			message.Creator = userTest
 			message.Channel = Channel{}
 
 			Convey("Empty channel message must return channel error", func() {

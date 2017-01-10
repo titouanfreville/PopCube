@@ -1,16 +1,13 @@
 // This file is used to test if user model is working correctly.
 // A user is always linked to an avatar
 // He has basic channel to join
-package data_stores
+package datastores
 
 import (
-	// "github.com/jinzhu/gorm"
 	. "github.com/smartystreets/goconvey/convey"
 	. "models"
-	// "strconv"
-	// "strings"
 	"testing"
-	. "utils"
+	u "utils"
 )
 
 func TestAvatarStore(t *testing.T) {
@@ -19,8 +16,8 @@ func TestAvatarStore(t *testing.T) {
 	db := *ds.Db
 	asi := AvatarStoreImpl{}
 	Convey("Testing save function", t, func() {
-		db_error := NewLocAppError("avatar_store_impl.Save", "save.transaction.create.encounter_error", nil, "")
-		alreadyexist_error := NewLocAppError("avatar_store_impl.Save", "save.transaction.create.already_exist", nil, "Avatar Name: Troll Face")
+		dbError := u.NewLocAppError("avatarStoreImpl.Save", "save.transaction.create.encounterError", nil, "")
+		alreadyexistError := u.NewLocAppError("avatarStoreImpl.Save", "save.transaction.create.already_exist", nil, "Avatar Name: Troll Face")
 		avatar := Avatar{
 			Name: "Troll Face",
 			Link: "avatars/trollface.svg",
@@ -29,94 +26,94 @@ func TestAvatarStore(t *testing.T) {
 			appError := asi.Save(&avatar, ds)
 			Convey("Trying to add it for the first time, should be accepted", func() {
 				So(appError, ShouldBeNil)
-				So(appError, ShouldNotResemble, db_error)
-				So(appError, ShouldNotResemble, alreadyexist_error)
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldNotResemble, alreadyexistError)
 			})
 			Convey("Trying to add it a second time should return duplicate error", func() {
 				appError2 := asi.Save(&avatar, ds)
 				So(appError2, ShouldNotBeNil)
-				So(appError2, ShouldResemble, alreadyexist_error)
-				So(appError2, ShouldNotResemble, db_error)
+				So(appError2, ShouldResemble, alreadyexistError)
+				So(appError2, ShouldNotResemble, dbError)
 			})
 		})
 		db.Delete(&avatar)
 	})
 
 	Convey("Testing update function", t, func() {
-		db_error := NewLocAppError("avatar_store_impl.Save", "save.transaction.create.encounter_error", nil, "")
-		alreadyexist_error := NewLocAppError("avatar_store_impl.Save", "save.transaction.create.already_exist", nil, "Avatar Name: Troll Face")
+		dbError := u.NewLocAppError("avatarStoreImpl.Save", "save.transaction.create.encounterError", nil, "")
+		alreadyexistError := u.NewLocAppError("avatarStoreImpl.Save", "save.transaction.create.already_exist", nil, "Avatar Name: Troll Face")
 		avatar := Avatar{
 			Name: "Troll Face",
 			Link: "avatars/trollface.svg",
 		}
-		avatar_new := Avatar{
+		avatarNew := Avatar{
 			Name: "TrollFace2",
 			Link: "avatars/trollface2.svg",
 		}
 
 		appError := asi.Save(&avatar, ds)
 		So(appError, ShouldBeNil)
-		So(appError, ShouldNotResemble, db_error)
-		So(appError, ShouldNotResemble, alreadyexist_error)
+		So(appError, ShouldNotResemble, dbError)
+		So(appError, ShouldNotResemble, alreadyexistError)
 
 		Convey("Provided correct Avatar to modify should not return errors", func() {
-			appError := asi.Update(&avatar, &avatar_new, ds)
+			appError := asi.Update(&avatar, &avatarNew, ds)
 			So(appError, ShouldBeNil)
-			So(appError, ShouldNotResemble, db_error)
-			So(appError, ShouldNotResemble, alreadyexist_error)
+			So(appError, ShouldNotResemble, dbError)
+			So(appError, ShouldNotResemble, alreadyexistError)
 		})
 
 		Convey("Provided wrong Avatar to modify should result in old_avatar error", func() {
 			avatar.Name = ""
 			Convey("Too long or empty Name should return name error", func() {
-				appError := asi.Update(&avatar, &avatar_new, ds)
+				appError := asi.Update(&avatar, &avatarNew, ds)
 				So(appError, ShouldNotBeNil)
-				So(appError, ShouldNotResemble, db_error)
-				So(appError, ShouldResemble, NewLocAppError("avatar_store_impl.Update.avatar_old.PreSave", "model.avatar.name.app_error", nil, ""))
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldResemble, u.NewLocAppError("avatarStoreImpl.Update.avatarOld.PreSave", "model.avatar.name.app_error", nil, ""))
 				avatar.Name = "thishastobeatoolongname.For this, it need to be more than 64 char lenght .............. So long. Plus it should be alpha numeric. I'll add the test later on."
-				appError = asi.Update(&avatar, &avatar_new, ds)
+				appError = asi.Update(&avatar, &avatarNew, ds)
 				So(appError, ShouldNotBeNil)
-				So(appError, ShouldNotResemble, db_error)
-				So(appError, ShouldResemble, NewLocAppError("avatar_store_impl.Update.avatar_old.PreSave", "model.avatar.name.app_error", nil, ""))
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldResemble, u.NewLocAppError("avatarStoreImpl.Update.avatarOld.PreSave", "model.avatar.name.app_error", nil, ""))
 			})
 
 			avatar.Name = "Correct Name"
 			avatar.Link = ""
 
 			Convey("Empty link should result in link error", func() {
-				appError = asi.Update(&avatar, &avatar_new, ds)
+				appError = asi.Update(&avatar, &avatarNew, ds)
 				So(appError, ShouldNotBeNil)
-				So(appError, ShouldNotResemble, db_error)
-				So(appError, ShouldResemble, NewLocAppError("avatar_store_impl.Update.avatar_old.PreSave", "model.avatar.link.app_error", nil, ""))
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldResemble, u.NewLocAppError("avatarStoreImpl.Update.avatarOld.PreSave", "model.avatar.link.app_error", nil, ""))
 			})
 		})
 
-		Convey("Provided wrong Avatar to modify should result in new_avatar error", func() {
-			avatar_new.Name = ""
+		Convey("Provided wrong Avatar to modify should result in newAvatar error", func() {
+			avatarNew.Name = ""
 			Convey("Too long or empty Name should return name error", func() {
-				appError := asi.Update(&avatar, &avatar_new, ds)
+				appError := asi.Update(&avatar, &avatarNew, ds)
 				So(appError, ShouldNotBeNil)
-				So(appError, ShouldNotResemble, db_error)
-				So(appError, ShouldResemble, NewLocAppError("avatar_store_impl.Update.avatar_new.PreSave", "model.avatar.name.app_error", nil, ""))
-				avatar_new.Name = "thishastobeatoolongname.For this, it need to be more than 64 char lenght .............. So long. Plus it should be alpha numeric. I'll add the test later on."
-				appError = asi.Update(&avatar, &avatar_new, ds)
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldResemble, u.NewLocAppError("avatarStoreImpl.Update.avatarNew.PreSave", "model.avatar.name.app_error", nil, ""))
+				avatarNew.Name = "thishastobeatoolongname.For this, it need to be more than 64 char lenght .............. So long. Plus it should be alpha numeric. I'll add the test later on."
+				appError = asi.Update(&avatar, &avatarNew, ds)
 				So(appError, ShouldNotBeNil)
-				So(appError, ShouldNotResemble, db_error)
-				So(appError, ShouldResemble, NewLocAppError("avatar_store_impl.Update.avatar_new.PreSave", "model.avatar.name.app_error", nil, ""))
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldResemble, u.NewLocAppError("avatarStoreImpl.Update.avatarNew.PreSave", "model.avatar.name.app_error", nil, ""))
 			})
 
-			avatar_new.Name = "Correct Name"
-			avatar_new.Link = ""
+			avatarNew.Name = "Correct Name"
+			avatarNew.Link = ""
 
 			Convey("Empty link should result in link error", func() {
-				appError = asi.Update(&avatar, &avatar_new, ds)
+				appError = asi.Update(&avatar, &avatarNew, ds)
 				So(appError, ShouldNotBeNil)
-				So(appError, ShouldNotResemble, db_error)
-				So(appError, ShouldResemble, NewLocAppError("avatar_store_impl.Update.avatar_new.PreSave", "model.avatar.link.app_error", nil, ""))
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldResemble, u.NewLocAppError("avatarStoreImpl.Update.avatarNew.PreSave", "model.avatar.link.app_error", nil, ""))
 			})
 		})
 		db.Delete(&avatar)
-		db.Delete(&avatar_new)
+		db.Delete(&avatarNew)
 	})
 
 	Convey("Testing Getters", t, func() {
@@ -128,7 +125,7 @@ func TestAvatarStore(t *testing.T) {
 			Name: "Face Palm Old",
 			Link: "avatars/facepalmold.svg",
 		}
-		avatar1_new := Avatar{
+		avatar1New := Avatar{
 			Name: "Face Palm",
 			Link: "avatars/facepalm.svg",
 		}
@@ -142,11 +139,11 @@ func TestAvatarStore(t *testing.T) {
 		}
 		asi.Save(&avatar0, ds)
 		asi.Save(&avatar1, ds)
-		asi.Update(&avatar1, &avatar1_new, ds)
+		asi.Update(&avatar1, &avatar1New, ds)
 		asi.Save(&avatar2, ds)
 		asi.Save(&avatar3, ds)
 		// Have to be after save so ID are up to date :O
-		avatar_list := []Avatar{
+		avatarList := []Avatar{
 			avatar0,
 			avatar1,
 			avatar2,
@@ -156,7 +153,7 @@ func TestAvatarStore(t *testing.T) {
 		Convey("We have to be able to find all avatars in the db", func() {
 			avatars := asi.GetAll(ds)
 			So(avatars, ShouldNotResemble, &[]Avatar{})
-			So(avatars, ShouldResemble, &avatar_list)
+			So(avatars, ShouldResemble, &avatarList)
 		})
 
 		Convey("We have to be able to find an avatar from is name", func() {
@@ -212,7 +209,7 @@ func TestAvatarStore(t *testing.T) {
 	})
 
 	Convey("Testing delete avatar", t, func() {
-		dberror := NewLocAppError("avatar_store_impl.Delete", "update.transaction.delete.encounter_error", nil, "")
+		dberror := u.NewLocAppError("avatarStoreImpl.Delete", "update.transaction.delete.encounterError", nil, "")
 		avatar0 := Avatar{
 			Name: "Troll Face",
 			Link: "avatars/trollface.svg",
@@ -233,12 +230,12 @@ func TestAvatarStore(t *testing.T) {
 		asi.Save(&avatar1, ds)
 		asi.Save(&avatar2, ds)
 		asi.Save(&avatar3, ds)
-		avatar3_old := avatar3
-		avatar_list1 := []Avatar{
+		avatar3Old := avatar3
+		avatarList1 := []Avatar{
 			avatar0,
 			avatar1,
 			avatar2,
-			avatar3_old,
+			avatar3Old,
 		}
 
 		Convey("Deleting a known avatar should work", func() {
@@ -254,14 +251,14 @@ func TestAvatarStore(t *testing.T) {
 				appError := asi.Delete(&avatar3, ds)
 				So(appError, ShouldNotBeNil)
 				So(appError, ShouldNotResemble, dberror)
-				So(appError, ShouldResemble, NewLocAppError("avatar_store_impl.Delete.avatar.PreSave", "model.avatar.name.app_error", nil, ""))
-				So(asi.GetAll(ds), ShouldResemble, &avatar_list1)
+				So(appError, ShouldResemble, u.NewLocAppError("avatarStoreImpl.Delete.avatar.PreSave", "model.avatar.name.app_error", nil, ""))
+				So(asi.GetAll(ds), ShouldResemble, &avatarList1)
 				avatar3.Name = "thishastobeatoolongname.For this, it need to be more than 64 char lenght .............. So long. Plus it should be alpha numeric. I'll add the test later on."
 				appError = asi.Delete(&avatar3, ds)
 				So(appError, ShouldNotBeNil)
 				So(appError, ShouldNotResemble, dberror)
-				So(appError, ShouldResemble, NewLocAppError("avatar_store_impl.Delete.avatar.PreSave", "model.avatar.name.app_error", nil, ""))
-				So(asi.GetAll(ds), ShouldResemble, &avatar_list1)
+				So(appError, ShouldResemble, u.NewLocAppError("avatarStoreImpl.Delete.avatar.PreSave", "model.avatar.name.app_error", nil, ""))
+				So(asi.GetAll(ds), ShouldResemble, &avatarList1)
 			})
 
 			avatar3.Name = "nOOb"
@@ -271,8 +268,8 @@ func TestAvatarStore(t *testing.T) {
 				appError := asi.Delete(&avatar3, ds)
 				So(appError, ShouldNotBeNil)
 				So(appError, ShouldNotResemble, dberror)
-				So(appError, ShouldResemble, NewLocAppError("avatar_store_impl.Delete.avatar.PreSave", "model.avatar.link.app_error", nil, ""))
-				So(asi.GetAll(ds), ShouldResemble, &avatar_list1)
+				So(appError, ShouldResemble, u.NewLocAppError("avatarStoreImpl.Delete.avatar.PreSave", "model.avatar.link.app_error", nil, ""))
+				So(asi.GetAll(ds), ShouldResemble, &avatarList1)
 			})
 		})
 

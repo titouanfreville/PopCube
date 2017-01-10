@@ -6,12 +6,14 @@ import (
 	u "utils"
 )
 
+// Avatar type is a DB model for avatar storage
 type Avatar struct {
-	IdAvatar uint64 `gorm:"primary_key;column:idAvatar;AUTO_INCREMENT" json:"-"`
+	IDAvatar uint64 `gorm:"primary_key;column:idAvatar;AUTO_INCREMENT" json:"-"`
 	Name     string `gorm:"column:name;not null;unique" json:"name"`
 	Link     string `gorm:"column:link;not null;unique" json:"link"`
 }
 
+// IsValid check the validity of on Avatar object before saving it to DB in update or creation process
 func (avatar *Avatar) IsValid() *u.AppError {
 	if len(avatar.Name) == 0 || len(avatar.Name) > 64 {
 		return u.NewLocAppError("Avatar.IsValid", "model.avatar.name.app_error", nil, "")
@@ -24,42 +26,42 @@ func (avatar *Avatar) IsValid() *u.AppError {
 	return nil
 }
 
-func (avatar *Avatar) ToJson() string {
+// ToJSON function take an avatar and tranform it into Json object
+func (avatar *Avatar) ToJSON() string {
 	b, err := json.Marshal(avatar)
 	if err != nil {
 		return ""
-	} else {
-		return string(b)
 	}
+	return string(b)
 }
 
-func AvatarFromJson(data io.Reader) *Avatar {
+// AvatarFromJSON Take a json and try to transform it into an avatar
+func AvatarFromJSON(data io.Reader) *Avatar {
 	decoder := json.NewDecoder(data)
 	var avatar Avatar
 	err := decoder.Decode(&avatar)
 	if err == nil {
 		return &avatar
-	} else {
-		return nil
 	}
+	return nil
 }
 
-func AvatarListToJson(avatarList []*Avatar) string {
+// AvatarListToJSON Take an avatar list and transform it into json object
+func AvatarListToJSON(avatarList []*Avatar) string {
 	b, err := json.Marshal(avatarList)
 	if err != nil {
 		return ""
-	} else {
-		return string(b)
 	}
+	return string(b)
 }
 
-func AvatarListFromJson(data io.Reader) []*Avatar {
+// AvatarListFromJSON Try to parse a json object as an avatar list
+func AvatarListFromJSON(data io.Reader) []*Avatar {
 	decoder := json.NewDecoder(data)
 	var avatarList []*Avatar
 	err := decoder.Decode(&avatarList)
 	if err == nil {
 		return avatarList
-	} else {
-		return nil
 	}
+	return nil
 }

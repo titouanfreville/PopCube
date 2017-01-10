@@ -36,25 +36,26 @@
 			<div class="expanded">
 				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
 				<p>
+Package models implements the basics databases models used by PopCube chat api.
+</p>
+<h3 id="hdr-Models">Models</h3>
+<p>
+The following is a list of models described:
+</p>
+<pre>Avatar: Contain all informations for avatar management
+Channel: Contain all informations for channel management
+Emojis: Contain all informations for emojis management
+Organisation: Contain all informations for organisation management
+Parameter: Contain all informations for parmeters management
+Role: Contain all informations for roles management
+User: Contain all informations for users management
+</pre>
+<p>
 Created by Titouan FREVILLE &lt;titouanfreville@gmail.com&gt;
 </p>
 <p>
 Inspired by mattermost project
 </p>
-<pre>Package Models.
-This package implements the basics databases models used by PopCube chat api.
-
-Models
-
-The following is a list of models described:
-	Avatar: Contain all informations for avatar management
-	Channel: Contain all informations for channel management
-	Emojis: Contain all informations for emojis management
-	Organisation: Contain all informations for organisation management
-	Parameter: Contain all informations for parmeters management
-	Role: Contain all informations for roles management
-	User: Contain all informations for users management
-</pre>
 
 			</div>
 		</div>
@@ -81,16 +82,16 @@ The following is a list of models described:
 				<dd><a href="#ArrayFromInterface">func ArrayFromInterface(data interface{}) []string</a></dd>
 			
 				
-				<dd><a href="#ArrayFromJson">func ArrayFromJson(data io.Reader) []string</a></dd>
+				<dd><a href="#ArrayFromJSON">func ArrayFromJSON(data io.Reader) []string</a></dd>
 			
 				
-				<dd><a href="#ArrayToJson">func ArrayToJson(objmap []string) string</a></dd>
+				<dd><a href="#ArrayToJSON">func ArrayToJSON(objmap []string) string</a></dd>
 			
 				
-				<dd><a href="#AvatarListFromJson">func AvatarListFromJson(data io.Reader) []*Avatar</a></dd>
+				<dd><a href="#AvatarListFromJSON">func AvatarListFromJSON(data io.Reader) []*Avatar</a></dd>
 			
 				
-				<dd><a href="#AvatarListToJson">func AvatarListToJson(avatarList []*Avatar) string</a></dd>
+				<dd><a href="#AvatarListToJSON">func AvatarListToJSON(avatarList []*Avatar) string</a></dd>
 			
 				
 				<dd><a href="#CleanUsername">func CleanUsername(s string) string</a></dd>
@@ -102,22 +103,22 @@ The following is a list of models described:
 				<dd><a href="#ComparePassword">func ComparePassword(hash string, password string) bool</a></dd>
 			
 				
-				<dd><a href="#EmojiListFromJson">func EmojiListFromJson(data io.Reader) []*Emoji</a></dd>
+				<dd><a href="#EmojiListFromJSON">func EmojiListFromJSON(data io.Reader) []*Emoji</a></dd>
 			
 				
-				<dd><a href="#EmojiListToJson">func EmojiListToJson(emojiList []*Emoji) string</a></dd>
+				<dd><a href="#EmojiListToJSON">func EmojiListToJSON(emojiList []*Emoji) string</a></dd>
 			
 				
 				<dd><a href="#Etag">func Etag(parts ...interface{}) string</a></dd>
 			
 				
-				<dd><a href="#FolderListFromJson">func FolderListFromJson(data io.Reader) []*Folder</a></dd>
+				<dd><a href="#FolderListFromJSON">func FolderListFromJSON(data io.Reader) []*Folder</a></dd>
 			
 				
-				<dd><a href="#FolderListToJson">func FolderListToJson(folderList []*Folder) string</a></dd>
+				<dd><a href="#FolderListToJSON">func FolderListToJSON(folderList []*Folder) string</a></dd>
 			
 				
-				<dd><a href="#GetDMNameFromIds">func GetDMNameFromIds(userId1, userId2 string) string</a></dd>
+				<dd><a href="#GetDMNameFromIDs">func GetDMNameFromIDs(userID1, userID2 string) string</a></dd>
 			
 				
 				<dd><a href="#GetMillis">func GetMillis() int64</a></dd>
@@ -144,10 +145,10 @@ The following is a list of models described:
 				<dd><a href="#IsValidEmail">func IsValidEmail(email string) bool</a></dd>
 			
 				
-				<dd><a href="#IsValidHttpUrl">func IsValidHttpUrl(rawUrl string) bool</a></dd>
+				<dd><a href="#IsValidHTTPSURL">func IsValidHTTPSURL(rawURL string) bool</a></dd>
 			
 				
-				<dd><a href="#IsValidHttpsUrl">func IsValidHttpsUrl(rawUrl string) bool</a></dd>
+				<dd><a href="#IsValidHTTPURL">func IsValidHTTPURL(rawURL string) bool</a></dd>
 			
 				
 				<dd><a href="#IsValidOrganisationIdentifier">func IsValidOrganisationIdentifier(s string) bool</a></dd>
@@ -156,28 +157,25 @@ The following is a list of models described:
 				<dd><a href="#IsValidRoleName">func IsValidRoleName(u string) bool</a></dd>
 			
 				
-				<dd><a href="#IsValidTurnOrStunServer">func IsValidTurnOrStunServer(rawUri string) bool</a></dd>
-			
-				
 				<dd><a href="#IsValidUsername">func IsValidUsername(user string) bool</a></dd>
 			
 				
-				<dd><a href="#IsValidWebsocketUrl">func IsValidWebsocketUrl(rawUrl string) bool</a></dd>
+				<dd><a href="#IsValidWebsocketURL">func IsValidWebsocketURL(rawURL string) bool</a></dd>
 			
 				
-				<dd><a href="#MapFromJson">func MapFromJson(data io.Reader) map[string]string</a></dd>
+				<dd><a href="#MapFromJSON">func MapFromJSON(data io.Reader) map[string]string</a></dd>
 			
 				
-				<dd><a href="#MapToJson">func MapToJson(objmap map[string]string) string</a></dd>
+				<dd><a href="#MapToJSON">func MapToJSON(objmap map[string]string) string</a></dd>
 			
 				
-				<dd><a href="#MessageListFromJson">func MessageListFromJson(data io.Reader) []*Message</a></dd>
+				<dd><a href="#MessageListFromJSON">func MessageListFromJSON(data io.Reader) []*Message</a></dd>
 			
 				
-				<dd><a href="#MessageListToJson">func MessageListToJson(messageList []*Message) string</a></dd>
+				<dd><a href="#MessageListToJSON">func MessageListToJSON(messageList []*Message) string</a></dd>
 			
 				
-				<dd><a href="#NewId">func NewId() string</a></dd>
+				<dd><a href="#NewID">func NewID() string</a></dd>
 			
 				
 				<dd><a href="#NewRandomString">func NewRandomString(length int) string</a></dd>
@@ -186,46 +184,46 @@ The following is a list of models described:
 				<dd><a href="#ParseHashtags">func ParseHashtags(text string) (string, string)</a></dd>
 			
 				
-				<dd><a href="#RoleListFromJson">func RoleListFromJson(data io.Reader) []*Role</a></dd>
+				<dd><a href="#RoleListFromJSON">func RoleListFromJSON(data io.Reader) []*Role</a></dd>
 			
 				
-				<dd><a href="#RoleListToJson">func RoleListToJson(roleList []*Role) string</a></dd>
+				<dd><a href="#RoleListToJSON">func RoleListToJSON(roleList []*Role) string</a></dd>
 			
 				
-				<dd><a href="#StringFromJson">func StringFromJson(data io.Reader) string</a></dd>
+				<dd><a href="#StringFromJSON">func StringFromJSON(data io.Reader) string</a></dd>
 			
 				
 				<dd><a href="#StringInArray">func StringInArray(a string, array []string) bool</a></dd>
 			
 				
-				<dd><a href="#StringInterfaceFromJson">func StringInterfaceFromJson(data io.Reader) map[string]interface{}</a></dd>
+				<dd><a href="#StringInterfaceFromJSON">func StringInterfaceFromJSON(data io.Reader) map[string]interface{}</a></dd>
 			
 				
-				<dd><a href="#StringInterfaceToJson">func StringInterfaceToJson(objmap map[string]interface{}) string</a></dd>
+				<dd><a href="#StringInterfaceToJSON">func StringInterfaceToJSON(objmap map[string]interface{}) string</a></dd>
 			
 				
-				<dd><a href="#StringToJson">func StringToJson(s string) string</a></dd>
+				<dd><a href="#StringToJSON">func StringToJSON(s string) string</a></dd>
 			
 			
 				
 				<dd><a href="#Avatar">type Avatar</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#AvatarFromJson">func AvatarFromJson(data io.Reader) *Avatar</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#AvatarFromJSON">func AvatarFromJSON(data io.Reader) *Avatar</a></dd>
 				
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Avatar.IsValid">func (avatar *Avatar) IsValid() *u.AppError</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Avatar.ToJson">func (avatar *Avatar) ToJson() string</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Avatar.ToJSON">func (avatar *Avatar) ToJSON() string</a></dd>
 				
 			
 				
 				<dd><a href="#Channel">type Channel</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#ChannelFromJson">func ChannelFromJson(data io.Reader) *Channel</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#ChannelFromJSON">func ChannelFromJSON(data io.Reader) *Channel</a></dd>
 				
 				
 					
@@ -241,21 +239,21 @@ The following is a list of models described:
 					<dd>&nbsp; &nbsp; <a href="#Channel.PreUpdate">func (channel *Channel) PreUpdate()</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Channel.ToJson">func (channel *Channel) ToJson() string</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Channel.ToJSON">func (channel *Channel) ToJSON() string</a></dd>
 				
 			
 				
 				<dd><a href="#Emoji">type Emoji</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#EmojiFromJson">func EmojiFromJson(data io.Reader) *Emoji</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#EmojiFromJSON">func EmojiFromJSON(data io.Reader) *Emoji</a></dd>
 				
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Emoji.IsValid">func (emoji *Emoji) IsValid() *u.AppError</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Emoji.ToJson">func (emoji *Emoji) ToJson() string</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Emoji.ToJSON">func (emoji *Emoji) ToJSON() string</a></dd>
 				
 			
 				
@@ -267,14 +265,14 @@ The following is a list of models described:
 				<dd><a href="#Folder">type Folder</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#FolderFromJson">func FolderFromJson(data io.Reader) *Folder</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#FolderFromJSON">func FolderFromJSON(data io.Reader) *Folder</a></dd>
 				
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Folder.IsValid">func (folder *Folder) IsValid() *u.AppError</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Folder.ToJson">func (folder *Folder) ToJson() string</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Folder.ToJSON">func (folder *Folder) ToJSON() string</a></dd>
 				
 			
 				
@@ -289,7 +287,7 @@ The following is a list of models described:
 				<dd><a href="#Message">type Message</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#MessageFromJson">func MessageFromJson(data io.Reader) *Message</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#MessageFromJSON">func MessageFromJSON(data io.Reader) *Message</a></dd>
 				
 				
 					
@@ -299,14 +297,14 @@ The following is a list of models described:
 					<dd>&nbsp; &nbsp; <a href="#Message.PreSave">func (message *Message) PreSave()</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Message.ToJson">func (message *Message) ToJson() string</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Message.ToJSON">func (message *Message) ToJSON() string</a></dd>
 				
 			
 				
 				<dd><a href="#Organisation">type Organisation</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#OganisationFromJson">func OganisationFromJson(data io.Reader) *Organisation</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#OganisationFromJSON">func OganisationFromJSON(data io.Reader) *Organisation</a></dd>
 				
 				
 					
@@ -316,14 +314,14 @@ The following is a list of models described:
 					<dd>&nbsp; &nbsp; <a href="#Organisation.PreSave">func (organisation *Organisation) PreSave()</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Organisation.ToJson">func (organisation *Organisation) ToJson() string</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Organisation.ToJSON">func (organisation *Organisation) ToJSON() string</a></dd>
 				
 			
 				
 				<dd><a href="#Parameter">type Parameter</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#ParameterFromJson">func ParameterFromJson(data io.Reader) *Parameter</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#ParameterFromJSON">func ParameterFromJSON(data io.Reader) *Parameter</a></dd>
 				
 				
 					
@@ -333,24 +331,21 @@ The following is a list of models described:
 					<dd>&nbsp; &nbsp; <a href="#Parameter.PreSave">func (parameter *Parameter) PreSave()</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Parameter.ToJson">func (parameter *Parameter) ToJson() string</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Parameter.ToJSON">func (parameter *Parameter) ToJSON() string</a></dd>
 				
 			
 				
 				<dd><a href="#Role">type Role</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#RoleFromJson">func RoleFromJson(data io.Reader) *Role</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#RoleFromJSON">func RoleFromJSON(data io.Reader) *Role</a></dd>
 				
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Role.IsValid">func (role *Role) IsValid() *u.AppError</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Role.PreSave">func (role *Role) PreSave()</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#Role.ToJson">func (role *Role) ToJson() string</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Role.ToJSON">func (role *Role) ToJSON() string</a></dd>
 				
 			
 				
@@ -372,7 +367,7 @@ The following is a list of models described:
 				<dd><a href="#User">type User</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#UserFromJson">func UserFromJson(data io.Reader) *User</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#UserFromJSON">func UserFromJSON(data io.Reader) *User</a></dd>
 				
 				
 					
@@ -394,7 +389,7 @@ The following is a list of models described:
 					<dd>&nbsp; &nbsp; <a href="#User.PreUpdate">func (user *User) PreUpdate()</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#User.ToJson">func (user *User) ToJson() string</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#User.ToJSON">func (user *User) ToJSON() string</a></dd>
 				
 			
 			
@@ -478,42 +473,17 @@ The following is a list of models described:
 			
 				
 				<pre>const (
-    <span id="DEFAULT_CHANNEL">DEFAULT_CHANNEL</span>                = &#34;general&#34;
-    <span id="CHANNEL_DISPLAY_NAME_MAX_RUNES">CHANNEL_DISPLAY_NAME_MAX_RUNES</span> = 64
-    <span id="CHANNEL_NAME_MAX_LENGTH">CHANNEL_NAME_MAX_LENGTH</span>        = 64
-    <span id="CHANNEL_DESCRIPTION_MAX_RUNES">CHANNEL_DESCRIPTION_MAX_RUNES</span>  = 1024
-    <span id="CHANNEL_SUBJECT_MAX_RUNES">CHANNEL_SUBJECT_MAX_RUNES</span>      = 250
+    <span class="comment">// DefaultLocale is a string to describe the default language used in the app</span>
+    <span id="DefaultLocale">DefaultLocale</span> = &#34;fr_FR&#34;
+    <span class="comment">// DefaultTimeZone is a string to describe the default time zone used in the app</span>
+    <span id="DefaultTimeZone">DefaultTimeZone</span> = &#34;UTC-0&#34;
 )</pre>
 			
 				
 				<pre>const (
-    <span id="ORGANISATION_DISPLAY_NAME_MAX_RUNES">ORGANISATION_DISPLAY_NAME_MAX_RUNES</span> = 64
-    <span id="ORGANISATION_NAME_MAX_LENGTH">ORGANISATION_NAME_MAX_LENGTH</span>        = 64
-    <span id="ORGANISATION_DESCRIPTION_MAX_RUNES">ORGANISATION_DESCRIPTION_MAX_RUNES</span>  = 1024
-    <span id="ORGANISATION_SUBJECT_MAX_RUNES">ORGANISATION_SUBJECT_MAX_RUNES</span>      = 250
-)</pre>
-			
-				
-				<pre>const (
-    <span id="DEFAULT_LOCALE">DEFAULT_LOCALE</span>     = &#34;fr_FR&#34;
-    <span id="DEFAULT_TIMEZONE">DEFAULT_TIMEZONE</span>   = &#34;UTC-0&#34;
-    <span id="LOCAL_MAX_SIZE">LOCAL_MAX_SIZE</span>     = 5
-    <span id="TIME_ZONE_MAX_SIZE">TIME_ZONE_MAX_SIZE</span> = 6
-    <span id="MAX_TIME">MAX_TIME</span>           = 1440
-)</pre>
-			
-				
-				<pre>const (
-    <span id="LOWERCASE_LETTERS">LOWERCASE_LETTERS</span> = &#34;abcdefghijklmnopqrstuvwxyz&#34;
-    <span id="UPPERCASE_LETTERS">UPPERCASE_LETTERS</span> = &#34;ABCDEFGHIJKLMNOPQRSTUVWXYZ&#34;
-    <span id="NUMBERS">NUMBERS</span>           = &#34;0123456789&#34;
-    <span id="SYMBOLS">SYMBOLS</span>           = &#34; !\&#34;\\#$%&amp;&#39;()*+,-./:;&lt;=&gt;?@[]^_`|~&#34;
-    <span id="CURRENT_VERSION">CURRENT_VERSION</span>   = &#34;0.0.0&#34;
-)</pre>
-			
-				
-				<pre>const (
-    <span id="DEFAULT_locale">DEFAULT_locale</span> = &#34;en&#34;
+
+    <span class="comment">//CurrentVersion  exprt the current application version (Used for Etags)</span>
+    <span id="CurrentVersion">CurrentVersion</span> = &#34;0.0.0&#34;
 )</pre>
 			
 		
@@ -522,7 +492,8 @@ The following is a list of models described:
 			
 				
 				<pre>var (
-    <span id="OWNER">OWNER</span> = <a href="#Role">Role</a>{
+    <span class="comment">// Owner is one of the defaul roles. Have all rights.</span>
+    <span id="Owner">Owner</span> = <a href="#Role">Role</a>{
         <a href="#RoleName">RoleName</a>:      &#34;owner&#34;,
         <a href="#CanUsePrivate">CanUsePrivate</a>: <a href="/pkg/builtin/#true">true</a>,
         <a href="#CanModerate">CanModerate</a>:   <a href="/pkg/builtin/#true">true</a>,
@@ -531,7 +502,8 @@ The following is a list of models described:
         <a href="#CanManage">CanManage</a>:     <a href="/pkg/builtin/#true">true</a>,
         <a href="#CanManageUser">CanManageUser</a>: <a href="/pkg/builtin/#true">true</a>,
     }
-    <span id="ADMIN">ADMIN</span> = <a href="#Role">Role</a>{
+    <span class="comment">// Admin is one of the defaul roles. Have all rights.</span>
+    <span id="Admin">Admin</span> = <a href="#Role">Role</a>{
         <a href="#RoleName">RoleName</a>:      &#34;admin&#34;,
         <a href="#CanUsePrivate">CanUsePrivate</a>: <a href="/pkg/builtin/#true">true</a>,
         <a href="#CanModerate">CanModerate</a>:   <a href="/pkg/builtin/#true">true</a>,
@@ -540,7 +512,8 @@ The following is a list of models described:
         <a href="#CanManage">CanManage</a>:     <a href="/pkg/builtin/#true">true</a>,
         <a href="#CanManageUser">CanManageUser</a>: <a href="/pkg/builtin/#true">true</a>,
     }
-    <span id="STANDART">STANDART</span> = <a href="#Role">Role</a>{
+    <span class="comment">// Standart is one of the defaul roles. Have all channel rights.</span>
+    <span id="Standart">Standart</span> = <a href="#Role">Role</a>{
         <a href="#RoleName">RoleName</a>:      &#34;standart&#34;,
         <a href="#CanUsePrivate">CanUsePrivate</a>: <a href="/pkg/builtin/#true">true</a>,
         <a href="#CanModerate">CanModerate</a>:   <a href="/pkg/builtin/#true">true</a>,
@@ -549,7 +522,8 @@ The following is a list of models described:
         <a href="#CanManage">CanManage</a>:     <a href="/pkg/builtin/#false">false</a>,
         <a href="#CanManageUser">CanManageUser</a>: <a href="/pkg/builtin/#false">false</a>,
     }
-    <span id="GUEST">GUEST</span> = <a href="#Role">Role</a>{
+    <span class="comment">// Guest is one of the defaul roles. Have no rights.</span>
+    <span id="Guest">Guest</span> = <a href="#Role">Role</a>{
         <a href="#RoleName">RoleName</a>:      &#34;guest&#34;,
         <a href="#CanUsePrivate">CanUsePrivate</a>: <a href="/pkg/builtin/#false">false</a>,
         <a href="#CanModerate">CanModerate</a>:   <a href="/pkg/builtin/#false">false</a>,
@@ -558,93 +532,119 @@ The following is a list of models described:
         <a href="#CanManage">CanManage</a>:     <a href="/pkg/builtin/#false">false</a>,
         <a href="#CanManageUser">CanManageUser</a>: <a href="/pkg/builtin/#false">false</a>,
     }
-    <span id="BASICS_ROLES">BASICS_ROLES</span> = []*<a href="#Role">Role</a>{
-        &amp;<a href="#OWNER">OWNER</a>,
-        &amp;<a href="#ADMIN">ADMIN</a>,
-        &amp;<a href="#STANDART">STANDART</a>,
-        &amp;<a href="#GUEST">GUEST</a>,
+    <span class="comment">// BasicsRoles defines the list of basics roles</span>
+    <span id="BasicsRoles">BasicsRoles</span> = []*<a href="#Role">Role</a>{
+        &amp;<a href="#Owner">Owner</a>,
+        &amp;<a href="#Admin">Admin</a>,
+        &amp;<a href="#Standart">Standart</a>,
+        &amp;<a href="#Guest">Guest</a>,
     }
 )</pre>
 			
 				
 				<pre>var (
-    <span id="CHANNNEL_AVAILABLE_TYPES">CHANNNEL_AVAILABLE_TYPES</span> = []<a href="/pkg/builtin/#string">string</a>{&#34;direct&#34;, &#34;text&#34;, &#34;audio&#34;, &#34;video&#34;}
+    <span class="comment">// ChannelAvailableTypes Used to have knowsledge on type a channel can take</span>
+    <span id="ChannelAvailableTypes">ChannelAvailableTypes</span> = []<a href="/pkg/builtin/#string">string</a>{&#34;direct&#34;, &#34;text&#34;, &#34;audio&#34;, &#34;video&#34;}
 )</pre>
 			
-				
-				<pre>var <span id="PartialUrlRegex">PartialUrlRegex</span> = <a href="/pkg/regexp/">regexp</a>.<a href="/pkg/regexp/#MustCompile">MustCompile</a>(`/([A-Za-z0-9]{26})/([A-Za-z0-9]{26})/((?:[A-Za-z0-9]{26})?.+(?:\.[A-Za-z0-9]{3,})?)`)</pre>
+				<p>
+PartialURLRegex is a small variable to expose regexp matching URL (from parial parst)
+</p>
+
+				<pre>var <span id="PartialURLRegex">PartialURLRegex</span> = <a href="/pkg/regexp/">regexp</a>.<a href="/pkg/regexp/#MustCompile">MustCompile</a>(`/([A-Za-z0-9]{26})/([A-Za-z0-9]{26})/((?:[A-Za-z0-9]{26})?.+(?:\.[A-Za-z0-9]{3,})?)`)</pre>
 			
-				
+				<p>
+SplitRunes Split runes define a table of runes saying if they are spliters or not
+</p>
+
 				<pre>var <span id="SplitRunes">SplitRunes</span> = map[<a href="/pkg/builtin/#rune">rune</a>]<a href="/pkg/builtin/#bool">bool</a>{&#39;,&#39;: <a href="/pkg/builtin/#true">true</a>, &#39; &#39;: <a href="/pkg/builtin/#true">true</a>, &#39;.&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;!&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;?&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;:&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;;&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;\n&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;&lt;&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;&gt;&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;(&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;)&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;{&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;}&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;[&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;]&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;+&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;/&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;\\&#39;: <a href="/pkg/builtin/#true">true</a>}</pre>
 			
-				
-				<pre>var <span id="UrlRegex">UrlRegex</span> = <a href="/pkg/regexp/">regexp</a>.<a href="/pkg/regexp/#MustCompile">MustCompile</a>(`^((?:[a-z]+:\/\/)?(?:(?:[a-z0-9\-]+\.)+(?:[a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|local|internal))(:[0-9]{1,5})?(?:\/[a-z0-9_\-\.~]+)*(\/([a-z0-9_\-\.]*)(?:\?[a-z0-9+_~\-\.%=&amp;amp;]*)?)?(?:#[a-zA-Z0-9!$&amp;&#39;()*+.=-_~:@/?]*)?)(?:\s+|$)$`)</pre>
+				<p>
+URLRegex is a small variable to expose regexp matching URL
+</p>
+
+				<pre>var <span id="URLRegex">URLRegex</span> = <a href="/pkg/regexp/">regexp</a>.<a href="/pkg/regexp/#MustCompile">MustCompile</a>(`^((?:[a-z]+:\/\/)?(?:(?:[a-z0-9\-]+\.)+(?:[a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|local|internal))(:[0-9]{1,5})?(?:\/[a-z0-9_\-\.~]+)*(\/([a-z0-9_\-\.]*)(?:\?[a-z0-9+_~\-\.%=&amp;amp;]*)?)?(?:#[a-zA-Z0-9!$&amp;&#39;()*+.=-_~:@/?]*)?)(?:\s+|$)$`)</pre>
 			
 		
 		
 			
 			
-			<h2 id="ArrayFromInterface">func <a href="/src/models/utilities.go?s=2240:2290#L91">ArrayFromInterface</a>
+			<h2 id="ArrayFromInterface">func <a href="/src/models/utilities.go?s=2712:2762#L100">ArrayFromInterface</a>
 				<a class="permalink" href="#ArrayFromInterface">&#xb6;</a>
 			</h2>
 			<pre>func ArrayFromInterface(data interface{}) []<a href="/pkg/builtin/#string">string</a></pre>
-			
+			<p>
+ArrayFromInterface transfor an interface into a Json object
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="ArrayFromJson">func <a href="/src/models/utilities.go?s=2030:2073#L80">ArrayFromJson</a>
-				<a class="permalink" href="#ArrayFromJson">&#xb6;</a>
+			<h2 id="ArrayFromJSON">func <a href="/src/models/utilities.go?s=2450:2493#L89">ArrayFromJSON</a>
+				<a class="permalink" href="#ArrayFromJSON">&#xb6;</a>
 			</h2>
-			<pre>func ArrayFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) []<a href="/pkg/builtin/#string">string</a></pre>
-			
+			<pre>func ArrayFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) []<a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+ArrayFromJSON Try to parse a json array into a go string array
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="ArrayToJson">func <a href="/src/models/utilities.go?s=1891:1931#L72">ArrayToJson</a>
-				<a class="permalink" href="#ArrayToJson">&#xb6;</a>
+			<h2 id="ArrayToJSON">func <a href="/src/models/utilities.go?s=2256:2296#L81">ArrayToJSON</a>
+				<a class="permalink" href="#ArrayToJSON">&#xb6;</a>
 			</h2>
-			<pre>func ArrayToJson(objmap []<a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			
+			<pre>func ArrayToJSON(objmap []<a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+ArrayToJSON transfor an array into a json array
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="AvatarListFromJson">func <a href="/src/models/avatar.go?s=1097:1146#L46">AvatarListFromJson</a>
-				<a class="permalink" href="#AvatarListFromJson">&#xb6;</a>
+			<h2 id="AvatarListFromJSON">func <a href="/src/models/avatar.go?s=1492:1541#L49">AvatarListFromJSON</a>
+				<a class="permalink" href="#AvatarListFromJSON">&#xb6;</a>
 			</h2>
-			<pre>func AvatarListFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) []*<a href="#Avatar">Avatar</a></pre>
-			
+			<pre>func AvatarListFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) []*<a href="#Avatar">Avatar</a></pre>
+			<p>
+AvatarListFromJSON Try to parse a json object as an avatar list
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="AvatarListToJson">func <a href="/src/models/avatar.go?s=944:994#L37">AvatarListToJson</a>
-				<a class="permalink" href="#AvatarListToJson">&#xb6;</a>
+			<h2 id="AvatarListToJSON">func <a href="/src/models/avatar.go?s=1283:1333#L40">AvatarListToJSON</a>
+				<a class="permalink" href="#AvatarListToJSON">&#xb6;</a>
 			</h2>
-			<pre>func AvatarListToJson(avatarList []*<a href="#Avatar">Avatar</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			
+			<pre>func AvatarListToJSON(avatarList []*<a href="#Avatar">Avatar</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+AvatarListToJSON Take an avatar list and transform it into json object
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="CleanUsername">func <a href="/src/models/user.go?s=8014:8049#L257">CleanUsername</a>
+			<h2 id="CleanUsername">func <a href="/src/models/user.go?s=7702:7737#L248">CleanUsername</a>
 				<a class="permalink" href="#CleanUsername">&#xb6;</a>
 			</h2>
 			<pre>func CleanUsername(s <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
 			<p>
-Transform user name to meet requirement
+CleanUsername Transform user name to meet requirement
 </p>
 
 			
@@ -653,23 +653,26 @@ Transform user name to meet requirement
 		
 			
 			
-			<h2 id="ClearMentionTags">func <a href="/src/models/utilities.go?s=5896:5937#L270">ClearMentionTags</a>
+			<h2 id="ClearMentionTags">func <a href="/src/models/utilities.go?s=7245:7286#L289">ClearMentionTags</a>
 				<a class="permalink" href="#ClearMentionTags">&#xb6;</a>
 			</h2>
 			<pre>func ClearMentionTags(post <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			
+			<p>
+ClearMentionTags remove mention tags from messages
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="ComparePassword">func <a href="/src/models/user.go?s=7758:7813#L246">ComparePassword</a>
+			<h2 id="ComparePassword">func <a href="/src/models/user.go?s=7432:7487#L237">ComparePassword</a>
 				<a class="permalink" href="#ComparePassword">&#xb6;</a>
 			</h2>
 			<pre>func ComparePassword(hash <a href="/pkg/builtin/#string">string</a>, password <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
 			<p>
-Comparepassword compares the hash
+ComparePassword compares the hash
 </p>
 
 			
@@ -678,73 +681,91 @@ Comparepassword compares the hash
 		
 			
 			
-			<h2 id="EmojiListFromJson">func <a href="/src/models/emojis.go?s=1296:1343#L51">EmojiListFromJson</a>
-				<a class="permalink" href="#EmojiListFromJson">&#xb6;</a>
+			<h2 id="EmojiListFromJSON">func <a href="/src/models/emojis.go?s=1587:1634#L54">EmojiListFromJSON</a>
+				<a class="permalink" href="#EmojiListFromJSON">&#xb6;</a>
 			</h2>
-			<pre>func EmojiListFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) []*<a href="#Emoji">Emoji</a></pre>
-			
+			<pre>func EmojiListFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) []*<a href="#Emoji">Emoji</a></pre>
+			<p>
+EmojiListFromJSON Try converting a json array into emoji list
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="EmojiListToJson">func <a href="/src/models/emojis.go?s=1147:1194#L42">EmojiListToJson</a>
-				<a class="permalink" href="#EmojiListToJson">&#xb6;</a>
+			<h2 id="EmojiListToJSON">func <a href="/src/models/emojis.go?s=1384:1431#L45">EmojiListToJSON</a>
+				<a class="permalink" href="#EmojiListToJSON">&#xb6;</a>
 			</h2>
-			<pre>func EmojiListToJson(emojiList []*<a href="#Emoji">Emoji</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			
+			<pre>func EmojiListToJSON(emojiList []*<a href="#Emoji">Emoji</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+EmojiListToJSON Convert an emoji list into a json array
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="Etag">func <a href="/src/models/utilities.go?s=4342:4380#L202">Etag</a>
+			<h2 id="Etag">func <a href="/src/models/utilities.go?s=5580:5618#L219">Etag</a>
 				<a class="permalink" href="#Etag">&#xb6;</a>
 			</h2>
 			<pre>func Etag(parts ...interface{}) <a href="/pkg/builtin/#string">string</a></pre>
-			
+			<p>
+Etag function create a string used for cache and coockies storage
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="FolderListFromJson">func <a href="/src/models/folders.go?s=1459:1508#L53">FolderListFromJson</a>
-				<a class="permalink" href="#FolderListFromJson">&#xb6;</a>
+			<h2 id="FolderListFromJSON">func <a href="/src/models/folders.go?s=1788:1837#L56">FolderListFromJSON</a>
+				<a class="permalink" href="#FolderListFromJSON">&#xb6;</a>
 			</h2>
-			<pre>func FolderListFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) []*<a href="#Folder">Folder</a></pre>
-			
+			<pre>func FolderListFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) []*<a href="#Folder">Folder</a></pre>
+			<p>
+FolderListFromJSON Try converting a json array into emoji list
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="FolderListToJson">func <a href="/src/models/folders.go?s=1306:1356#L44">FolderListToJson</a>
-				<a class="permalink" href="#FolderListToJson">&#xb6;</a>
+			<h2 id="FolderListToJSON">func <a href="/src/models/folders.go?s=1580:1630#L47">FolderListToJSON</a>
+				<a class="permalink" href="#FolderListToJSON">&#xb6;</a>
 			</h2>
-			<pre>func FolderListToJson(folderList []*<a href="#Folder">Folder</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			
+			<pre>func FolderListToJSON(folderList []*<a href="#Folder">Folder</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+FolderListToJSON Convert an emoji list into a json array
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="GetDMNameFromIds">func <a href="/src/models/channels.go?s=3305:3358#L108">GetDMNameFromIds</a>
-				<a class="permalink" href="#GetDMNameFromIds">&#xb6;</a>
+			<h2 id="GetDMNameFromIDs">func <a href="/src/models/channels.go?s=3806:3859#L115">GetDMNameFromIDs</a>
+				<a class="permalink" href="#GetDMNameFromIDs">&#xb6;</a>
 			</h2>
-			<pre>func GetDMNameFromIds(userId1, userId2 <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			
+			<pre>func GetDMNameFromIDs(userID1, userID2 <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+GetDMNameFromIDs Create Direct message name from 2 userIDs
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="GetMillis">func <a href="/src/models/utilities.go?s=1334:1356#L47">GetMillis</a>
+			<h2 id="GetMillis">func <a href="/src/models/utilities.go?s=1670:1692#L56">GetMillis</a>
 				<a class="permalink" href="#GetMillis">&#xb6;</a>
 			</h2>
 			<pre>func GetMillis() <a href="/pkg/builtin/#int64">int64</a></pre>
@@ -758,12 +779,12 @@ GetMillis is a convience method to get milliseconds since epoch.
 		
 			
 			
-			<h2 id="HashPassword">func <a href="/src/models/user.go?s=7555:7596#L236">HashPassword</a>
+			<h2 id="HashPassword">func <a href="/src/models/user.go?s=7229:7270#L227">HashPassword</a>
 				<a class="permalink" href="#HashPassword">&#xb6;</a>
 			</h2>
 			<pre>func HashPassword(password <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
 			<p>
-hashpassword generates a hash using the bcrypt.GenerateFrompassword
+HashPassword generates a hash using the bcrypt.GenerateFrompassword
 </p>
 
 			
@@ -772,128 +793,147 @@ hashpassword generates a hash using the bcrypt.GenerateFrompassword
 		
 			
 			
-			<h2 id="IsLower">func <a href="/src/models/utilities.go?s=3391:3418#L156">IsLower</a>
+			<h2 id="IsLower">func <a href="/src/models/utilities.go?s=4200:4227#L167">IsLower</a>
 				<a class="permalink" href="#IsLower">&#xb6;</a>
 			</h2>
 			<pre>func IsLower(s <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
-			
+			<p>
+IsLower check if a string contain only lower cas characters
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="IsSafeLink">func <a href="/src/models/utilities.go?s=7432:7466#L317">IsSafeLink</a>
+			<h2 id="IsSafeLink">func <a href="/src/models/utilities.go?s=9237:9271#L343">IsSafeLink</a>
 				<a class="permalink" href="#IsSafeLink">&#xb6;</a>
 			</h2>
 			<pre>func IsSafeLink(link *<a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
-			
+			<p>
+IsSafeLink check if provided link can be considered as Safe
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="IsValidAlphaNum">func <a href="/src/models/utilities.go?s=4123:4181#L191">IsValidAlphaNum</a>
+			<h2 id="IsValidAlphaNum">func <a href="/src/models/utilities.go?s=5292:5350#L207">IsValidAlphaNum</a>
 				<a class="permalink" href="#IsValidAlphaNum">&#xb6;</a>
 			</h2>
 			<pre>func IsValidAlphaNum(s <a href="/pkg/builtin/#string">string</a>, allowUnderscores <a href="/pkg/builtin/#bool">bool</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
-			
+			<p>
+IsValidAlphaNum Check that string is correct lower case alpha numeric chain
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="IsValidChannelIdentifier">func <a href="/src/models/utilities.go?s=3774:3818#L179">IsValidChannelIdentifier</a>
+			<h2 id="IsValidChannelIdentifier">func <a href="/src/models/utilities.go?s=4771:4815#L193">IsValidChannelIdentifier</a>
 				<a class="permalink" href="#IsValidChannelIdentifier">&#xb6;</a>
 			</h2>
 			<pre>func IsValidChannelIdentifier(s <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
-			
+			<p>
+IsValidChannelIdentifier check if string provided is a correct channel identifier
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="IsValidDomain">func <a href="/src/models/utilities.go?s=3571:3609#L165">IsValidDomain</a>
+			<h2 id="IsValidDomain">func <a href="/src/models/utilities.go?s=4484:4522#L178">IsValidDomain</a>
 				<a class="permalink" href="#IsValidDomain">&#xb6;</a>
 			</h2>
 			<pre>func IsValidDomain(domain <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
-			
+			<p>
+IsValidDomain check if provided value is a possible domain name
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="IsValidEmail">func <a href="/src/models/utilities.go?s=3456:3492#L160">IsValidEmail</a>
+			<h2 id="IsValidEmail">func <a href="/src/models/utilities.go?s=4302:4338#L172">IsValidEmail</a>
 				<a class="permalink" href="#IsValidEmail">&#xb6;</a>
 			</h2>
 			<pre>func IsValidEmail(email <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
-			
+			<p>
+IsValidEmail check email validity
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="IsValidHttpUrl">func <a href="/src/models/utilities.go?s=6754:6793#L281">IsValidHttpUrl</a>
-				<a class="permalink" href="#IsValidHttpUrl">&#xb6;</a>
+			<h2 id="IsValidHTTPSURL">func <a href="/src/models/utilities.go?s=8707:8747#L318">IsValidHTTPSURL</a>
+				<a class="permalink" href="#IsValidHTTPSURL">&#xb6;</a>
 			</h2>
-			<pre>func IsValidHttpUrl(rawUrl <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
-			
+			<pre>func IsValidHTTPSURL(rawURL <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			<p>
+IsValidHTTPSURL check validity of provided string as https url
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="IsValidHttpsUrl">func <a href="/src/models/utilities.go?s=6992:7032#L293">IsValidHttpsUrl</a>
-				<a class="permalink" href="#IsValidHttpsUrl">&#xb6;</a>
+			<h2 id="IsValidHTTPURL">func <a href="/src/models/utilities.go?s=8403:8442#L305">IsValidHTTPURL</a>
+				<a class="permalink" href="#IsValidHTTPURL">&#xb6;</a>
 			</h2>
-			<pre>func IsValidHttpsUrl(rawUrl <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
-			
+			<pre>func IsValidHTTPURL(rawURL <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			<p>
+IsValidHTTPURL check validity of provided string as http url
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="IsValidOrganisationIdentifier">func <a href="/src/models/utilities.go?s=3857:3906#L183">IsValidOrganisationIdentifier</a>
+			<h2 id="IsValidOrganisationIdentifier">func <a href="/src/models/utilities.go?s=4948:4997#L198">IsValidOrganisationIdentifier</a>
 				<a class="permalink" href="#IsValidOrganisationIdentifier">&#xb6;</a>
 			</h2>
 			<pre>func IsValidOrganisationIdentifier(s <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
-			
+			<p>
+IsValidOrganisationIdentifier check if string provided is a correct organisation identifier
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="IsValidRoleName">func <a href="/src/models/roles.go?s=2089:2124#L86">IsValidRoleName</a>
+			<h2 id="IsValidRoleName">func <a href="/src/models/roles.go?s=2502:2537#L88">IsValidRoleName</a>
 				<a class="permalink" href="#IsValidRoleName">&#xb6;</a>
 			</h2>
 			<pre>func IsValidRoleName(u <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
-			
+			<p>
+IsValidRoleName Check that provided string is correctly formed to be used as a RoleName
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="IsValidTurnOrStunServer">func <a href="/src/models/utilities.go?s=7190:7238#L305">IsValidTurnOrStunServer</a>
-				<a class="permalink" href="#IsValidTurnOrStunServer">&#xb6;</a>
-			</h2>
-			<pre>func IsValidTurnOrStunServer(rawUri <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
-			
-			
-			
-
-		
-			
-			
-			<h2 id="IsValidUsername">func <a href="/src/models/user.go?s=6551:6589#L190">IsValidUsername</a>
+			<h2 id="IsValidUsername">func <a href="/src/models/user.go?s=6221:6259#L181">IsValidUsername</a>
 				<a class="permalink" href="#IsValidUsername">&#xb6;</a>
 			</h2>
 			<pre>func IsValidUsername(user <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
@@ -907,23 +947,12 @@ IsValidUsername will check if provided userName is correct
 		
 			
 			
-			<h2 id="IsValidWebsocketUrl">func <a href="/src/models/utilities.go?s=7641:7685#L331">IsValidWebsocketUrl</a>
-				<a class="permalink" href="#IsValidWebsocketUrl">&#xb6;</a>
+			<h2 id="IsValidWebsocketURL">func <a href="/src/models/utilities.go?s=9510:9554#L359">IsValidWebsocketURL</a>
+				<a class="permalink" href="#IsValidWebsocketURL">&#xb6;</a>
 			</h2>
-			<pre>func IsValidWebsocketUrl(rawUrl <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
-			
-			
-			
-
-		
-			
-			
-			<h2 id="MapFromJson">func <a href="/src/models/utilities.go?s=1659:1709#L61">MapFromJson</a>
-				<a class="permalink" href="#MapFromJson">&#xb6;</a>
-			</h2>
-			<pre>func MapFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a></pre>
+			<pre>func IsValidWebsocketURL(rawURL <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
 			<p>
-MapFromJson will decode the key/value pair map
+IsValidWebsocketURL Check if provided string can be used as websocked url.
 </p>
 
 			
@@ -932,12 +961,12 @@ MapFromJson will decode the key/value pair map
 		
 			
 			
-			<h2 id="MapToJson">func <a href="/src/models/utilities.go?s=1463:1510#L52">MapToJson</a>
-				<a class="permalink" href="#MapToJson">&#xb6;</a>
+			<h2 id="MapFromJSON">func <a href="/src/models/utilities.go?s=1984:2034#L70">MapFromJSON</a>
+				<a class="permalink" href="#MapFromJSON">&#xb6;</a>
 			</h2>
-			<pre>func MapToJson(objmap map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			<pre>func MapFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a></pre>
 			<p>
-MapToJson converts a map to a json string
+MapFromJSON will decode the key/value pair map
 </p>
 
 			
@@ -946,34 +975,54 @@ MapToJson converts a map to a json string
 		
 			
 			
-			<h2 id="MessageListFromJson">func <a href="/src/models/message.go?s=1807:1858#L57">MessageListFromJson</a>
-				<a class="permalink" href="#MessageListFromJson">&#xb6;</a>
+			<h2 id="MapToJSON">func <a href="/src/models/utilities.go?s=1799:1846#L61">MapToJSON</a>
+				<a class="permalink" href="#MapToJSON">&#xb6;</a>
 			</h2>
-			<pre>func MessageListFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) []*<a href="#Message">Message</a></pre>
-			
-			
-			
-
-		
-			
-			
-			<h2 id="MessageListToJson">func <a href="/src/models/message.go?s=1650:1703#L48">MessageListToJson</a>
-				<a class="permalink" href="#MessageListToJson">&#xb6;</a>
-			</h2>
-			<pre>func MessageListToJson(messageList []*<a href="#Message">Message</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			
-			
-			
-
-		
-			
-			
-			<h2 id="NewId">func <a href="/src/models/utilities.go?s=804:823#L26">NewId</a>
-				<a class="permalink" href="#NewId">&#xb6;</a>
-			</h2>
-			<pre>func NewId() <a href="/pkg/builtin/#string">string</a></pre>
+			<pre>func MapToJSON(objmap map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
 			<p>
-NewId is a globally unique identifier.  It is a [A-Z0-9] string 26
+MapToJSON converts a map to a json string
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="MessageListFromJSON">func <a href="/src/models/message.go?s=2083:2134#L58">MessageListFromJSON</a>
+				<a class="permalink" href="#MessageListFromJSON">&#xb6;</a>
+			</h2>
+			<pre>func MessageListFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) []*<a href="#Message">Message</a></pre>
+			<p>
+MessageListFromJSON Try to transform a json array into a Message list
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="MessageListToJSON">func <a href="/src/models/message.go?s=1864:1917#L49">MessageListToJSON</a>
+				<a class="permalink" href="#MessageListToJSON">&#xb6;</a>
+			</h2>
+			<pre>func MessageListToJSON(messageList []*<a href="#Message">Message</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+MessageListToJSON transgorm a Message list into Json Array
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="NewID">func <a href="/src/models/utilities.go?s=1073:1092#L34">NewID</a>
+				<a class="permalink" href="#NewID">&#xb6;</a>
+			</h2>
+			<pre>func NewID() <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+NewID is a globally unique identifier.  It is a [A-Z0-9] string 26
 characters long.  It is a UUID version 4 Guid that is zbased32 encoded
 with the padding stripped off.
 </p>
@@ -984,99 +1033,126 @@ with the padding stripped off.
 		
 			
 			
-			<h2 id="NewRandomString">func <a href="/src/models/utilities.go?s=1006:1045#L35">NewRandomString</a>
+			<h2 id="NewRandomString">func <a href="/src/models/utilities.go?s=1342:1381#L44">NewRandomString</a>
 				<a class="permalink" href="#NewRandomString">&#xb6;</a>
 			</h2>
 			<pre>func NewRandomString(length <a href="/pkg/builtin/#int">int</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			
+			<p>
+NewRandomString Generate a randow string length by provided int.
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="ParseHashtags">func <a href="/src/models/utilities.go?s=4714:4762#L218">ParseHashtags</a>
+			<h2 id="ParseHashtags">func <a href="/src/models/utilities.go?s=6009:6057#L236">ParseHashtags</a>
 				<a class="permalink" href="#ParseHashtags">&#xb6;</a>
 			</h2>
 			<pre>func ParseHashtags(text <a href="/pkg/builtin/#string">string</a>) (<a href="/pkg/builtin/#string">string</a>, <a href="/pkg/builtin/#string">string</a>)</pre>
-			
+			<p>
+ParseHashtags parse #xxxxxxxxx declaration in messages
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="RoleListFromJson">func <a href="/src/models/roles.go?s=2695:2740#L124">RoleListFromJson</a>
-				<a class="permalink" href="#RoleListFromJson">&#xb6;</a>
+			<h2 id="RoleListFromJSON">func <a href="/src/models/roles.go?s=3263:3308#L129">RoleListFromJSON</a>
+				<a class="permalink" href="#RoleListFromJSON">&#xb6;</a>
 			</h2>
-			<pre>func RoleListFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) []*<a href="#Role">Role</a></pre>
-			
+			<pre>func RoleListFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) []*<a href="#Role">Role</a></pre>
+			<p>
+RoleListFromJSON Try to parse a JSON array into a role list
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="RoleListToJson">func <a href="/src/models/roles.go?s=2550:2594#L115">RoleListToJson</a>
-				<a class="permalink" href="#RoleListToJson">&#xb6;</a>
+			<h2 id="RoleListToJSON">func <a href="/src/models/roles.go?s=3065:3109#L119">RoleListToJSON</a>
+				<a class="permalink" href="#RoleListToJSON">&#xb6;</a>
 			</h2>
-			<pre>func RoleListToJson(roleList []*<a href="#Role">Role</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			
+			<pre>func RoleListToJSON(roleList []*<a href="#Role">Role</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+RoleListToJSON Convert a list of roles into a JSON array
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="StringFromJson">func <a href="/src/models/utilities.go?s=3214:3256#L145">StringFromJson</a>
-				<a class="permalink" href="#StringFromJson">&#xb6;</a>
+			<h2 id="StringFromJSON">func <a href="/src/models/utilities.go?s=3971:4013#L156">StringFromJSON</a>
+				<a class="permalink" href="#StringFromJSON">&#xb6;</a>
 			</h2>
-			<pre>func StringFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			
+			<pre>func StringFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+StringFromJSON Convert providing json into string
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="StringInArray">func <a href="/src/models/utilities.go?s=2532:2581#L108">StringInArray</a>
+			<h2 id="StringInArray">func <a href="/src/models/utilities.go?s=3071:3120#L118">StringInArray</a>
 				<a class="permalink" href="#StringInArray">&#xb6;</a>
 			</h2>
 			<pre>func StringInArray(a <a href="/pkg/builtin/#string">string</a>, array []<a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
-			
+			<p>
+StringInArray Search if provided string exist in provided array
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="StringInterfaceFromJson">func <a href="/src/models/utilities.go?s=2827:2894#L125">StringInterfaceFromJson</a>
-				<a class="permalink" href="#StringInterfaceFromJson">&#xb6;</a>
+			<h2 id="StringInterfaceFromJSON">func <a href="/src/models/utilities.go?s=3496:3563#L136">StringInterfaceFromJSON</a>
+				<a class="permalink" href="#StringInterfaceFromJSON">&#xb6;</a>
 			</h2>
-			<pre>func StringInterfaceFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) map[<a href="/pkg/builtin/#string">string</a>]interface{}</pre>
-			
+			<pre>func StringInterfaceFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) map[<a href="/pkg/builtin/#string">string</a>]interface{}</pre>
+			<p>
+StringInterfaceFromJSON Try to parse a json into map[string]interace{}
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="StringInterfaceToJson">func <a href="/src/models/utilities.go?s=2664:2728#L117">StringInterfaceToJson</a>
-				<a class="permalink" href="#StringInterfaceToJson">&#xb6;</a>
+			<h2 id="StringInterfaceToJSON">func <a href="/src/models/utilities.go?s=3270:3334#L128">StringInterfaceToJSON</a>
+				<a class="permalink" href="#StringInterfaceToJSON">&#xb6;</a>
 			</h2>
-			<pre>func StringInterfaceToJson(objmap map[<a href="/pkg/builtin/#string">string</a>]interface{}) <a href="/pkg/builtin/#string">string</a></pre>
-			
+			<pre>func StringInterfaceToJSON(objmap map[<a href="/pkg/builtin/#string">string</a>]interface{}) <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+StringInterfaceToJSON convert String interface into Json object
+</p>
+
 			
 			
 
 		
 			
 			
-			<h2 id="StringToJson">func <a href="/src/models/utilities.go?s=3086:3120#L136">StringToJson</a>
-				<a class="permalink" href="#StringToJson">&#xb6;</a>
+			<h2 id="StringToJSON">func <a href="/src/models/utilities.go?s=3801:3835#L147">StringToJSON</a>
+				<a class="permalink" href="#StringToJSON">&#xb6;</a>
 			</h2>
-			<pre>func StringToJson(s <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			
+			<pre>func StringToJSON(s <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+StringToJSON convert provided string into Json object
+</p>
+
 			
 			
 
@@ -1084,12 +1160,15 @@ with the padding stripped off.
 		
 			
 			
-			<h2 id="Avatar">type <a href="/src/models/avatar.go?s=62:294#L1">Avatar</a>
+			<h2 id="Avatar">type <a href="/src/models/avatar.go?s=110:342#L1">Avatar</a>
 				<a class="permalink" href="#Avatar">&#xb6;</a>
 			</h2>
-			
+			<p>
+Avatar type is a DB model for avatar storage
+</p>
+
 			<pre>type Avatar struct {
-<span id="Avatar.IdAvatar"></span>    IdAvatar <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idAvatar;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="Avatar.IDAvatar"></span>    IDAvatar <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idAvatar;AUTO_INCREMENT&#34; json:&#34;-&#34;`
 <span id="Avatar.Name"></span>    Name     <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:name;not null;unique&#34; json:&#34;name&#34;`
 <span id="Avatar.Link"></span>    Link     <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:link;not null;unique&#34; json:&#34;link&#34;`
 }</pre>
@@ -1104,32 +1183,41 @@ with the padding stripped off.
 
 			
 				
-				<h3 id="AvatarFromJson">func <a href="/src/models/avatar.go?s=750:793#L26">AvatarFromJson</a>
-					<a class="permalink" href="#AvatarFromJson">&#xb6;</a>
+				<h3 id="AvatarFromJSON">func <a href="/src/models/avatar.go?s=1026:1069#L29">AvatarFromJSON</a>
+					<a class="permalink" href="#AvatarFromJSON">&#xb6;</a>
 				</h3>
-				<pre>func AvatarFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#Avatar">Avatar</a></pre>
-				
+				<pre>func AvatarFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#Avatar">Avatar</a></pre>
+				<p>
+AvatarFromJSON Take a json and try to transform it into an avatar
+</p>
+
 				
 				
 			
 
 			
 				
-				<h3 id="Avatar.IsValid">func (*Avatar) <a href="/src/models/avatar.go?s=296:339#L5">IsValid</a>
+				<h3 id="Avatar.IsValid">func (*Avatar) <a href="/src/models/avatar.go?s=447:490#L7">IsValid</a>
 					<a class="permalink" href="#Avatar.IsValid">&#xb6;</a>
 				</h3>
 				<pre>func (avatar *<a href="#Avatar">Avatar</a>) IsValid() *<a href="/pkg/utils/">u</a>.<a href="/pkg/utils/#AppError">AppError</a></pre>
-				
+				<p>
+IsValid check the validity of on Avatar object before saving it to DB in update or creation process
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="Avatar.ToJson">func (*Avatar) <a href="/src/models/avatar.go?s=614:651#L17">ToJson</a>
-					<a class="permalink" href="#Avatar.ToJson">&#xb6;</a>
+				<h3 id="Avatar.ToJSON">func (*Avatar) <a href="/src/models/avatar.go?s=832:869#L20">ToJSON</a>
+					<a class="permalink" href="#Avatar.ToJSON">&#xb6;</a>
 				</h3>
-				<pre>func (avatar *<a href="#Avatar">Avatar</a>) ToJson() <a href="/pkg/builtin/#string">string</a></pre>
-				
+				<pre>func (avatar *<a href="#Avatar">Avatar</a>) ToJSON() <a href="/pkg/builtin/#string">string</a></pre>
+				<p>
+ToJSON function take an avatar and tranform it into Json object
+</p>
+
 				
 				
 				
@@ -1137,13 +1225,16 @@ with the padding stripped off.
 		
 			
 			
-			<h2 id="Channel">type <a href="/src/models/channels.go?s=377:1053#L13">Channel</a>
+			<h2 id="Channel">type <a href="/src/models/channels.go?s=479:1155#L15">Channel</a>
 				<a class="permalink" href="#Channel">&#xb6;</a>
 			</h2>
-			
+			<p>
+Channel type is a model for DB Channel table
+</p>
+
 			<pre>type Channel struct {
-<span id="Channel.ChannelId"></span>    ChannelId   <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idChannel;AUTO_INCREMENT&#34; json:&#34;-&#34;`
-<span id="Channel.WebId"></span>    WebId       <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:webId;not null;unique&#34; json:&#34;web_id&#34;`
+<span id="Channel.ChannelID"></span>    ChannelID   <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idChannel;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="Channel.WebID"></span>    WebID       <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:webID;not null;unique&#34; json:&#34;web_id&#34;`
 <span id="Channel.ChannelName"></span>    ChannelName <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:channelName;not null;unique&#34; json:&#34;display_name&#34;`
 <span id="Channel.Type"></span>    Type        <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:type;not null&#34; json:&#34;type&#34;`
 <span id="Channel.UpdatedAt"></span>    UpdatedAt   <a href="/pkg/builtin/#int64">int64</a>  `gorm:&#34;column:updatedAt;not null&#34; json:&#34;updated_at&#34;`
@@ -1163,62 +1254,80 @@ with the padding stripped off.
 
 			
 				
-				<h3 id="ChannelFromJson">func <a href="/src/models/channels.go?s=1194:1239#L34">ChannelFromJson</a>
-					<a class="permalink" href="#ChannelFromJson">&#xb6;</a>
+				<h3 id="ChannelFromJSON">func <a href="/src/models/channels.go?s=1399:1444#L37">ChannelFromJSON</a>
+					<a class="permalink" href="#ChannelFromJSON">&#xb6;</a>
 				</h3>
-				<pre>func ChannelFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#Channel">Channel</a></pre>
-				
+				<pre>func ChannelFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#Channel">Channel</a></pre>
+				<p>
+ChannelFromJSON try to parse a json object as channel object
+</p>
+
 				
 				
 			
 
 			
 				
-				<h3 id="Channel.Etag">func (*Channel) <a href="/src/models/channels.go?s=1394:1431#L45">Etag</a>
+				<h3 id="Channel.Etag">func (*Channel) <a href="/src/models/channels.go?s=1640:1677#L48">Etag</a>
 					<a class="permalink" href="#Channel.Etag">&#xb6;</a>
 				</h3>
 				<pre>func (channel *<a href="#Channel">Channel</a>) Etag() <a href="/pkg/builtin/#string">string</a></pre>
-				
+				<p>
+Etag is a small function used to create cache ID
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="Channel.IsValid">func (*Channel) <a href="/src/models/channels.go?s=1484:1529#L49">IsValid</a>
+				<h3 id="Channel.IsValid">func (*Channel) <a href="/src/models/channels.go?s=1783:1828#L53">IsValid</a>
 					<a class="permalink" href="#Channel.IsValid">&#xb6;</a>
 				</h3>
 				<pre>func (channel *<a href="#Channel">Channel</a>) IsValid() *<a href="/pkg/utils/">u</a>.<a href="/pkg/utils/#AppError">AppError</a></pre>
-				
+				<p>
+IsValid check the correctness of a channel object
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="Channel.PreSave">func (*Channel) <a href="/src/models/channels.go?s=2850:2883#L82">PreSave</a>
+				<h3 id="Channel.PreSave">func (*Channel) <a href="/src/models/channels.go?s=3210:3243#L87">PreSave</a>
 					<a class="permalink" href="#Channel.PreSave">&#xb6;</a>
 				</h3>
 				<pre>func (channel *<a href="#Channel">Channel</a>) PreSave()</pre>
-				
+				<p>
+PreSave Is used to add default values to channel before saving it in DB
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="Channel.PreUpdate">func (*Channel) <a href="/src/models/channels.go?s=3231:3266#L104">PreUpdate</a>
+				<h3 id="Channel.PreUpdate">func (*Channel) <a href="/src/models/channels.go?s=3670:3705#L110">PreUpdate</a>
 					<a class="permalink" href="#Channel.PreUpdate">&#xb6;</a>
 				</h3>
 				<pre>func (channel *<a href="#Channel">Channel</a>) PreUpdate()</pre>
-				
+				<p>
+PreUpdate Is used to add default values to channel before updating it in DB
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="Channel.ToJson">func (*Channel) <a href="/src/models/channels.go?s=1055:1094#L25">ToJson</a>
-					<a class="permalink" href="#Channel.ToJson">&#xb6;</a>
+				<h3 id="Channel.ToJSON">func (*Channel) <a href="/src/models/channels.go?s=1207:1246#L28">ToJSON</a>
+					<a class="permalink" href="#Channel.ToJSON">&#xb6;</a>
 				</h3>
-				<pre>func (channel *<a href="#Channel">Channel</a>) ToJson() <a href="/pkg/builtin/#string">string</a></pre>
-				
+				<pre>func (channel *<a href="#Channel">Channel</a>) ToJSON() <a href="/pkg/builtin/#string">string</a></pre>
+				<p>
+ToJSON Take a channel and convert it into json
+</p>
+
 				
 				
 				
@@ -1226,12 +1335,15 @@ with the padding stripped off.
 		
 			
 			
-			<h2 id="Emoji">type <a href="/src/models/emojis.go?s=62:366#L1">Emoji</a>
+			<h2 id="Emoji">type <a href="/src/models/emojis.go?s=115:419#L1">Emoji</a>
 				<a class="permalink" href="#Emoji">&#xb6;</a>
 			</h2>
-			
+			<p>
+Emoji Type descibe the Emoji table for Popcube DB
+</p>
+
 			<pre>type Emoji struct {
-<span id="Emoji.IdEmoji"></span>    IdEmoji  <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idEmoji;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="Emoji.IDEmoji"></span>    IDEmoji  <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idEmoji;AUTO_INCREMENT&#34; json:&#34;-&#34;`
 <span id="Emoji.Name"></span>    Name     <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:name;not null;unique&#34; json:&#34;name&#34;`
 <span id="Emoji.Shortcut"></span>    Shortcut <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:shortcut;not null;unique&#34; json:&#34;shortcut&#34;`
 <span id="Emoji.Link"></span>    Link     <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:link;not null;unique&#34; json:&#34;link&#34;`
@@ -1247,32 +1359,41 @@ with the padding stripped off.
 
 			
 				
-				<h3 id="EmojiFromJson">func <a href="/src/models/emojis.go?s=959:1000#L31">EmojiFromJson</a>
-					<a class="permalink" href="#EmojiFromJson">&#xb6;</a>
+				<h3 id="EmojiFromJSON">func <a href="/src/models/emojis.go?s=1148:1189#L34">EmojiFromJSON</a>
+					<a class="permalink" href="#EmojiFromJSON">&#xb6;</a>
 				</h3>
-				<pre>func EmojiFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#Emoji">Emoji</a></pre>
-				
+				<pre>func EmojiFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#Emoji">Emoji</a></pre>
+				<p>
+EmojiFromJSON Try to parse a json object as emoji
+</p>
+
 				
 				
 			
 
 			
 				
-				<h3 id="Emoji.IsValid">func (*Emoji) <a href="/src/models/emojis.go?s=368:409#L6">IsValid</a>
+				<h3 id="Emoji.IsValid">func (*Emoji) <a href="/src/models/emojis.go?s=475:516#L8">IsValid</a>
 					<a class="permalink" href="#Emoji.IsValid">&#xb6;</a>
 				</h3>
 				<pre>func (emoji *<a href="#Emoji">Emoji</a>) IsValid() *<a href="/pkg/utils/">u</a>.<a href="/pkg/utils/#AppError">AppError</a></pre>
-				
+				<p>
+IsValid is used to check validity of Emoji objects
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="Emoji.ToJson">func (*Emoji) <a href="/src/models/emojis.go?s=826:861#L22">ToJson</a>
-					<a class="permalink" href="#Emoji.ToJson">&#xb6;</a>
+				<h3 id="Emoji.ToJSON">func (*Emoji) <a href="/src/models/emojis.go?s=973:1008#L25">ToJSON</a>
+					<a class="permalink" href="#Emoji.ToJSON">&#xb6;</a>
 				</h3>
-				<pre>func (emoji *<a href="#Emoji">Emoji</a>) ToJson() <a href="/pkg/builtin/#string">string</a></pre>
-				
+				<pre>func (emoji *<a href="#Emoji">Emoji</a>) ToJSON() <a href="/pkg/builtin/#string">string</a></pre>
+				<p>
+ToJSON transfoorm an Emoji into JSON
+</p>
+
 				
 				
 				
@@ -1280,10 +1401,13 @@ with the padding stripped off.
 		
 			
 			
-			<h2 id="EncryptStringMap">type <a href="/src/models/utilities.go?s=514:553#L19">EncryptStringMap</a>
+			<h2 id="EncryptStringMap">type <a href="/src/models/utilities.go?s=783:822#L27">EncryptStringMap</a>
 				<a class="permalink" href="#EncryptStringMap">&#xb6;</a>
 			</h2>
-			
+			<p>
+EncryptStringMap define type map[string]string for encryption usage
+</p>
+
 			<pre>type EncryptStringMap map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a></pre>
 
 			
@@ -1300,16 +1424,19 @@ with the padding stripped off.
 		
 			
 			
-			<h2 id="Folder">type <a href="/src/models/folders.go?s=62:441#L1">Folder</a>
+			<h2 id="Folder">type <a href="/src/models/folders.go?s=148:527#L1">Folder</a>
 				<a class="permalink" href="#Folder">&#xb6;</a>
 			</h2>
-			
+			<p>
+Folder Type descibe the Folder table for Popcube DB. It is linked to Message table
+</p>
+
 			<pre>type Folder struct {
-<span id="Folder.IdFolder"></span>    IdFolder <a href="/pkg/builtin/#uint64">uint64</a>  `gorm:&#34;primary_key;column:idFolder;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="Folder.IDFolder"></span>    IDFolder <a href="/pkg/builtin/#uint64">uint64</a>  `gorm:&#34;primary_key;column:idFolder;AUTO_INCREMENT&#34; json:&#34;-&#34;`
 <span id="Folder.Link"></span>    Link     <a href="/pkg/builtin/#string">string</a>  `gorm:&#34;column:link;not null;unique&#34; json:&#34;link&#34;`
 <span id="Folder.Name"></span>    Name     <a href="/pkg/builtin/#string">string</a>  `gorm:&#34;column:name;not null;unique&#34; json:&#34;name&#34;`
 <span id="Folder.Type"></span>    Type     <a href="/pkg/builtin/#string">string</a>  `gorm:&#34;column:type;not null;&#34; json:&#34;type&#34;`
-<span id="Folder.Message"></span>    Message  <a href="#Message">Message</a> `gorm:&#34;column:message; not null;ForeignKey:IdMessage;&#34; json:&#34;-&#34;`
+<span id="Folder.Message"></span>    Message  <a href="#Message">Message</a> `gorm:&#34;column:message; not null;ForeignKey:IDMessage;&#34; json:&#34;-&#34;`
 }</pre>
 
 			
@@ -1322,32 +1449,41 @@ with the padding stripped off.
 
 			
 				
-				<h3 id="FolderFromJson">func <a href="/src/models/folders.go?s=1112:1155#L33">FolderFromJson</a>
-					<a class="permalink" href="#FolderFromJson">&#xb6;</a>
+				<h3 id="FolderFromJSON">func <a href="/src/models/folders.go?s=1337:1380#L36">FolderFromJSON</a>
+					<a class="permalink" href="#FolderFromJSON">&#xb6;</a>
 				</h3>
-				<pre>func FolderFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#Folder">Folder</a></pre>
-				
+				<pre>func FolderFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#Folder">Folder</a></pre>
+				<p>
+FolderFromJSON Try to parse a json object as emoji
+</p>
+
 				
 				
 			
 
 			
 				
-				<h3 id="Folder.IsValid">func (*Folder) <a href="/src/models/folders.go?s=443:486#L7">IsValid</a>
+				<h3 id="Folder.IsValid">func (*Folder) <a href="/src/models/folders.go?s=584:627#L9">IsValid</a>
 					<a class="permalink" href="#Folder.IsValid">&#xb6;</a>
 				</h3>
 				<pre>func (folder *<a href="#Folder">Folder</a>) IsValid() *<a href="/pkg/utils/">u</a>.<a href="/pkg/utils/#AppError">AppError</a></pre>
-				
+				<p>
+IsValid is used to check validity of Folder objects
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="Folder.ToJson">func (*Folder) <a href="/src/models/folders.go?s=976:1013#L24">ToJson</a>
-					<a class="permalink" href="#Folder.ToJson">&#xb6;</a>
+				<h3 id="Folder.ToJSON">func (*Folder) <a href="/src/models/folders.go?s=1158:1195#L27">ToJSON</a>
+					<a class="permalink" href="#Folder.ToJSON">&#xb6;</a>
 				</h3>
-				<pre>func (folder *<a href="#Folder">Folder</a>) ToJson() <a href="/pkg/builtin/#string">string</a></pre>
-				
+				<pre>func (folder *<a href="#Folder">Folder</a>) ToJSON() <a href="/pkg/builtin/#string">string</a></pre>
+				<p>
+ToJSON transfoorm an Folder into JSON
+</p>
+
 				
 				
 				
@@ -1355,14 +1491,17 @@ with the padding stripped off.
 		
 			
 			
-			<h2 id="Member">type <a href="/src/models/member.go?s=39:285#L1">Member</a>
+			<h2 id="Member">type <a href="/src/models/member.go?s=118:364#L1">Member</a>
 				<a class="permalink" href="#Member">&#xb6;</a>
 			</h2>
-			
+			<p>
+Member describe the associtive table member between USER, CHANNEL, and ROLE
+</p>
+
 			<pre>type Member struct {
-<span id="Member.User"></span>    User    <a href="#User">User</a>    `gorm:&#34;column:user; not null;ForeignKey:IdUser;&#34; json:&#34;-`
-<span id="Member.Channel"></span>    Channel <a href="#Channel">Channel</a> `gorm:&#34;column:channel; not null;ForeignKey:IdChannel;&#34; json:&#34;-&#34;`
-<span id="Member.Role"></span>    Role    <a href="#Role">Role</a>    `gorm:&#34;column:role; ForeignKey:IdRole;&#34; json:&#34;-&#34;`
+<span id="Member.User"></span>    User    <a href="#User">User</a>    `gorm:&#34;column:user; not null;ForeignKey:IDUser;&#34; json:&#34;-`
+<span id="Member.Channel"></span>    Channel <a href="#Channel">Channel</a> `gorm:&#34;column:channel; not null;ForeignKey:IDChannel;&#34; json:&#34;-&#34;`
+<span id="Member.Role"></span>    Role    <a href="#Role">Role</a>    `gorm:&#34;column:role; ForeignKey:IDRole;&#34; json:&#34;-&#34;`
 }</pre>
 
 			
@@ -1377,11 +1516,14 @@ with the padding stripped off.
 
 			
 				
-				<h3 id="Member.IsValid">func (*Member) <a href="/src/models/member.go?s=287:330#L3">IsValid</a>
+				<h3 id="Member.IsValid">func (*Member) <a href="/src/models/member.go?s=409:452#L5">IsValid</a>
 					<a class="permalink" href="#Member.IsValid">&#xb6;</a>
 				</h3>
 				<pre>func (member *<a href="#Member">Member</a>) IsValid() *<a href="/pkg/utils/">u</a>.<a href="/pkg/utils/#AppError">AppError</a></pre>
-				
+				<p>
+IsValid check validity of member object
+</p>
+
 				
 				
 				
@@ -1389,16 +1531,19 @@ with the padding stripped off.
 		
 			
 			
-			<h2 id="Message">type <a href="/src/models/message.go?s=62:464#L1">Message</a>
+			<h2 id="Message">type <a href="/src/models/message.go?s=168:570#L1">Message</a>
 				<a class="permalink" href="#Message">&#xb6;</a>
 			</h2>
-			
+			<p>
+Message describe the message table for  PovpCube project. It is linked to User table and Channel table
+</p>
+
 			<pre>type Message struct {
-<span id="Message.IdMessage"></span>    IdMessage <a href="/pkg/builtin/#uint64">uint64</a>  `gorm:&#34;primary_key;column:idMessage;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="Message.IDMessage"></span>    IDMessage <a href="/pkg/builtin/#uint64">uint64</a>  `gorm:&#34;primary_key;column:idMessage;AUTO_INCREMENT&#34; json:&#34;-&#34;`
 <span id="Message.Date"></span>    Date      <a href="/pkg/builtin/#int64">int64</a>   `gorm:&#34;column:date;not null&#34; json:&#34;date&#34;`
 <span id="Message.Content"></span>    Content   <a href="/pkg/builtin/#string">string</a>  `gorm:&#34;column:content;type:longtext&#34; json:&#34;content&#34;`
-<span id="Message.Creator"></span>    Creator   <a href="#User">User</a>    `gorm:&#34;column:creator; not null;ForeignKey:IdUser;&#34; json:&#34;-&#34;`
-<span id="Message.Channel"></span>    Channel   <a href="#Channel">Channel</a> `gorm:&#34;column:channel; not null;ForeignKey:IdChannel;&#34; json:&#34;-&#34;`
+<span id="Message.Creator"></span>    Creator   <a href="#User">User</a>    `gorm:&#34;column:creator; not null;ForeignKey:IDUser;&#34; json:&#34;-&#34;`
+<span id="Message.Channel"></span>    Channel   <a href="#Channel">Channel</a> `gorm:&#34;column:channel; not null;ForeignKey:IDChannel;&#34; json:&#34;-&#34;`
 }</pre>
 
 			
@@ -1411,18 +1556,21 @@ with the padding stripped off.
 
 			
 				
-				<h3 id="MessageFromJson">func <a href="/src/models/message.go?s=1450:1495#L37">MessageFromJson</a>
-					<a class="permalink" href="#MessageFromJson">&#xb6;</a>
+				<h3 id="MessageFromJSON">func <a href="/src/models/message.go?s=1613:1658#L38">MessageFromJSON</a>
+					<a class="permalink" href="#MessageFromJSON">&#xb6;</a>
 				</h3>
-				<pre>func MessageFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#Message">Message</a></pre>
-				
+				<pre>func MessageFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#Message">Message</a></pre>
+				<p>
+MessageFromJSON Try to convert a Json object into Message object
+</p>
+
 				
 				
 			
 
 			
 				
-				<h3 id="Message.IsValid">func (*Message) <a href="/src/models/message.go?s=615:660#L8">IsValid</a>
+				<h3 id="Message.IsValid">func (*Message) <a href="/src/models/message.go?s=721:766#L9">IsValid</a>
 					<a class="permalink" href="#Message.IsValid">&#xb6;</a>
 				</h3>
 				<pre>func (message *<a href="#Message">Message</a>) IsValid() *<a href="/pkg/utils/">u</a>.<a href="/pkg/utils/#AppError">AppError</a></pre>
@@ -1435,7 +1583,7 @@ IsValid function is used to check that the provided message correspond to the me
 				
 			
 				
-				<h3 id="Message.PreSave">func (*Message) <a href="/src/models/message.go?s=1160:1193#L23">PreSave</a>
+				<h3 id="Message.PreSave">func (*Message) <a href="/src/models/message.go?s=1266:1299#L24">PreSave</a>
 					<a class="permalink" href="#Message.PreSave">&#xb6;</a>
 				</h3>
 				<pre>func (message *<a href="#Message">Message</a>) PreSave()</pre>
@@ -1448,12 +1596,12 @@ PreSave need to be called before saving a new or an updated mesage in the DB so 
 				
 			
 				
-				<h3 id="Message.ToJson">func (*Message) <a href="/src/models/message.go?s=1311:1350#L28">ToJson</a>
-					<a class="permalink" href="#Message.ToJson">&#xb6;</a>
+				<h3 id="Message.ToJSON">func (*Message) <a href="/src/models/message.go?s=1417:1456#L29">ToJSON</a>
+					<a class="permalink" href="#Message.ToJSON">&#xb6;</a>
 				</h3>
-				<pre>func (message *<a href="#Message">Message</a>) ToJson() <a href="/pkg/builtin/#string">string</a></pre>
+				<pre>func (message *<a href="#Message">Message</a>) ToJSON() <a href="/pkg/builtin/#string">string</a></pre>
 				<p>
-ToJson take the message object and transfor it into a json object for api usage.
+ToJSON take the message object and transfor it into a json object for api usage.
 </p>
 
 				
@@ -1463,12 +1611,15 @@ ToJson take the message object and transfor it into a json object for api usage.
 		
 			
 			
-			<h2 id="Organisation">type <a href="/src/models/organisation.go?s=282:810#L9">Organisation</a>
+			<h2 id="Organisation">type <a href="/src/models/organisation.go?s=333:861#L10">Organisation</a>
 				<a class="permalink" href="#Organisation">&#xb6;</a>
 			</h2>
-			
+			<p>
+Organisation Type descibe the Organisation table for Popcube DB
+</p>
+
 			<pre>type Organisation struct {
-<span id="Organisation.IdOrganisation"></span>    IdOrganisation   <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idOrganisation;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="Organisation.IDOrganisation"></span>    IDOrganisation   <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idOrganisation;AUTO_INCREMENT&#34; json:&#34;-&#34;`
 <span id="Organisation.DockerStack"></span>    DockerStack      <a href="/pkg/builtin/#int">int</a>    `gorm:&#34;column:dockerStack;not null;unique&#34; json:&#34;docker_stack&#34;`
 <span id="Organisation.OrganisationName"></span>    OrganisationName <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:organisationName;not null;unique&#34; json:&#34;display_name&#34;`
 <span id="Organisation.Description"></span>    Description      <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:desciption&#34; json:&#34;description,omitempty&#34;`
@@ -1486,42 +1637,54 @@ ToJson take the message object and transfor it into a json object for api usage.
 
 			
 				
-				<h3 id="OganisationFromJson">func <a href="/src/models/organisation.go?s=966:1020#L27">OganisationFromJson</a>
-					<a class="permalink" href="#OganisationFromJson">&#xb6;</a>
+				<h3 id="OganisationFromJSON">func <a href="/src/models/organisation.go?s=1112:1166#L29">OganisationFromJSON</a>
+					<a class="permalink" href="#OganisationFromJSON">&#xb6;</a>
 				</h3>
-				<pre>func OganisationFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#Organisation">Organisation</a></pre>
-				
+				<pre>func OganisationFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#Organisation">Organisation</a></pre>
+				<p>
+OganisationFromJSON Try to parse a json object as emoji
+</p>
+
 				
 				
 			
 
 			
 				
-				<h3 id="Organisation.IsValid">func (*Organisation) <a href="/src/models/organisation.go?s=1195:1250#L38">IsValid</a>
+				<h3 id="Organisation.IsValid">func (*Organisation) <a href="/src/models/organisation.go?s=1391:1446#L40">IsValid</a>
 					<a class="permalink" href="#Organisation.IsValid">&#xb6;</a>
 				</h3>
 				<pre>func (organisation *<a href="#Organisation">Organisation</a>) IsValid() *<a href="/pkg/utils/">u</a>.<a href="/pkg/utils/#AppError">AppError</a></pre>
-				
+				<p>
+IsValid is used to check validity of Organisation objects
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="Organisation.PreSave">func (*Organisation) <a href="/src/models/organisation.go?s=2108:2151#L55">PreSave</a>
+				<h3 id="Organisation.PreSave">func (*Organisation) <a href="/src/models/organisation.go?s=2391:2434#L58">PreSave</a>
 					<a class="permalink" href="#Organisation.PreSave">&#xb6;</a>
 				</h3>
 				<pre>func (organisation *<a href="#Organisation">Organisation</a>) PreSave()</pre>
-				
+				<p>
+PreSave is used to add some default values to organisation before saving in DB (creation).
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="Organisation.ToJson">func (*Organisation) <a href="/src/models/organisation.go?s=812:861#L18">ToJson</a>
-					<a class="permalink" href="#Organisation.ToJson">&#xb6;</a>
+				<h3 id="Organisation.ToJSON">func (*Organisation) <a href="/src/models/organisation.go?s=910:959#L20">ToJSON</a>
+					<a class="permalink" href="#Organisation.ToJSON">&#xb6;</a>
 				</h3>
-				<pre>func (organisation *<a href="#Organisation">Organisation</a>) ToJson() <a href="/pkg/builtin/#string">string</a></pre>
-				
+				<pre>func (organisation *<a href="#Organisation">Organisation</a>) ToJSON() <a href="/pkg/builtin/#string">string</a></pre>
+				<p>
+ToJSON transfoorm an Organisation into JSON
+</p>
+
 				
 				
 				
@@ -1529,12 +1692,15 @@ ToJson take the message object and transfor it into a json object for api usage.
 		
 			
 			
-			<h2 id="Parameter">type <a href="/src/models/parameter.go?s=208:629#L7">Parameter</a>
+			<h2 id="Parameter">type <a href="/src/models/parameter.go?s=413:834#L10">Parameter</a>
 				<a class="permalink" href="#Parameter">&#xb6;</a>
 			</h2>
-			
+			<p>
+Parameter Type descibe the Parameter table for Popcube DB
+</p>
+
 			<pre>type Parameter struct {
-<span id="Parameter.IdParameter"></span>    IdParameter <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idParameter;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="Parameter.IDParameter"></span>    IDParameter <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idParameter;AUTO_INCREMENT&#34; json:&#34;-&#34;`
 <span id="Parameter.Local"></span>    Local       <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:local;not null; unique&#34; json:&#34;local&#34;`
 <span id="Parameter.TimeZone"></span>    TimeZone    <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:timeZone;not null; unique;&#34; json:&#34;time_zone&#34;`
 <span id="Parameter.SleepStart"></span>    SleepStart  <a href="/pkg/builtin/#int">int</a>    `gorm:&#34;column:sleepStart;not null;unique&#34; json:&#34;sleep_start&#34;`
@@ -1551,42 +1717,54 @@ ToJson take the message object and transfor it into a json object for api usage.
 
 			
 				
-				<h3 id="ParameterFromJson">func <a href="/src/models/parameter.go?s=776:825#L24">ParameterFromJson</a>
-					<a class="permalink" href="#ParameterFromJson">&#xb6;</a>
+				<h3 id="ParameterFromJSON">func <a href="/src/models/parameter.go?s=1071:1120#L28">ParameterFromJSON</a>
+					<a class="permalink" href="#ParameterFromJSON">&#xb6;</a>
 				</h3>
-				<pre>func ParameterFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#Parameter">Parameter</a></pre>
-				
+				<pre>func ParameterFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#Parameter">Parameter</a></pre>
+				<p>
+ParameterFromJSON Try to parse a json object as emoji
+</p>
+
 				
 				
 			
 
 			
 				
-				<h3 id="Parameter.IsValid">func (*Parameter) <a href="/src/models/parameter.go?s=988:1037#L35">IsValid</a>
+				<h3 id="Parameter.IsValid">func (*Parameter) <a href="/src/models/parameter.go?s=1330:1379#L39">IsValid</a>
 					<a class="permalink" href="#Parameter.IsValid">&#xb6;</a>
 				</h3>
 				<pre>func (parameter *<a href="#Parameter">Parameter</a>) IsValid() *<a href="/pkg/utils/">u</a>.<a href="/pkg/utils/#AppError">AppError</a></pre>
-				
+				<p>
+IsValid is used to check validity of Parameter objects
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="Parameter.PreSave">func (*Parameter) <a href="/src/models/parameter.go?s=1809:1846#L56">PreSave</a>
+				<h3 id="Parameter.PreSave">func (*Parameter) <a href="/src/models/parameter.go?s=2214:2251#L61">PreSave</a>
 					<a class="permalink" href="#Parameter.PreSave">&#xb6;</a>
 				</h3>
 				<pre>func (parameter *<a href="#Parameter">Parameter</a>) PreSave()</pre>
-				
+				<p>
+PreSave is to be used before saving to add default value if needed
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="Parameter.ToJson">func (*Parameter) <a href="/src/models/parameter.go?s=631:674#L15">ToJson</a>
-					<a class="permalink" href="#Parameter.ToJson">&#xb6;</a>
+				<h3 id="Parameter.ToJSON">func (*Parameter) <a href="/src/models/parameter.go?s=880:923#L19">ToJSON</a>
+					<a class="permalink" href="#Parameter.ToJSON">&#xb6;</a>
 				</h3>
-				<pre>func (parameter *<a href="#Parameter">Parameter</a>) ToJson() <a href="/pkg/builtin/#string">string</a></pre>
-				
+				<pre>func (parameter *<a href="#Parameter">Parameter</a>) ToJSON() <a href="/pkg/builtin/#string">string</a></pre>
+				<p>
+ToJSON transfoorm an Parameter into JSON
+</p>
+
 				
 				
 				
@@ -1594,12 +1772,15 @@ ToJson take the message object and transfor it into a json object for api usage.
 		
 			
 			
-			<h2 id="Role">type <a href="/src/models/roles.go?s=72:727#L1">Role</a>
+			<h2 id="Role">type <a href="/src/models/roles.go?s=123:778#L1">Role</a>
 				<a class="permalink" href="#Role">&#xb6;</a>
 			</h2>
-			
+			<p>
+Role Type descibe the Role table for Popcube DB
+</p>
+
 			<pre>type Role struct {
-<span id="Role.IdRole"></span>    IdRole        <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idRole;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="Role.IDRole"></span>    IDRole        <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idRole;AUTO_INCREMENT&#34; json:&#34;-&#34;`
 <span id="Role.RoleName"></span>    RoleName      <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:roleName;unique_index;not null;unique&#34; json:&#34;name&#34;`
 <span id="Role.CanUsePrivate"></span>    CanUsePrivate <a href="/pkg/builtin/#bool">bool</a>   `gorm:&#34;column:canUsePrivate;not null&#34; json:&#34;canUsePrivate&#34;`
 <span id="Role.CanModerate"></span>    CanModerate   <a href="/pkg/builtin/#bool">bool</a>   `gorm:&#34;column:canModerate;not null&#34; json:&#34;canModerate&#34;`
@@ -1619,42 +1800,41 @@ ToJson take the message object and transfor it into a json object for api usage.
 
 			
 				
-				<h3 id="RoleFromJson">func <a href="/src/models/roles.go?s=2368:2407#L104">RoleFromJson</a>
-					<a class="permalink" href="#RoleFromJson">&#xb6;</a>
+				<h3 id="RoleFromJSON">func <a href="/src/models/roles.go?s=2833:2872#L107">RoleFromJSON</a>
+					<a class="permalink" href="#RoleFromJSON">&#xb6;</a>
 				</h3>
-				<pre>func RoleFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#Role">Role</a></pre>
-				
+				<pre>func RoleFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#Role">Role</a></pre>
+				<p>
+RoleFromJSON Try to parse a json object as emoji
+</p>
+
 				
 				
 			
 
 			
 				
-				<h3 id="Role.IsValid">func (*Role) <a href="/src/models/roles.go?s=1688:1727#L63">IsValid</a>
+				<h3 id="Role.IsValid">func (*Role) <a href="/src/models/roles.go?s=2070:2109#L70">IsValid</a>
 					<a class="permalink" href="#Role.IsValid">&#xb6;</a>
 				</h3>
 				<pre>func (role *<a href="#Role">Role</a>) IsValid() *<a href="/pkg/utils/">u</a>.<a href="/pkg/utils/#AppError">AppError</a></pre>
-				
-				
-				
-				
-			
-				
-				<h3 id="Role.PreSave">func (*Role) <a href="/src/models/roles.go?s=1871:1898#L71">PreSave</a>
-					<a class="permalink" href="#Role.PreSave">&#xb6;</a>
-				</h3>
-				<pre>func (role *<a href="#Role">Role</a>) PreSave()</pre>
-				
+				<p>
+IsValid is used to check validity of Role objects
+</p>
+
 				
 				
 				
 			
 				
-				<h3 id="Role.ToJson">func (*Role) <a href="/src/models/roles.go?s=1959:1992#L77">ToJson</a>
-					<a class="permalink" href="#Role.ToJson">&#xb6;</a>
+				<h3 id="Role.ToJSON">func (*Role) <a href="/src/models/roles.go?s=2292:2325#L79">ToJSON</a>
+					<a class="permalink" href="#Role.ToJSON">&#xb6;</a>
 				</h3>
-				<pre>func (role *<a href="#Role">Role</a>) ToJson() <a href="/pkg/builtin/#string">string</a></pre>
-				
+				<pre>func (role *<a href="#Role">Role</a>) ToJSON() <a href="/pkg/builtin/#string">string</a></pre>
+				<p>
+ToJSON transfoorm an Role into JSON
+</p>
+
 				
 				
 				
@@ -1662,10 +1842,13 @@ ToJson take the message object and transfor it into a json object for api usage.
 		
 			
 			
-			<h2 id="StringArray">type <a href="/src/models/utilities.go?s=488:513#L18">StringArray</a>
+			<h2 id="StringArray">type <a href="/src/models/utilities.go?s=686:711#L24">StringArray</a>
 				<a class="permalink" href="#StringArray">&#xb6;</a>
 			</h2>
-			
+			<p>
+StringArray Reddefine type []string
+</p>
+
 			<pre>type StringArray []<a href="/pkg/builtin/#string">string</a></pre>
 
 			
@@ -1682,10 +1865,13 @@ ToJson take the message object and transfor it into a json object for api usage.
 		
 			
 			
-			<h2 id="StringInterface">type <a href="/src/models/utilities.go?s=411:454#L16">StringInterface</a>
+			<h2 id="StringInterface">type <a href="/src/models/utilities.go?s=523:566#L18">StringInterface</a>
 				<a class="permalink" href="#StringInterface">&#xb6;</a>
 			</h2>
-			
+			<p>
+StringInterface Interface for map[string]
+</p>
+
 			<pre>type StringInterface map[<a href="/pkg/builtin/#string">string</a>]interface{}</pre>
 
 			
@@ -1702,10 +1888,13 @@ ToJson take the message object and transfor it into a json object for api usage.
 		
 			
 			
-			<h2 id="StringMap">type <a href="/src/models/utilities.go?s=455:487#L17">StringMap</a>
+			<h2 id="StringMap">type <a href="/src/models/utilities.go?s=613:645#L21">StringMap</a>
 				<a class="permalink" href="#StringMap">&#xb6;</a>
 			</h2>
-			
+			<p>
+StringMap Redefine type map[string]string
+</p>
+
 			<pre>type StringMap map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a></pre>
 
 			
@@ -1722,46 +1911,61 @@ ToJson take the message object and transfor it into a json object for api usage.
 		
 			
 			
-			<h2 id="User">type <a href="/src/models/user.go?s=2369:3804#L77">User</a>
+			<h2 id="User">type <a href="/src/models/user.go?s=2260:3695#L73">User</a>
 				<a class="permalink" href="#User">&#xb6;</a>
 			</h2>
 			<p>
 User object
 </p>
-<pre>- webwebId: String unique and non null to webIdentify the user on application services. - REQUIRED
-
+<p>
+- webwebID: String unique and non null to webIDentify the user on application services. - REQUIRED
+</p>
+<p>
 - username: Store the user username used to log into the service. - REQUIRED
-
+</p>
+<p>
 - email: user mail ;). - REQUIRED
-
+</p>
+<p>
 - emailVerified: true if email was verified by user. - REQUIRED
-
+</p>
+<p>
 - updatedAt: Time of the last update. Used to create tag for browser cache. - REQUIRED
-
+</p>
+<p>
 - deleted: True if user is deleted. - REQUIRED
-
+</p>
+<p>
 - password: Hashed password. - REQUIRED
-
+</p>
+<p>
 - lastpasswordUpdate: Date of the last password modification. - REQUIRED
-
+</p>
+<p>
 - failedAttemps: Number of fail try to connect to account. - REQUIRED
-
+</p>
+<p>
 - locale: user favorite langage. - REQUIRED
-
+</p>
+<p>
 - role : int referencing a user role existing in the database. - REQUIRED
-
+</p>
+<p>
 - nickname: Name to use in communication channel (by default : username).
-
+</p>
+<p>
 - first name: user true first name.
-
+</p>
+<p>
 - last name: user true last name.
-
+</p>
+<p>
 - lastActivityAt: Date &amp;&amp; Time of the last activity of the user.
-</pre>
+</p>
 
 			<pre>type User struct {
-<span id="User.UserId"></span>    UserId             <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idUser;AUTO_INCREMENT&#34; json:&#34;-&#34;`
-<span id="User.WebId"></span>    WebId              <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:webId; not null; unique;&#34; json:&#34;web_id&#34;`
+<span id="User.UserID"></span>    UserID             <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idUser;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+<span id="User.WebID"></span>    WebID              <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:webID; not null; unique;&#34; json:&#34;web_id&#34;`
 <span id="User.Username"></span>    Username           <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:userName; not null; unique;&#34; json:&#34;username&#34;`
 <span id="User.Email"></span>    Email              <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:email; not null; unique;&#34; json:&#34;email&#34;`
 <span id="User.EmailVerified"></span>    EmailVerified      <a href="/pkg/builtin/#bool">bool</a>   `gorm:&#34;column:emailVerified; not null; unique;&#34; json:&#34;email_verified&#34;`
@@ -1771,7 +1975,7 @@ User object
 <span id="User.LastPasswordUpdate"></span>    LastPasswordUpdate <a href="/pkg/builtin/#int64">int64</a>  `gorm:&#34;column:lastPasswordUpdate; not null;&#34; json:&#34;last_password_update&#34;`
 <span id="User.FailedAttempts"></span>    FailedAttempts     <a href="/pkg/builtin/#int">int</a>    `gorm:&#34;column:failedAttempts; not null;&#34; json:&#34;failed_attempts&#34;`
 <span id="User.Locale"></span>    Locale             <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:locale; not null;&#34; json:&#34;locale&#34;`
-<span id="User.Role"></span>    Role               <a href="#Role">Role</a>   `gorm:&#34;column:role; not null;ForeignKey:IdRole;&#34; json:&#34;-&#34;`
+<span id="User.Role"></span>    Role               <a href="#Role">Role</a>   `gorm:&#34;column:role; not null;ForeignKey:IDRole;&#34; json:&#34;-&#34;`
 <span id="User.Avatar"></span>    Avatar             <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:avatar;&#34; json:&#34;avatar, omitempty&#34;`
 <span id="User.NickName"></span>    NickName           <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:nickName;&#34; json:&#34;nickname, omitempty&#34;`
 <span id="User.FirstName"></span>    FirstName          <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:firstName;&#34; json:&#34;first_name, omitempty&#34;`
@@ -1789,12 +1993,12 @@ User object
 
 			
 				
-				<h3 id="UserFromJson">func <a href="/src/models/user.go?s=6307:6346#L178">UserFromJson</a>
-					<a class="permalink" href="#UserFromJson">&#xb6;</a>
+				<h3 id="UserFromJSON">func <a href="/src/models/user.go?s=5988:6027#L170">UserFromJSON</a>
+					<a class="permalink" href="#UserFromJSON">&#xb6;</a>
 				</h3>
-				<pre>func UserFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#User">User</a></pre>
+				<pre>func UserFromJSON(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#User">User</a></pre>
 				<p>
-UserFromJson will decode the input and return a user
+UserFromJSON will decode the input and return a user
 </p>
 
 				
@@ -1803,12 +2007,12 @@ UserFromJson will decode the input and return a user
 
 			
 				
-				<h3 id="User.Etag">func (*User) <a href="/src/models/user.go?s=6917:6976#L209">Etag</a>
+				<h3 id="User.Etag">func (*User) <a href="/src/models/user.go?s=6592:6651#L200">Etag</a>
 					<a class="permalink" href="#User.Etag">&#xb6;</a>
 				</h3>
 				<pre>func (user *<a href="#User">User</a>) Etag(showFullName, showemail <a href="/pkg/builtin/#bool">bool</a>) <a href="/pkg/builtin/#string">string</a></pre>
 				<p>
-Generate a valwebId strong Etag so the browser can cache the results
+Etag Generate a valwebID strong Etag so the browser can cache the results
 </p>
 
 				
@@ -1816,12 +2020,12 @@ Generate a valwebId strong Etag so the browser can cache the results
 				
 			
 				
-				<h3 id="User.GetDisplayName">func (*User) <a href="/src/models/user.go?s=7301:7342#L225">GetDisplayName</a>
+				<h3 id="User.GetDisplayName">func (*User) <a href="/src/models/user.go?s=6975:7016#L216">GetDisplayName</a>
 					<a class="permalink" href="#User.GetDisplayName">&#xb6;</a>
 				</h3>
 				<pre>func (user *<a href="#User">User</a>) GetDisplayName() <a href="/pkg/builtin/#string">string</a></pre>
 				<p>
-Get full name of the user
+GetDisplayName of the user
 </p>
 
 				
@@ -1829,12 +2033,12 @@ Get full name of the user
 				
 			
 				
-				<h3 id="User.GetFullName">func (*User) <a href="/src/models/user.go?s=7077:7115#L214">GetFullName</a>
+				<h3 id="User.GetFullName">func (*User) <a href="/src/models/user.go?s=6750:6788#L205">GetFullName</a>
 					<a class="permalink" href="#User.GetFullName">&#xb6;</a>
 				</h3>
 				<pre>func (user *<a href="#User">User</a>) GetFullName() <a href="/pkg/builtin/#string">string</a></pre>
 				<p>
-Get full name of the user
+GetFullName of the user
 </p>
 
 				
@@ -1842,12 +2046,12 @@ Get full name of the user
 				
 			
 				
-				<h3 id="User.IsValid">func (*User) <a href="/src/models/user.go?s=3897:3936#L99">IsValid</a>
+				<h3 id="User.IsValid">func (*User) <a href="/src/models/user.go?s=3788:3827#L95">IsValid</a>
 					<a class="permalink" href="#User.IsValid">&#xb6;</a>
 				</h3>
 				<pre>func (user *<a href="#User">User</a>) IsValid() *<a href="/pkg/utils/">u</a>.<a href="/pkg/utils/#AppError">AppError</a></pre>
 				<p>
-IsValid valwebIdates the user and returns an error if it isn&#39;t configured
+IsValid valwebIDates the user and returns an error if it isn&#39;t configured
 correctly.
 </p>
 
@@ -1856,12 +2060,12 @@ correctly.
 				
 			
 				
-				<h3 id="User.PreSave">func (*User) <a href="/src/models/user.go?s=5223:5250#L133">PreSave</a>
+				<h3 id="User.PreSave">func (*User) <a href="/src/models/user.go?s=5114:5141#L129">PreSave</a>
 					<a class="permalink" href="#User.PreSave">&#xb6;</a>
 				</h3>
 				<pre>func (user *<a href="#User">User</a>) PreSave()</pre>
 				<p>
-PreSave have to be run before saving user in DB. It will fill necessary information (webId, username, etc. ) and hash password
+PreSave have to be run before saving user in DB. It will fill necessary information (webID, username, etc. ) and hash password
 </p>
 
 				
@@ -1869,14 +2073,11 @@ PreSave have to be run before saving user in DB. It will fill necessary informat
 				
 			
 				
-				<h3 id="User.PreUpdate">func (*User) <a href="/src/models/user.go?s=5924:5953#L161">PreUpdate</a>
+				<h3 id="User.PreUpdate">func (*User) <a href="/src/models/user.go?s=5616:5645#L154">PreUpdate</a>
 					<a class="permalink" href="#User.PreUpdate">&#xb6;</a>
 				</h3>
 				<pre>func (user *<a href="#User">User</a>) PreUpdate()</pre>
 				<p>
-PreSave will set the webId and username if missing.  It will also fill
-in the CreateAt, UpdateAt times.  It will also hash the password.  It should
-be run before saving the user to the db.
 PreUpdate should be run before updating the user in the db.
 </p>
 
@@ -1885,12 +2086,12 @@ PreUpdate should be run before updating the user in the db.
 				
 			
 				
-				<h3 id="User.ToJson">func (*User) <a href="/src/models/user.go?s=6121:6154#L168">ToJson</a>
-					<a class="permalink" href="#User.ToJson">&#xb6;</a>
+				<h3 id="User.ToJSON">func (*User) <a href="/src/models/user.go?s=5813:5846#L161">ToJSON</a>
+					<a class="permalink" href="#User.ToJSON">&#xb6;</a>
 				</h3>
-				<pre>func (user *<a href="#User">User</a>) ToJson() <a href="/pkg/builtin/#string">string</a></pre>
+				<pre>func (user *<a href="#User">User</a>) ToJSON() <a href="/pkg/builtin/#string">string</a></pre>
 				<p>
-ToJson convert a user to a json string
+ToJSON convert a user to a json string
 </p>
 
 				

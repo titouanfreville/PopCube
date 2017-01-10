@@ -6,13 +6,15 @@ import (
 	u "utils"
 )
 
+// Emoji Type descibe the Emoji table for Popcube DB
 type Emoji struct {
-	IdEmoji  uint64 `gorm:"primary_key;column:idEmoji;AUTO_INCREMENT" json:"-"`
+	IDEmoji  uint64 `gorm:"primary_key;column:idEmoji;AUTO_INCREMENT" json:"-"`
 	Name     string `gorm:"column:name;not null;unique" json:"name"`
 	Shortcut string `gorm:"column:shortcut;not null;unique" json:"shortcut"`
 	Link     string `gorm:"column:link;not null;unique" json:"link"`
 }
 
+// IsValid is used to check validity of Emoji objects
 func (emoji *Emoji) IsValid() *u.AppError {
 	if len(emoji.Name) == 0 || len(emoji.Name) > 64 {
 		return u.NewLocAppError("Emoji.IsValid", "model.emoji.name.app_error", nil, "")
@@ -29,42 +31,42 @@ func (emoji *Emoji) IsValid() *u.AppError {
 	return nil
 }
 
-func (emoji *Emoji) ToJson() string {
+// ToJSON transfoorm an Emoji into JSON
+func (emoji *Emoji) ToJSON() string {
 	b, err := json.Marshal(emoji)
 	if err != nil {
 		return ""
-	} else {
-		return string(b)
 	}
+	return string(b)
 }
 
-func EmojiFromJson(data io.Reader) *Emoji {
+// EmojiFromJSON Try to parse a json object as emoji
+func EmojiFromJSON(data io.Reader) *Emoji {
 	decoder := json.NewDecoder(data)
 	var emoji Emoji
 	err := decoder.Decode(&emoji)
 	if err == nil {
 		return &emoji
-	} else {
-		return nil
 	}
+	return nil
 }
 
-func EmojiListToJson(emojiList []*Emoji) string {
+// EmojiListToJSON Convert an emoji list into a json array
+func EmojiListToJSON(emojiList []*Emoji) string {
 	b, err := json.Marshal(emojiList)
 	if err != nil {
 		return ""
-	} else {
-		return string(b)
 	}
+	return string(b)
 }
 
-func EmojiListFromJson(data io.Reader) []*Emoji {
+// EmojiListFromJSON Try converting a json array into emoji list
+func EmojiListFromJSON(data io.Reader) []*Emoji {
 	decoder := json.NewDecoder(data)
 	var emojiList []*Emoji
 	err := decoder.Decode(&emojiList)
 	if err == nil {
 		return emojiList
-	} else {
-		return nil
 	}
+	return nil
 }

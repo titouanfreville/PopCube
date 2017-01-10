@@ -7,8 +7,8 @@ import (
 )
 
 func TestMemberModel(t *testing.T) {
-	user_test := User{
-		WebId:              NewId(),
+	userTest := User{
+		WebID:              NewID(),
 		UpdatedAt:          10,
 		Deleted:            true,
 		Username:           "l",
@@ -18,14 +18,14 @@ func TestMemberModel(t *testing.T) {
 		NickName:           "NickName",
 		FirstName:          "Test",
 		LastName:           "L",
-		Role:               OWNER,
+		Role:               Owner,
 		LastPasswordUpdate: 20,
 		FailedAttempts:     1,
 		Locale:             "vi",
 	}
 
-	channel_test := Channel{
-		WebId:       NewId(),
+	channelTest := Channel{
+		WebID:       NewID(),
 		ChannelName: "electra",
 		UpdatedAt:   GetMillis(),
 		Type:        "audio",
@@ -38,8 +38,8 @@ func TestMemberModel(t *testing.T) {
 	Convey("Testing IsValid function", t, func() {
 		Convey("Given a correct member. Should be validated", func() {
 			member := Member{
-				User:    user_test,
-				Channel: channel_test,
+				User:    userTest,
+				Channel: channelTest,
 			}
 			So(member.IsValid(), ShouldBeNil)
 			So(member.IsValid(), ShouldNotResemble, u.NewLocAppError("Member.IsValid", "model.member.user.app_error", nil, ""))
@@ -49,8 +49,8 @@ func TestMemberModel(t *testing.T) {
 		Convey("Given incorrect member. Should be refused", func() {
 			empty := Member{}
 			member := Member{
-				User:    user_test,
-				Channel: channel_test,
+				User:    userTest,
+				Channel: channelTest,
 			}
 			member.User = User{}
 			Convey("Empty member or member without User should return User error", func() {
@@ -60,7 +60,7 @@ func TestMemberModel(t *testing.T) {
 				So(empty.IsValid(), ShouldNotResemble, u.NewLocAppError("Member.IsValid", "model.member.channel.app_error", nil, ""))
 			})
 
-			member.User = user_test
+			member.User = userTest
 			member.Channel = Channel{}
 			Convey("Empty link should result in link error", func() {
 				So(member.IsValid(), ShouldNotResemble, u.NewLocAppError("Member.IsValid", "model.member.user.app_error", nil, ""))
