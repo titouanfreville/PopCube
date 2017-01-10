@@ -69,7 +69,8 @@ func GetMillis() int64 {
 
 // MapToJSON converts a map to a json string
 func MapToJSON(objmap map[string]string) string {
-	if b, err := json.Marshal(objmap); err != nil {
+	b, err := json.Marshal(objmap)
+	if err != nil {
 		return ""
 	}
 	return string(b)
@@ -88,7 +89,8 @@ func MapFromJSON(data io.Reader) map[string]string {
 
 // ArrayToJSON transfor an array into a json array
 func ArrayToJSON(objmap []string) string {
-	if b, err := json.Marshal(objmap); err != nil {
+	b, err := json.Marshal(objmap)
+	if err != nil {
 		return ""
 	}
 	return string(b)
@@ -135,7 +137,8 @@ func StringInArray(a string, array []string) bool {
 
 // StringInterfaceToJSON convert String interface into Json object
 func StringInterfaceToJSON(objmap map[string]interface{}) string {
-	if b, err := json.Marshal(objmap); err != nil {
+	b, err := json.Marshal(objmap)
+	if err != nil {
 		return ""
 	}
 	return string(b)
