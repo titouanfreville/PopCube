@@ -104,3 +104,9 @@ gopkg.in
 
 .env
 .env.old
+
+# Coverage
+coverage
+
+# Docs
+docs/*_documentation.html
