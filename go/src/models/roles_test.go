@@ -97,40 +97,4 @@ func TestRolesModel(t *testing.T) {
 			})
 		})
 	})
-
-	Convey("Testing PreSave function", t, func() {
-		Convey("Given a role", func() {
-			role := Role{}
-			Convey("Empty : Should be filled with a random RoleName and false for every rights", func() {
-				role.PreSave()
-				So(len(role.RoleName), ShouldBeGreaterThan, 0)
-				So(role.CanUsePrivate, ShouldBeFalse)
-				So(role.CanModerate, ShouldBeFalse)
-				So(role.CanArchive, ShouldBeFalse)
-				So(role.CanInvite, ShouldBeFalse)
-				So(role.CanManage, ShouldBeFalse)
-				So(role.CanManageUser, ShouldBeFalse)
-			})
-
-			Convey("Non Empty : Should conserve filled filed", func() {
-				role = Role{
-					RoleName:      "test",
-					CanUsePrivate: true,
-					CanModerate:   true,
-					CanArchive:    true,
-					CanInvite:     true,
-					CanManage:     true,
-					CanManageUser: true,
-				}
-				So(role.RoleName, ShouldEqual, "test")
-				So(role.CanUsePrivate, ShouldBeTrue)
-				So(role.CanModerate, ShouldBeTrue)
-				So(role.CanArchive, ShouldBeTrue)
-				So(role.CanInvite, ShouldBeTrue)
-				So(role.CanManage, ShouldBeTrue)
-				So(role.CanManageUser, ShouldBeTrue)
-			})
-		})
-	})
-
 }

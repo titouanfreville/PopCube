@@ -1,21 +1,19 @@
+/*Package models implements the basics databases models used by PopCube chat api.
+
+Models
+
+The following is a list of models described:
+	Avatar: Contain all informations for avatar management
+	Channel: Contain all informations for channel management
+	Emojis: Contain all informations for emojis management
+	Organisation: Contain all informations for organisation management
+	Parameter: Contain all informations for parmeters management
+	Role: Contain all informations for roles management
+	User: Contain all informations for users management
+*/
 // Created by Titouan FREVILLE <titouanfreville@gmail.com>
 //
 // Inspired by mattermost project
-/*
-	Package Models.
-	This package implements the basics databases models used by PopCube chat api.
-
-	Models
-
-	The following is a list of models described:
-		Avatar: Contain all informations for avatar management
-		Channel: Contain all informations for channel management
-		Emojis: Contain all informations for emojis management
-		Organisation: Contain all informations for organisation management
-		Parameter: Contain all informations for parmeters management
-		Role: Contain all informations for roles management
-		User: Contain all informations for users management
-*/
 package models
 
 import (
@@ -50,38 +48,37 @@ var (
 	validUsernameChars = regexp.MustCompile(`^[a-z0-9\.\-_]+$`)
 )
 
-/*
-	User object
+/*User object
 
-		- webwebID: String unique and non null to webIDentify the user on application services. - REQUIRED
+- webwebID: String unique and non null to webIDentify the user on application services. - REQUIRED
 
-		- username: Store the user username used to log into the service. - REQUIRED
+- username: Store the user username used to log into the service. - REQUIRED
 
-		- email: user mail ;). - REQUIRED
+- email: user mail ;). - REQUIRED
 
-		- emailVerified: true if email was verified by user. - REQUIRED
+- emailVerified: true if email was verified by user. - REQUIRED
 
-		- updatedAt: Time of the last update. Used to create tag for browser cache. - REQUIRED
+- updatedAt: Time of the last update. Used to create tag for browser cache. - REQUIRED
 
-		- deleted: True if user is deleted. - REQUIRED
+- deleted: True if user is deleted. - REQUIRED
 
-		- password: Hashed password. - REQUIRED
+- password: Hashed password. - REQUIRED
 
-		- lastpasswordUpdate: Date of the last password modification. - REQUIRED
+- lastpasswordUpdate: Date of the last password modification. - REQUIRED
 
-		- failedAttemps: Number of fail try to connect to account. - REQUIRED
+- failedAttemps: Number of fail try to connect to account. - REQUIRED
 
-		- locale: user favorite langage. - REQUIRED
+- locale: user favorite langage. - REQUIRED
 
-		- role : int referencing a user role existing in the database. - REQUIRED
+- role : int referencing a user role existing in the database. - REQUIRED
 
-		- nickname: Name to use in communication channel (by default : username).
+- nickname: Name to use in communication channel (by default : username).
 
-		- first name: user true first name.
+- first name: user true first name.
 
-		- last name: user true last name.
+- last name: user true last name.
 
-		- lastActivityAt: Date && Time of the last activity of the user.
+- lastActivityAt: Date && Time of the last activity of the user.
 */
 type User struct {
 	UserID             uint64 `gorm:"primary_key;column:idUser;AUTO_INCREMENT" json:"-"`
@@ -163,9 +160,6 @@ func (user *User) PreSave() {
 	}
 }
 
-// PreSave will set the webID and username if missing.  It will also fill
-// in the CreateAt, UpdateAt times.  It will also hash the password.  It should
-// be run before saving the user to the db.
 // PreUpdate should be run before updating the user in the db.
 func (user *User) PreUpdate() {
 	user.Username = strings.ToLower(user.Username)
@@ -178,9 +172,8 @@ func (user *User) ToJSON() string {
 	b, err := json.Marshal(user)
 	if err != nil {
 		return ""
-	} else {
-		return string(b)
 	}
+	return string(b)
 }
 
 // UserFromJSON will decode the input and return a user
@@ -190,9 +183,8 @@ func UserFromJSON(data io.Reader) *User {
 	err := decoder.Decode(&user)
 	if err == nil {
 		return &user
-	} else {
-		return nil
 	}
+	return nil
 }
 
 // IsValidUsername will check if provided userName is correct
@@ -214,12 +206,12 @@ func IsValidUsername(user string) bool {
 	return true
 }
 
-// Generate a valwebID strong Etag so the browser can cache the results
+// Etag Generate a valwebID strong Etag so the browser can cache the results
 func (user *User) Etag(showFullName, showemail bool) string {
 	return Etag(user.WebID, user.UpdatedAt, showFullName, showemail)
 }
 
-// Get full name of the user
+// GetFullName of the user
 func (user *User) GetFullName() string {
 	if user.LastName == "" {
 		return user.FirstName
@@ -230,7 +222,7 @@ func (user *User) GetFullName() string {
 	return user.FirstName + " " + user.LastName
 }
 
-// Get full name of the user
+// GetDisplayName of the user
 func (user *User) GetDisplayName() string {
 	if user.NickName != "" {
 		return user.NickName
@@ -241,7 +233,7 @@ func (user *User) GetDisplayName() string {
 	return user.Username
 }
 
-// hashpassword generates a hash using the bcrypt.GenerateFrompassword
+// HashPassword generates a hash using the bcrypt.GenerateFrompassword
 func HashPassword(password string) string {
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), 10)
 	if err != nil {
@@ -251,7 +243,7 @@ func HashPassword(password string) string {
 	return string(hash)
 }
 
-// Comparepassword compares the hash
+// ComparePassword compares the hash
 func ComparePassword(hash string, password string) bool {
 
 	if len(password) == 0 || len(hash) == 0 {
@@ -262,7 +254,7 @@ func ComparePassword(hash string, password string) bool {
 	return err == nil
 }
 
-// Transform user name to meet requirement
+// CleanUsername Transform user name to meet requirement
 func CleanUsername(s string) string {
 	s = strings.ToLower(strings.Replace(s, " ", "-", -1))
 

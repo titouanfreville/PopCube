@@ -7,13 +7,16 @@ import (
 )
 
 const (
-	DefaultLocale   = "fr_FR"
-	DefaultTimezone = "UTC-0"
+	// DefaultLocale is a string to describe the default language used in the app
+	DefaultLocale = "fr_FR"
+	// DefaultTimeZone is a string to describe the default time zone used in the app
+	DefaultTimeZone = "UTC-0"
 	localMaxSize    = 5
 	timeZoneMaxSize = 6
 	maxTime         = 1440
 )
 
+// Parameter Type descibe the Parameter table for Popcube DB
 type Parameter struct {
 	IDParameter uint64 `gorm:"primary_key;column:idParameter;AUTO_INCREMENT" json:"-"`
 	Local       string `gorm:"column:local;not null; unique" json:"local"`
@@ -22,26 +25,27 @@ type Parameter struct {
 	SleepEnd    int    `gorm:"column:sleepEnd;not null;unique" json:"sleep_end"`
 }
 
+// ToJSON transfoorm an Parameter into JSON
 func (parameter *Parameter) ToJSON() string {
 	b, err := json.Marshal(parameter)
 	if err != nil {
 		return ""
-	} else {
-		return string(b)
 	}
+	return string(b)
 }
 
+// ParameterFromJSON Try to parse a json object as emoji
 func ParameterFromJSON(data io.Reader) *Parameter {
 	decoder := json.NewDecoder(data)
 	var parameter Parameter
 	err := decoder.Decode(&parameter)
 	if err == nil {
 		return &parameter
-	} else {
-		return nil
 	}
+	return nil
 }
 
+// IsValid is used to check validity of Parameter objects
 func (parameter *Parameter) IsValid() *u.AppError {
 
 	if len(parameter.Local) == 0 || len(parameter.Local) > localMaxSize {
@@ -63,11 +67,12 @@ func (parameter *Parameter) IsValid() *u.AppError {
 	return nil
 }
 
+// PreSave is to be used before saving to add default value if needed
 func (parameter *Parameter) PreSave() {
 	if parameter.Local == "" {
 		parameter.Local = DefaultLocale
 	}
 	if parameter.TimeZone == "" {
-		parameter.TimeZone = DefaultTimezone
+		parameter.TimeZone = DefaultTimeZone
 	}
 }

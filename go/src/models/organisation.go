@@ -16,6 +16,7 @@ const (
 	organisationSubjectMaxRunes     = 250
 )
 
+// Organisation Type descibe the Organisation table for Popcube DB
 type Organisation struct {
 	IDOrganisation   uint64 `gorm:"primary_key;column:idOrganisation;AUTO_INCREMENT" json:"-"`
 	DockerStack      int    `gorm:"column:dockerStack;not null;unique" json:"docker_stack"`
@@ -25,33 +26,34 @@ type Organisation struct {
 	Domain           string `gorm:"column:domain" json:"avatar,omitempty"`
 }
 
+// ToJSON transfoorm an Organisation into JSON
 func (organisation *Organisation) ToJSON() string {
 	b, err := json.Marshal(organisation)
 	if err != nil {
 		return ""
-	} else {
-		return string(b)
 	}
+	return string(b)
 }
 
+// OganisationFromJSON Try to parse a json object as emoji
 func OganisationFromJSON(data io.Reader) *Organisation {
 	decoder := json.NewDecoder(data)
 	var organisation Organisation
 	err := decoder.Decode(&organisation)
 	if err == nil {
 		return &organisation
-	} else {
-		return nil
 	}
+	return nil
 }
 
+// IsValid is used to check validity of Organisation objects
 func (organisation *Organisation) IsValid() *u.AppError {
 
 	if len(organisation.OrganisationName) == 0 || utf8.RuneCountInString(organisation.OrganisationName) > organisationDisplayNameMaxRunes {
 		return u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IDOrganisation, 10))
 	}
 
-	if !IsValidOrganisationIDentifier(organisation.OrganisationName) {
+	if !IsValidOrganisationIdentifier(organisation.OrganisationName) {
 		return u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IDOrganisation, 10))
 	}
 
@@ -62,6 +64,7 @@ func (organisation *Organisation) IsValid() *u.AppError {
 	return nil
 }
 
+// PreSave is used to add some default values to organisation before saving in DB (creation).
 func (organisation *Organisation) PreSave() {
 	organisation.OrganisationName = strings.ToLower(organisation.OrganisationName)
 

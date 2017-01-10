@@ -20,12 +20,20 @@ const (
 	upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	numbers          = "0123456789"
 	symbols          = " !\"\\#$%&'()*+,-./:;<=>?@[]^_`|~"
-	CurrentVersion   = "0.0.0"
+	//CurrentVersion  exprt the current application version (Used for Etags)
+	CurrentVersion = "0.0.0"
 )
 
+// StringInterface Interface for map[string]
 type StringInterface map[string]interface{}
+
+// StringMap Redefine type map[string]string
 type StringMap map[string]string
+
+// StringArray Reddefine type []string
 type StringArray []string
+
+//EncryptStringMap define type map[string]string for encryption usage
 type EncryptStringMap map[string]string
 
 var encoding = base32.NewEncoding("ybndrfg8ejkmcpqxot1uwisza345h769")
@@ -42,6 +50,7 @@ func NewID() string {
 	return b.String()
 }
 
+//NewRandomString Generate a randow string length by provided int.
 func NewRandomString(length int) string {
 	var b bytes.Buffer
 	str := make([]byte, length+8)
@@ -62,9 +71,8 @@ func GetMillis() int64 {
 func MapToJSON(objmap map[string]string) string {
 	if b, err := json.Marshal(objmap); err != nil {
 		return ""
-	} else {
-		return string(b)
 	}
+	return string(b)
 }
 
 // MapFromJSON will decode the key/value pair map
@@ -74,30 +82,30 @@ func MapFromJSON(data io.Reader) map[string]string {
 	var objmap map[string]string
 	if err := decoder.Decode(&objmap); err != nil {
 		return make(map[string]string)
-	} else {
-		return objmap
 	}
+	return objmap
 }
 
+// ArrayToJSON transfor an array into a json array
 func ArrayToJSON(objmap []string) string {
 	if b, err := json.Marshal(objmap); err != nil {
 		return ""
-	} else {
-		return string(b)
 	}
+	return string(b)
 }
 
+// ArrayFromJSON Try to parse a json array into a go string array
 func ArrayFromJSON(data io.Reader) []string {
 	decoder := json.NewDecoder(data)
 
 	var objmap []string
 	if err := decoder.Decode(&objmap); err != nil {
 		return make([]string, 0)
-	} else {
-		return objmap
 	}
+	return objmap
 }
 
+// ArrayFromInterface transfor an interface into a Json object
 func ArrayFromInterface(data interface{}) []string {
 	stringArray := []string{}
 
@@ -115,6 +123,7 @@ func ArrayFromInterface(data interface{}) []string {
 	return stringArray
 }
 
+// StringInArray Search if provided string exist in provided array
 func StringInArray(a string, array []string) bool {
 	for _, b := range array {
 		if b == a {
@@ -124,54 +133,57 @@ func StringInArray(a string, array []string) bool {
 	return false
 }
 
+// StringInterfaceToJSON convert String interface into Json object
 func StringInterfaceToJSON(objmap map[string]interface{}) string {
 	if b, err := json.Marshal(objmap); err != nil {
 		return ""
-	} else {
-		return string(b)
 	}
+	return string(b)
 }
 
+// StringInterfaceFromJSON Try to parse a json into map[string]interace{}
 func StringInterfaceFromJSON(data io.Reader) map[string]interface{} {
 	decoder := json.NewDecoder(data)
 
 	var objmap map[string]interface{}
 	if err := decoder.Decode(&objmap); err != nil {
 		return make(map[string]interface{})
-	} else {
-		return objmap
 	}
+	return objmap
 }
 
+// StringToJSON convert provided string into Json object
 func StringToJSON(s string) string {
 	b, err := json.Marshal(s)
 	if err != nil {
 		return ""
-	} else {
-		return string(b)
 	}
+	return string(b)
 }
 
+// StringFromJSON Convert providing json into string
 func StringFromJSON(data io.Reader) string {
 	decoder := json.NewDecoder(data)
 
 	var s string
 	if err := decoder.Decode(&s); err != nil {
 		return ""
-	} else {
-		return s
 	}
+	return s
 }
 
+// IsLower check if a string contain only lower cas characters
 func IsLower(s string) bool {
 	return strings.ToLower(s) == s
 }
 
+// IsValidEmail check email validity
 func IsValidEmail(email string) bool {
 	_, err := mail.ParseAddress(email)
 	return err == nil && IsLower(email)
 }
 
+// IsValidDomain check if provided value is a possible domain name
 func IsValidDomain(domain string) bool {
 	return IsLower(domain) && IsValidAlphaNum(domain, true)
 }
@@ -186,11 +198,13 @@ var reservedName = []string{
 	"oauth",
 }
 
-func IsValidChannelIDentifier(s string) bool {
+//IsValidChannelIdentifier check if string provided is a correct channel identifier
+func IsValidChannelIdentifier(s string) bool {
 	return IsValidAlphaNum(s, true)
 }
 
-func IsValidOrganisationIDentifier(s string) bool {
+//IsValidOrganisationIdentifier check if string provided is a correct organisation identifier
+func IsValidOrganisationIdentifier(s string) bool {
 
 	return IsValidAlphaNum(s, true)
 }
@@ -198,6 +212,7 @@ func IsValidOrganisationIDentifier(s string) bool {
 var validAlphaNumUnderscore = regexp.MustCompile(`^[a-z0-9]+([a-z\-\_0-9]+|(__)?)[a-z0-9]+$`)
 var validAlphaNum = regexp.MustCompile(`^[a-z0-9]+([a-z\-0-9]+|(__)?)[a-z0-9]+$`)
 
+//IsValidAlphaNum Check that string is correct lower case alpha numeric chain
 func IsValidAlphaNum(s string, allowUnderscores bool) bool {
 	var match bool
 	if allowUnderscores {
@@ -209,6 +224,7 @@ func IsValidAlphaNum(s string, allowUnderscores bool) bool {
 	return match
 }
 
+// Etag function create a string used for cache and coockies storage
 func Etag(parts ...interface{}) string {
 
 	Etag := CurrentVersion
@@ -225,6 +241,7 @@ var puncStart = regexp.MustCompile(`^[^\pL\d\s#]+`)
 var hashtagStart = regexp.MustCompile(`^#{2,}`)
 var puncEnd = regexp.MustCompile(`[^\pL\d\s]+$`)
 
+// ParseHashtags parse #xxxxxxxxx declaration in messages
 func ParseHashtags(text string) (string, string) {
 	words := strings.Fields(text)
 
@@ -277,17 +294,23 @@ func ParseHashtags(text string) (string, string) {
 // 	}
 // }
 
+// ClearMentionTags remove mention tags from messages
 func ClearMentionTags(post string) string {
 	post = strings.Replace(post, "<mention>", "", -1)
 	post = strings.Replace(post, "</mention>", "", -1)
 	return post
 }
 
+// URLRegex is a small variable to expose regexp matching URL
 var URLRegex = regexp.MustCompile(`^((?:[a-z]+:\/\/)?(?:(?:[a-z0-9\-]+\.)+(?:[a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|local|internal))(:[0-9]{1,5})?(?:\/[a-z0-9_\-\.~]+)*(\/([a-z0-9_\-\.]*)(?:\?[a-z0-9+_~\-\.%=&amp;]*)?)?(?:#[a-zA-Z0-9!$&'()*+.=-_~:@/?]*)?)(?:\s+|$)$`)
+
+// PartialURLRegex is a small variable to expose regexp matching URL (from parial parst)
 var PartialURLRegex = regexp.MustCompile(`/([A-Za-z0-9]{26})/([A-Za-z0-9]{26})/((?:[A-Za-z0-9]{26})?.+(?:\.[A-Za-z0-9]{3,})?)`)
 
+//SplitRunes Split runes define a table of runes saying if they are spliters or not
 var SplitRunes = map[rune]bool{',': true, ' ': true, '.': true, '!': true, '?': true, ':': true, ';': true, '\n': true, '<': true, '>': true, '(': true, ')': true, '{': true, '}': true, '[': true, ']': true, '+': true, '/': true, '\\': true}
 
+// IsValidHTTPURL check validity of provided string as http url
 func IsValidHTTPURL(rawURL string) bool {
 	if strings.Index(rawURL, "http://") != 0 && strings.Index(rawURL, "https://") != 0 {
 		return false
@@ -300,6 +323,7 @@ func IsValidHTTPURL(rawURL string) bool {
 	return true
 }
 
+// IsValidHTTPSURL check validity of provided string as https url
 func IsValidHTTPSURL(rawURL string) bool {
 	if strings.Index(rawURL, "https://") != 0 {
 		return false
@@ -312,32 +336,35 @@ func IsValidHTTPSURL(rawURL string) bool {
 	return true
 }
 
-func IsValidTurnOrStunServer(rawURI string) bool {
-	if strings.Index(rawURI, "turn:") != 0 && strings.Index(rawURI, "stun:") != 0 {
-		return false
-	}
+// func IsValidTurnOrStunServer(rawURI string) bool {
+// 	if strings.Index(rawURI, "turn:") != 0 && strings.Index(rawURI, "stun:") != 0 {
+// 		return false
+// 	}
 
-	if _, err := url.ParseRequestURI(rawURI); err != nil {
-		return false
-	}
+// 	if _, err := url.ParseRequestURI(rawURI); err != nil {
+// 		return false
+// 	}
 
-	return true
-}
+// 	return true
+// }
 
+// IsSafeLink check if provided link can be considered as Safe
 func IsSafeLink(link *string) bool {
 	if link != nil {
 		if IsValidHTTPURL(*link) {
 			return true
-		} else if strings.HasPrefix(*link, "/") {
-			return true
-		} else {
-			return false
 		}
+		if strings.HasPrefix(*link, "/") {
+			return true
+		}
+		return false
+
 	}
 
 	return true
 }
 
+// IsValidWebsocketURL Check if provided string can be used as websocked url.
 func IsValidWebsocketURL(rawURL string) bool {
 	if strings.Index(rawURL, "ws://") != 0 && strings.Index(rawURL, "wss://") != 0 {
 		return false

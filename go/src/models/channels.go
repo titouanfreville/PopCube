@@ -74,7 +74,7 @@ func (channel *Channel) IsValid() *u.AppError {
 		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebID)
 	}
 
-	if !IsValidChannelIDentifier(channel.ChannelName) {
+	if !IsValidChannelIdentifier(channel.ChannelName) {
 		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebID)
 	}
 
