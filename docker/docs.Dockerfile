@@ -9,4 +9,4 @@ RUN apk add --no-cache --update git \
     && rm -rf /go/src/golang.org \
     && apk del git
 EXPOSE 6060
-CMD godoc -http=:6060 -goroot=/go/src
+ENTRYPOINT godoc -http=:6060 -goroot=/go/src
