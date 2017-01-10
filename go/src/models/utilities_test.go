@@ -9,24 +9,24 @@ import (
 )
 
 func TestUtilities(t *testing.T) {
-	Convey("Testing Id generation", t, func() {
-		number_of_generation := 1000
-		assertion := "Checking validity of " + strconv.Itoa(number_of_generation) + " random ids"
+	Convey("Testing ID generation", t, func() {
+		numberOfGeneration := 1000
+		assertion := "Checking validity of " + strconv.Itoa(numberOfGeneration) + " random ids"
 
 		Convey(assertion, func() {
-			for i := 0; i < number_of_generation; i++ {
-				id := NewId()
+			for i := 0; i < numberOfGeneration; i++ {
+				id := NewID()
 				So(len(id), ShouldBeLessThan, 27)
 			}
 		})
 	})
 
 	Convey("Testing random string generation", t, func() {
-		number_of_generation := 1000
-		assertion := "Checking correct generation of " + strconv.Itoa(number_of_generation) + " random string"
+		numberOfGeneration := 1000
+		assertion := "Checking correct generation of " + strconv.Itoa(numberOfGeneration) + " random string"
 
 		Convey(assertion, func() {
-			for i := 0; i < number_of_generation; i++ {
+			for i := 0; i < numberOfGeneration; i++ {
 				r := NewRandomString(32)
 				So(len(r), ShouldEqual, 32)
 			}
@@ -38,27 +38,27 @@ func TestUtilities(t *testing.T) {
 		Convey("Convert a map to json then back to map should provide same map", func() {
 			m := make(map[string]string)
 			m["id"] = "test_id"
-			json := MapToJson(m)
-			correct := MapFromJson(strings.NewReader(json))
+			json := MapToJSON(m)
+			correct := MapFromJSON(strings.NewReader(json))
 			So(correct["id"], ShouldEqual, "test_id")
 		})
 
 		Convey("Using an empty json to generate map should provide empty map", func() {
-			invalid := MapFromJson(strings.NewReader(""))
+			invalid := MapFromJSON(strings.NewReader(""))
 			So(len(invalid), ShouldEqual, 0)
 		})
 	})
 
 	Convey("Testing email validation", t, func() {
-		correct_mail := "test.test+xala@something.co"
-		invalid_mail := "@test.test+xala@something.co"
+		correctMail := "test.test+xala@something.co"
+		invalidMail := "@test.test+xala@something.co"
 
 		Convey("Validating a correctly formated email should be accepted", func() {
-			So(IsValidEmail(correct_mail), ShouldBeTrue)
+			So(IsValidEmail(correctMail), ShouldBeTrue)
 		})
 
 		Convey("Validating a non correctly formated email should correctly be refused", func() {
-			So(IsValidEmail(invalid_mail), ShouldBeFalse)
+			So(IsValidEmail(invalidMail), ShouldBeFalse)
 			So(IsValidEmail("Corey+test@hulen.com"), ShouldBeFalse)
 		})
 	})
@@ -77,7 +77,7 @@ func TestUtilities(t *testing.T) {
 	Convey("Testing Etag creation", t, func() {
 		Convey("Providing two parameters to function should return a string composed of version number.par1.par2", func() {
 			Etag := Etag("hello", 24)
-			result := CURRENT_VERSION + ".hello.24"
+			result := CurrentVersion + ".hello.24"
 			So(Etag, ShouldEqual, result)
 		})
 	})

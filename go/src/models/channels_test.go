@@ -10,12 +10,12 @@ import (
 func TestChannelModel(t *testing.T) {
 	Convey("Testing json vs channel conversions", t, func() {
 		Convey("Given a channel", func() {
-			channel := Channel{WebId: NewId(), ChannelName: NewId()}
+			channel := Channel{WebID: NewID(), ChannelName: NewID()}
 			Convey("Converting channel to json then json to channel should provide same channel information", func() {
-				json := channel.ToJson()
-				test_channel := ChannelFromJson(strings.NewReader(json))
-				So(channel.WebId, ShouldEqual, test_channel.WebId)
-				So(channel.ChannelName, ShouldEqual, test_channel.ChannelName)
+				json := channel.ToJSON()
+				testChannel := ChannelFromJSON(strings.NewReader(json))
+				So(channel.WebID, ShouldEqual, testChannel.WebID)
+				So(channel.ChannelName, ShouldEqual, testChannel.ChannelName)
 			})
 		})
 	})
@@ -23,7 +23,7 @@ func TestChannelModel(t *testing.T) {
 	Convey("Testing IsValid function", t, func() {
 		Convey("Given a correct channel. Channel should be validate", func() {
 			channel := Channel{
-				WebId:       NewId(),
+				WebID:       NewID(),
 				ChannelName: "electra",
 				UpdatedAt:   GetMillis(),
 				Type:        "audio",
@@ -34,12 +34,12 @@ func TestChannelModel(t *testing.T) {
 			}
 			So(channel.IsValid(), ShouldBeNil)
 			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.id.app_error", nil, ""))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebId))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebID))
 		})
 		Convey("Given an incorrect channel. Channel should be refused", func() {
 			empty := Channel{}
@@ -52,68 +52,68 @@ func TestChannelModel(t *testing.T) {
 				Subject:     "Sujet",
 				Avatar:      "jesuiscool.svg",
 			}
-			Convey("Empty channel or no WebId channel should return No Id error", func() {
+			Convey("Empty channel or no WebID channel should return No ID error", func() {
 				So(empty.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.id.app_error", nil, ""))
 				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.id.app_error", nil, ""))
 			})
-			channel.WebId = NewId()
+			channel.WebID = NewID()
 			channel.ChannelName = strings.ToLower("ThisShouldBeAFreakingLongEnougthStringToRefuse.BahNon, pas tout seul. C'est long 64 caractères en vrai  ~#~")
 			Convey("Too long channel name should return Too Long channel name error", func() {
-				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebId))
+				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebID))
 			})
 			Convey("Incorect Alpha Num channel name should be refused (no CAPS)", func() {
 				channel.ChannelName = "JeSuisCaps"
-				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId))
+				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebID))
 				channel.ChannelName = "?/+*"
-				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId))
+				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebID))
 				channel.ChannelName = "("
-				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId))
+				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebID))
 				channel.ChannelName = "{"
-				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId))
+				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebID))
 				channel.ChannelName = "}"
-				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId))
+				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebID))
 				channel.ChannelName = ")"
-				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId))
+				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebID))
 				channel.ChannelName = "["
-				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId))
+				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebID))
 				channel.ChannelName = "]"
-				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId))
+				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebID))
 				channel.ChannelName = " "
-				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId))
+				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebID))
 			})
 			channel.ChannelName = "electra"
 			channel.UpdatedAt = 0
 			Convey("Given an incorrect update date should be refuse", func() {
-				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebId))
+				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebID))
 			})
 			channel.UpdatedAt = GetMillis()
 			channel.Description = "Il Me faut beaucoup trop de character  ..... 1024, c'est grand. Très grand. Comme l'infini. C'est long. Surtout à la fin. Et puis même après tout ça, je suis pas sur que ce soit assez .... Compteur ??? Vous êtes la ? :p :'( :docker: :troll-face: Alors, la, c'était 250 en fait .... Du coup, on va multiplier par 4 un ? OK ? l Me faut beaucoup trop de character  ..... 1024, c'est grand. Très grand. Comme l'infini. C'est long. Surtout à la fin. Et puis même après tout ça, je suis pas sur que ce soit assez .... Compteur ??? Vous êtes la ? :p :'( :docker: :troll-face: Alors, la, c'était 250 en fait .... Du coup, on va multiplier par 4 un ? OK ? l Me faut beaucoup trop de character  ..... 1024, c'est grand. Très grand. Comme l'infini. C'est long. Surtout à la fin. Et puis même après tout ça, je suis pas sur que ce soit assez .... Compteur ??? Vous êtes la ? :p :'( :docker: :troll-face: Alors, la, c'était 250 en fait .... Du coup, on va multiplier par 4 un ? OK ? l Me faut beaucoup trop de character  ..... 1024, c'est grand. Très grand. Comme l'infini. C'est long. Surtout à la fin. Et puis même après tout ça, je suis pas sur que ce soit assez .... Compteur ??? Vous êtes la ? :p :'( :docker: :troll-face:"
 			Convey("Given a too long description, should return too long description error :p", func() {
-				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebId))
+				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebID))
 			})
 			channel.Description = "Stoppppppp"
 			channel.Subject = "Encore beaucoup de caractere pour rien .... mais un peu moins cette fois. Il n'en faut que 250 ........... Fait dodo, cola mon p'tit frere. Fais dodo, j'ai pêté un cable. Swing du null, Swing du null, c'est le swing du null ..... :guitare: :singer: :music: Je suis un main troll :O"
 			Convey("Given a too long subject, should return too long description error :p", func() {
-				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebId))
+				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebID))
 			})
 			channel.Subject = "Safe"
 			channel.Type = "Outside of Range"
 			Convey("Providing a wrong type should not work", func() {
-				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebId))
+				So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebID))
 			})
 		})
 	})
 
 	Convey("Testing PreSave function", t, func() {
 		channel := Channel{}
-		Convey("If channel is empty, should fill some fields - webId, ChannelName, UpdatedAt, Avatar and type, and channel should not be valid", func() {
+		Convey("If channel is empty, should fill some fields - webID, ChannelName, UpdatedAt, Avatar and type, and channel should not be valid", func() {
 			channel.PreSave()
-			So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebId))
+			So(channel.IsValid(), ShouldResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebID))
 			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.id.app_error", nil, ""))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebId))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebID))
 			So(channel.Avatar, ShouldEqual, "default_channel_avatar.svg")
 			So(channel.Type, ShouldEqual, "text")
 		})
@@ -122,23 +122,23 @@ func TestChannelModel(t *testing.T) {
 			channel.PreSave()
 			So(channel.IsValid(), ShouldBeNil)
 			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.id.app_error", nil, ""))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebId))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebID))
 			So(channel.ChannelName, ShouldEqual, "jesuiscaps")
 			channel.ChannelName = "nocapsshouldnotbemodified"
 			channel.PreSave()
 			So(channel.IsValid(), ShouldBeNil)
 			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.id.app_error", nil, ""))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebId))
-			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebId))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebID))
+			So(channel.IsValid(), ShouldNotResemble, u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebID))
 			So(channel.ChannelName, ShouldEqual, "nocapsshouldnotbemodified")
 		})
 	})
@@ -146,7 +146,7 @@ func TestChannelModel(t *testing.T) {
 	Convey("Testing PreUpdate function", t, func() {
 		Convey("PreUpdating a channel should not modify channel, only update time.", func() {
 			channel := Channel{
-				WebId:       "TestWebId",
+				WebID:       "TestWebID",
 				ChannelName: "TestChannelName",
 				UpdatedAt:   GetMillis() - 20,
 				Type:        "audio",
@@ -155,10 +155,10 @@ func TestChannelModel(t *testing.T) {
 				Subject:     "Sujet",
 				Avatar:      "jesuiscool.svg",
 			}
-			old_updatedat := channel.UpdatedAt
+			oldUpdatedat := channel.UpdatedAt
 			channel.PreUpdate()
-			So(channel.UpdatedAt, ShouldBeGreaterThan, old_updatedat)
-			So(channel.WebId, ShouldEqual, "TestWebId")
+			So(channel.UpdatedAt, ShouldBeGreaterThan, oldUpdatedat)
+			So(channel.WebID, ShouldEqual, "TestWebID")
 			So(channel.ChannelName, ShouldEqual, "TestChannelName")
 			So(channel.Type, ShouldEqual, "audio")
 			So(channel.Private, ShouldEqual, true)

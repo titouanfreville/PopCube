@@ -8,48 +8,49 @@ import (
 	"strings"
 )
 
+// AppError Type used to structure error reporting for popcube chat project.
 type AppError struct {
-	Id            string                 `json:"id"`
+	ID            string                 `json:"id"`
 	Message       string                 `json:"message"`               // Message to be display to the end user without debugging information
 	DetailedError string                 `json:"detailed_error"`        // Internal error string to help the developer
-	RequestId     string                 `json:"request_id,omitempty"`  // The RequestId that's also set in the header
+	RequestID     string                 `json:"request_id,omitempty"`  // The RequestID that's also set in the header
 	StatusCode    int                    `json:"status_code,omitempty"` // The http status code
 	Where         string                 `json:"-"`                     // The function where it happened in the form of Struct.Func
 	IsOAuth       bool                   `json:"is_oauth,omitempty"`    // Whether the error is OAuth specific
 	params        map[string]interface{} `json:"-"`
 }
 
+// Error return a string for AppError Type
 func (er *AppError) Error() string {
 	return er.Where + ": " + er.Message + ", " + er.DetailedError
 }
 
-func (er *AppError) Translate(T goi18n.TranslateFunc) {
+func (er *AppError) translate(T goi18n.TranslateFunc) {
 	if er.params == nil {
-		er.Message = T(er.Id)
-	} else {
-		er.Message = T(er.Id, er.params)
+		er.Message = T(er.ID)
 	}
+	er.Message = T(er.ID, er.params)
+
 }
 
-func (er *AppError) SystemMessage(T goi18n.TranslateFunc) string {
+func (er *AppError) systemMessage(T goi18n.TranslateFunc) string {
 	if er.params == nil {
-		return T(er.Id)
-	} else {
-		return T(er.Id, er.params)
+		return T(er.ID)
 	}
+	return T(er.ID, er.params)
 }
 
-func (er *AppError) ToJson() string {
+// ToJSON function to transform AppError
+func (er *AppError) ToJSON() string {
 	b, err := json.Marshal(er)
 	if err != nil {
 		return ""
-	} else {
-		return string(b)
 	}
+	return string(b)
 }
 
-// AppErrorFromJson will decode the input and return an AppError
-func AppErrorFromJson(data io.Reader) *AppError {
+// AppErrorFromJSON will decode the input and return an AppError
+func AppErrorFromJSON(data io.Reader) *AppError {
 	str := ""
 	bytes, rerr := ioutil.ReadAll(data)
 	if rerr != nil {
@@ -63,14 +64,15 @@ func AppErrorFromJson(data io.Reader) *AppError {
 	err := decoder.Decode(&er)
 	if err == nil {
 		return &er
-	} else {
-		return NewLocAppError("AppErrorFromJson", "model.utils.decode_json.app_error", nil, "body: "+str)
 	}
+	return NewLocAppError("AppErrorFromJSON", "model.utils.decode_json.app_error", nil, "body: "+str)
+
 }
 
+// NewLocAppError is used to generate server errors
 func NewLocAppError(where string, id string, params map[string]interface{}, details string) *AppError {
 	ap := &AppError{}
-	ap.Id = id
+	ap.ID = id
 	ap.params = params
 	ap.Message = id
 	ap.Where = where
