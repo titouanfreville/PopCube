@@ -1,8 +1,6 @@
 package datastores
 
 import (
-	// Importing sql driver. They are used by gorm package and used by default from blank.
-	_ "github.com/go-sql-driver/mysql"
 	"models"
 	u "utils"
 )

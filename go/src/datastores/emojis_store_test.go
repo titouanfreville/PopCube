@@ -12,7 +12,7 @@ import (
 
 func TestEmojiStore(t *testing.T) {
 	ds := DataStore{}
-	ds.initConnection("root", "popcube_test", "popcube_dev")
+	ds.InitConnection("root", "popcube_test", "popcube_dev")
 	db := *ds.Db
 	asi := EmojiStoreImpl{}
 	Convey("Testing save function", t, func() {

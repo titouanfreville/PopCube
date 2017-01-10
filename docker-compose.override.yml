@@ -43,7 +43,7 @@ services:
     env_file: .env
     volumes:
       - "./go/src/api:/go/src/api"
-      - "./go/src/data_stores:/go/src/data_stores"
+      - "./go/src/datastores:/go/src/datastores"
       - "./go/src/models:/go/src/models"
       - "./go/src/utils:/go/src/utils"
   database:

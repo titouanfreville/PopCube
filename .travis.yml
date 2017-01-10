@@ -20,9 +20,9 @@ script:
   - docker-compose build
   - ./popcube.sh -t -y all
   - docker-compose -f docker-compose.yml -f docker-compose.test.yml run back-test
+  - docker-compose -f docker-compose.yml -f docker-compose.test.yml run golint
 
 after_success:
-  - docker-compose -f docker-compose.yml -f docker-compose.test.yml run back-test
   - >-
     if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY;

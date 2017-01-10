@@ -17,12 +17,11 @@ The following is a list of stores described:
 package datastores
 
 import (
-	// l4g "github.com/alecthomas/log4go"
+	// Importing sql driver. They are used by gorm package and used by default from blank.
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"models"
 	u "utils"
-	// "time"
 )
 
 // DataStore Struct to manage Db knowledge
@@ -49,7 +48,8 @@ type DataStore struct {
 // 	return r.Data
 // }
 
-func (ds *DataStore) initConnection(user string, dbname string, password string) {
+// InitConnection init Database connection && database models
+func (ds *DataStore) InitConnection(user string, dbname string, password string) {
 	connectionChain := user + ":" + password + "@(database:3306)/" + dbname + "?charset=utf8&parseTime=True&loc=Local"
 	db, err := gorm.Open("mysql", connectionChain)
 	// db.AutoMigrate( &models.Channel{}, &models.Emoji{}, &models.Folder{},
@@ -60,7 +60,8 @@ func (ds *DataStore) initConnection(user string, dbname string, password string)
 	ds.Err = err
 }
 
-func (ds *DataStore) closeConnection() {
+// CloseConnection close database connection
+func (ds *DataStore) CloseConnection() {
 	db := *ds.Db
 	defer db.Close()
 	ds.Db = &gorm.DB{}

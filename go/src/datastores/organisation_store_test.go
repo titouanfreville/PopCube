@@ -14,7 +14,7 @@ import (
 
 func TestOrganisationStore(t *testing.T) {
 	ds := DataStore{}
-	ds.initConnection("root", "popcube_test", "popcube_dev")
+	ds.InitConnection("root", "popcube_test", "popcube_dev")
 	db := *ds.Db
 	osi := OrganisationStoreImpl{}
 	Convey("Testing save function", t, func() {

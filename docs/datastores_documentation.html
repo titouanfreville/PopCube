@@ -107,6 +107,12 @@ Inspired by mattermost project
 				<dd><a href="#DataStore">type DataStore</a></dd>
 				
 				
+					
+					<dd>&nbsp; &nbsp; <a href="#DataStore.CloseConnection">func (ds *DataStore) CloseConnection()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#DataStore.InitConnection">func (ds *DataStore) InitConnection(user string, dbname string, password string)</a></dd>
+				
 			
 				
 				<dd><a href="#EmojiStore">type EmojiStore</a></dd>
@@ -226,7 +232,7 @@ Inspired by mattermost project
 		
 			
 			
-			<h2 id="AvatarStore">type <a href="/src/datastores/data_store.go?s=3048:3428#L96">AvatarStore</a>
+			<h2 id="AvatarStore">type <a href="/src/datastores/data_store.go?s=3193:3573#L97">AvatarStore</a>
 				<a class="permalink" href="#AvatarStore">&#xb6;</a>
 			</h2>
 			<p>
@@ -256,7 +262,7 @@ AvatarStore interface the avatar communication
 		
 			
 			
-			<h2 id="AvatarStoreImpl">type <a href="/src/datastores/avatar_store.go?s=236:280#L1">AvatarStoreImpl</a>
+			<h2 id="AvatarStoreImpl">type <a href="/src/datastores/avatar_store.go?s=112:156#L1">AvatarStoreImpl</a>
 				<a class="permalink" href="#AvatarStoreImpl">&#xb6;</a>
 			</h2>
 			<p>
@@ -279,7 +285,7 @@ AvatarStoreImpl Used to implement AvatarStore interface
 
 			
 				
-				<h3 id="AvatarStoreImpl.Delete">func (AvatarStoreImpl) <a href="/src/datastores/avatar_store.go?s=2591:2673#L70">Delete</a>
+				<h3 id="AvatarStoreImpl.Delete">func (AvatarStoreImpl) <a href="/src/datastores/avatar_store.go?s=2467:2549#L68">Delete</a>
 					<a class="permalink" href="#AvatarStoreImpl.Delete">&#xb6;</a>
 				</h3>
 				<pre>func (asi <a href="#AvatarStoreImpl">AvatarStoreImpl</a>) Delete(avatar *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Avatar">Avatar</a>, ds <a href="#DataStore">DataStore</a>) *<a href="/pkg/utils/">u</a>.<a href="/pkg/utils/#AppError">AppError</a></pre>
@@ -292,7 +298,7 @@ Delete Used to get avatar from DB
 				
 			
 				
-				<h3 id="AvatarStoreImpl.GetAll">func (AvatarStoreImpl) <a href="/src/datastores/avatar_store.go?s=1932:1996#L46">GetAll</a>
+				<h3 id="AvatarStoreImpl.GetAll">func (AvatarStoreImpl) <a href="/src/datastores/avatar_store.go?s=1808:1872#L44">GetAll</a>
 					<a class="permalink" href="#AvatarStoreImpl.GetAll">&#xb6;</a>
 				</h3>
 				<pre>func (asi <a href="#AvatarStoreImpl">AvatarStoreImpl</a>) GetAll(ds <a href="#DataStore">DataStore</a>) *[]<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Avatar">Avatar</a></pre>
@@ -305,7 +311,7 @@ GetAll Used to get avatar from DB
 				
 			
 				
-				<h3 id="AvatarStoreImpl.GetByLink">func (AvatarStoreImpl) <a href="/src/datastores/avatar_store.go?s=2358:2442#L62">GetByLink</a>
+				<h3 id="AvatarStoreImpl.GetByLink">func (AvatarStoreImpl) <a href="/src/datastores/avatar_store.go?s=2234:2318#L60">GetByLink</a>
 					<a class="permalink" href="#AvatarStoreImpl.GetByLink">&#xb6;</a>
 				</h3>
 				<pre>func (asi <a href="#AvatarStoreImpl">AvatarStoreImpl</a>) GetByLink(avatarLink <a href="/pkg/builtin/#string">string</a>, ds <a href="#DataStore">DataStore</a>) *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Avatar">Avatar</a></pre>
@@ -318,7 +324,7 @@ GetByLink Used to get avatar from DB
 				
 			
 				
-				<h3 id="AvatarStoreImpl.GetByName">func (AvatarStoreImpl) <a href="/src/datastores/avatar_store.go?s=2122:2206#L54">GetByName</a>
+				<h3 id="AvatarStoreImpl.GetByName">func (AvatarStoreImpl) <a href="/src/datastores/avatar_store.go?s=1998:2082#L52">GetByName</a>
 					<a class="permalink" href="#AvatarStoreImpl.GetByName">&#xb6;</a>
 				</h3>
 				<pre>func (asi <a href="#AvatarStoreImpl">AvatarStoreImpl</a>) GetByName(avatarName <a href="/pkg/builtin/#string">string</a>, ds <a href="#DataStore">DataStore</a>) *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Avatar">Avatar</a></pre>
@@ -331,7 +337,7 @@ GetByName Used to get avatar from DB
 				
 			
 				
-				<h3 id="AvatarStoreImpl.Save">func (AvatarStoreImpl) <a href="/src/datastores/avatar_store.go?s=315:395#L6">Save</a>
+				<h3 id="AvatarStoreImpl.Save">func (AvatarStoreImpl) <a href="/src/datastores/avatar_store.go?s=191:271#L4">Save</a>
 					<a class="permalink" href="#AvatarStoreImpl.Save">&#xb6;</a>
 				</h3>
 				<pre>func (asi <a href="#AvatarStoreImpl">AvatarStoreImpl</a>) Save(avatar *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Avatar">Avatar</a>, ds <a href="#DataStore">DataStore</a>) *<a href="/pkg/utils/">u</a>.<a href="/pkg/utils/#AppError">AppError</a></pre>
@@ -344,7 +350,7 @@ Save Use to save avatar in BB
 				
 			
 				
-				<h3 id="AvatarStoreImpl.Update">func (AvatarStoreImpl) <a href="/src/datastores/avatar_store.go?s=1093:1201#L26">Update</a>
+				<h3 id="AvatarStoreImpl.Update">func (AvatarStoreImpl) <a href="/src/datastores/avatar_store.go?s=969:1077#L24">Update</a>
 					<a class="permalink" href="#AvatarStoreImpl.Update">&#xb6;</a>
 				</h3>
 				<pre>func (asi <a href="#AvatarStoreImpl">AvatarStoreImpl</a>) Update(avatar *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Avatar">Avatar</a>, newAvatar *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Avatar">Avatar</a>, ds <a href="#DataStore">DataStore</a>) *<a href="/pkg/utils/">u</a>.<a href="/pkg/utils/#AppError">AppError</a></pre>
@@ -359,7 +365,7 @@ Update Used to update avatar in DB
 		
 			
 			
-			<h2 id="DataStore">type <a href="/src/datastores/data_store.go?s=870:920#L19">DataStore</a>
+			<h2 id="DataStore">type <a href="/src/datastores/data_store.go?s=908:958#L18">DataStore</a>
 				<a class="permalink" href="#DataStore">&#xb6;</a>
 			</h2>
 			<p>
@@ -382,10 +388,36 @@ DataStore Struct to manage Db knowledge
 			
 
 			
+				
+				<h3 id="DataStore.CloseConnection">func (*DataStore) <a href="/src/datastores/data_store.go?s=1912:1950#L54">CloseConnection</a>
+					<a class="permalink" href="#DataStore.CloseConnection">&#xb6;</a>
+				</h3>
+				<pre>func (ds *<a href="#DataStore">DataStore</a>) CloseConnection()</pre>
+				<p>
+CloseConnection close database connection
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="DataStore.InitConnection">func (*DataStore) <a href="/src/datastores/data_store.go?s=1318:1398#L42">InitConnection</a>
+					<a class="permalink" href="#DataStore.InitConnection">&#xb6;</a>
+				</h3>
+				<pre>func (ds *<a href="#DataStore">DataStore</a>) InitConnection(user <a href="/pkg/builtin/#string">string</a>, dbname <a href="/pkg/builtin/#string">string</a>, password <a href="/pkg/builtin/#string">string</a>)</pre>
+				<p>
+InitConnection init Database connection &amp;&amp; database models
+</p>
+
+				
+				
+				
+			
 		
 			
 			
-			<h2 id="EmojiStore">type <a href="/src/datastores/data_store.go?s=3479:3918#L106">EmojiStore</a>
+			<h2 id="EmojiStore">type <a href="/src/datastores/data_store.go?s=3624:4063#L107">EmojiStore</a>
 				<a class="permalink" href="#EmojiStore">&#xb6;</a>
 			</h2>
 			<p>
@@ -416,7 +448,7 @@ EmojiStore interface the emoji communication
 		
 			
 			
-			<h2 id="EmojiStoreImpl">type <a href="/src/datastores/emojis_store.go?s=217:259#L3">EmojiStoreImpl</a>
+			<h2 id="EmojiStoreImpl">type <a href="/src/datastores/emojis_store.go?s=102:144#L1">EmojiStoreImpl</a>
 				<a class="permalink" href="#EmojiStoreImpl">&#xb6;</a>
 			</h2>
 			<p>
@@ -439,7 +471,7 @@ EmojiStoreImpl implement EmojiStore interface
 
 			
 				
-				<h3 id="EmojiStoreImpl.Delete">func (EmojiStoreImpl) <a href="/src/datastores/emojis_store.go?s=2763:2842#L80">Delete</a>
+				<h3 id="EmojiStoreImpl.Delete">func (EmojiStoreImpl) <a href="/src/datastores/emojis_store.go?s=2648:2727#L76">Delete</a>
 					<a class="permalink" href="#EmojiStoreImpl.Delete">&#xb6;</a>
 				</h3>
 				<pre>func (asi <a href="#EmojiStoreImpl">EmojiStoreImpl</a>) Delete(emoji *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Emoji">Emoji</a>, ds <a href="#DataStore">DataStore</a>) *<a href="/pkg/utils/">u</a>.<a href="/pkg/utils/#AppError">AppError</a></pre>
@@ -452,7 +484,7 @@ Delete Used to get emoji from DB
 				
 			
 				
-				<h3 id="EmojiStoreImpl.GetAll">func (EmojiStoreImpl) <a href="/src/datastores/emojis_store.go?s=1882:1944#L48">GetAll</a>
+				<h3 id="EmojiStoreImpl.GetAll">func (EmojiStoreImpl) <a href="/src/datastores/emojis_store.go?s=1767:1829#L44">GetAll</a>
 					<a class="permalink" href="#EmojiStoreImpl.GetAll">&#xb6;</a>
 				</h3>
 				<pre>func (asi <a href="#EmojiStoreImpl">EmojiStoreImpl</a>) GetAll(ds <a href="#DataStore">DataStore</a>) *[]<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Emoji">Emoji</a></pre>
@@ -465,7 +497,7 @@ GetAll Used to get emoji from DB
 				
 			
 				
-				<h3 id="EmojiStoreImpl.GetByLink">func (EmojiStoreImpl) <a href="/src/datastores/emojis_store.go?s=2539:2620#L72">GetByLink</a>
+				<h3 id="EmojiStoreImpl.GetByLink">func (EmojiStoreImpl) <a href="/src/datastores/emojis_store.go?s=2424:2505#L68">GetByLink</a>
 					<a class="permalink" href="#EmojiStoreImpl.GetByLink">&#xb6;</a>
 				</h3>
 				<pre>func (asi <a href="#EmojiStoreImpl">EmojiStoreImpl</a>) GetByLink(emojiLink <a href="/pkg/builtin/#string">string</a>, ds <a href="#DataStore">DataStore</a>) *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Emoji">Emoji</a></pre>
@@ -478,7 +510,7 @@ GetByLink Used to get emoji from DB
 				
 			
 				
-				<h3 id="EmojiStoreImpl.GetByName">func (EmojiStoreImpl) <a href="/src/datastores/emojis_store.go?s=2065:2146#L56">GetByName</a>
+				<h3 id="EmojiStoreImpl.GetByName">func (EmojiStoreImpl) <a href="/src/datastores/emojis_store.go?s=1950:2031#L52">GetByName</a>
 					<a class="permalink" href="#EmojiStoreImpl.GetByName">&#xb6;</a>
 				</h3>
 				<pre>func (asi <a href="#EmojiStoreImpl">EmojiStoreImpl</a>) GetByName(emojiName <a href="/pkg/builtin/#string">string</a>, ds <a href="#DataStore">DataStore</a>) *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Emoji">Emoji</a></pre>
@@ -491,7 +523,7 @@ GetByName Used to get emoji from DB
 				
 			
 				
-				<h3 id="EmojiStoreImpl.GetByShortcut">func (EmojiStoreImpl) <a href="/src/datastores/emojis_store.go?s=2296:2385#L64">GetByShortcut</a>
+				<h3 id="EmojiStoreImpl.GetByShortcut">func (EmojiStoreImpl) <a href="/src/datastores/emojis_store.go?s=2181:2270#L60">GetByShortcut</a>
 					<a class="permalink" href="#EmojiStoreImpl.GetByShortcut">&#xb6;</a>
 				</h3>
 				<pre>func (asi <a href="#EmojiStoreImpl">EmojiStoreImpl</a>) GetByShortcut(EmojiShortcut <a href="/pkg/builtin/#string">string</a>, ds <a href="#DataStore">DataStore</a>) *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Emoji">Emoji</a></pre>
@@ -504,7 +536,7 @@ GetByShortcut Used to get emoji from DB
 				
 			
 				
-				<h3 id="EmojiStoreImpl.Save">func (EmojiStoreImpl) <a href="/src/datastores/emojis_store.go?s=293:370#L8">Save</a>
+				<h3 id="EmojiStoreImpl.Save">func (EmojiStoreImpl) <a href="/src/datastores/emojis_store.go?s=178:255#L4">Save</a>
 					<a class="permalink" href="#EmojiStoreImpl.Save">&#xb6;</a>
 				</h3>
 				<pre>func (asi <a href="#EmojiStoreImpl">EmojiStoreImpl</a>) Save(emoji *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Emoji">Emoji</a>, ds <a href="#DataStore">DataStore</a>) *<a href="/pkg/utils/">u</a>.<a href="/pkg/utils/#AppError">AppError</a></pre>
@@ -517,7 +549,7 @@ Save Use to save emoji in BB
 				
 			
 				
-				<h3 id="EmojiStoreImpl.Update">func (EmojiStoreImpl) <a href="/src/datastores/emojis_store.go?s=1058:1161#L28">Update</a>
+				<h3 id="EmojiStoreImpl.Update">func (EmojiStoreImpl) <a href="/src/datastores/emojis_store.go?s=943:1046#L24">Update</a>
 					<a class="permalink" href="#EmojiStoreImpl.Update">&#xb6;</a>
 				</h3>
 				<pre>func (asi <a href="#EmojiStoreImpl">EmojiStoreImpl</a>) Update(emoji *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Emoji">Emoji</a>, newEmoji *<a href="/pkg/models/">models</a>.<a href="/pkg/models/#Emoji">Emoji</a>, ds <a href="#DataStore">DataStore</a>) *<a href="/pkg/utils/">u</a>.<a href="/pkg/utils/#AppError">AppError</a></pre>
@@ -532,7 +564,7 @@ Update Used to update emoji in DB
 		
 			
 			
-			<h2 id="OrganisationStore">type <a href="/src/datastores/data_store.go?s=2744:2994#L89">OrganisationStore</a>
+			<h2 id="OrganisationStore">type <a href="/src/datastores/data_store.go?s=2889:3139#L90">OrganisationStore</a>
 				<a class="permalink" href="#OrganisationStore">&#xb6;</a>
 			</h2>
 			<p>
