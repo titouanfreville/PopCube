@@ -5,6 +5,11 @@ services:
       context: .
       dockerfile: docker/go_test.Dockerfile
     env_file: .env.test
+  golint:
+    build:
+      context: .
+      dockerfile: docker/golinter.Dockerfile
+    env_file: .env.test
   front:
     entrypoint: /bin/sh -c "exit 0"
   database:
