@@ -21,7 +21,7 @@ pids
 lib-cov
 
 # Coverage directory used by tools like istanbul
-app/coverage
+coverage
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
@@ -104,9 +104,6 @@ gopkg.in
 
 .env
 .env.old
-
-# Coverage
-coverage
 
 # Docs
 docs/*_documentation.html

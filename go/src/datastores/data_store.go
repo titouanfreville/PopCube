@@ -55,7 +55,7 @@ func (ds *dbStore) InitConnection(user string, dbname string, password string) {
 	// db.AutoMigrate( &models.Channel{}, &models.Emoji{}, &models.Folder{},
 	// 	&models.Member{}, &models.Message{}, &models.Organisation{}, ,
 	// 	&models.Role{}, &models.User{})
-	db.AutoMigrate(&models.Avatar{}, &models.Emoji{}, &models.Organisation{}, &models.Parameter{})
+	db.AutoMigrate(&models.Avatar{}, &models.Emoji{}, &models.Organisation{}, &models.Parameter{}, &models.Role{})
 	ds.Db = db
 	ds.Err = err
 }
@@ -67,49 +67,13 @@ func (ds *dbStore) CloseConnection() {
 	ds.Db = &gorm.DB{}
 }
 
-// type Store interface {
-// 	Team() TeamStore
-// 	Channel() ChannelStore
-// 	Post() PostStore
-// 	User() UserStore
-// 	Audit() AuditStore
-// 	Compliance() ComplianceStore
-// 	Session() SessionStore
-// 	OAuth() OAuthStore
-// 	System() SystemStore
-// 	Webhook() WebhookStore
-// 	Command() CommandStore
-// 	Preference() PreferenceStore
-// 	License() LicenseStore
-// 	PasswordRecovery() PasswordRecoveryStore
-// 	Emoji() EmojiStore
-// 	Status() StatusStore
-// 	FileInfo() FileInfoStore
-// 	Reaction() ReactionStore
-// 	MarkSystemRanUnitTests()
-// 	Close()
-// 	DropAllTables()
-// 	TotalMasterDbConnections() int
-// 	TotalReadDbConnections() int
-// }
-
 // Store interface the Stores and usefull DB functions
-type store interface {
+type Store interface {
 	Organisation() OrganisationStore
 	Avatar() AvatarStore
 	Emoji() EmojiStore
 	InitConnection()
 	CloseConnection()
-}
-
-/*OrganisationStore interface the organisation communication
-Organisation is unique in the database. So they are no use of providing an user to get.
-Delete is useless as we will down the docker stack in case an organisation leace.
-*/
-type OrganisationStore interface {
-	Save(organisation *models.Organisation, ds dbStore) *u.AppError
-	Update(organisation *models.Organisation, newOrganisation *models.Organisation, ds dbStore) *u.AppError
-	Get(ds dbStore) *models.Organisation
 }
 
 /*AvatarStore interface the avatar communication */
@@ -120,6 +84,18 @@ type AvatarStore interface {
 	GetByLink(avatarLink string, ds dbStore) *models.Avatar
 	GetAll(ds dbStore) *models.Avatar
 	Delete(avatar *models.Avatar, ds dbStore) *u.AppError
+}
+
+/*ChannelStore interface the channel communication*/
+type ChannelStore interface {
+	Save(channel *models.Channel, ds dbStore) *u.AppError
+	Update(channel *models.Channel, newChannel *models.Channel, ds dbStore) *u.AppError
+	GetByName(channelName string, ds dbStore) *models.Channel
+	GetByType(channelType string, ds dbStore) *models.Channel
+	GetPublic(ds dbStore) *[]models.Channel
+	GetPrivate(ds dbStore) *[]models.Channel
+	GetAll(ds dbStore) *[]models.Channel
+	Delete(channel *models.Channel, ds dbStore) *u.AppError
 }
 
 /*EmojiStore interface the emoji communication*/
@@ -133,6 +109,50 @@ type EmojiStore interface {
 	Delete(emoji *models.Emoji, ds dbStore) *u.AppError
 }
 
+/*FolderStore interface communication with message table*/
+type FolderStore interface {
+	Save(message *models.Folder, ds dbStore) *u.AppError
+	Update(message *models.Folder, newFolder *models.Folder, ds dbStore) *u.AppError
+	GetByName(messageName string, ds dbStore) *[]models.Folder
+	GetByType(messageType string, ds dbStore) *[]models.Folder
+	GetByLink(messageLink string, ds dbStore) *[]models.Folder
+	GetByMessage(message *models.Message, ds dbStore) *[]models.Folder
+	GetAll(ds dbStore) *[]models.Folder
+	Delete(message *models.Folder, ds dbStore) *u.AppError
+}
+
+/*MemberStore interface communication with member table*/
+type MemberStore interface {
+	Save(emoji *models.Emoji, ds dbStore) *u.AppError
+	Update(emoji *models.Emoji, newEmoji *models.Emoji, ds dbStore) *u.AppError
+	GetByUser()
+	GetByChannel()
+	GetByRole()
+	GetAll(ds dbStore) *models.Emoji
+	Delete(emoji *models.Emoji, ds dbStore) *u.AppError
+}
+
+/*MessageStore interface communication with message table*/
+type MessageStore interface {
+	Save(message *models.Message, ds dbStore) *u.AppError
+	Update(message *models.Message, newMessage *models.Message, ds dbStore) *u.AppError
+	GetByDate(messageDate int, ds dbStore) *[]models.Message
+	GetByCreator(creator *models.User, ds dbStore) *[]models.Message
+	GetByChannel(channel *models.Channel, ds dbStore) *[]models.Message
+	GetAll(ds dbStore) *[]models.Message
+	Delete(message *models.Message, ds dbStore) *u.AppError
+}
+
+/*OrganisationStore interface the organisation communication
+Organisation is unique in the database. So they are no use of providing an user to get.
+Delete is useless as we will down the docker stack in case an organisation leace.
+*/
+type OrganisationStore interface {
+	Save(organisation *models.Organisation, ds dbStore) *u.AppError
+	Update(organisation *models.Organisation, newOrganisation *models.Organisation, ds dbStore) *u.AppError
+	Get(ds dbStore) *models.Organisation
+}
+
 /*ParameterStore interface the parameter communication*/
 type ParameterStore interface {
 	Save(parameter *models.Parameter, ds dbStore) *u.AppError
@@ -140,38 +160,29 @@ type ParameterStore interface {
 	GetAll(ds dbStore) *models.Parameter
 }
 
-// type UserStore interface {
-// 	Save(user *models.User) StoreChannel
-// 	Update(user *models.User, allowRoleUpdate bool) StoreChannel
-// 	UpdateLastPictureUpdate(userID string) StoreChannel
-// 	UpdateUpdateAt(userID string) StoreChannel
-// 	UpdatePassword(userID, newPassword string) StoreChannel
-// 	Get(id string) StoreChannel
-// 	GetAll() StoreChannel
-// 	InvalidateProfilesInChannelCacheByUser(userID string)
-// 	InvalidateProfilesInChannelCache(channelID string)
-// 	GetProfilesInChannel(channelID string, offset int, limit int, allowFromCache bool) StoreChannel
-// 	GetProfilesNotInChannel(teamID string, channelID string, offset int, limit int) StoreChannel
-// 	GetProfilesByUsernames(usernames []string, teamID string) StoreChannel
-// 	GetAllProfiles(offset int, limit int) StoreChannel
-// 	GetProfiles(teamID string, offset int, limit int) StoreChannel
-// 	GetProfileByIDs(userID []string, allowFromCache bool) StoreChannel
-// 	InvalidatProfileCacheForUser(userID string)
-// 	GetByEmail(email string) StoreChannel
-// 	GetByUsername(username string) StoreChannel
-// 	GetForLogin(loginID string, allowSignInWithUsername, allowSignInWithEmail, ldapEnabled bool) StoreChannel
-// 	VerifyEmail(userID string) StoreChannel
-// 	GetEtagForAllProfiles() StoreChannel
-// 	GetEtagForProfiles(teamID string) StoreChannel
-// 	UpdateFailedPasswordAttempts(userID string, attempts int) StoreChannel
-// 	GetTotalUsersCount() StoreChannel
-// 	GetSystemAdminProfiles() StoreChannel
-// 	PermanentDelete(userID string) StoreChannel
-// 	AnalyticsUniqueUserCount(teamID string) StoreChannel
-// 	GetUnreadCount(userID string) StoreChannel
-// 	GetUnreadCountForChannel(userID string, channelID string) StoreChannel
-// 	GetRecentlyActiveUsersForTeam(teamID string) StoreChannel
-// 	Search(teamID string, term string, options map[string]bool) StoreChannel
-// 	SearchInChannel(channelID string, term string, options map[string]bool) StoreChannel
-// 	SearchNotInChannel(teamID string, channelID string, term string, options map[string]bool) StoreChannel
-// }
+/*RoleStore interface the role communication*/
+type RoleStore interface {
+	Save(role *models.Role, ds dbStore) *u.AppError
+	Update(role *models.Role, newRole *models.Role, ds dbStore) *u.AppError
+	GetByName(roleName string, ds dbStore) *models.Role
+	GetByRights(roleRights *models.Role, ds dbStore) *[]models.Role
+	GetAll(ds dbStore) *[]models.Role
+	Delete(role *models.Role, ds dbStore) *u.AppError
+}
+
+/*UserStore interface the user communication*/
+type UserStore interface {
+	Save(user *models.User, ds dbStore) *u.AppError
+	Update(user *models.User, newUser *models.User, ds dbStore) *u.AppError
+	GetByUserName(userName string, ds dbStore) *models.User
+	GetByEmail(userEmail string, ds dbStore) *models.User
+	GetByDate(userDate int, ds dbStore) *[]models.User
+	GetDeleted(ds dbStore) *[]models.User
+	GetByNickName(nickName string, ds dbStore) *models.User
+	GetByFirstName(firstName string, ds dbStore) *[]models.User
+	GetByLastName(lastName string, ds dbStore) *[]models.User
+	GetByRole(role *models.Role, ds dbStore) *[]models.User
+	GetByChannel(channel *models.Channel, ds dbStore) *[]models.User
+	GetAll(ds dbStore) *[]models.User
+	Delete(user *models.User, ds dbStore) *u.AppError
+}
