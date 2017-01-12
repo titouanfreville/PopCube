@@ -17,6 +17,7 @@ The following is a list of stores described:
 package datastores
 
 import (
+	"fmt"
 	// Importing sql driver. They are used by gorm package and used by default from blank.
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
@@ -50,18 +51,91 @@ type dbStore struct {
 
 // InitConnection init Database connection && database models
 func (ds *dbStore) InitConnection(user string, dbname string, password string) {
+	fmt.Printf("\n######## Intialisating Db conection  ########\n")
 	connectionChain := user + ":" + password + "@(database:3306)/" + dbname + "?charset=utf8&parseTime=True&loc=Local"
+
+	fmt.Printf("\nOpenning Db connection ......\n")
 	db, err := gorm.Open("mysql", connectionChain)
+	if err == nil {
+		fmt.Printf("Connection openned\n")
+	} else {
+		fmt.Printf("Failed to open connection\n")
+	}
+
 	// db.AutoMigrate( &models.Channel{}, &models.Emoji{}, &models.Folder{},
 	// 	&models.Member{}, &models.Message{}, &models.Organisation{}, ,
 	// 	&models.Role{}, &models.User{})
 	db.AutoMigrate(&models.Avatar{}, &models.Emoji{}, &models.Organisation{}, &models.Parameter{}, &models.Role{})
-	// db.Save(&models.Owner)
-	// db.Save(&models.Admin)
-	// db.Save(&models.Standart)
-	// db.Save(&models.Guest)
+	if db.NewRecord(&models.Owner) {
+		fmt.Printf("\nAdding Owner Role ......\n")
+		db.Create(&models.Owner)
+		if !db.NewRecord(&models.Owner) {
+			fmt.Printf("Owner role added\n")
+		} else {
+			fmt.Printf("Owner role NOT ADDED :'(\n")
+		}
+	} else {
+		fmt.Printf("Owner role already exist\n")
+	}
+	if db.NewRecord(&models.Admin) {
+		fmt.Printf("\nAdding Admin Role ......\n")
+		db.Create(&models.Admin)
+		if !db.NewRecord(&models.Admin) {
+			fmt.Printf("Admin role added\n")
+		} else {
+			fmt.Printf("Admin role NOT ADDED :'(\n")
+		}
+	} else {
+		fmt.Printf("Owner role already exist\n")
+	}
+	if db.NewRecord(&models.Standart) {
+		fmt.Printf("\nAdding Standart Role ......\n")
+		db.Create(&models.Standart)
+		if !db.NewRecord(&models.Standart) {
+			fmt.Printf("Standart role added\n")
+		} else {
+			fmt.Printf("Standart role NOT ADDED :'(\n")
+		}
+	} else {
+		fmt.Printf("Owner role already exist\n")
+	}
+	if db.NewRecord(&models.Guest) {
+		fmt.Printf("\nAdding Guest Role ......\n")
+		db.Create(&models.Guest)
+		if !db.NewRecord(&models.Guest) {
+			fmt.Printf("Guest role added\n")
+		} else {
+			fmt.Printf("Guest role NOT ADDED :'(\n")
+		}
+	} else {
+		fmt.Printf("Owner role already exist\n")
+	}
 	ds.Db = db
 	ds.Err = err
+	if err == nil {
+		fmt.Printf("\n######## Intialisating DONE ########\n")
+	} else {
+		fmt.Printf("\n######## Intialisating Failed ########\n")
+	}
+}
+
+func (ds *dbStore) roleInitSave(role models.Role) *u.AppError {
+	db := ds.Db
+	transaction := db.Begin()
+	if appError := role.IsValid(); appError != nil {
+		transaction.Rollback()
+		return u.NewLocAppError("roleStoreImpl.Save.role.PreSave", appError.ID, nil, appError.DetailedError)
+	}
+	if !transaction.NewRecord(role) {
+		transaction.Rollback()
+		return u.NewLocAppError("roleStoreImpl.Save", "save.transaction.create.already_exist", nil, "Role Name: "+role.RoleName)
+	}
+	if err := transaction.Create(&role).Error; err != nil {
+		transaction.Rollback()
+		return u.NewLocAppError("roleStoreImpl.Save", "save.transaction.create.encounterError :"+err.Error(), nil, "")
+	}
+	transaction.Commit()
+	return nil
 }
 
 // CloseConnection close database connection

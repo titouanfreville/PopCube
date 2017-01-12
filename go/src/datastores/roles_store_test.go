@@ -174,7 +174,6 @@ func TestRoleStore(t *testing.T) {
 		}
 		rolesCanPrivate := Role{CanUsePrivate: true}
 		rolesCanPrivateNotArchive := Role{CanUsePrivate: true, CanArchive: false}
-		rolesNotExistentRights := Role{CanUsePrivate: true, CanArchive: true, CanInvite: true}
 
 		rsi.Save(&role0, ds)
 		rsi.Save(&role1, ds)
@@ -188,10 +187,6 @@ func TestRoleStore(t *testing.T) {
 			role1,
 			role2,
 			role3,
-			// Owner,
-			// Admin,
-			// Standart,
-			// Guest,
 		}
 
 		canPrivateList := []Role{role0, role2, role3}
@@ -199,7 +194,7 @@ func TestRoleStore(t *testing.T) {
 
 		Convey("We have to be able to find all roles in the db", func() {
 			roles := rsi.GetAll(ds)
-			So(roles, ShouldNotResemble, &[]Role{})
+			So(roles, ShouldNotResemble, &emptyList)
 			So(roles, ShouldResemble, &roleList)
 		})
 
@@ -231,8 +226,6 @@ func TestRoleStore(t *testing.T) {
 		})
 
 		Convey("Searching for non existent role should return empty", func() {
-			roles := rsi.GetByRights(&rolesNotExistentRights, ds)
-			So(roles, ShouldResemble, &emptyList)
 			role := rsi.GetByName("fantome", ds)
 			So(role, ShouldResemble, &Role{})
 		})
