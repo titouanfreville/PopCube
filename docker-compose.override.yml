@@ -1,12 +1,12 @@
 version: "2"
 services:
-  front:
-    ports:
-      - 8080:80
-      - 443:443
-    volumes:
-      - "./app/:/usr/share/nginx/html/app"
-      - "./docs/:/usr/share/nginx/html/docs"
+  # front:
+  #   ports:
+  #     - 8080:80
+  #     - 443:443
+  #   volumes:
+  #     - "./app/:/usr/share/nginx/html/app"
+  #     - "./docs/:/usr/share/nginx/html/docs"
   compass:
     volumes:
       - "./app/styles:/home/style"

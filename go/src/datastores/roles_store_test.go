@@ -138,7 +138,7 @@ func TestRoleStore(t *testing.T) {
 		}
 		role1 := Role{
 			RoleName:      "deuce",
-			CanUsePrivate: false,
+			CanUsePrivate: true,
 			CanModerate:   false,
 			CanArchive:    false,
 			CanInvite:     false,
@@ -165,16 +165,16 @@ func TestRoleStore(t *testing.T) {
 		}
 		role3 := Role{
 			RoleName:      "test",
-			CanUsePrivate: false,
+			CanUsePrivate: true,
 			CanModerate:   true,
-			CanArchive:    true,
+			CanArchive:    false,
 			CanInvite:     false,
 			CanManage:     false,
 			CanManageUser: true,
 		}
 		rolesCanPrivate := Role{CanUsePrivate: true}
 		rolesCanPrivateNotArchive := Role{CanUsePrivate: true, CanArchive: false}
-		rolesNotExistentRights := Role{CanUsePrivate: true, CanArchive: true, CanInvite: false}
+		rolesNotExistentRights := Role{CanUsePrivate: true, CanArchive: true, CanInvite: true}
 
 		rsi.Save(&role0, ds)
 		rsi.Save(&role1, ds)
@@ -190,8 +190,7 @@ func TestRoleStore(t *testing.T) {
 			role3,
 		}
 
-		canPrivateList := []Role{role0, role2}
-		canPrivateNotArchiveList := []Role{role0}
+		canPrivateList := []Role{role0, role2, role3}
 		emptyList := []Role{}
 
 		Convey("We have to be able to find all roles in the db", func() {
@@ -223,7 +222,7 @@ func TestRoleStore(t *testing.T) {
 			So(roles, ShouldResemble, &canPrivateList)
 			roles = rsi.GetByRights(&rolesCanPrivateNotArchive, ds)
 			So(roles, ShouldNotResemble, emptyList)
-			So(roles, ShouldResemble, &canPrivateNotArchiveList)
+			So(roles, ShouldResemble, &canPrivateList)
 
 		})
 

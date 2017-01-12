@@ -2,6 +2,7 @@ package datastores
 
 import (
 	"models"
+	"strings"
 	u "utils"
 )
 
@@ -42,7 +43,21 @@ func (asi RoleStoreImpl) Update(role *models.Role, newRole *models.Role, ds dbSt
 		transaction.Rollback()
 		return u.NewLocAppError("roleStoreImpl.Update.roleNew.PreSave", appError.ID, nil, appError.DetailedError)
 	}
+	transitionRole := models.Role{
+		CanUsePrivate: newRole.CanUsePrivate,
+		CanModerate:   newRole.CanModerate,
+		CanArchive:    newRole.CanArchive,
+		CanInvite:     newRole.CanInvite,
+		CanManage:     newRole.CanManage,
+		CanManageUser: newRole.CanManageUser,
+	}
+	json := transitionRole.ToJSON()
+	rights := u.StringInterfaceFromJSON(strings.NewReader(json))
 	if err := transaction.Model(&role).Updates(&newRole).Error; err != nil {
+		transaction.Rollback()
+		return u.NewLocAppError("roleStoreImpl.Update", "update.transaction.updates.encounterError :"+err.Error(), nil, "")
+	}
+	if err := transaction.Model(&role).Updates(rights).Error; err != nil {
 		transaction.Rollback()
 		return u.NewLocAppError("roleStoreImpl.Update", "update.transaction.updates.encounterError :"+err.Error(), nil, "")
 	}
@@ -67,6 +82,7 @@ func (asi RoleStoreImpl) GetByName(roleName string, ds dbStore) *models.Role {
 }
 
 // GetByRights Used to get role from DB
+// You can only search for roles set to true.
 func (asi RoleStoreImpl) GetByRights(roleRights *models.Role, ds dbStore) *[]models.Role {
 	db := *ds.Db
 	roles := []models.Role{}

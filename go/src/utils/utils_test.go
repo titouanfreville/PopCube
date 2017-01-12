@@ -28,9 +28,9 @@ func TestUtilsPackage(t *testing.T) {
 					"jkl",
 				}
 
-				So(stringArrayIntersection(a, empty), ShouldBeEmpty)
-				So(stringArrayIntersection(a, b), ShouldBeEmpty)
-				So(stringArrayIntersection(a, c), ShouldBeEmpty)
+				So(StringArrayIntersection(a, empty), ShouldBeEmpty)
+				So(StringArrayIntersection(a, b), ShouldBeEmpty)
+				So(StringArrayIntersection(a, c), ShouldBeEmpty)
 
 			})
 
@@ -51,11 +51,11 @@ func TestUtilsPackage(t *testing.T) {
 					"ameno",
 				}
 
-				So(stringArrayIntersection(a, a), ShouldResemble, a)
-				So(stringArrayIntersection(a, b), ShouldContain, "abc")
-				So(stringArrayIntersection(a, c), ShouldContain, "def")
-				So(stringArrayIntersection(a, d), ShouldContain, "abc")
-				So(stringArrayIntersection(a, d), ShouldContain, "ghi")
+				So(StringArrayIntersection(a, a), ShouldResemble, a)
+				So(StringArrayIntersection(a, b), ShouldContain, "abc")
+				So(StringArrayIntersection(a, c), ShouldContain, "def")
+				So(StringArrayIntersection(a, d), ShouldContain, "abc")
+				So(StringArrayIntersection(a, d), ShouldContain, "ghi")
 			})
 		})
 	})
