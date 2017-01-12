@@ -74,7 +74,7 @@
 				
 				<option value="file9">models/user.go (92.4%)</option>
 				
-				<option value="file10">models/utilities.go (41.8%)</option>
+				<option value="file10">models/utilities.go (43.3%)</option>
 				
 				</select>
 			</div>
@@ -953,7 +953,7 @@ type User struct {
         Locale             string `gorm:"column:locale; not null;" json:"locale"`
         Role               Role   `gorm:"column:role; not null;ForeignKey:IDRole;" json:"-"`
         Avatar             string `gorm:"column:avatar;" json:"avatar, omitempty"`
-        NickName           string `gorm:"column:nickName;" json:"nickname, omitempty"`
+        NickName           string `gorm:"column:nickName; unique" json:"nickname, omitempty"`
         FirstName          string `gorm:"column:firstName;" json:"first_name, omitempty"`
         LastName           string `gorm:"column:lastName;" json:"last_name, omitempty"`
         LastActivityAt     int64  `db:"-" json:"last_activity_at,omitempty"`
@@ -1212,10 +1212,10 @@ func GetMillis() int64 <span class="cov6" title="68">{
 // MapToJSON converts a map to a json string
 func MapToJSON(objmap map[string]string) string <span class="cov1" title="1">{
         b, err := json.Marshal(objmap)
-</span>        if err != nil {
-                </span><span class="cov1" title="1">return ""
-        }
-        r</span>eturn string(b)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov1" title="1">return string(b)</span>
 }
 
 // MapFromJSON will decode the key/value pair map
@@ -1225,18 +1225,19 @@ func MapFromJSON(data io.Reader) map[string]string <span class="cov1" title="2">
         var objmap map[string]string
         if err := decoder.Decode(&amp;objmap); err != nil </span><span class="cov1" title="1">{
                 return make(map[string]string)
-        }</span><span class="cov1" title="1">
-        return objmap
+        }</span>
+        <span class="cov1" title="1">return objmap</span>
 }
-</span>
+
 // ArrayToJSON transfor an array into a json array
 func ArrayToJSON(objmap []string) string <span class="cov0" title="0">{
-        if b, err := json.Marshal(objmap); err != nil </span><span class="cov0" title="0">{
+        b, err := json.Marshal(objmap)
+        if err != nil </span><span class="cov0" title="0">{
                 return ""
-        }</span><span class="cov0" title="0">
-        return string(b)
+        }</span>
+        <span class="cov0" title="0">return string(b)</span>
 }
-</span>
+
 // ArrayFromJSON Try to parse a json array into a go string array
 func ArrayFromJSON(data io.Reader) []string <span class="cov0" title="0">{
         decoder := json.NewDecoder(data)
@@ -1244,10 +1245,10 @@ func ArrayFromJSON(data io.Reader) []string <span class="cov0" title="0">{
         var objmap []string
         if err := decoder.Decode(&amp;objmap); err != nil </span><span class="cov0" title="0">{
                 return make([]string, 0)
-        }</span><span class="cov0" title="0">
-        return objmap
+        }</span>
+        <span class="cov0" title="0">return objmap</span>
 }
-</span>
+
 // ArrayFromInterface transfor an interface into a Json object
 func ArrayFromInterface(data interface{}) []string <span class="cov0" title="0">{
         stringArray := []string{}
@@ -1266,70 +1267,71 @@ func ArrayFromInterface(data interface{}) []string <span class="cov0" title="0">
         <span class="cov0" title="0">return stringArray</span>
 }
 
-// StringInArray Search if provided string exist i<span class="cov5" title="31">n provided array
-func StringInArray(a stri</span><span class="cov6" title="72">ng, array []string) bool {
-        for _, b :=</span><span class="cov5" title="27"> range array {
-                if b == a {
-                        </span>return true
-                }
-        <span class="cov2" title="4">}
-</span>        return false
+// StringInArray Search if provided string exist in provided array
+func StringInArray(a string, array []string) bool <span class="cov5" title="31">{
+        for _, b := range array </span><span class="cov6" title="72">{
+                if b == a </span><span class="cov5" title="27">{
+                        return true
+                }</span>
+        }
+        <span class="cov2" title="4">return false</span>
 }
 
-// StringInterfaceToJSON convert String interfa</span><span class="cov0" title="0">ce into Json object
-func StringInterfaceToJSON(objmap map[string]interface{}) string {
-        i</span><span class="cov0" title="0">f b, err := json.Marshal(objmap); err != nil {
+// StringInterfaceToJSON convert String interface into Json object
+func StringInterfaceToJSON(objmap map[string]interface{}) string <span class="cov0" title="0">{
+        b, err := json.Marshal(objmap)
+        if err != nil </span><span class="cov0" title="0">{
                 return ""
         }</span>
-        return string(b)
+        <span class="cov0" title="0">return string(b)</span>
 }
 
 // StringInterfaceFromJSON Try to parse a json into map[string]interace{}
-func StringInterfaceFromJSON(data io.Reader) map[string]interface{} {
+func StringInterfaceFromJSON(data io.Reader) map[string]interface{} <span class="cov0" title="0">{
         decoder := json.NewDecoder(data)
 
-</span>        var objmap map[string]interface{}
-        i</span><span class="cov0" title="0">f err := decoder.Decode(&amp;objmap); err != nil {
+        var objmap map[string]interface{}
+        if err := decoder.Decode(&amp;objmap); err != nil </span><span class="cov0" title="0">{
                 return make(map[string]interface{})
         }</span>
-        return objmap
+        <span class="cov0" title="0">return objmap</span>
 }
 
 // StringToJSON convert provided string into Json object
-func StringToJS</span><span class="cov0" title="0">ON(s string) string {
+func StringToJSON(s string) string <span class="cov0" title="0">{
         b, err := json.Marshal(s)
-        i</span><span class="cov0" title="0">f err != nil {
+        if err != nil </span><span class="cov0" title="0">{
                 return ""
         }</span>
-        return string(b)
+        <span class="cov0" title="0">return string(b)</span>
 }
 
 // StringFromJSON Convert providing json into string
-func StringFromJSON(data io.Reader) string {
+func StringFromJSON(data io.Reader) string <span class="cov0" title="0">{
         decoder := json.NewDecoder(data)
 
-</span>        var s string
-        i</span><span class="cov0" title="0">f err := decoder.Decode(&amp;s); err != nil {
+        var s string
+        if err := decoder.Decode(&amp;s); err != nil </span><span class="cov0" title="0">{
                 return ""
         }</span>
-        return s
+        <span class="cov0" title="0">return s</span>
 }
 
 // IsLower check if a string contain only lower cas characters
-f</span>unc IsLower(s string) bool {
+func IsLower(s string) bool <span class="cov4" title="22">{
         return strings.ToLower(s) == s
-}
+}</span>
 
 // IsValidEmail check email validity
-f</span>unc IsValidEmail(email string) bool {
+func IsValidEmail(email string) bool <span class="cov4" title="17">{
         _, err := mail.ParseAddress(email)
         return err == nil &amp;&amp; IsLower(email)
-}
+}</span>
 
-</span>// IsValidDomain check if provided value is a possible domain name
-func IsValidDomain(domain string) bool {
+// IsValidDomain check if provided value is a possible domain name
+func IsValidDomain(domain string) bool <span class="cov0" title="0">{
         return IsLower(domain) &amp;&amp; IsValidAlphaNum(domain, true)
-}
+}</span>
 
 var reservedName = []string{
         "signup",
@@ -1339,83 +1341,83 @@ var reservedName = []string{
         "post",
         "api",
         "oauth",
-}</span>
+}
 
-//IsValidChannelIdentifier check if string provide<span class="cov4" title="22">d is a correct channel identifier
-func IsValidChannelIdentifier(s string) bool {
+//IsValidChannelIdentifier check if string provided is a correct channel identifier
+func IsValidChannelIdentifier(s string) bool <span class="cov5" title="36">{
         return IsValidAlphaNum(s, true)
 }</span>
 
 //IsValidOrganisationIdentifier check if string provided is a correct organisation identifier
-func IsValidOrganisationIdentifier(s string) bool {
+func IsValidOrganisationIdentifier(s string) bool <span class="cov4" title="22">{
 
         return IsValidAlphaNum(s, true)
+}</span>
+
+var validAlphaNumUnderscore = regexp.MustCompile(`^[a-z0-9]+([a-z\-\_0-9]+|(__)?)[a-z0-9]+$`)
+var validAlphaNum = regexp.MustCompile(`^[a-z0-9]+([a-z\-0-9]+|(__)?)[a-z0-9]+$`)
+
+//IsValidAlphaNum Check that string is correct lower case alpha numeric chain
+func IsValidAlphaNum(s string, allowUnderscores bool) bool <span class="cov6" title="58">{
+        var match bool
+        if allowUnderscores </span><span class="cov6" title="58">{
+                match = validAlphaNumUnderscore.MatchString(s)
+        }</span><span class="cov0" title="0"> else {
+                match = validAlphaNum.MatchString(s)
+        }</span>
+
+        <span class="cov6" title="58">return match</span>
 }
 
-</span>var validAlphaNumUnderscore = regexp.MustCompile(`^[a-z0-9]+([a-z\-\_0-9]+|(__)?)[a-z0-9]+$`)
-va</span><span class="cov0" title="0">r validAlphaNum = regexp.MustCompile(`^[a-z0-9]+([a-z\-0-9]+|(__)?)[a-z0-9]+$`)
-
-//</span>IsValidAlphaNum Check that string is correct lower case alpha numeric chain
-func IsValidAlphaNum(s string, allowUnderscores bool) bool {
-        <span class="cov6" title="58">var match bo</span>ol
-        if allowUnderscores {
-                match = validAlphaNumUnderscore.MatchString(s)
-        } else {
-                match = validAlphaNum.MatchString(s)
-        }
-
-        return match
-</span>}
-
-</span>// Etag function create a string used for cache and coockies storage
-f<span class="cov2" title="4">unc Etag(pa</span>rts ...interface{}) string {
+// Etag function create a string used for cache and coockies storage
+func Etag(parts ...interface{}) string <span class="cov2" title="4">{
 
         Etag := CurrentVersion
 
-        for _, part := range parts {
+        for _, part := range parts </span><span class="cov4" title="14">{
                 Etag += fmt.Sprintf(".%v", part)
-        }
+        }</span>
 
-        return Etag
+        <span class="cov2" title="4">return Etag</span>
 }
 
 var validHashtag = regexp.MustCompile(`^(#\pL[\pL\d\-_.]*[\pL\d])$`)
 var puncStart = regexp.MustCompile(`^[^\pL\d\s#]+`)
-var hashtagStart = regexp.Mu</span><span class="cov5" title="42">stCompile(`^#{2,}`)
+var hashtagStart = regexp.MustCompile(`^#{2,}`)
 var puncEnd = regexp.MustCompile(`[^\pL\d\s]+$`)
 
 // ParseHashtags parse #xxxxxxxxx declaration in messages
-func ParseHashtags(text string) (string, string) {
+func ParseHashtags(text string) (string, string) <span class="cov5" title="38">{
         words := strings.Fields(text)
 
         hashtagString := ""
         plainString := ""
-</span>        for _, word := range words {
-                /</span><span class="cov3" title="9">/ trim off surrounding punctuation
+        for _, word := range words </span><span class="cov5" title="42">{
+                // trim off surrounding punctuation
                 word = puncStart.ReplaceAllString(word, "")
-                w</span>ord = puncEnd.ReplaceAllString(word, "")
+                word = puncEnd.ReplaceAllString(word, "")
 
                 // and remove extra pound #s
-        <span class="cov5" title="38">        word = hashtagStart.ReplaceA</span><span class="cov0" title="0">llString(word, "#")
+                word = hashtagStart.ReplaceAllString(word, "#")
 
-                if validHashtag.MatchString(word) {
-                        hashtagString += </span><span class="cov0" title="0">" " + word
-                } else {
-                        </span><span class="cov0" title="0">plainString += " " + word
-                }
+                if validHashtag.MatchString(word) </span><span class="cov5" title="33">{
+                        hashtagString += " " + word
+                }</span><span class="cov3" title="9"> else {
+                        plainString += " " + word
+                }</span>
         }
-</span>
-        if len(hashtagString) &gt; 1000 {
-        <span class="cov5" title="38">        hashtagString = hashtagString[:999]
-</span>                lastSpace := strings.LastIndex(hashtagString, " ")
-                if lastSpace &gt; -1 {
+
+        <span class="cov5" title="38">if len(hashtagString) &gt; 1000 </span><span class="cov0" title="0">{
+                hashtagString = hashtagString[:999]
+                lastSpace := strings.LastIndex(hashtagString, " ")
+                if lastSpace &gt; -1 </span><span class="cov0" title="0">{
                         hashtagString = hashtagString[:lastSpace]
-                } else {
+                }</span><span class="cov0" title="0"> else {
                         hashtagString = ""
-                }
+                }</span>
         }
 
-        return strings.TrimSpace(hashtagString), strings.TrimSpace(plainString)
+        <span class="cov5" title="38">return strings.TrimSpace(hashtagString), strings.TrimSpace(plainString)</span>
 }
 
 // func IsFileExtImage(ext string) bool {
@@ -1428,96 +1430,96 @@ func ParseHashtags(text string) (string, string) {
 //         return false
 // }
 
-// func GetImageMimeType(ext string) strin<span class="cov0" title="0">g {
+// func GetImageMimeType(ext string) string {
 //         ext = strings.ToLower(ext)
 //         if len(IMAGE_MIME_TYPES[ext]) == 0 {
 //                 return "image"
-/</span>/         } else {
+//         } else {
 //                 return IMAGE_MIME_TYPES[ext]
 //         }
 // }
 
 // ClearMentionTags remove mention tags from messages
-func ClearMentionTags(post string) string {
-        post = strings.Replace(post, "&lt;mention&gt;<span class="cov0" title="0">", "", -1)
+func ClearMentionTags(post string) string <span class="cov0" title="0">{
+        post = strings.Replace(post, "&lt;mention&gt;", "", -1)
         post = strings.Replace(post, "&lt;/mention&gt;", "", -1)
-</span>        return post
-}
-</span>
-/<span class="cov0" title="0">/ URLRegex is a small variable to expose regexp match</span><span class="cov0" title="0">ing URL
+        return post
+}</span>
+
+// URLRegex is a small variable to expose regexp matching URL
 var URLRegex = regexp.MustCompile(`^((?:[a-z]+:\/\/)?(?:(?:[a-z0-9\-]+\.)+(?:[a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|local|internal))(:[0-9]{1,5})?(?:\/[a-z0-9_\-\.~]+)*(\/([a-z0-9_\-\.]*)(?:\?[a-z0-9+_~\-\.%=&amp;amp;]*)?)?(?:#[a-zA-Z0-9!$&amp;'()*+.=-_~:@/?]*)?)(?:\s+|$)$`)
 
-</span>// PartialURLRegex is a small variable to expose regexp matching URL (from parial parst)
-v<span class="cov0" title="0">ar PartialU</span>RLRegex = regexp.MustCompile(`/([A-Za-z0-9]{26})/([A-Za-z0-9]{26})/((?:[A-Za-z0-9]{26})?.+(?:\.[A-Za-z0-9]{3,})?)`)
+// PartialURLRegex is a small variable to expose regexp matching URL (from parial parst)
+var PartialURLRegex = regexp.MustCompile(`/([A-Za-z0-9]{26})/([A-Za-z0-9]{26})/((?:[A-Za-z0-9]{26})?.+(?:\.[A-Za-z0-9]{3,})?)`)
 
 //SplitRunes Split runes define a table of runes saying if they are spliters or not
-var SplitRunes = map[rune]bool{',': true,<span class="cov0" title="0"> ' ': true, '.': true, '!': true, '?': true, ':': true, ';': true, '\n': true, '&lt;': true, '&gt;': true, '(': true, ')': true, '{': true, '}': true, '[': true, ']': true, '+': true, '/': true, '\\': true}
+var SplitRunes = map[rune]bool{',': true, ' ': true, '.': true, '!': true, '?': true, ':': true, ';': true, '\n': true, '&lt;': true, '&gt;': true, '(': true, ')': true, '{': true, '}': true, '[': true, ']': true, '+': true, '/': true, '\\': true}
 
-</span>// IsValidHTTPURL check validity of provided string as http url
-fu</span>nc IsValidHTTPURL(rawURL string) bool {
-        if strings.Index(rawURL, "http://") != 0 &amp;&amp; strings.Index(rawURL, "https://") != 0 {
-        <span class="cov0" title="0">        return false
-</span>        }
-
-</span>        if _, err := url.ParseRequestURI(rawURL); err != nil {
-        <span class="cov0" title="0">        return fal</span>se
-        }
-
-        return true
-}
-</span>
-//</span> IsValidHTTPSURL check validity of provided string as https url
-func IsValidHTTPSURL(rawURL string) bool {
-        <span class="cov0" title="0">if strings.Index(rawURL, "https://") != 0 {
-</span>                return false
+// IsValidHTTPURL check validity of provided string as http url
+func IsValidHTTPURL(rawURL string) bool <span class="cov0" title="0">{
+        if strings.Index(rawURL, "http://") != 0 &amp;&amp; strings.Index(rawURL, "https://") != 0 </span><span class="cov0" title="0">{
+                return false
         }</span>
 
-        <span class="cov0" title="0">if _, err :</span>= url.ParseRequestURI(rawURL); err != nil {
+        <span class="cov0" title="0">if _, err := url.ParseRequestURI(rawURL); err != nil </span><span class="cov0" title="0">{
                 return false
-        }
+        }</span>
 
-        return true
-</span>}
-</span>
-// </span><span class="cov0" title="0">func IsValidTurnOrStunServer(rawURI str</span><span class="cov0" title="0">ing) bool {
+        <span class="cov0" title="0">return true</span>
+}
+
+// IsValidHTTPSURL check validity of provided string as https url
+func IsValidHTTPSURL(rawURL string) bool <span class="cov0" title="0">{
+        if strings.Index(rawURL, "https://") != 0 </span><span class="cov0" title="0">{
+                return false
+        }</span>
+
+        <span class="cov0" title="0">if _, err := url.ParseRequestURI(rawURL); err != nil </span><span class="cov0" title="0">{
+                return false
+        }</span>
+
+        <span class="cov0" title="0">return true</span>
+}
+
+// func IsValidTurnOrStunServer(rawURI string) bool {
 //         if strings.Index(rawURI, "turn:") != 0 &amp;&amp; strings.Index(rawURI, "stun:") != 0 {
-// </span><span class="cov0" title="0">                return false
+//                 return false
 //         }
 
-</span>//         if _, err := url.ParseRequestURI(rawURI); err != nil {
+//         if _, err := url.ParseRequestURI(rawURI); err != nil {
 //                 return false
-/<span class="cov0" title="0">/         }
-</span>
+//         }
+
 //         return true
 // }
 
-</span>// IsSafeLink check if provided link can be considered as Safe
-fu</span>nc IsSafeLink(link *string) bool {
-        if link != nil {
-        <span class="cov0" title="0">        if IsValidHTTPURL(*link) {
-</span>                        return true
-                </span>}
-                if strings.HasPrefix(*link, "/") {
-        <span class="cov0" title="0">                return tr</span>ue
-                }
-                return false
+// IsSafeLink check if provided link can be considered as Safe
+func IsSafeLink(link *string) bool <span class="cov0" title="0">{
+        if link != nil </span><span class="cov0" title="0">{
+                if IsValidHTTPURL(*link) </span><span class="cov0" title="0">{
+                        return true
+                }</span>
+                <span class="cov0" title="0">if strings.HasPrefix(*link, "/") </span><span class="cov0" title="0">{
+                        return true
+                }</span>
+                <span class="cov0" title="0">return false</span>
 
         }
 
-        return true
+        <span class="cov0" title="0">return true</span>
 }
 
 // IsValidWebsocketURL Check if provided string can be used as websocked url.
-func IsValidWebsocketURL(rawURL string) bool {
-        if strings.Index(rawURL, "ws://") != 0 &amp;&amp; strings.Index(rawURL, "wss://") != 0 {
+func IsValidWebsocketURL(rawURL string) bool <span class="cov0" title="0">{
+        if strings.Index(rawURL, "ws://") != 0 &amp;&amp; strings.Index(rawURL, "wss://") != 0 </span><span class="cov0" title="0">{
                 return false
-        }
+        }</span>
 
-        if _, err := url.ParseRequestURI(rawURL); err != nil {
+        <span class="cov0" title="0">if _, err := url.ParseRequestURI(rawURL); err != nil </span><span class="cov0" title="0">{
                 return false
-        }
+        }</span>
 
-        return true
+        <span class="cov0" title="0">return true</span>
 }
 </pre>
 		

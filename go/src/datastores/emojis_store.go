@@ -1,12 +1,8 @@
 package datastores
 
 import (
-	// l4g "github.com/alecthomas/log4go"
-	_ "github.com/go-sql-driver/mysql"
-	// "github.com/jinzhu/gorm"
 	"models"
 	u "utils"
-	// "time"
 )
 
 // EmojiStoreImpl implement EmojiStore interface
@@ -15,7 +11,7 @@ type EmojiStoreImpl struct {
 }
 
 // Save Use to save emoji in BB
-func (asi EmojiStoreImpl) Save(emoji *models.Emoji, ds DataStore) *u.AppError {
+func (asi EmojiStoreImpl) Save(emoji *models.Emoji, ds dbStore) *u.AppError {
 	db := *ds.Db
 	transaction := db.Begin()
 	if appError := emoji.IsValid(); appError != nil {
@@ -35,7 +31,7 @@ func (asi EmojiStoreImpl) Save(emoji *models.Emoji, ds DataStore) *u.AppError {
 }
 
 // Update Used to update emoji in DB
-func (asi EmojiStoreImpl) Update(emoji *models.Emoji, newEmoji *models.Emoji, ds DataStore) *u.AppError {
+func (asi EmojiStoreImpl) Update(emoji *models.Emoji, newEmoji *models.Emoji, ds dbStore) *u.AppError {
 	db := *ds.Db
 	transaction := db.Begin()
 	if appError := emoji.IsValid(); appError != nil {
@@ -55,7 +51,7 @@ func (asi EmojiStoreImpl) Update(emoji *models.Emoji, newEmoji *models.Emoji, ds
 }
 
 // GetAll Used to get emoji from DB
-func (asi EmojiStoreImpl) GetAll(ds DataStore) *[]models.Emoji {
+func (asi EmojiStoreImpl) GetAll(ds dbStore) *[]models.Emoji {
 	db := *ds.Db
 	emojis := []models.Emoji{}
 	db.Find(&emojis)
@@ -63,7 +59,7 @@ func (asi EmojiStoreImpl) GetAll(ds DataStore) *[]models.Emoji {
 }
 
 // GetByName Used to get emoji from DB
-func (asi EmojiStoreImpl) GetByName(emojiName string, ds DataStore) *models.Emoji {
+func (asi EmojiStoreImpl) GetByName(emojiName string, ds dbStore) *models.Emoji {
 	db := *ds.Db
 	emoji := models.Emoji{}
 	db.Where("name = ?", emojiName).First(&emoji)
@@ -71,7 +67,7 @@ func (asi EmojiStoreImpl) GetByName(emojiName string, ds DataStore) *models.Emoj
 }
 
 // GetByShortcut Used to get emoji from DB
-func (asi EmojiStoreImpl) GetByShortcut(EmojiShortcut string, ds DataStore) *models.Emoji {
+func (asi EmojiStoreImpl) GetByShortcut(EmojiShortcut string, ds dbStore) *models.Emoji {
 	db := *ds.Db
 	emoji := models.Emoji{}
 	db.Where("shortcut = ?", EmojiShortcut).First(&emoji)
@@ -79,7 +75,7 @@ func (asi EmojiStoreImpl) GetByShortcut(EmojiShortcut string, ds DataStore) *mod
 }
 
 // GetByLink Used to get emoji from DB
-func (asi EmojiStoreImpl) GetByLink(emojiLink string, ds DataStore) *models.Emoji {
+func (asi EmojiStoreImpl) GetByLink(emojiLink string, ds dbStore) *models.Emoji {
 	db := *ds.Db
 	emoji := models.Emoji{}
 	db.Where("link = ?", emojiLink).First(&emoji)
@@ -87,7 +83,7 @@ func (asi EmojiStoreImpl) GetByLink(emojiLink string, ds DataStore) *models.Emoj
 }
 
 // Delete Used to get emoji from DB
-func (asi EmojiStoreImpl) Delete(emoji *models.Emoji, ds DataStore) *u.AppError {
+func (asi EmojiStoreImpl) Delete(emoji *models.Emoji, ds dbStore) *u.AppError {
 	db := *ds.Db
 	transaction := db.Begin()
 	if appError := emoji.IsValid(); appError != nil {

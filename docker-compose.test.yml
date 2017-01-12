@@ -10,11 +10,11 @@ services:
       context: .
       dockerfile: docker/golinter.Dockerfile
     env_file: .env.test
-  front:
-    entrypoint: /bin/sh -c "exit 0"
+  # front:
+  #   entrypoint: /bin/sh -c "exit 0"
   database:
     env_file: .env.test
   back:
     entrypoint: /bin/sh -c "exit 0"
-  compass:
-    entrypoint: /bin/sh -c "exit 0"
+  # compass:
+  #   entrypoint: /bin/sh -c "exit 0"
