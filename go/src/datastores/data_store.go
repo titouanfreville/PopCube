@@ -56,6 +56,10 @@ func (ds *dbStore) InitConnection(user string, dbname string, password string) {
 	// 	&models.Member{}, &models.Message{}, &models.Organisation{}, ,
 	// 	&models.Role{}, &models.User{})
 	db.AutoMigrate(&models.Avatar{}, &models.Emoji{}, &models.Organisation{}, &models.Parameter{}, &models.Role{})
+	// db.Save(&models.Owner)
+	// db.Save(&models.Admin)
+	// db.Save(&models.Standart)
+	// db.Save(&models.Guest)
 	ds.Db = db
 	ds.Err = err
 }

@@ -17,8 +17,8 @@ services:
   #     context: .
   #     dockerfile: docker/nginx_front.Dockerfile
   #   env_file: .env
-  compass:
-    build:
-      context: .
-      dockerfile: docker/compass.Dockerfile
-    env_file: .env
+  # compass:
+  #   build:
+  #     context: .
+  #     dockerfile: docker/compass.Dockerfile
+  #   env_file: .env

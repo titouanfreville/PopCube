@@ -188,6 +188,10 @@ func TestRoleStore(t *testing.T) {
 			role1,
 			role2,
 			role3,
+			// Owner,
+			// Admin,
+			// Standart,
+			// Guest,
 		}
 
 		canPrivateList := []Role{role0, role2, role3}

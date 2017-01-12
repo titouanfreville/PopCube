@@ -7,9 +7,9 @@ services:
   #   volumes:
   #     - "./app/:/usr/share/nginx/html/app"
   #     - "./docs/:/usr/share/nginx/html/docs"
-  compass:
-    volumes:
-      - "./app/styles:/home/style"
+  # compass:
+  #   volumes:
+  #     - "./app/styles:/home/style"
   goconvey:
     build:
       context: .
