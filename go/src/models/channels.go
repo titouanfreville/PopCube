@@ -27,7 +27,7 @@ type Channel struct {
 	WebID       string `gorm:"column:webID;not null;unique" json:"web_id"`
 	ChannelName string `gorm:"column:channelName;not null;unique" json:"display_name"`
 	Type        string `gorm:"column:type;not null" json:"type"`
-	UpdatedAt   int64  `gorm:"column:updatedAt;not null" json:"updated_at"`
+	UpdatedAt   int64  `gorm:"column:updatedAt;not null;" json:"updated_at"`
 	Private     bool   `gorm:"column:private;not null" json:"private"`
 	Description string `gorm:"column:desciption" json:"description,omitempty"`
 	Subject     string `gorm:"column:subject" json:"subject,omitempty"`
@@ -60,10 +60,11 @@ func (channel *Channel) Etag() string {
 }
 
 // IsValid check the correctness of a channel object
-func (channel *Channel) IsValid() *u.AppError {
-
-	if len(channel.WebID) != 26 {
-		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.id.app_error", nil, "")
+func (channel *Channel) IsValid(isUpdate bool) *u.AppError {
+	if !isUpdate {
+		if len(channel.WebID) != 26 {
+			return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.id.app_error", nil, "")
+		}
 	}
 
 	if channel.UpdatedAt == 0 {
@@ -118,7 +119,13 @@ func (channel *Channel) PreSave() {
 
 // PreUpdate Is used to add default values to channel before updating it in DB
 func (channel *Channel) PreUpdate() {
+	channel.ChannelName = strings.ToLower(channel.ChannelName)
+
 	channel.UpdatedAt = GetMillis()
+
+	if channel.Type == "direct" {
+		channel.Private = true
+	}
 }
 
 // GetDMNameFromIDs Create Direct message name from 2 userIDs

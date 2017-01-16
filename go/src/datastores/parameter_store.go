@@ -11,7 +11,7 @@ type ParameterStoreImpl struct {
 }
 
 // Save Use to save parameter in BB
-func (asi ParameterStoreImpl) Save(parameter *models.Parameter, ds dbStore) *u.AppError {
+func (psi ParameterStoreImpl) Save(parameter *models.Parameter, ds dbStore) *u.AppError {
 	db := *ds.Db
 	transaction := db.Begin()
 	if appError := parameter.IsValid(); appError != nil {
@@ -31,7 +31,7 @@ func (asi ParameterStoreImpl) Save(parameter *models.Parameter, ds dbStore) *u.A
 }
 
 // Update Used to update parameter in DB
-func (asi ParameterStoreImpl) Update(parameter *models.Parameter, newParameter *models.Parameter, ds dbStore) *u.AppError {
+func (psi ParameterStoreImpl) Update(parameter *models.Parameter, newParameter *models.Parameter, ds dbStore) *u.AppError {
 	db := *ds.Db
 	transaction := db.Begin()
 	if appError := parameter.IsValid(); appError != nil {
@@ -51,7 +51,7 @@ func (asi ParameterStoreImpl) Update(parameter *models.Parameter, newParameter *
 }
 
 // Get Used to get parameter from DB
-func (asi ParameterStoreImpl) Get(ds dbStore) *models.Parameter {
+func (psi ParameterStoreImpl) Get(ds dbStore) *models.Parameter {
 	db := *ds.Db
 	parameter := models.Parameter{}
 	db.First(&parameter)

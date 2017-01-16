@@ -62,10 +62,17 @@ func (ds *dbStore) InitConnection(user string, dbname string, password string) {
 		fmt.Printf("Failed to open connection\n")
 	}
 
-	// db.AutoMigrate( &models.Channel{}, &models.Emoji{}, &models.Folder{},
-	// 	&models.Member{}, &models.Message{}, &models.Organisation{}, ,
-	// 	&models.Role{}, &models.User{})
-	db.AutoMigrate(&models.Avatar{}, &models.Emoji{}, &models.Organisation{}, &models.Parameter{}, &models.Role{})
+	// Create correct tables
+	db.AutoMigrate(&models.Avatar{}, &models.Channel{}, &models.Emoji{}, &models.Folder{},
+		models.Member{}, &models.Message{}, &models.Organisation{}, &models.Parameter{},
+		&models.Role{}, &models.User{})
+
+	// Will not set CreatedAt and UpdatedAt on .Create() call
+	db.Callback().Create().Remove("gorm:update_time_stamp")
+
+	// Will not update UpdatedAt on .Save() call
+	db.Callback().Update().Remove("gorm:update_time_stamp")
+
 	if db.NewRecord(&models.Owner) {
 		fmt.Printf("\nAdding Owner Role ......\n")
 		db.Create(&models.Owner)

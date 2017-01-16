@@ -1,6 +1,6 @@
 // This file is used to test if user model is working correctly.
 // A user is always linked to an organisation
-// He has basic channel to join
+// He has bosic channel to join
 package datastores
 
 import (
