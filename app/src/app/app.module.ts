@@ -5,6 +5,8 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
+import { RegisterComponent} from './register/register.component';
+
 import { ApiService } from './shared';
 import { routing } from './app.routing';
 
@@ -17,7 +19,8 @@ import { routing } from './app.routing';
   declarations: [
     AppComponent,
     HomeComponent,
-    AboutComponent
+    AboutComponent,
+    RegisterComponent
   ],
   providers: [
     ApiService

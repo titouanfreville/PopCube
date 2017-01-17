@@ -1,6 +1,5 @@
 {
-  "name": "app",
-  "productName": "App",
+  "name": "PopCube",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
