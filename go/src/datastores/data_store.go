@@ -31,24 +31,6 @@ type dbStore struct {
 	Err error
 }
 
-// type StoreResult struct {
-// 	Data interface{}
-// 	Err  *models.AppError
-// }
-
-// type StoreChannel chan StoreResult
-
-// func Must(sc StoreChannel) interface{} {
-// 	r := <-sc
-// 	if r.Err != nil {
-// 		l4g.Close()
-// 		time.Sleep(time.Second)
-// 		panic(r.Err)
-// 	}
-
-// 	return r.Data
-// }
-
 // InitConnection init Database connection && database models
 func (ds *dbStore) InitConnection(user string, dbname string, password string) {
 	fmt.Printf("\n######## Intialisating Db conection  ########\n")
@@ -261,7 +243,7 @@ type UserStore interface {
 	Update(user *models.User, newUser *models.User, ds dbStore) *u.AppError
 	GetByUserName(userName string, ds dbStore) *models.User
 	GetByEmail(userEmail string, ds dbStore) *models.User
-	GetByDate(userDate int, ds dbStore) *[]models.User
+	GetOrderedByDate(userDate int, ds dbStore) *[]models.User
 	GetDeleted(ds dbStore) *[]models.User
 	GetByNickName(nickName string, ds dbStore) *models.User
 	GetByFirstName(firstName string, ds dbStore) *[]models.User

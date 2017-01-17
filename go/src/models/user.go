@@ -102,10 +102,11 @@ type User struct {
 
 // IsValid valwebIDates the user and returns an error if it isn't configured
 // correctly.
-func (user *User) IsValid() *u.AppError {
-
-	if len(user.WebID) != 26 {
-		return u.NewLocAppError("user.IsValid", "model.user.is_valid.WebID.app_error", nil, "")
+func (user *User) IsValid(isUpdate bool) *u.AppError {
+	if !isUpdate {
+		if len(user.WebID) != 26 {
+			return u.NewLocAppError("user.IsValid", "model.user.is_valid.WebID.app_error", nil, "")
+		}
 	}
 
 	if !IsValidUsername(user.Username) {
@@ -128,8 +129,10 @@ func (user *User) IsValid() *u.AppError {
 		return u.NewLocAppError("user.IsValid", "model.user.is_valid.last_name.app_error", nil, "user_webID="+user.WebID)
 	}
 
-	if len(user.Password) == 0 {
-		return u.NewLocAppError("user.IsValid", "model.user.is_valid.auth_data_pwd.app_error", nil, "user_webID="+user.WebID)
+	if !isUpdate {
+		if len(user.Password) == 0 {
+			return u.NewLocAppError("user.IsValid", "model.user.is_valid.auth_data_pwd.app_error", nil, "user_webID="+user.WebID)
+		}
 	}
 
 	return nil
@@ -165,6 +168,11 @@ func (user *User) PreUpdate() {
 	user.Username = strings.ToLower(user.Username)
 	user.Email = strings.ToLower(user.Email)
 	user.UpdatedAt = GetMillis()
+
+	if len(user.Password) > 0 {
+		user.Password = HashPassword(user.Password)
+		user.LastPasswordUpdate = user.UpdatedAt
+	}
 }
 
 // ToJSON convert a user to a json string

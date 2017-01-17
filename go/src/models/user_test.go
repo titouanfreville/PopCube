@@ -183,14 +183,14 @@ func TestUserModel(t *testing.T) {
 				Role:      Owner,
 			}
 			correctUser.PreSave()
-			So(correctUser.IsValid(), ShouldBeNil)
-			So(correctUser.IsValid(), ShouldNotResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.WebID.app_error", nil, ""))
-			So(correctUser.IsValid(), ShouldNotResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Email.app_error", nil, "user_webID="+correctUser.WebID))
-			So(correctUser.IsValid(), ShouldNotResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.NickName.app_error", nil, "user_webID="+correctUser.WebID))
-			So(correctUser.IsValid(), ShouldNotResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.first_name.app_error", nil, "user_webID="+correctUser.WebID))
-			So(correctUser.IsValid(), ShouldNotResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+correctUser.WebID))
-			So(correctUser.IsValid(), ShouldNotResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.last_name.app_error", nil, "user_webID="+correctUser.WebID))
-			So(correctUser.IsValid(), ShouldNotResemble, u.NewLocAppError("user.IsValid", "model.user.auth_data_pwd.Username.app_error", nil, "user_webID="+correctUser.WebID))
+			So(correctUser.IsValid(false), ShouldBeNil)
+			So(correctUser.IsValid(false), ShouldNotResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.WebID.app_error", nil, ""))
+			So(correctUser.IsValid(false), ShouldNotResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Email.app_error", nil, "user_webID="+correctUser.WebID))
+			So(correctUser.IsValid(false), ShouldNotResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.NickName.app_error", nil, "user_webID="+correctUser.WebID))
+			So(correctUser.IsValid(false), ShouldNotResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.first_name.app_error", nil, "user_webID="+correctUser.WebID))
+			So(correctUser.IsValid(false), ShouldNotResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+correctUser.WebID))
+			So(correctUser.IsValid(false), ShouldNotResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.last_name.app_error", nil, "user_webID="+correctUser.WebID))
+			So(correctUser.IsValid(false), ShouldNotResemble, u.NewLocAppError("user.IsValid", "model.user.auth_data_pwd.Username.app_error", nil, "user_webID="+correctUser.WebID))
 		})
 		Convey("Given an incorrect user, validation should return error message", func() {
 			Convey("Incorrect ID user should return a message invalid id", func() {
@@ -204,7 +204,7 @@ func TestUserModel(t *testing.T) {
 					LastName:  "L",
 					Role:      Owner,
 				}
-				So(user.IsValid(), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.WebID.app_error", nil, ""))
+				So(user.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.WebID.app_error", nil, ""))
 			})
 			Convey("Incorrect username user should return error Invalid username", func() {
 				user1 := User{
@@ -217,7 +217,7 @@ func TestUserModel(t *testing.T) {
 					Role:      Owner,
 				}
 				user1.PreSave()
-				So(user1.IsValid(), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user1.WebID))
+				So(user1.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user1.WebID))
 				user2 := User{
 					WebID:     NewID(),
 					Password:  "test",
@@ -227,7 +227,7 @@ func TestUserModel(t *testing.T) {
 					LastName:  "L",
 					Role:      Owner,
 				}
-				So(user2.IsValid(), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user2.WebID))
+				So(user2.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user2.WebID))
 				user3 := User{
 					WebID:     NewID(),
 					Username:  "xD/",
@@ -238,7 +238,7 @@ func TestUserModel(t *testing.T) {
 					LastName:  "L",
 					Role:      Owner,
 				}
-				So(user3.IsValid(), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
+				So(user3.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
 				user3 = User{
 					WebID:     NewID(),
 					Username:  "xD\\",
@@ -249,7 +249,7 @@ func TestUserModel(t *testing.T) {
 					LastName:  "L",
 					Role:      Owner,
 				}
-				So(user3.IsValid(), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
+				So(user3.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
 				user3 = User{
 					WebID:     NewID(),
 					Username:  "xD*",
@@ -260,7 +260,7 @@ func TestUserModel(t *testing.T) {
 					LastName:  "L",
 					Role:      Owner,
 				}
-				So(user3.IsValid(), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
+				So(user3.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
 				user3 = User{
 					WebID:     NewID(),
 					Username:  "xD{",
@@ -271,7 +271,7 @@ func TestUserModel(t *testing.T) {
 					LastName:  "L",
 					Role:      Owner,
 				}
-				So(user3.IsValid(), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
+				So(user3.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
 				user3 = User{
 					WebID:     NewID(),
 					Username:  "xD}",
@@ -282,7 +282,7 @@ func TestUserModel(t *testing.T) {
 					LastName:  "L",
 					Role:      Owner,
 				}
-				So(user3.IsValid(), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
+				So(user3.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
 				user3 = User{
 					WebID:     NewID(),
 					Username:  "xD#",
@@ -293,7 +293,7 @@ func TestUserModel(t *testing.T) {
 					LastName:  "L",
 					Role:      Owner,
 				}
-				So(user3.IsValid(), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
+				So(user3.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
 				user3 = User{
 					WebID:     NewID(),
 					Username:  "xD_",
@@ -304,7 +304,7 @@ func TestUserModel(t *testing.T) {
 					LastName:  "L",
 					Role:      Owner,
 				}
-				So(user3.IsValid(), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
+				So(user3.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
 			})
 		})
 
@@ -318,7 +318,7 @@ func TestUserModel(t *testing.T) {
 				Role:      Owner,
 			}
 			user.PreSave()
-			So(user.IsValid(), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Email.app_error", nil, "user_webID="+user.WebID))
+			So(user.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Email.app_error", nil, "user_webID="+user.WebID))
 			user = User{
 				Password:  "test",
 				Email:     "test/popcube.fr",
@@ -328,7 +328,7 @@ func TestUserModel(t *testing.T) {
 				Role:      Owner,
 			}
 			user.PreSave()
-			So(user.IsValid(), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Email.app_error", nil, "user_webID="+user.WebID))
+			So(user.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Email.app_error", nil, "user_webID="+user.WebID))
 			user = User{
 				Password:  "test",
 				Email:     "CeNomDevraitJelespereEtreBeaucoupTropLongPourLatrailleMaximaleDemandeParcequelaJeSuiunPoilFeneantEtDeboussouleSansnuldouteilnyavaitpersone@popcube.fr",
@@ -338,7 +338,7 @@ func TestUserModel(t *testing.T) {
 				Role:      Owner,
 			}
 			user.PreSave()
-			So(user.IsValid(), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Email.app_error", nil, "user_webID="+user.WebID))
+			So(user.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Email.app_error", nil, "user_webID="+user.WebID))
 		})
 
 		Convey("NickName, FirstName: and Lastname should be less than 64 characters long", func() {
@@ -351,7 +351,7 @@ func TestUserModel(t *testing.T) {
 				Role:      Owner,
 			}
 			user.PreSave()
-			So(user.IsValid(), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.NickName.app_error", nil, "user_webID="+user.WebID))
+			So(user.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.NickName.app_error", nil, "user_webID="+user.WebID))
 			user = User{
 				Password:  "test",
 				Email:     "test@popcube.fr",
@@ -361,7 +361,7 @@ func TestUserModel(t *testing.T) {
 				Role:      Owner,
 			}
 			user.PreSave()
-			So(user.IsValid(), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.first_name.app_error", nil, "user_webID="+user.WebID))
+			So(user.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.first_name.app_error", nil, "user_webID="+user.WebID))
 			user = User{
 				Password:  "test",
 				Email:     "test@popcube.fr",
@@ -371,7 +371,7 @@ func TestUserModel(t *testing.T) {
 				Role:      Owner,
 			}
 			user.PreSave()
-			So(user.IsValid(), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.last_name.app_error", nil, "user_webID="+user.WebID))
+			So(user.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.last_name.app_error", nil, "user_webID="+user.WebID))
 		})
 
 		Convey("Password can]t be empty", func() {
@@ -383,7 +383,7 @@ func TestUserModel(t *testing.T) {
 				Role:      Owner,
 			}
 			user.PreSave()
-			So(user.IsValid(), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.auth_data_pwd.app_error", nil, "user_webID="+user.WebID))
+			So(user.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.auth_data_pwd.app_error", nil, "user_webID="+user.WebID))
 		})
 	})
 
