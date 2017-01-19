@@ -25,8 +25,8 @@ func TestUserStore(t *testing.T) {
 
 	ownerRole := *rsi.GetByName(Owner.RoleName, ds)
 	adminRole := *rsi.GetByName(Admin.RoleName, ds)
-	// standartRole := *rsi.GetByName(Standart.RoleName, ds)
-	// guestRole := *rsi.GetByName(Guest.RoleName, ds)
+	standartRole := *rsi.GetByName(Standart.RoleName, ds)
+	guestRole := *rsi.GetByName(Guest.RoleName, ds)
 
 	Convey("Testing save function", t, func() {
 		dbError := u.NewLocAppError("userStoreImpl.Save", "save.transaction.create.encounterError", nil, "")
@@ -80,6 +80,7 @@ func TestUserStore(t *testing.T) {
 			Locale:    "vn_VN",
 			Role:      adminRole,
 		}
+
 		appError := usi.Save(&user, ds)
 		So(appError, ShouldBeNil)
 		So(appError, ShouldNotResemble, dbError)
@@ -97,403 +98,254 @@ func TestUserStore(t *testing.T) {
 			So(user, ShouldResemble, userShouldResemble)
 		})
 
-		// Convey("Provided wrong old User to modify should result in old_user error", func() {
-		// 	user.WebID = "TesT"
-		// 	Convey("Incorrect ID user should return a message invalid id", func() {
-		// 		appError := usi.Update(&user, &userNew, ds)
-		// 		So(appError, ShouldNotBeNil)
-		// 		So(appError, ShouldNotResemble, dbError)
-		// 		So(appError, ShouldNotResemble, alreadyExistError)
-		// 		So(appError, ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.WebID.app_error", nil, ""))
-		// 	})
-		// 	Convey("Incorrect username user should return error Invalid username", func() {
-		// 		user1 := User{
-		// 			Username:  "CeNomDevraitJelespereEtreBeaucoupTropLongPourLatrailleMaximaleDemandeParcequelaJeSuiunPoilFeneantEtDeboussouleSansnuldouteilnyavaitpersone",
-		// 			Password:  "test",
-		// 			Email:     "test@popcube.fr",
-		// 			NickName:  "NickName",
-		// 			FirstName: "Test",
-		// 			LastName:  "L",
-		// 			Role:      Owner,
-		// 		}
-		// 		user1.PreSave()
-		// 		So(user1.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user1.WebID))
-		// 		user2 := User{
-		// 			WebID:     NewID(),
-		// 			Password:  "test",
-		// 			Email:     "test@popcube.fr",
-		// 			NickName:  "NickName",
-		// 			FirstName: "Test",
-		// 			LastName:  "L",
-		// 			Role:      Owner,
-		// 		}
-		// 		So(user2.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user2.WebID))
-		// 		user3 := User{
-		// 			WebID:     NewID(),
-		// 			Username:  "xD/",
-		// 			Password:  "test",
-		// 			Email:     "test@popcube.fr",
-		// 			NickName:  "NickName",
-		// 			FirstName: "Test",
-		// 			LastName:  "L",
-		// 			Role:      Owner,
-		// 		}
-		// 		So(user3.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
-		// 		user3 = User{
-		// 			WebID:     NewID(),
-		// 			Username:  "xD\\",
-		// 			Password:  "test",
-		// 			Email:     "test@popcube.fr",
-		// 			NickName:  "NickName",
-		// 			FirstName: "Test",
-		// 			LastName:  "L",
-		// 			Role:      Owner,
-		// 		}
-		// 		So(user3.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
-		// 		user3 = User{
-		// 			WebID:     NewID(),
-		// 			Username:  "xD*",
-		// 			Password:  "test",
-		// 			Email:     "test@popcube.fr",
-		// 			NickName:  "NickName",
-		// 			FirstName: "Test",
-		// 			LastName:  "L",
-		// 			Role:      Owner,
-		// 		}
-		// 		So(user3.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
-		// 		user3 = User{
-		// 			WebID:     NewID(),
-		// 			Username:  "xD{",
-		// 			Password:  "test",
-		// 			Email:     "test@popcube.fr",
-		// 			NickName:  "NickName",
-		// 			FirstName: "Test",
-		// 			LastName:  "L",
-		// 			Role:      Owner,
-		// 		}
-		// 		So(user3.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
-		// 		user3 = User{
-		// 			WebID:     NewID(),
-		// 			Username:  "xD}",
-		// 			Password:  "test",
-		// 			Email:     "test@popcube.fr",
-		// 			NickName:  "NickName",
-		// 			FirstName: "Test",
-		// 			LastName:  "L",
-		// 			Role:      Owner,
-		// 		}
-		// 		So(user3.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
-		// 		user3 = User{
-		// 			WebID:     NewID(),
-		// 			Username:  "xD#",
-		// 			Password:  "test",
-		// 			Email:     "test@popcube.fr",
-		// 			NickName:  "NickName",
-		// 			FirstName: "Test",
-		// 			LastName:  "L",
-		// 			Role:      Owner,
-		// 		}
-		// 		So(user3.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
-		// 		user3 = User{
-		// 			WebID:     NewID(),
-		// 			Username:  "xD_",
-		// 			Password:  "test",
-		// 			Email:     "test@popcube.fr",
-		// 			NickName:  "NickName",
-		// 			FirstName: "Test",
-		// 			LastName:  "L",
-		// 			Role:      Owner,
-		// 		}
-		// 		So(user3.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user3.WebID))
-		// 	})
+		Convey("Provided wrong old User to modify should result in old_user error", func() {
+			user.WebID = "TesT"
+			Convey("Incorrect ID user should return a message invalid id", func() {
+				appError := usi.Update(&user, &userNew, ds)
+				So(appError, ShouldNotBeNil)
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldNotResemble, alreadyExistError)
+				So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userOld.PreSave", "model.user.is_valid.WebID.app_error", nil, ""))
+			})
+			user.WebID = NewID()
+			Convey("Incorrect username user should return error Invalid username", func() {
+				user.Username = "CeNomDevraitJelespereEtreBeaucoupTropLongPourLatrailleMaximaleDemandeParcequelaJeSuiunPoilFeneantEtDeboussouleSansnuldouteilnyavaitpersone"
+				appError := usi.Update(&user, &userNew, ds)
+				So(appError, ShouldNotBeNil)
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldNotResemble, alreadyExistError)
+				So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userOld.PreSave", "model.user.is_valid.Username.app_error", nil, "user_webID="+user.WebID))
+				user.Username = ""
+				appError = usi.Update(&user, &userNew, ds)
+				So(appError, ShouldNotBeNil)
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldNotResemble, alreadyExistError)
+				So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userOld.PreSave", "model.user.is_valid.Username.app_error", nil, "user_webID="+user.WebID))
+				user.Username = "xD/"
+				appError = usi.Update(&user, &userNew, ds)
+				So(appError, ShouldNotBeNil)
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldNotResemble, alreadyExistError)
+				So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userOld.PreSave", "model.user.is_valid.Username.app_error", nil, "user_webID="+user.WebID))
+				user.Username = "xD\\"
+				appError = usi.Update(&user, &userNew, ds)
+				So(appError, ShouldNotBeNil)
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldNotResemble, alreadyExistError)
+				So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userOld.PreSave", "model.user.is_valid.Username.app_error", nil, "user_webID="+user.WebID))
+				user.Username = "xD*"
+				appError = usi.Update(&user, &userNew, ds)
+				So(appError, ShouldNotBeNil)
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldNotResemble, alreadyExistError)
+				So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userOld.PreSave", "model.user.is_valid.Username.app_error", nil, "user_webID="+user.WebID))
+				user.Username = "xD{"
+				appError = usi.Update(&user, &userNew, ds)
+				So(appError, ShouldNotBeNil)
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldNotResemble, alreadyExistError)
+				So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userOld.PreSave", "model.user.is_valid.Username.app_error", nil, "user_webID="+user.WebID))
+			})
 
-		// 	Convey("Incorrect Email user should return error Invalid email", func() {
-		// 		user := User{
-		// 			Password:  "test",
-		// 			Email:     "testpopcube.fr",
-		// 			NickName:  "NickName",
-		// 			FirstName: "Test",
-		// 			LastName:  "L",
-		// 			Role:      Owner,
-		// 		}
-		// 		user.PreSave()
-		// 		So(user.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Email.app_error", nil, "user_webID="+user.WebID))
-		// 		user = User{
-		// 			Password:  "test",
-		// 			Email:     "test/popcube.fr",
-		// 			NickName:  "NickName",
-		// 			FirstName: "Test",
-		// 			LastName:  "L",
-		// 			Role:      Owner,
-		// 		}
-		// 		user.PreSave()
-		// 		So(user.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Email.app_error", nil, "user_webID="+user.WebID))
-		// 		user = User{
-		// 			Password:  "test",
-		// 			Email:     "CeNomDevraitJelespereEtreBeaucoupTropLongPourLatrailleMaximaleDemandeParcequelaJeSuiunPoilFeneantEtDeboussouleSansnuldouteilnyavaitpersone@popcube.fr",
-		// 			NickName:  "NickName",
-		// 			FirstName: "Test",
-		// 			LastName:  "L",
-		// 			Role:      Owner,
-		// 		}
-		// 		user.PreSave()
-		// 		So(user.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.Email.app_error", nil, "user_webID="+user.WebID))
-		// 	})
+			Convey("Password can]t be empty", func() {
+				user.Password = ""
+				appError := usi.Update(&user, &userNew, ds)
+				So(appError, ShouldNotBeNil)
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldNotResemble, alreadyExistError)
+				So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userOld.PreSave", "model.user.is_valid.auth_data_pwd.app_error", nil, "user_webID="+user.WebID))
+			})
+		})
 
-		// 	Convey("NickName, FirstName: and Lastname should be less than 64 characters long", func() {
-		// 		user := User{
-		// 			Password:  "test",
-		// 			Email:     "test@popcube.fr",
-		// 			NickName:  "NickNameéèéééééééééééétroplongazdazdzadazdazdzadz_>_<azdazdzadazdazz",
-		// 			FirstName: "Test",
-		// 			LastName:  "L",
-		// 			Role:      Owner,
-		// 		}
-		// 		user.PreSave()
-		// 		So(user.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.NickName.app_error", nil, "user_webID="+user.WebID))
-		// 		user = User{
-		// 			Password:  "test",
-		// 			Email:     "test@popcube.fr",
-		// 			NickName:  "NickName",
-		// 			FirstName: "TestéèéèéèéèèéèéèéèéèéèèéèéèéèèéèéèNJnefiznfidsdfnpdsjfazddrfazdzadzadzadzadazd",
-		// 			LastName:  "L",
-		// 			Role:      Owner,
-		// 		}
-		// 		user.PreSave()
-		// 		So(user.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.first_name.app_error", nil, "user_webID="+user.WebID))
-		// 		user = User{
-		// 			Password:  "test",
-		// 			Email:     "test@popcube.fr",
-		// 			NickName:  "NickName",
-		// 			FirstName: "Test",
-		// 			LastName:  "TestéèéèéèéèèéèéèéèéèéèèéèéèéèèéèéèNJnefiznfidsdfdazdzadzadzadzadzadzadazdazdazdzadazdzanpdsjf",
-		// 			Role:      Owner,
-		// 		}
-		// 		user.PreSave()
-		// 		So(user.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.last_name.app_error", nil, "user_webID="+user.WebID))
-		// 	})
-
-		// 	Convey("Password can]t be empty", func() {
-		// 		user := User{
-		// 			Email:     "test@popcube.fr",
-		// 			NickName:  "NickName",
-		// 			FirstName: "Test",
-		// 			LastName:  "L",
-		// 			Role:      Owner,
-		// 		}
-		// 		user.PreSave()
-		// 		So(user.IsValid(false), ShouldResemble, u.NewLocAppError("user.IsValid", "model.user.is_valid.auth_data_pwd.app_error", nil, "user_webID="+user.WebID))
-		// 	})
-		// })
-
-		// Convey("Provided wrong new User to modify should result in new_user error", func() {
-		// 	userNew.UserName = strings.ToLower("ThisShouldBeAFreakingLongEnougthStringToRefuse.BahNon, pas tout seul. C'est long 64 caractères en vrai  ~#~")
-		// 	Convey("Too long user name should return Too Long user name error", func() {
-		// 		appError := usi.Update(&user, &userNew, ds)
-		// 		So(appError, ShouldNotBeNil)
-		// 		So(appError, ShouldNotResemble, dbError)
-		// 		So(appError, ShouldNotResemble, alreadyExistError)
-		// 		So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.user_name.app_error", nil, "id="+userNew.WebID))
-		// 	})
-		// 	Convey("Incorect Alpha Num user name should be refused", func() {
-		// 		userNew.UserName = "?/+*"
-		// 		appError = usi.Update(&user, &userNew, ds)
-		// 		So(appError, ShouldNotBeNil)
-		// 		So(appError, ShouldNotResemble, dbError)
-		// 		So(appError, ShouldNotResemble, alreadyExistError)
-		// 		So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.not_alphanum_user_name.app_error", nil, "id="+userNew.WebID))
-		// 		userNew.UserName = "("
-		// 		appError = usi.Update(&user, &userNew, ds)
-		// 		So(appError, ShouldNotBeNil)
-		// 		So(appError, ShouldNotResemble, dbError)
-		// 		So(appError, ShouldNotResemble, alreadyExistError)
-		// 		So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.not_alphanum_user_name.app_error", nil, "id="+userNew.WebID))
-		// 		userNew.UserName = "{"
-		// 		appError = usi.Update(&user, &userNew, ds)
-		// 		So(appError, ShouldNotBeNil)
-		// 		So(appError, ShouldNotResemble, dbError)
-		// 		So(appError, ShouldNotResemble, alreadyExistError)
-		// 		So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.not_alphanum_user_name.app_error", nil, "id="+userNew.WebID))
-		// 		userNew.UserName = "}"
-		// 		appError = usi.Update(&user, &userNew, ds)
-		// 		So(appError, ShouldNotBeNil)
-		// 		So(appError, ShouldNotResemble, dbError)
-		// 		So(appError, ShouldNotResemble, alreadyExistError)
-		// 		So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.not_alphanum_user_name.app_error", nil, "id="+userNew.WebID))
-		// 		userNew.UserName = ")"
-		// 		appError = usi.Update(&user, &userNew, ds)
-		// 		So(appError, ShouldNotBeNil)
-		// 		So(appError, ShouldNotResemble, dbError)
-		// 		So(appError, ShouldNotResemble, alreadyExistError)
-		// 		So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.not_alphanum_user_name.app_error", nil, "id="+userNew.WebID))
-		// 		userNew.UserName = "["
-		// 		appError = usi.Update(&user, &userNew, ds)
-		// 		So(appError, ShouldNotBeNil)
-		// 		So(appError, ShouldNotResemble, dbError)
-		// 		So(appError, ShouldNotResemble, alreadyExistError)
-		// 		So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.not_alphanum_user_name.app_error", nil, "id="+userNew.WebID))
-		// 		userNew.UserName = "]"
-		// 		appError = usi.Update(&user, &userNew, ds)
-		// 		So(appError, ShouldNotBeNil)
-		// 		So(appError, ShouldNotResemble, dbError)
-		// 		So(appError, ShouldNotResemble, alreadyExistError)
-		// 		So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.not_alphanum_user_name.app_error", nil, "id="+userNew.WebID))
-		// 		userNew.UserName = " "
-		// 		appError = usi.Update(&user, &userNew, ds)
-		// 		So(appError, ShouldNotBeNil)
-		// 		So(appError, ShouldNotResemble, dbError)
-		// 		So(appError, ShouldNotResemble, alreadyExistError)
-		// 		So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.not_alphanum_user_name.app_error", nil, "id="+userNew.WebID))
-		// 	})
-		// 	userNew.UserName = "electra"
-		// 	userNew.Description = "Il Me faut beaucoup trop de character  ..... 1024, c'est grand. Très grand. Comme l'infini. C'est long. Surtout à la fin. Et puis même après tout ça, je suis pas sur que ce soit assez .... Compteur ??? Vous êtes la ? :p :'( :docker: :troll-face: Alors, la, c'était 250 en fait .... Du coup, on va multiplier par 4 un ? OK ? l Me faut beaucoup trop de character  ..... 1024, c'est grand. Très grand. Comme l'infini. C'est long. Surtout à la fin. Et puis même après tout ça, je suis pas sur que ce soit assez .... Compteur ??? Vous êtes la ? :p :'( :docker: :troll-face: Alors, la, c'était 250 en fait .... Du coup, on va multiplier par 4 un ? OK ? l Me faut beaucoup trop de character  ..... 1024, c'est grand. Très grand. Comme l'infini. C'est long. Surtout à la fin. Et puis même après tout ça, je suis pas sur que ce soit assez .... Compteur ??? Vous êtes la ? :p :'( :docker: :troll-face: Alors, la, c'était 250 en fait .... Du coup, on va multiplier par 4 un ? OK ? l Me faut beaucoup trop de character  ..... 1024, c'est grand. Très grand. Comme l'infini. C'est long. Surtout à la fin. Et puis même après tout ça, je suis pas sur que ce soit assez .... Compteur ??? Vous êtes la ? :p :'( :docker: :troll-face:"
-		// 	Convey("Given a too long description, should return too long description error :p", func() {
-		// 		appError = usi.Update(&user, &userNew, ds)
-		// 		So(appError, ShouldNotBeNil)
-		// 		So(appError, ShouldNotResemble, dbError)
-		// 		So(appError, ShouldNotResemble, alreadyExistError)
-		// 		So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.description.app_error", nil, "id="+userNew.WebID))
-		// 	})
-		// 	userNew.Description = "Stoppppppp"
-		// 	userNew.Subject = "Encore beaucoup de caractere pour rien .... mais un peu moins cette fois. Il n'en faut que 250 ........... Fait dodo, cola mon p'tit frere. Fais dodo, j'ai pêté un cable. Swing du null, Swing du null, c'est le swing du null ..... :guitare: :singer: :music: Je suis un main troll :O"
-		// 	Convey("Given a too long subject, should return too long description error :p", func() {
-		// 		appError = usi.Update(&user, &userNew, ds)
-		// 		So(appError, ShouldNotBeNil)
-		// 		So(appError, ShouldNotResemble, dbError)
-		// 		So(appError, ShouldNotResemble, alreadyExistError)
-		// 		So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.subject.app_error", nil, "id="+userNew.WebID))
-		// 	})
-		// 	userNew.Subject = "Safe"
-		// 	userNew.Type = "Outside of Range"
-		// 	Convey("Providing a wrong type should not work", func() {
-		// 		appError = usi.Update(&user, &userNew, ds)
-		// 		So(appError, ShouldNotBeNil)
-		// 		So(appError, ShouldNotResemble, dbError)
-		// 		So(appError, ShouldNotResemble, alreadyExistError)
-		// 		So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.type.app_error", nil, "id="+userNew.WebID))
-		// 	})
-		// })
+		Convey("Provided wrong new User to modify should result in old_user error", func() {
+			Convey("Incorrect username user should return error Invalid username", func() {
+				userNew.Username = "CeNomDevraitJelespereEtreBeaucoupTropLongPourLatrailleMaximaleDemandeParcequelaJeSuiunPoilFeneantEtDeboussouleSansnuldouteilnyavaitpersone"
+				appError := usi.Update(&user, &userNew, ds)
+				So(appError, ShouldNotBeNil)
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldNotResemble, alreadyExistError)
+				So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.Username.app_error", nil, "user_webID="+userNew.WebID))
+				userNew.Username = ""
+				appError = usi.Update(&user, &userNew, ds)
+				So(appError, ShouldNotBeNil)
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldNotResemble, alreadyExistError)
+				So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.Username.app_error", nil, "user_webID="+userNew.WebID))
+				userNew.Username = "xD/"
+				appError = usi.Update(&user, &userNew, ds)
+				So(appError, ShouldNotBeNil)
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldNotResemble, alreadyExistError)
+				So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.Username.app_error", nil, "user_webID="+userNew.WebID))
+				userNew.Username = "xD\\"
+				appError = usi.Update(&user, &userNew, ds)
+				So(appError, ShouldNotBeNil)
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldNotResemble, alreadyExistError)
+				So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.Username.app_error", nil, "user_webID="+userNew.WebID))
+				userNew.Username = "xD*"
+				appError = usi.Update(&user, &userNew, ds)
+				So(appError, ShouldNotBeNil)
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldNotResemble, alreadyExistError)
+				So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.Username.app_error", nil, "user_webID="+userNew.WebID))
+				userNew.Username = "xD{"
+				appError = usi.Update(&user, &userNew, ds)
+				So(appError, ShouldNotBeNil)
+				So(appError, ShouldNotResemble, dbError)
+				So(appError, ShouldNotResemble, alreadyExistError)
+				So(appError, ShouldResemble, u.NewLocAppError("userStoreImpl.Update.userNew.PreSave", "model.user.is_valid.Username.app_error", nil, "user_webID="+userNew.WebID))
+			})
+		})
 
 		db.Delete(&user)
 		db.Delete(&userNew)
 	})
 
-	// Convey("Testing Getters", t, func() {
-	// 	user0 := User{
-	// 		UserName:    "electra",
-	// 		Type:        "video",
-	// 		Private:     false,
-	// 		Description: "Testing user description :O",
-	// 		Subject:     "Sujet",
-	// 		Avatar:      "jesuiscool.svg",
-	// 	}
-	// 	user1 := User{
-	// 		UserName:    "mal",
-	// 		Type:        "audio",
-	// 		Private:     false,
-	// 		Description: "Speaking on Malsdjisqnju BD song from R. Sechan",
-	// 		Subject:     "Sujet1",
-	// 		Avatar:      "cover_mal.svg",
-	// 	}
-	// 	user2 := User{
-	// 		UserName: "lagaffesfantasio",
-	// 		Type:     "direct",
-	// 		Private:  false,
-	// 		Avatar:   "gaston.svg",
-	// 	}
-	// 	user1New := User{
-	// 		UserName:    "malheur",
-	// 		Private:     true,
-	// 		Description: "Let's speak about the BD Mal",
-	// 		Subject:     "Mal",
-	// 		Avatar:      "cover_mal_efique.svg",
-	// 	}
-	// 	user3 := User{
-	// 		UserName:    "corsicarms",
-	// 		Type:        "audio",
-	// 		Private:     false,
-	// 		Description: "Speaking on Corsic Arms song from R. Sechan",
-	// 		Subject:     "Sujet",
-	// 		Avatar:      "cover_csa.svg",
-	// 	}
+	Convey("Testing Getters", t, func() {
+		user0 := User{
+			Username:  "lucky",
+			Password:  "lucke",
+			Email:     "luckylucke@popcube.fr",
+			NickName:  "LL",
+			FirstName: "Luky",
+			LastName:  "Luke",
+			Locale:    "en_EN",
+			Role:      adminRole,
+		}
+		user1 := User{
+			Username:  "daltons",
+			Password:  "dalton",
+			Email:     "daltonsbrothers@popcube.fr",
+			NickName:  "thebrothers",
+			FirstName: "Joe",
+			LastName:  "Dalton",
+			Locale:    "en_EN",
+			Role:      standartRole,
+		}
+		user2 := User{
+			Username:  "moris",
+			Password:  "gossiny",
+			Email:     "moris&gossiny@popcube.fr",
+			NickName:  "Moris",
+			FirstName: "Moris",
+			LastName:  "Gossiny",
+			Locale:    "fr_FR",
+			Role:      ownerRole,
+		}
+		user1New := User{
+			Username:  "daltons",
+			Password:  "dalton",
+			Email:     "daltonsbrothers@popcube.fr",
+			NickName:  "thebrothers",
+			FirstName: "Joe, Jack, William, Avrell",
+			LastName:  "Dalton",
+			Locale:    "en_EN",
+			Role:      guestRole,
+		}
+		user3 := User{
+			Username:  "jolly",
+			Password:  "jumper",
+			Email:     "jollyjumper@popcube.fr",
+			NickName:  "JJ",
+			FirstName: "Jolly",
+			LastName:  "Jumper",
+			Locale:    "en_EN",
+			Role:      standartRole,
+		}
+		user4 := User{
+			Username:  "billythekid",
+			Password:  "chocolat",
+			Email:     "billythekid@popcube.fr",
+			NickName:  "Kid",
+			FirstName: "Billy",
+			LastName:  "The Kid",
+			Locale:    "en_EN",
+			Role:      guestRole,
+		}
 
-	// 	usi.Save(&user0, ds)
-	// 	usi.Save(&user1, ds)
-	// 	// usi.Update(&user1, &user1New, ds)
-	// 	usi.Save(&user2, ds)
-	// 	usi.Save(&user3, ds)
+		usi.Save(&user0, ds)
+		usi.Save(&user1, ds)
+		usi.Update(&user1, &user1New, ds)
+		usi.Save(&user2, ds)
+		usi.Save(&user3, ds)
+		usi.Save(&user4, ds)
 
-	// 	// Have to be after save so ID are up to date :O
-	// 	userList := []User{
-	// 		user0,
-	// 		user1,
-	// 		user2,
-	// 		user3,
-	// 	}
+		// Have to be after save so ID are up to date :O
+		userList := []User{
+			user0,
+			user1,
+			user2,
+			user3,
+			user4,
+		}
 
-	// 	audioList := []User{user1, user3}
-	// 	directList := []User{user2}
-	// 	privateList := []User{user2}
-	// 	publicList := []User{user0, user1, user3}
-	// 	emptyList := []User{}
+		// audioList := []User{user1, user3}
+		// directList := []User{user2}
+		// privateList := []User{user2}
+		// publicList := []User{user0, user1, user3}
+		emptyList := []User{}
 
-	// 	Convey("We have to be able to find all users in the db", func() {
-	// 		users := usi.GetAll(ds)
-	// 		So(users, ShouldNotResemble, &emptyList)
-	// 		So(users, ShouldResemble, &userList)
-	// 	})
+		Convey("We have to be able to find all users in the db", func() {
+			users := usi.GetAll(ds)
+			So(users, ShouldNotResemble, &emptyList)
+			So(users, ShouldResemble, &userList)
+		})
 
-	// 	Convey("We have to be able to find a user from is name", func() {
-	// 		user := usi.GetByName(user0.UserName, ds)
-	// 		So(user, ShouldNotResemble, &User{})
-	// 		So(user, ShouldResemble, &user0)
-	// 		user = usi.GetByName(user2.UserName, ds)
-	// 		So(user, ShouldNotResemble, &User{})
-	// 		So(user, ShouldResemble, &user2)
-	// 		user = usi.GetByName(user3.UserName, ds)
-	// 		So(user, ShouldNotResemble, &User{})
-	// 		So(user, ShouldResemble, &user3)
-	// 		Convey("Should also work from updated value", func() {
-	// 			user = usi.GetByName(user1.UserName, ds)
-	// 			So(user, ShouldNotResemble, &User{})
-	// 			So(user, ShouldResemble, &user1)
-	// 		})
-	// 	})
+		Convey("We have to be able to find a user from is name", func() {
+			user := usi.GetByUserName(user0.Username, ds)
+			So(user, ShouldNotResemble, &User{})
+			So(user, ShouldResemble, &user0)
+			user = usi.GetByUserName(user2.Username, ds)
+			So(user, ShouldNotResemble, &User{})
+			So(user, ShouldResemble, &user2)
+			user = usi.GetByUserName(user3.Username, ds)
+			So(user, ShouldNotResemble, &User{})
+			So(user, ShouldResemble, &user3)
+			user = usi.GetByUserName(user4.Username, ds)
+			So(user, ShouldNotResemble, &User{})
+			So(user, ShouldResemble, &user4)
+			Convey("Should also work from updated value", func() {
+				user = usi.GetByUserName(user1.Username, ds)
+				So(user, ShouldNotResemble, &User{})
+				So(user, ShouldResemble, &user1)
+			})
+		})
 
-	// 	Convey("We have to be able to find users from type", func() {
-	// 		users := usi.GetByType("audio", ds)
-	// 		So(users, ShouldNotResemble, &User{})
-	// 		So(users, ShouldResemble, &audioList)
-	// 		users = usi.GetByType("direct", ds)
-	// 		So(users, ShouldNotResemble, &User{})
-	// 		So(users, ShouldResemble, &directList)
-	// 	})
+		// Convey("We have to be able to find users from type", func() {
+		// 	users := usi.GetByType("audio", ds)
+		// 	So(users, ShouldNotResemble, &User{})
+		// 	So(users, ShouldResemble, &audioList)
+		// 	users = usi.GetByType("direct", ds)
+		// 	So(users, ShouldNotResemble, &User{})
+		// 	So(users, ShouldResemble, &directList)
+		// })
 
-	// 	Convey("We have to be able to find private or public users list", func() {
-	// 		users := usi.GetPrivate(ds)
-	// 		So(users, ShouldNotResemble, &User{})
-	// 		So(users, ShouldResemble, &privateList)
-	// 		users = usi.GetPublic(ds)
-	// 		So(users, ShouldNotResemble, &User{})
-	// 		So(users, ShouldResemble, &publicList)
-	// 	})
+		// Convey("We have to be able to find private or public users list", func() {
+		// 	users := usi.GetPrivate(ds)
+		// 	So(users, ShouldNotResemble, &User{})
+		// 	So(users, ShouldResemble, &privateList)
+		// 	users = usi.GetPublic(ds)
+		// 	So(users, ShouldNotResemble, &User{})
+		// 	So(users, ShouldResemble, &publicList)
+		// })
 
-	// 	Convey("Searching for non existent user should return empty", func() {
-	// 		user := usi.GetByName("fantome", ds)
-	// 		So(user, ShouldResemble, &User{})
-	// 	})
+		// Convey("Searching for non existent user should return empty", func() {
+		// 	user := usi.GetByName("fantome", ds)
+		// 	So(user, ShouldResemble, &User{})
+		// })
 
-	// 	db.Delete(&user0)
-	// 	db.Delete(&user1)
-	// 	db.Delete(&user1New)
-	// 	db.Delete(&user2)
-	// 	db.Delete(&user3)
+		db.Delete(&user0)
+		db.Delete(&user1)
+		db.Delete(&user1New)
+		db.Delete(&user2)
+		db.Delete(&user3)
 
-	// 	Convey("Searching all in empty table should return empty", func() {
-	// 		users := usi.GetAll(ds)
-	// 		So(users, ShouldResemble, &[]User{})
-	// 	})
-	// })
+		Convey("Searching all in empty table should return empty", func() {
+			users := usi.GetAll(ds)
+			So(users, ShouldResemble, &[]User{})
+		})
+	})
 
 	// Convey("Testing delete user", t, func() {
 	// 	dberror := u.NewLocAppError("userStoreImpl.Delete", "update.transaction.delete.encounterError", nil, "")

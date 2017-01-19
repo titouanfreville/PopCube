@@ -85,14 +85,14 @@ type User struct {
 	WebID              string `gorm:"column:webID; not null; unique;" json:"web_id"`
 	Username           string `gorm:"column:userName; not null; unique;" json:"username"`
 	Email              string `gorm:"column:email; not null; unique;" json:"email"`
-	EmailVerified      bool   `gorm:"column:emailVerified; not null; unique;" json:"email_verified"`
+	EmailVerified      bool   `gorm:"column:emailVerified; not null;" json:"email_verified"`
 	UpdatedAt          int64  `gorm:"column:updatedAt; not null;" json:"update_at"`
 	Deleted            bool   `gorm:"column:deleted; not null;" json:"deleted"`
 	Password           string `gorm:"column:password; not null;" json:"password"`
 	LastPasswordUpdate int64  `gorm:"column:lastPasswordUpdate; not null;" json:"last_password_update"`
 	FailedAttempts     int    `gorm:"column:failedAttempts; not null;" json:"failed_attempts"`
 	Locale             string `gorm:"column:locale; not null;" json:"locale"`
-	Role               Role   `gorm:"column:role; not null;ForeignKey:IDRole;" json:"-"`
+	Role               Role   `gorm:"column:role; not null;" json:"-"`
 	Avatar             string `gorm:"column:avatar;" json:"avatar, omitempty"`
 	NickName           string `gorm:"column:nickName; unique" json:"nickname, omitempty"`
 	FirstName          string `gorm:"column:firstName;" json:"first_name, omitempty"`
