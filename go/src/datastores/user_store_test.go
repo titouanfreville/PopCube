@@ -62,9 +62,9 @@ func TestUserStore(t *testing.T) {
 		alreadyExistError := u.NewLocAppError("userStoreImpl.Save", "save.transaction.create.already_exist", nil, "User Name: electras")
 		// empty := User{}
 		user := User{
-			Username:  "TesT",
+			Username:  "TesT2",
 			Password:  "test",
-			Email:     "test@popcube.fr",
+			Email:     "test2@popcube.fr",
 			NickName:  "NickName",
 			FirstName: "Test",
 			LastName:  "L",
@@ -280,10 +280,8 @@ func TestUserStore(t *testing.T) {
 			user4,
 		}
 
-		// audioList := []User{user1, user3}
-		// directList := []User{user2}
-		// privateList := []User{user2}
-		// publicList := []User{user0, user1, user3}
+		admins := []User{user0}
+		guests := []User{user1, user4}
 		emptyList := []User{}
 
 		Convey("We have to be able to find all users in the db", func() {
@@ -306,34 +304,41 @@ func TestUserStore(t *testing.T) {
 			So(user, ShouldNotResemble, &User{})
 			So(user, ShouldResemble, &user4)
 			Convey("Should also work from updated value", func() {
-				user = usi.GetByUserName(user1.Username, ds)
+				user = usi.GetByUserName(user1New.Username, ds)
 				So(user, ShouldNotResemble, &User{})
 				So(user, ShouldResemble, &user1)
 			})
 		})
 
-		// Convey("We have to be able to find users from type", func() {
-		// 	users := usi.GetByType("audio", ds)
-		// 	So(users, ShouldNotResemble, &User{})
-		// 	So(users, ShouldResemble, &audioList)
-		// 	users = usi.GetByType("direct", ds)
-		// 	So(users, ShouldNotResemble, &User{})
-		// 	So(users, ShouldResemble, &directList)
-		// })
+		Convey("We have to be able to find a user from his email", func() {
+			user := usi.GetByEmail(user0.Email, ds)
+			So(user, ShouldNotResemble, &User{})
+			So(user, ShouldResemble, &user0)
+			user = usi.GetByEmail(user2.Email, ds)
+			So(user, ShouldNotResemble, &User{})
+			So(user, ShouldResemble, &user2)
+			user = usi.GetByEmail(user3.Email, ds)
+			So(user, ShouldNotResemble, &User{})
+			So(user, ShouldResemble, &user3)
+			user = usi.GetByEmail(user4.Email, ds)
+			So(user, ShouldNotResemble, &User{})
+			So(user, ShouldResemble, &user4)
+		})
 
-		// Convey("We have to be able to find private or public users list", func() {
-		// 	users := usi.GetPrivate(ds)
-		// 	So(users, ShouldNotResemble, &User{})
-		// 	So(users, ShouldResemble, &privateList)
-		// 	users = usi.GetPublic(ds)
-		// 	So(users, ShouldNotResemble, &User{})
-		// 	So(users, ShouldResemble, &publicList)
-		// })
+		Convey("We have to be able to find an user from his Role", func() {
+			users := usi.GetByRole(&adminRole, ds)
+			So(users, ShouldNotResemble, &User{})
+			So(users, ShouldResemble, &admins)
+			users = usi.GetByRole(&guestRole, ds)
+			So(users, ShouldNotResemble, &User{})
+			So(users, ShouldResemble, &guests)
 
-		// Convey("Searching for non existent user should return empty", func() {
-		// 	user := usi.GetByName("fantome", ds)
-		// 	So(user, ShouldResemble, &User{})
-		// })
+		})
+
+		Convey("Searching for non existent user should return empty", func() {
+			user := usi.GetByUserName("fantome", ds)
+			So(user, ShouldResemble, &User{})
+		})
 
 		db.Delete(&user0)
 		db.Delete(&user1)

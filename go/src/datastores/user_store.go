@@ -130,6 +130,8 @@ func (usi UserStoreImpl) GetByRole(role *models.Role, ds dbStore) *[]models.User
 
 // }
 
+//
+
 // Delete Used to get user from DB
 func (usi UserStoreImpl) Delete(user *models.User, ds dbStore) *u.AppError {
 	db := *ds.Db
