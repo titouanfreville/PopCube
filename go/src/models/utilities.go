@@ -4,15 +4,15 @@ import (
 	"bytes"
 	"crypto/rand"
 	"encoding/base32"
-	"encoding/json"
 	"fmt"
-	"github.com/pborman/uuid"
-	"io"
 	"net/mail"
 	"net/url"
 	"regexp"
 	"strings"
 	"time"
+	u "utils"
+
+	"github.com/pborman/uuid"
 )
 
 const (
@@ -25,16 +25,16 @@ const (
 )
 
 // StringInterface Interface for map[string]
-type StringInterface map[string]interface{}
+// type StringInterface map[string]interface{}
 
-// StringMap Redefine type map[string]string
-type StringMap map[string]string
+// // StringMap Redefine type map[string]string
+// type StringMap map[string]string
 
-// StringArray Reddefine type []string
-type StringArray []string
+// // StringArray Reddefine type []string
+// type StringArray []string
 
-//EncryptStringMap define type map[string]string for encryption usage
-type EncryptStringMap map[string]string
+// //EncryptStringMap define type map[string]string for encryption usage
+// type EncryptStringMap map[string]string
 
 var encoding = base32.NewEncoding("ybndrfg8ejkmcpqxot1uwisza345h769")
 
@@ -68,127 +68,127 @@ func GetMillis() int64 {
 }
 
 // MapToJSON converts a map to a json string
-func MapToJSON(objmap map[string]string) string {
-	b, err := json.Marshal(objmap)
-	if err != nil {
-		return ""
-	}
-	return string(b)
-}
+// func MapToJSON(objmap map[string]string) string {
+// 	b, err := json.Marshal(objmap)
+// 	if err != nil {
+// 		return ""
+// 	}
+// 	return string(b)
+// }
 
-// MapFromJSON will decode the key/value pair map
-func MapFromJSON(data io.Reader) map[string]string {
-	decoder := json.NewDecoder(data)
+// // MapFromJSON will decode the key/value pair map
+// func MapFromJSON(data io.Reader) map[string]string {
+// 	decoder := json.NewDecoder(data)
 
-	var objmap map[string]string
-	if err := decoder.Decode(&objmap); err != nil {
-		return make(map[string]string)
-	}
-	return objmap
-}
+// 	var objmap map[string]string
+// 	if err := decoder.Decode(&objmap); err != nil {
+// 		return make(map[string]string)
+// 	}
+// 	return objmap
+// }
 
-// ArrayToJSON transfor an array into a json array
-func ArrayToJSON(objmap []string) string {
-	b, err := json.Marshal(objmap)
-	if err != nil {
-		return ""
-	}
-	return string(b)
-}
+// // ArrayToJSON transfor an array into a json array
+// func ArrayToJSON(objmap []string) string {
+// 	b, err := json.Marshal(objmap)
+// 	if err != nil {
+// 		return ""
+// 	}
+// 	return string(b)
+// }
 
-// ArrayFromJSON Try to parse a json array into a go string array
-func ArrayFromJSON(data io.Reader) []string {
-	decoder := json.NewDecoder(data)
+// // ArrayFromJSON Try to parse a json array into a go string array
+// func ArrayFromJSON(data io.Reader) []string {
+// 	decoder := json.NewDecoder(data)
 
-	var objmap []string
-	if err := decoder.Decode(&objmap); err != nil {
-		return make([]string, 0)
-	}
-	return objmap
-}
+// 	var objmap []string
+// 	if err := decoder.Decode(&objmap); err != nil {
+// 		return make([]string, 0)
+// 	}
+// 	return objmap
+// }
 
-// ArrayFromInterface transfor an interface into a Json object
-func ArrayFromInterface(data interface{}) []string {
-	stringArray := []string{}
+// // ArrayFromInterface transfor an interface into a Json object
+// func ArrayFromInterface(data interface{}) []string {
+// 	stringArray := []string{}
 
-	dataArray, ok := data.([]interface{})
-	if !ok {
-		return stringArray
-	}
+// 	dataArray, ok := data.([]interface{})
+// 	if !ok {
+// 		return stringArray
+// 	}
 
-	for _, v := range dataArray {
-		if str, ok := v.(string); ok {
-			stringArray = append(stringArray, str)
-		}
-	}
+// 	for _, v := range dataArray {
+// 		if str, ok := v.(string); ok {
+// 			stringArray = append(stringArray, str)
+// 		}
+// 	}
 
-	return stringArray
-}
+// 	return stringArray
+// }
 
-// StringInArray Search if provided string exist in provided array
-func StringInArray(a string, array []string) bool {
-	for _, b := range array {
-		if b == a {
-			return true
-		}
-	}
-	return false
-}
+// // StringInArray Search if provided string exist in provided array
+// func StringInArray(a string, array []string) bool {
+// 	for _, b := range array {
+// 		if b == a {
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
 
-// StringInterfaceToJSON convert String interface into Json object
-func StringInterfaceToJSON(objmap map[string]interface{}) string {
-	b, err := json.Marshal(objmap)
-	if err != nil {
-		return ""
-	}
-	return string(b)
-}
+// // StringInterfaceToJSON convert String interface into Json object
+// func StringInterfaceToJSON(objmap map[string]interface{}) string {
+// 	b, err := json.Marshal(objmap)
+// 	if err != nil {
+// 		return ""
+// 	}
+// 	return string(b)
+// }
 
-// StringInterfaceFromJSON Try to parse a json into map[string]interace{}
-func StringInterfaceFromJSON(data io.Reader) map[string]interface{} {
-	decoder := json.NewDecoder(data)
+// // StringInterfaceFromJSON Try to parse a json into map[string]interace{}
+// func StringInterfaceFromJSON(data io.Reader) map[string]interface{} {
+// 	decoder := json.NewDecoder(data)
 
-	var objmap map[string]interface{}
-	if err := decoder.Decode(&objmap); err != nil {
-		return make(map[string]interface{})
-	}
-	return objmap
-}
+// 	var objmap map[string]interface{}
+// 	if err := decoder.Decode(&objmap); err != nil {
+// 		return make(map[string]interface{})
+// 	}
+// 	return objmap
+// }
 
-// StringToJSON convert provided string into Json object
-func StringToJSON(s string) string {
-	b, err := json.Marshal(s)
-	if err != nil {
-		return ""
-	}
-	return string(b)
-}
+// // StringToJSON convert provided string into Json object
+// func StringToJSON(s string) string {
+// 	b, err := json.Marshal(s)
+// 	if err != nil {
+// 		return ""
+// 	}
+// 	return string(b)
+// }
 
-// StringFromJSON Convert providing json into string
-func StringFromJSON(data io.Reader) string {
-	decoder := json.NewDecoder(data)
+// // StringFromJSON Convert providing json into string
+// func StringFromJSON(data io.Reader) string {
+// 	decoder := json.NewDecoder(data)
 
-	var s string
-	if err := decoder.Decode(&s); err != nil {
-		return ""
-	}
-	return s
-}
+// 	var s string
+// 	if err := decoder.Decode(&s); err != nil {
+// 		return ""
+// 	}
+// 	return s
+// }
 
-// IsLower check if a string contain only lower cas characters
-func IsLower(s string) bool {
-	return strings.ToLower(s) == s
-}
+// u.IsLower check if a string contain only lower cas characters
+// func u.IsLower(s string) bool {
+// 	return strings.ToLower(s) == s
+// }
 
 // IsValidEmail check email validity
 func IsValidEmail(email string) bool {
 	_, err := mail.ParseAddress(email)
-	return err == nil && IsLower(email)
+	return err == nil && u.IsLower(email)
 }
 
 // IsValidDomain check if provided value is a possible domain name
 func IsValidDomain(domain string) bool {
-	return IsLower(domain) && IsValidAlphaNum(domain, true)
+	return u.IsLower(domain) && IsValidAlphaNum(domain, true)
 }
 
 var reservedName = []string{

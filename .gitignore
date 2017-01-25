@@ -98,6 +98,7 @@ pkg
 github.com
 golang.org
 gopkg.in
+sourcegraph.com
 
 # Workbench
 *.bak
@@ -107,3 +108,4 @@ gopkg.in
 
 # Docs
 docs/*_documentation.html
+coverage/*

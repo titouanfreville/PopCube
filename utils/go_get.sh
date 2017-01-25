@@ -9,4 +9,5 @@ go get -v github.com/jinzhu/gorm && \
 go get -v github.com/pborman/uuid && \
 go get -v github.com/Sirupsen/logrus && \
 go get -v github.com/alecthomas/log4go && \
-go get -v github.com/go-sql-driver/mysql
+go get -v github.com/go-sql-driver/mysql && \
+go get -v github.com/pressly/chi

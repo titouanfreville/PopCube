@@ -19,10 +19,11 @@ package datastores
 import (
 	"fmt"
 	// Importing sql driver. They are used by gorm package and used by default from blank.
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
 	"models"
 	u "utils"
+
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
 )
 
 // dbStore Struct to manage Db knowledge
@@ -149,7 +150,7 @@ type AvatarStore interface {
 	Update(avatar *models.Avatar, newAvatar *models.Avatar, ds dbStore) *u.AppError
 	GetByName(avatarName string, ds dbStore) *models.Avatar
 	GetByLink(avatarLink string, ds dbStore) *models.Avatar
-	GetAll(ds dbStore) *models.Avatar
+	GetAll(ds dbStore) *[]models.Avatar
 	Delete(avatar *models.Avatar, ds dbStore) *u.AppError
 }
 
