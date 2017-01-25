@@ -87,7 +87,7 @@ func (channel *Channel) IsValid(isUpdate bool) *u.AppError {
 		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebID)
 	}
 
-	if !StringInArray(channel.Type, ChannelAvailableTypes) {
+	if !u.StringInArray(channel.Type, ChannelAvailableTypes) {
 		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebID)
 	}
 

@@ -14,7 +14,8 @@ func TestAvatarStore(t *testing.T) {
 	ds := dbStore{}
 	ds.InitConnection("root", "popcube_test", "popcube_dev")
 	db := *ds.Db
-	asi := AvatarStoreImpl{}
+	// asi := AvatarStoreImpl{}
+	asi := NewAvatarStore()
 	Convey("Testing save function", t, func() {
 		dbError := u.NewLocAppError("avatarStoreImpl.Save", "save.transaction.create.encounterError", nil, "")
 		alreadyexistError := u.NewLocAppError("avatarStoreImpl.Save", "save.transaction.create.already_exist", nil, "Avatar Name: Troll Face")

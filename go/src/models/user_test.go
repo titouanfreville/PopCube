@@ -4,11 +4,12 @@
 package models
 
 import (
-	. "github.com/smartystreets/goconvey/convey"
 	"strconv"
 	"strings"
 	"testing"
 	u "utils"
+
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 // Test correction test for user ;)
@@ -65,8 +66,8 @@ func TestUserModel(t *testing.T) {
 
 			Convey("Data should be correctly formated", func() {
 				user.PreSave()
-				So(IsLower(user.Username), ShouldBeTrue)
-				So(IsLower(user.Email), ShouldBeTrue)
+				So(u.IsLower(user.Username), ShouldBeTrue)
+				So(u.IsLower(user.Email), ShouldBeTrue)
 			})
 
 			Convey("Etag should be correctly generated", func() {
@@ -95,8 +96,8 @@ func TestUserModel(t *testing.T) {
 
 			Convey("Data should be correctly formated", func() {
 				user.PreSave()
-				So(IsLower(user.Username), ShouldBeTrue)
-				So(IsLower(user.Email), ShouldBeTrue)
+				So(u.IsLower(user.Username), ShouldBeTrue)
+				So(u.IsLower(user.Email), ShouldBeTrue)
 			})
 
 			Convey("Etag should be correctly generated", func() {
@@ -165,8 +166,8 @@ func TestUserModel(t *testing.T) {
 			})
 
 			Convey("Applying PreSave should correctly format values", func() {
-				So(IsLower(user1.Username), ShouldBeTrue)
-				So(IsLower(user1.Email), ShouldBeTrue)
+				So(u.IsLower(user1.Username), ShouldBeTrue)
+				So(u.IsLower(user1.Email), ShouldBeTrue)
 			})
 		})
 	})

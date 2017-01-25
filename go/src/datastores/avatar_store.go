@@ -7,7 +7,11 @@ import (
 
 // AvatarStoreImpl Used to implement AvatarStore interface
 type AvatarStoreImpl struct {
-	AvatarStore
+}
+
+// NewAvatarStore Generate the struct for avatar store
+func NewAvatarStore() AvatarStore {
+	return &AvatarStoreImpl{}
 }
 
 // Save Use to save avatar in BB

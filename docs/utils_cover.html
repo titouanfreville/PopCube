@@ -56,7 +56,7 @@
 				
 				<option value="file0">utils/apperrors.go (74.2%)</option>
 				
-				<option value="file1">utils/utils.go (53.3%)</option>
+				<option value="file1">utils/utils.go (12.5%)</option>
 				
 				</select>
 			</div>
@@ -166,11 +166,32 @@ func NewLocAppError(where string, id string, params map[string]interface{}, deta
 		
 		<pre class="file" id="file1" style="display: none">package utils
 
-// import (
-//   "os"
-// )
+import (
+        "encoding/json"
+        "io"
+        "strings"
+)
 
-func stringArrayIntersection(arr1, arr2 []string) []string <span class="cov6" title="8">{
+const (
+        lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz"
+        upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        numbers          = "0123456789"
+        symbols          = " !\"\\#$%&amp;'()*+,-./:;&lt;=&gt;?@[]^_`|~"
+        //CurrentVersion  exprt the current application version (Used for Etags)
+        CurrentVersion = "0.0.0"
+)
+
+// StringInterface Interface for map[string]
+type StringInterface map[string]interface{}
+
+// StringMap Redefine type map[string]string
+type StringMap map[string]string
+
+// StringArray Reddefine type []string
+type StringArray []string
+
+//StringArrayIntersection interesection between string arrays
+func StringArrayIntersection(arr1, arr2 []string) []string <span class="cov6" title="8">{
         arrMap := map[string]bool{}
         result := []string{}
 
@@ -198,7 +219,8 @@ func stringArrayIntersection(arr1, arr2 []string) []string <span class="cov6" ti
 //   return false
 // }
 
-func removeDuplicatesFromStringArray(arr []string) []string <span class="cov0" title="0">{
+//RemoveDuplicatesFromStringArray remove duplicate string from array ...
+func RemoveDuplicatesFromStringArray(arr []string) []string <span class="cov0" title="0">{
         result := make([]string, 0, len(arr))
         seen := make(map[string]bool)
 
@@ -211,6 +233,119 @@ func removeDuplicatesFromStringArray(arr []string) []string <span class="cov0" t
 
         <span class="cov0" title="0">return result</span>
 }
+
+// MapToJSON converts a map to a json string
+func MapToJSON(objmap map[string]string) string <span class="cov0" title="0">{
+        b, err := json.Marshal(objmap)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov0" title="0">return string(b)</span>
+}
+
+// MapFromJSON will decode the key/value pair map
+func MapFromJSON(data io.Reader) map[string]string <span class="cov0" title="0">{
+        decoder := json.NewDecoder(data)
+
+        var objmap map[string]string
+        if err := decoder.Decode(&amp;objmap); err != nil </span><span class="cov0" title="0">{
+                return make(map[string]string)
+        }</span>
+        <span class="cov0" title="0">return objmap</span>
+}
+
+// ArrayToJSON transfor an array into a json array
+func ArrayToJSON(objmap []string) string <span class="cov0" title="0">{
+        b, err := json.Marshal(objmap)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov0" title="0">return string(b)</span>
+}
+
+// ArrayFromJSON Try to parse a json array into a go string array
+func ArrayFromJSON(data io.Reader) []string <span class="cov0" title="0">{
+        decoder := json.NewDecoder(data)
+
+        var objmap []string
+        if err := decoder.Decode(&amp;objmap); err != nil </span><span class="cov0" title="0">{
+                return make([]string, 0)
+        }</span>
+        <span class="cov0" title="0">return objmap</span>
+}
+
+// ArrayFromInterface transfor an interface into a Json object
+func ArrayFromInterface(data interface{}) []string <span class="cov0" title="0">{
+        stringArray := []string{}
+
+        dataArray, ok := data.([]interface{})
+        if !ok </span><span class="cov0" title="0">{
+                return stringArray
+        }</span>
+
+        <span class="cov0" title="0">for _, v := range dataArray </span><span class="cov0" title="0">{
+                if str, ok := v.(string); ok </span><span class="cov0" title="0">{
+                        stringArray = append(stringArray, str)
+                }</span>
+        }
+
+        <span class="cov0" title="0">return stringArray</span>
+}
+
+// StringInArray Search if provided string exist in provided array
+func StringInArray(a string, array []string) bool <span class="cov0" title="0">{
+        for _, b := range array </span><span class="cov0" title="0">{
+                if b == a </span><span class="cov0" title="0">{
+                        return true
+                }</span>
+        }
+        <span class="cov0" title="0">return false</span>
+}
+
+// StringInterfaceToJSON convert String interface into Json object
+func StringInterfaceToJSON(objmap map[string]interface{}) string <span class="cov0" title="0">{
+        b, err := json.Marshal(objmap)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov0" title="0">return string(b)</span>
+}
+
+// StringInterfaceFromJSON Try to parse a json into map[string]interace{}
+func StringInterfaceFromJSON(data io.Reader) map[string]interface{} <span class="cov0" title="0">{
+        decoder := json.NewDecoder(data)
+
+        var objmap map[string]interface{}
+        if err := decoder.Decode(&amp;objmap); err != nil </span><span class="cov0" title="0">{
+                return make(map[string]interface{})
+        }</span>
+        <span class="cov0" title="0">return objmap</span>
+}
+
+// StringToJSON convert provided string into Json object
+func StringToJSON(s string) string <span class="cov0" title="0">{
+        b, err := json.Marshal(s)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov0" title="0">return string(b)</span>
+}
+
+// StringFromJSON Convert providing json into string
+func StringFromJSON(data io.Reader) string <span class="cov0" title="0">{
+        decoder := json.NewDecoder(data)
+
+        var s string
+        if err := decoder.Decode(&amp;s); err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov0" title="0">return s</span>
+}
+
+// IsLower check if a string contain only lower cas characters
+func IsLower(s string) bool <span class="cov0" title="0">{
+        return strings.ToLower(s) == s
+}</span>
 </pre>
 		
 		</div>
