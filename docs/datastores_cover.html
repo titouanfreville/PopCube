@@ -56,19 +56,19 @@
 				
 				<option value="file0">datastores/avatar_store.go (83.7%)</option>
 				
-				<option value="file1">datastores/channel_store.go (76.2%)</option>
+				<option value="file1">datastores/channel_store.go (73.0%)</option>
 				
-				<option value="file2">datastores/data_store.go (70.5%)</option>
+				<option value="file2">datastores/data_store.go (51.4%)</option>
 				
 				<option value="file3">datastores/emojis_store.go (84.6%)</option>
 				
-				<option value="file4">datastores/organisation_store.go (43.8%)</option>
+				<option value="file4">datastores/organisation_store.go (87.5%)</option>
 				
 				<option value="file5">datastores/parameter_store.go (86.7%)</option>
 				
-				<option value="file6">datastores/roles_store.go (75.9%)</option>
+				<option value="file6">datastores/roles_store.go (85.2%)</option>
 				
-				<option value="file7">datastores/user_store.go (44.0%)</option>
+				<option value="file7">datastores/user_store.go (46.7%)</option>
 				
 				</select>
 			</div>
@@ -94,8 +94,8 @@
 		<pre class="file" id="file0" style="display: none">package datastores
 
 import (
-        "models"
-        u "utils"
+        "github.com/titouanfreville/popcubeapi/models"
+        u "github.com/titouanfreville/popcubeapi/utils"
 )
 
 // AvatarStoreImpl Used to implement AvatarStore interface
@@ -108,47 +108,47 @@ func NewAvatarStore() AvatarStore <span class="cov1" title="1">{
 }</span>
 
 // Save Use to save avatar in BB
-func (asi AvatarStoreImpl) Save(avatar *models.Avatar, ds dbStore) *u.AppError <span class="cov10" title="36">{
+func (asi AvatarStoreImpl) Save(avatar *models.Avatar, ds dbStore) *u.AppError <span class="cov10" title="40">{
         db := *ds.Db
         transaction := db.Begin()
         if appError := avatar.IsValid(); appError != nil </span><span class="cov0" title="0">{
                 transaction.Rollback()
                 return u.NewLocAppError("avatarStoreImpl.Save.avatar.PreSave", appError.ID, nil, appError.DetailedError)
         }</span>
-        <span class="cov10" title="36">if !transaction.NewRecord(avatar) </span><span class="cov1" title="1">{
+        <span class="cov10" title="40">if !transaction.NewRecord(avatar) </span><span class="cov1" title="1">{
                 transaction.Rollback()
                 return u.NewLocAppError("avatarStoreImpl.Save", "save.transaction.create.already_exist", nil, "Avatar Name: "+avatar.Name)
         }</span>
-        <span class="cov9" title="35">if err := transaction.Create(&amp;avatar).Error; err != nil </span><span class="cov7" title="11">{
+        <span class="cov9" title="39">if err := transaction.Create(&amp;avatar).Error; err != nil </span><span class="cov0" title="0">{
                 transaction.Rollback()
                 return u.NewLocAppError("avatarStoreImpl.Save", "save.transaction.create.encounterError :"+err.Error(), nil, "")
         }</span>
-        <span class="cov8" title="24">transaction.Commit()
+        <span class="cov9" title="39">transaction.Commit()
         return nil</span>
 }
 
 // Update Used to update avatar in DB
-func (asi AvatarStoreImpl) Update(avatar *models.Avatar, newAvatar *models.Avatar, ds dbStore) *u.AppError <span class="cov5" title="5">{
+func (asi AvatarStoreImpl) Update(avatar *models.Avatar, newAvatar *models.Avatar, ds dbStore) *u.AppError <span class="cov7" title="12">{
         db := *ds.Db
         transaction := db.Begin()
-        if appError := avatar.IsValid(); appError != nil </span><span class="cov0" title="0">{
+        if appError := avatar.IsValid(); appError != nil </span><span class="cov3" title="3">{
                 transaction.Rollback()
                 return u.NewLocAppError("avatarStoreImpl.Update.avatarOld.PreSave", appError.ID, nil, appError.DetailedError)
         }</span>
-        <span class="cov5" title="5">if appError := newAvatar.IsValid(); appError != nil </span><span class="cov0" title="0">{
+        <span class="cov6" title="9">if appError := newAvatar.IsValid(); appError != nil </span><span class="cov3" title="3">{
                 transaction.Rollback()
                 return u.NewLocAppError("avatarStoreImpl.Update.avatarNew.PreSave", appError.ID, nil, appError.DetailedError)
         }</span>
-        <span class="cov5" title="5">if err := transaction.Model(&amp;avatar).Updates(&amp;newAvatar).Error; err != nil </span><span class="cov2" title="2">{
+        <span class="cov5" title="6">if err := transaction.Model(&amp;avatar).Updates(&amp;newAvatar).Error; err != nil </span><span class="cov0" title="0">{
                 transaction.Rollback()
                 return u.NewLocAppError("avatarStoreImpl.Update", "update.transaction.updates.encounterError :"+err.Error(), nil, "")
         }</span>
-        <span class="cov3" title="3">transaction.Commit()
+        <span class="cov5" title="6">transaction.Commit()
         return nil</span>
 }
 
 // GetAll Used to get avatar from DB
-func (asi AvatarStoreImpl) GetAll(ds dbStore) *[]models.Avatar <span class="cov4" title="4">{
+func (asi AvatarStoreImpl) GetAll(ds dbStore) *[]models.Avatar <span class="cov4" title="5">{
         db := *ds.Db
         avatars := []models.Avatar{}
         db.Find(&amp;avatars)
@@ -164,7 +164,7 @@ func (asi AvatarStoreImpl) GetByName(avatarName string, ds dbStore) *models.Avat
 }</span>
 
 // GetByLink Used to get avatar from DB
-func (asi AvatarStoreImpl) GetByLink(avatarLink string, ds dbStore) *models.Avatar <span class="cov2" title="2">{
+func (asi AvatarStoreImpl) GetByLink(avatarLink string, ds dbStore) *models.Avatar <span class="cov4" title="5">{
         db := *ds.Db
         avatar := models.Avatar{}
         db.Where("link = ?", avatarLink).First(&amp;avatar)
@@ -172,10 +172,10 @@ func (asi AvatarStoreImpl) GetByLink(avatarLink string, ds dbStore) *models.Avat
 }</span>
 
 // Delete Used to get avatar from DB
-func (asi AvatarStoreImpl) Delete(avatar *models.Avatar, ds dbStore) *u.AppError <span class="cov3" title="3">{
+func (asi AvatarStoreImpl) Delete(avatar *models.Avatar, ds dbStore) *u.AppError <span class="cov4" title="4">{
         db := *ds.Db
         transaction := db.Begin()
-        if appError := avatar.IsValid(); appError != nil </span><span class="cov2" title="2">{
+        if appError := avatar.IsValid(); appError != nil </span><span class="cov3" title="3">{
                 transaction.Rollback()
                 return u.NewLocAppError("avatarStoreImpl.Delete.avatar.PreSave", appError.ID, nil, appError.DetailedError)
         }</span>
@@ -191,8 +191,8 @@ func (asi AvatarStoreImpl) Delete(avatar *models.Avatar, ds dbStore) *u.AppError
 		<pre class="file" id="file1" style="display: none">package datastores
 
 import (
-        "models"
-        u "utils"
+        "github.com/titouanfreville/popcubeapi/models"
+        u "github.com/titouanfreville/popcubeapi/utils"
 )
 
 // ChannelStoreImpl Used to implement ChannelStore interface
@@ -213,11 +213,11 @@ func (csi ChannelStoreImpl) Save(channel *models.Channel, ds dbStore) *u.AppErro
                 transaction.Rollback()
                 return u.NewLocAppError("channelStoreImpl.Save", "save.transaction.create.already_exist", nil, "Channel Name: "+channel.ChannelName)
         }</span>
-        <span class="cov9" title="41">if err := transaction.Create(&amp;channel).Error; err != nil </span><span class="cov1" title="1">{
+        <span class="cov9" title="41">if err := transaction.Create(&amp;channel).Error; err != nil </span><span class="cov0" title="0">{
                 transaction.Rollback()
                 return u.NewLocAppError("channelStoreImpl.Save", "save.transaction.create.encounterError :"+err.Error(), nil, "")
         }</span>
-        <span class="cov9" title="40">transaction.Commit()
+        <span class="cov9" title="41">transaction.Commit()
         return nil</span>
 }
 
@@ -328,8 +328,8 @@ package datastores
 
 import (
         "fmt"
-        "models"
-        u "utils"
+        "github.com/titouanfreville/popcubeapi/models"
+        u "github.com/titouanfreville/popcubeapi/utils"
 
         // Importing sql driver. They are used by gorm package and used by default from blank.
         _ "github.com/go-sql-driver/mysql"
@@ -347,20 +347,14 @@ func (ds *dbStore) InitConnection(user string, dbname string, password string) <
         fmt.Printf("\n######## Intialisating Db conection  ########\n")
         connectionChain := user + ":" + password + "@(database:3306)/" + dbname + "?charset=utf8&amp;parseTime=True&amp;loc=Local"
 
-        fmt.Printf("\nOpenning Db connection ......\n")
-        db, err := gorm.Open("mysql", connectionChain)
-        if err == nil </span><span class="cov10" title="7">{
-                fmt.Printf("Connection openned\n")
-        }</span><span class="cov0" title="0"> else {
-                fmt.Printf("Failed to open connection\n")
-        }</span>
+        db, _ := gorm.Open("mysql", connectionChain)
 
-        // Create correct tables
-        <span class="cov10" title="7">db.AutoMigrate(&amp;models.Avatar{}, &amp;models.Channel{}, &amp;models.Emoji{}, &amp;models.Folder{},
-                models.Member{}, &amp;models.Message{}, &amp;models.Organisation{}, &amp;models.Parameter{},
-                &amp;models.Role{}, &amp;models.User{})
+        // Create corr</span><span class="cov10" title="7">ect tables
+        // db.AutoMigrate(&amp;models.Avatar{}, &amp;models.Channel{}, &amp;models.Emoji{}, &amp;models.Folder{},
+        /</span><span class="cov0" title="0">/         models.Member{}, &amp;models.Message{}, &amp;models.Organisation{}, &amp;models.Parameter{},
+        //         &amp;models.Role{}, &amp;models.User{})
 
-        // Will not set CreatedAt and UpdatedAt on .Create() call
+</span>        // Will not set CreatedAt and UpdatedAt on .Create() call
         db.Callback().Create().Remove("gorm:update_time_stamp")
         db.Callback().Create().Remove("gorm:save_associations")
 
@@ -368,92 +362,50 @@ func (ds *dbStore) InitConnection(user string, dbname string, password string) <
         db.Callback().Update().Remove("gorm:update_time_stamp")
         db.Callback().Update().Remove("gorm:save_associations")
 
-        if db.NewRecord(&amp;models.Owner) </span><span class="cov9" title="6">{
-                fmt.Printf("\nAdding Owner Role ......\n")
+        if db.NewRecord(&amp;models.Owner) {
                 db.Create(&amp;models.Owner)
-                if !db.NewRecord(&amp;models.Owner) </span><span class="cov1" title="1">{
-                        fmt.Printf("Owner role added\n")
-                }</span><span class="cov8" title="5"> else {
-                        fmt.Printf("Owner role NOT ADDED :'(\n")
-                }</span>
-        }<span class="cov1" title="1"> else {
-                fmt.Printf("Owner role already exist\n")
-        }</span>
-        <span class="cov10" title="7">if db.NewRecord(&amp;models.Admin) </span><span class="cov9" title="6">{
-                fmt.Printf("\nAdding Admin Role ......\n")
+        }
+        if db.NewRecord(&amp;models.Admin) {
                 db.Create(&amp;models.Admin)
-                if !db.NewRecord(&amp;models.Admin) </span><span class="cov1" title="1">{
-                        fmt.Printf("Admin role added\n")
-                }</span><span class="cov8" title="5"> else {
-                        fmt.Printf("Admin role NOT ADDED :'(\n")
-                }</span>
-        }<span class="cov1" title="1"> else {
-                fmt.Printf("Owner role already exist\n")
-        }</span>
-        <span class="cov10" title="7">if db.NewRecord(&amp;models.Standart) </span><span class="cov9" title="6">{
-                fmt.Printf("\nAdding Standart Role ......\n")
+        }
+        if db.NewRecord(&amp;models.Standar</span><span class="cov6" title="3">t) {
                 db.Create(&amp;models.Standart)
-                if !db.NewRecord(&amp;models.Standart) </span><span class="cov1" title="1">{
-                        fmt.Printf("Standart role added\n")
-                }</span><span class="cov8" title="5"> else {
-                        fmt.Printf("Standart role NOT ADDED :'(\n")
-                }</span>
-        }<span class="cov1" title="1"> else {
-                fmt.Printf("Owner role already exist\n")
         }</span>
-        <span class="cov10" title="7">if db.NewRecord(&amp;models.Guest) </span><span class="cov9" title="6">{
-                fmt.Printf("\nAdding Guest Role ......\n")
-                db.Create(&amp;models.Guest)
-                if !db.NewRecord(&amp;models.Guest) </span><span class="cov1" title="1">{
-                        fmt.Printf("Guest role added\n")
-                }</span><span class="cov8" title="5"> else {
-                        fmt.Printf("Guest role NOT ADDED :'(\n")
-                }</span>
-        }<span class="cov1" title="1"> else {
-                fmt.Printf("Owner role already exist\n")
-        }</span>
-        <span class="cov10" title="7">ds.Db = db
-        ds.Err = err
-        if err == nil </span><span class="cov10" title="7">{
-                fmt.Printf("\n######## Intialisating DONE ########\n")
-        }</span><span class="cov0" title="0"> else {
-                fmt.Printf("\n######## Intialisating Failed ########\n")
-        }</span>
-}
-
-func (ds *dbStore) roleInitSave(role models.Role) *u.AppError <span class="cov0" title="0">{
-        db := ds.Db
-        transaction := db.Begin()
-        if appError := role.IsValid(); appError != nil </span><span class="cov0" title="0">{
-                transaction.Rollback()
-                return u.NewLocAppError("roleStoreImpl.Save.role.PreSave", appError.ID, nil, appError.DetailedError)
-        }</span>
-        <span class="cov0" title="0">if !transaction.NewRecord(role) </span><span class="cov0" title="0">{
+}<span class="cov10" title="7">
+</span>
+fu</span>nc (ds *dbStore) roleInitSave(role models.Role) *u.AppError {
+        <span class="cov10" title="7">db := ds.Db
+</span>        transaction := db.Begin()
+        i</span>f appError := role.IsValid(); appError != nil {
+        <span class="cov10" title="7">        transaction.Rollback()
+                return u.Ne</span>wLocAppError("roleStoreImpl.Save.role.PreSave", appError.ID, nil, appError.DetailedError)
+        }
+        if !transaction.NewRecord(role) {
                 transaction.Rollback()
                 return u.NewLocAppError("roleStoreImpl.Save", "save.transaction.create.already_exist", nil, "Role Name: "+role.RoleName)
-        }</span>
-        <span class="cov0" title="0">if err := transaction.Create(&amp;role).Error; err != nil </span><span class="cov0" title="0">{
+        }
+        if err := transaction.Create(&amp;role).Error; err </span><span class="cov0" title="0">!= nil {
                 transaction.Rollback()
                 return u.NewLocAppError("roleStoreImpl.Save", "save.transaction.create.encounterError :"+err.Error(), nil, "")
         }</span>
         <span class="cov0" title="0">transaction.Commit()
-        return nil</span>
+</span>        return nil
 }
 
-// CloseConnection close database connection
-func (ds *dbStore) CloseConnection() <span class="cov0" title="0">{
+</span>/<span class="cov0" title="0">/ CloseConnection close database connection
+</span>func (ds *dbStore) CloseConnection() {
         db := *ds.Db
-        defer db.Close()
-        ds.Db = &amp;gorm.DB{}
-}</span>
-
+        d</span>efer db.Close()
+        <span class="cov0" title="0">ds.Db = &amp;gorm.DB{}
+}
+</span>
 // Store interface the Stores and usefull DB functions
 type Store interface {
         Organisation() OrganisationStore
         Avatar() AvatarStore
         Emoji() EmojiStore
         InitConnection()
-        CloseConnection()
+        </span>CloseConnection()
 }
 
 /*AvatarStore interface the avatar communication */
@@ -571,8 +523,8 @@ type UserStore interface {
 		<pre class="file" id="file3" style="display: none">package datastores
 
 import (
-        "models"
-        u "utils"
+        "github.com/titouanfreville/popcubeapi/models"
+        u "github.com/titouanfreville/popcubeapi/utils"
 )
 
 // EmojiStoreImpl implement EmojiStore interface
@@ -581,42 +533,42 @@ type EmojiStoreImpl struct {
 }
 
 // Save Use to save emoji in BB
-func (esi EmojiStoreImpl) Save(emoji *models.Emoji, ds dbStore) *u.AppError <span class="cov10" title="40">{
+func (esi EmojiStoreImpl) Save(emoji *models.Emoji, ds dbStore) *u.AppError <span class="cov10" title="46">{
         db := *ds.Db
         transaction := db.Begin()
         if appError := emoji.IsValid(); appError != nil </span><span class="cov0" title="0">{
                 transaction.Rollback()
                 return u.NewLocAppError("emojiStoreImpl.Save.emoji.PreSave", appError.ID, nil, appError.DetailedError)
         }</span>
-        <span class="cov10" title="40">if !transaction.NewRecord(emoji) </span><span class="cov1" title="1">{
+        <span class="cov10" title="46">if !transaction.NewRecord(emoji) </span><span class="cov1" title="1">{
                 transaction.Rollback()
                 return u.NewLocAppError("emojiStoreImpl.Save", "save.transaction.create.already_exist", nil, "Emoji Name: "+emoji.Name)
         }</span>
-        <span class="cov9" title="39">if err := transaction.Create(&amp;emoji).Error; err != nil </span><span class="cov7" title="17">{
+        <span class="cov9" title="45">if err := transaction.Create(&amp;emoji).Error; err != nil </span><span class="cov0" title="0">{
                 transaction.Rollback()
                 return u.NewLocAppError("emojiStoreImpl.Save", "save.transaction.create.encounterError :"+err.Error(), nil, "")
         }</span>
-        <span class="cov8" title="22">transaction.Commit()
+        <span class="cov9" title="45">transaction.Commit()
         return nil</span>
 }
 
 // Update Used to update emoji in DB
-func (esi EmojiStoreImpl) Update(emoji *models.Emoji, newEmoji *models.Emoji, ds dbStore) *u.AppError <span class="cov5" title="6">{
+func (esi EmojiStoreImpl) Update(emoji *models.Emoji, newEmoji *models.Emoji, ds dbStore) *u.AppError <span class="cov7" title="17">{
         db := *ds.Db
         transaction := db.Begin()
-        if appError := emoji.IsValid(); appError != nil </span><span class="cov0" title="0">{
+        if appError := emoji.IsValid(); appError != nil </span><span class="cov4" title="5">{
                 transaction.Rollback()
                 return u.NewLocAppError("emojiStoreImpl.Update.emojiOld.PreSave", appError.ID, nil, appError.DetailedError)
         }</span>
-        <span class="cov5" title="6">if appError := newEmoji.IsValid(); appError != nil </span><span class="cov0" title="0">{
+        <span class="cov6" title="12">if appError := newEmoji.IsValid(); appError != nil </span><span class="cov4" title="5">{
                 transaction.Rollback()
                 return u.NewLocAppError("emojiStoreImpl.Update.emojiNew.PreSave", appError.ID, nil, appError.DetailedError)
         }</span>
-        <span class="cov5" title="6">if err := transaction.Model(&amp;emoji).Updates(&amp;newEmoji).Error; err != nil </span><span class="cov4" title="5">{
+        <span class="cov5" title="7">if err := transaction.Model(&amp;emoji).Updates(&amp;newEmoji).Error; err != nil </span><span class="cov0" title="0">{
                 transaction.Rollback()
                 return u.NewLocAppError("emojiStoreImpl.Update", "update.transaction.updates.encounterError :"+err.Error(), nil, "")
         }</span>
-        <span class="cov1" title="1">transaction.Commit()
+        <span class="cov5" title="7">transaction.Commit()
         return nil</span>
 }
 
@@ -629,7 +581,7 @@ func (esi EmojiStoreImpl) GetAll(ds dbStore) *[]models.Emoji <span class="cov4" 
 }</span>
 
 // GetByName Used to get emoji from DB
-func (esi EmojiStoreImpl) GetByName(emojiName string, ds dbStore) *models.Emoji <span class="cov2" title="2">{
+func (esi EmojiStoreImpl) GetByName(emojiName string, ds dbStore) *models.Emoji <span class="cov5" title="6">{
         db := *ds.Db
         emoji := models.Emoji{}
         db.Where("name = ?", emojiName).First(&amp;emoji)
@@ -637,7 +589,7 @@ func (esi EmojiStoreImpl) GetByName(emojiName string, ds dbStore) *models.Emoji 
 }</span>
 
 // GetByShortcut Used to get emoji from DB
-func (esi EmojiStoreImpl) GetByShortcut(EmojiShortcut string, ds dbStore) *models.Emoji <span class="cov1" title="1">{
+func (esi EmojiStoreImpl) GetByShortcut(EmojiShortcut string, ds dbStore) *models.Emoji <span class="cov4" title="4">{
         db := *ds.Db
         emoji := models.Emoji{}
         db.Where("shortcut = ?", EmojiShortcut).First(&amp;emoji)
@@ -645,7 +597,7 @@ func (esi EmojiStoreImpl) GetByShortcut(EmojiShortcut string, ds dbStore) *model
 }</span>
 
 // GetByLink Used to get emoji from DB
-func (esi EmojiStoreImpl) GetByLink(emojiLink string, ds dbStore) *models.Emoji <span class="cov2" title="2">{
+func (esi EmojiStoreImpl) GetByLink(emojiLink string, ds dbStore) *models.Emoji <span class="cov4" title="5">{
         db := *ds.Db
         emoji := models.Emoji{}
         db.Where("link = ?", emojiLink).First(&amp;emoji)
@@ -660,11 +612,11 @@ func (esi EmojiStoreImpl) Delete(emoji *models.Emoji, ds dbStore) *u.AppError <s
                 transaction.Rollback()
                 return u.NewLocAppError("emojiStoreImpl.Delete.emoji.PreSave", appError.ID, nil, appError.DetailedError)
         }</span>
-        <span class="cov1" title="1">if err := transaction.Delete(&amp;emoji).Error; err != nil </span><span class="cov1" title="1">{
+        <span class="cov1" title="1">if err := transaction.Delete(&amp;emoji).Error; err != nil </span><span class="cov0" title="0">{
                 transaction.Rollback()
                 return u.NewLocAppError("emojiStoreImpl.Delete", "update.transaction.delete.encounterError :"+err.Error(), nil, "")
         }</span>
-        <span class="cov0" title="0">transaction.Commit()
+        <span class="cov1" title="1">transaction.Commit()
         return nil</span>
 }
 </pre>
@@ -672,8 +624,8 @@ func (esi EmojiStoreImpl) Delete(emoji *models.Emoji, ds dbStore) *u.AppError <s
 		<pre class="file" id="file4" style="display: none">package datastores
 
 import (
-        "models"
-        u "utils"
+        "github.com/titouanfreville/popcubeapi/models"
+        u "github.com/titouanfreville/popcubeapi/utils"
 )
 
 // OrganisationStoreImpl implements OrganisationSotre interface
@@ -682,49 +634,49 @@ type OrganisationStoreImpl struct {
 }
 
 // Save Use to save data in BB
-func (osi OrganisationStoreImpl) Save(organisation *models.Organisation, ds dbStore) *u.AppError <span class="cov10" title="17">{
+func (osi OrganisationStoreImpl) Save(organisation *models.Organisation, ds dbStore) *u.AppError <span class="cov10" title="26">{
         db := *ds.Db
         transaction := db.Begin()
         organisation.PreSave()
-        if appError := organisation.IsValid(); appError != nil </span><span class="cov8" title="12">{
+        if appError := organisation.IsValid(); appError != nil </span><span class="cov7" title="12">{
                 transaction.Rollback()
                 return u.NewLocAppError("organisationStoreImpl.Save.organisation.PreSave", appError.ID, nil, appError.DetailedError)
         }</span>
-        <span class="cov6" title="5">if !transaction.NewRecord(organisation) </span><span class="cov0" title="0">{
+        <span class="cov8" title="14">if !transaction.NewRecord(organisation) </span><span class="cov1" title="1">{
                 transaction.Rollback()
                 return u.NewLocAppError("organisationStoreImpl.Save", "save.transaction.create.already_exist", nil, "Organisation Name: "+organisation.OrganisationName)
         }</span>
-        <span class="cov6" title="5">if err := transaction.Create(&amp;organisation).Error; err != nil </span><span class="cov6" title="5">{
+        <span class="cov8" title="13">if err := transaction.Create(&amp;organisation).Error; err != nil </span><span class="cov0" title="0">{
                 transaction.Rollback()
                 return u.NewLocAppError("organisationStoreImpl.Save", "save.transaction.create.encounterError: "+err.Error(), nil, "")
         }</span>
-        <span class="cov0" title="0">transaction.Commit()
+        <span class="cov8" title="13">transaction.Commit()
         return nil</span>
 }
 
 // Update Used to update data in DB
-func (osi OrganisationStoreImpl) Update(organisation *models.Organisation, newOrganisation *models.Organisation, ds dbStore) *u.AppError <span class="cov0" title="0">{
+func (osi OrganisationStoreImpl) Update(organisation *models.Organisation, newOrganisation *models.Organisation, ds dbStore) *u.AppError <span class="cov9" title="25">{
         db := *ds.Db
         transaction := db.Begin()
         newOrganisation.PreSave()
-        if appError := organisation.IsValid(); appError != nil </span><span class="cov0" title="0">{
+        if appError := organisation.IsValid(); appError != nil </span><span class="cov7" title="12">{
                 transaction.Rollback()
                 return u.NewLocAppError("organisationStoreImpl.Update.organisationOld.PreSave", appError.ID, nil, appError.DetailedError)
         }</span>
-        <span class="cov0" title="0">if appError := newOrganisation.IsValid(); appError != nil </span><span class="cov0" title="0">{
+        <span class="cov8" title="13">if appError := newOrganisation.IsValid(); appError != nil </span><span class="cov7" title="12">{
                 transaction.Rollback()
                 return u.NewLocAppError("organisationStoreImpl.Update.organisationNew.PreSave", appError.ID, nil, appError.DetailedError)
         }</span>
-        <span class="cov0" title="0">if err := transaction.Model(&amp;organisation).Updates(&amp;newOrganisation).Error; err != nil </span><span class="cov0" title="0">{
+        <span class="cov1" title="1">if err := transaction.Model(&amp;organisation).Updates(&amp;newOrganisation).Error; err != nil </span><span class="cov0" title="0">{
                 transaction.Rollback()
                 return u.NewLocAppError("organisationStoreImpl.Update", "update.transaction.updates.encounterError: "+err.Error(), nil, "")
         }</span>
-        <span class="cov0" title="0">transaction.Commit()
+        <span class="cov1" title="1">transaction.Commit()
         return nil</span>
 }
 
 // Get Used to get organisation from DB
-func (osi OrganisationStoreImpl) Get(ds dbStore) *models.Organisation <span class="cov1" title="1">{
+func (osi OrganisationStoreImpl) Get(ds dbStore) *models.Organisation <span class="cov2" title="2">{
         db := *ds.Db
         organisation := models.Organisation{}
         db.First(&amp;organisation)
@@ -735,8 +687,8 @@ func (osi OrganisationStoreImpl) Get(ds dbStore) *models.Organisation <span clas
 		<pre class="file" id="file5" style="display: none">package datastores
 
 import (
-        "models"
-        u "utils"
+        "github.com/titouanfreville/popcubeapi/models"
+        u "github.com/titouanfreville/popcubeapi/utils"
 )
 
 // ParameterStoreImpl implement ParameterStore interface
@@ -796,9 +748,9 @@ func (psi ParameterStoreImpl) Get(ds dbStore) *models.Parameter <span class="cov
 		<pre class="file" id="file6" style="display: none">package datastores
 
 import (
-        "models"
+        "github.com/titouanfreville/popcubeapi/models"
         "strings"
-        u "utils"
+        u "github.com/titouanfreville/popcubeapi/utils"
 )
 
 // RoleStoreImpl Used to implement RoleStore interface
@@ -807,38 +759,38 @@ type RoleStoreImpl struct {
 }
 
 // Save Use to save role in BB
-func (rsi RoleStoreImpl) Save(role *models.Role, ds dbStore) *u.AppError <span class="cov10" title="36">{
+func (rsi RoleStoreImpl) Save(role *models.Role, ds dbStore) *u.AppError <span class="cov10" title="38">{
         db := *ds.Db
         transaction := db.Begin()
         if appError := role.IsValid(); appError != nil </span><span class="cov0" title="0">{
                 transaction.Rollback()
                 return u.NewLocAppError("roleStoreImpl.Save.role.PreSave", appError.ID, nil, appError.DetailedError)
         }</span>
-        <span class="cov10" title="36">if !transaction.NewRecord(role) </span><span class="cov1" title="1">{
+        <span class="cov10" title="38">if !transaction.NewRecord(role) </span><span class="cov1" title="1">{
                 transaction.Rollback()
                 return u.NewLocAppError("roleStoreImpl.Save", "save.transaction.create.already_exist", nil, "Role Name: "+role.RoleName)
         }</span>
-        <span class="cov9" title="35">if err := transaction.Create(&amp;role).Error; err != nil </span><span class="cov7" title="15">{
+        <span class="cov9" title="37">if err := transaction.Create(&amp;role).Error; err != nil </span><span class="cov1" title="1">{
                 transaction.Rollback()
                 return u.NewLocAppError("roleStoreImpl.Save", "save.transaction.create.encounterError :"+err.Error(), nil, "")
         }</span>
-        <span class="cov8" title="20">transaction.Commit()
+        <span class="cov9" title="36">transaction.Commit()
         return nil</span>
 }
 
 // Update Used to update role in DB
-func (rsi RoleStoreImpl) Update(role *models.Role, newRole *models.Role, ds dbStore) *u.AppError <span class="cov5" title="5">{
+func (rsi RoleStoreImpl) Update(role *models.Role, newRole *models.Role, ds dbStore) *u.AppError <span class="cov7" title="12">{
         db := *ds.Db
         transaction := db.Begin()
-        if appError := role.IsValid(); appError != nil </span><span class="cov0" title="0">{
+        if appError := role.IsValid(); appError != nil </span><span class="cov3" title="3">{
                 transaction.Rollback()
                 return u.NewLocAppError("roleStoreImpl.Update.roleOld.PreSave", appError.ID, nil, appError.DetailedError)
         }</span>
-        <span class="cov5" title="5">if appError := newRole.IsValid(); appError != nil </span><span class="cov0" title="0">{
+        <span class="cov6" title="9">if appError := newRole.IsValid(); appError != nil </span><span class="cov3" title="3">{
                 transaction.Rollback()
                 return u.NewLocAppError("roleStoreImpl.Update.roleNew.PreSave", appError.ID, nil, appError.DetailedError)
         }</span>
-        <span class="cov5" title="5">transitionRole := models.Role{
+        <span class="cov5" title="6">transitionRole := models.Role{
                 CanUsePrivate: newRole.CanUsePrivate,
                 CanModerate:   newRole.CanModerate,
                 CanArchive:    newRole.CanArchive,
@@ -848,20 +800,20 @@ func (rsi RoleStoreImpl) Update(role *models.Role, newRole *models.Role, ds dbSt
         }
         json := transitionRole.ToJSON()
         rights := u.StringInterfaceFromJSON(strings.NewReader(json))
-        if err := transaction.Model(&amp;role).Updates(&amp;newRole).Error; err != nil </span><span class="cov5" title="5">{
+        if err := transaction.Model(&amp;role).Updates(&amp;newRole).Error; err != nil </span><span class="cov0" title="0">{
                 transaction.Rollback()
                 return u.NewLocAppError("roleStoreImpl.Update", "update.transaction.updates.encounterError :"+err.Error(), nil, "")
         }</span>
-        <span class="cov0" title="0">if err := transaction.Model(&amp;role).Updates(rights).Error; err != nil </span><span class="cov0" title="0">{
+        <span class="cov5" title="6">if err := transaction.Model(&amp;role).Updates(rights).Error; err != nil </span><span class="cov0" title="0">{
                 transaction.Rollback()
                 return u.NewLocAppError("roleStoreImpl.Update", "update.transaction.updates.encounterError :"+err.Error(), nil, "")
         }</span>
-        <span class="cov0" title="0">transaction.Commit()
+        <span class="cov5" title="6">transaction.Commit()
         return nil</span>
 }
 
 // GetAll Used to get role from DB
-func (rsi RoleStoreImpl) GetAll(ds dbStore) *[]models.Role <span class="cov5" title="5">{
+func (rsi RoleStoreImpl) GetAll(ds dbStore) *[]models.Role <span class="cov3" title="3">{
         db := *ds.Db
         roles := []models.Role{}
         db.Find(&amp;roles)
@@ -869,7 +821,7 @@ func (rsi RoleStoreImpl) GetAll(ds dbStore) *[]models.Role <span class="cov5" ti
 }</span>
 
 // GetByName Used to get role from DB
-func (rsi RoleStoreImpl) GetByName(roleName string, ds dbStore) *models.Role <span class="cov5" title="7">{
+func (rsi RoleStoreImpl) GetByName(roleName string, ds dbStore) *models.Role <span class="cov6" title="11">{
         db := *ds.Db
         role := models.Role{}
         db.Where("roleName = ?", roleName).First(&amp;role)
@@ -878,7 +830,7 @@ func (rsi RoleStoreImpl) GetByName(roleName string, ds dbStore) *models.Role <sp
 
 // GetByRights Used to get role from DB
 // You can only search for roles set to true.
-func (rsi RoleStoreImpl) GetByRights(roleRights *models.Role, ds dbStore) *[]models.Role <span class="cov1" title="1">{
+func (rsi RoleStoreImpl) GetByRights(roleRights *models.Role, ds dbStore) *[]models.Role <span class="cov2" title="2">{
         db := *ds.Db
         roles := []models.Role{}
         db.Where(&amp;roleRights).Find(&amp;roles)
@@ -886,18 +838,18 @@ func (rsi RoleStoreImpl) GetByRights(roleRights *models.Role, ds dbStore) *[]mod
 }</span>
 
 // Delete Used to get role from DB
-func (rsi RoleStoreImpl) Delete(role *models.Role, ds dbStore) *u.AppError <span class="cov4" title="4">{
+func (rsi RoleStoreImpl) Delete(role *models.Role, ds dbStore) *u.AppError <span class="cov2" title="2">{
         db := *ds.Db
         transaction := db.Begin()
-        if appError := role.IsValid(); appError != nil </span><span class="cov3" title="3">{
+        if appError := role.IsValid(); appError != nil </span><span class="cov1" title="1">{
                 transaction.Rollback()
                 return u.NewLocAppError("roleStoreImpl.Delete.role.PreSave", appError.ID, nil, appError.DetailedError)
         }</span>
-        <span class="cov1" title="1">if err := transaction.Delete(&amp;role).Error; err != nil </span><span class="cov1" title="1">{
+        <span class="cov1" title="1">if err := transaction.Delete(&amp;role).Error; err != nil </span><span class="cov0" title="0">{
                 transaction.Rollback()
                 return u.NewLocAppError("roleStoreImpl.Delete", "update.transaction.delete.encounterError :"+err.Error(), nil, "")
         }</span>
-        <span class="cov0" title="0">transaction.Commit()
+        <span class="cov1" title="1">transaction.Commit()
         return nil</span>
 }
 </pre>
@@ -906,8 +858,8 @@ func (rsi RoleStoreImpl) Delete(role *models.Role, ds dbStore) *u.AppError <span
 
 import (
         "fmt"
-        "models"
-        u "utils"
+        "github.com/titouanfreville/popcubeapi/models"
+        u "github.com/titouanfreville/popcubeapi/utils"
 )
 
 // UserStoreImpl Used to implement UserStore interface
@@ -924,12 +876,12 @@ func (usi UserStoreImpl) Save(user *models.User, ds dbStore) *u.AppError <span c
                 transaction.Rollback()
                 return u.NewLocAppError("userStoreImpl.Save.user.PreSave", appError.ID, nil, appError.DetailedError)
         }</span>
-        <span class="cov10" title="34">if !transaction.NewRecord(user) </span><span class="cov0" title="0">{
+        <span class="cov10" title="34">if !transaction.NewRecord(user) </span><span class="cov1" title="1">{
                 transaction.Rollback()
                 return u.NewLocAppError("userStoreImpl.Save", "save.transaction.create.already_exist", nil, "User Name: "+user.Username)
         }</span>
-        <span class="cov10" title="34">fmt.Printf("IDRole is : %d, InUserRole ID is : %d", user.IDRole, user.Role.IDRole)
-        if err := transaction.Debug().Create(&amp;user).Error; err != nil </span><span class="cov10" title="34">{
+        <span class="cov9" title="33">fmt.Printf("IDRole is : %d, InUserRole ID is : %d", user.IDRole, user.Role.IDRole)
+        if err := transaction.Debug().Create(&amp;user).Error; err != nil </span><span class="cov9" title="33">{
                 transaction.Rollback()
                 return u.NewLocAppError("userStoreImpl.Save", "save.transaction.create.encounterError :"+err.Error(), nil, "")
         }</span>

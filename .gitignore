@@ -95,7 +95,8 @@ _testmain.go
 
 bin
 pkg
-github.com
+go/src/github.com/*
+!go/src/github.com/titouanfreville
 golang.org
 gopkg.in
 sourcegraph.com

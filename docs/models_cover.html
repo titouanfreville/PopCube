@@ -102,7 +102,7 @@
 import (
         "encoding/json"
         "io"
-        u "utils"
+        u "github.com/titouanfreville/popcubeapi/utils"
 )
 
 // Avatar type is a DB model for avatar storage
@@ -173,7 +173,7 @@ import (
         "io"
         "strings"
         "unicode/utf8"
-        u "utils"
+        u "github.com/titouanfreville/popcubeapi/utils"
 )
 
 const (
@@ -192,7 +192,7 @@ var (
 // Channel type is a model for DB Channel table
 type Channel struct {
         IDChannel   uint64 `gorm:"primary_key;column:idChannel;AUTO_INCREMENT" json:"-"`
-        WebID       string `gorm:"column:webID;not null;unique" json:"web_id"`
+        WebID       string `gorm:"column:webId;not null;unique" json:"web_id"`
         ChannelName string `gorm:"column:channelName;not null;unique" json:"display_name"`
         Type        string `gorm:"column:type;not null" json:"type"`
         UpdatedAt   int64  `gorm:"column:updatedAt;not null;" json:"updated_at"`
@@ -311,7 +311,7 @@ func GetDMNameFromIDs(IDUser1, IDUser2 string) string <span class="cov0" title="
 import (
         "encoding/json"
         "io"
-        u "utils"
+        u "github.com/titouanfreville/popcubeapi/utils"
 )
 
 // Emoji Type descibe the Emoji table for Popcube DB
@@ -385,7 +385,7 @@ func EmojiListFromJSON(data io.Reader) []*Emoji <span class="cov1" title="1">{
 import (
         "encoding/json"
         "io"
-        u "utils"
+        u "github.com/titouanfreville/popcubeapi/utils"
 )
 
 // Folder Type descibe the Folder table for Popcube DB. It is linked to Message table
@@ -459,7 +459,7 @@ func FolderListFromJSON(data io.Reader) []*Folder <span class="cov1" title="1">{
 		<pre class="file" id="file4" style="display: none">package models
 
 import (
-        u "utils"
+        u "github.com/titouanfreville/popcubeapi/utils"
 )
 
 // Member describe the associtive table member between USER, CHANNEL, and ROLE
@@ -487,7 +487,7 @@ func (member *Member) IsValid() *u.AppError <span class="cov10" title="9">{
 import (
         "encoding/json"
         "io"
-        u "utils"
+        u "github.com/titouanfreville/popcubeapi/utils"
 )
 
 // Message describe the message table for  PovpCube project. It is linked to User table and Channel table
@@ -568,7 +568,7 @@ import (
         "strconv"
         "strings"
         "unicode/utf8"
-        u "utils"
+        u "github.com/titouanfreville/popcubeapi/utils"
 )
 
 const (
@@ -641,7 +641,7 @@ func (organisation *Organisation) PreSave() <span class="cov3" title="3">{
 import (
         "encoding/json"
         "io"
-        u "utils"
+        u "github.com/titouanfreville/popcubeapi/utils"
 )
 
 const (
@@ -722,7 +722,7 @@ import (
         "encoding/json"
         "io"
         "regexp"
-        u "utils"
+        u "github.com/titouanfreville/popcubeapi/utils"
 )
 
 // Role Type descibe the Role table for Popcube DB
@@ -890,7 +890,7 @@ import (
         "regexp"
         "strings"
         "unicode/utf8"
-        u "utils"
+        u "github.com/titouanfreville/popcubeapi/utils"
 
         "golang.org/x/crypto/bcrypt"
 )
@@ -1170,7 +1170,7 @@ import (
         "regexp"
         "strings"
         "time"
-        u "utils"
+        u "github.com/titouanfreville/popcubeapi/utils"
 
         "github.com/pborman/uuid"
 )
