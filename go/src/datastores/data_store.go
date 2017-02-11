@@ -18,10 +18,10 @@ package datastores
 
 import (
 	"fmt"
-	// Importing sql driver. They are used by gorm package and used by default from blank.
 	"models"
 	u "utils"
 
+	// Importing sql driver. They are used by gorm package and used by default from blank.
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
@@ -52,9 +52,11 @@ func (ds *dbStore) InitConnection(user string, dbname string, password string) {
 
 	// Will not set CreatedAt and UpdatedAt on .Create() call
 	db.Callback().Create().Remove("gorm:update_time_stamp")
+	db.Callback().Create().Remove("gorm:save_associations")
 
 	// Will not update UpdatedAt on .Save() call
 	db.Callback().Update().Remove("gorm:update_time_stamp")
+	db.Callback().Update().Remove("gorm:save_associations")
 
 	if db.NewRecord(&models.Owner) {
 		fmt.Printf("\nAdding Owner Role ......\n")

@@ -19,12 +19,13 @@ package models
 import (
 	"encoding/json"
 	"fmt"
-	"golang.org/x/crypto/bcrypt"
 	"io"
 	"regexp"
 	"strings"
 	"unicode/utf8"
 	u "utils"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 const (
@@ -81,7 +82,7 @@ var (
 - lastActivityAt: Date && Time of the last activity of the user.
 */
 type User struct {
-	UserID             uint64 `gorm:"primary_key;column:idUser;AUTO_INCREMENT" json:"-"`
+	IDUser             uint64 `gorm:"primary_key;column:idUser;AUTO_INCREMENT" json:"-"`
 	WebID              string `gorm:"column:webID; not null; unique;" json:"web_id"`
 	Username           string `gorm:"column:userName; not null; unique;" json:"username"`
 	Email              string `gorm:"column:email; not null; unique;" json:"email"`
@@ -92,7 +93,8 @@ type User struct {
 	LastPasswordUpdate int64  `gorm:"column:lastPasswordUpdate; not null;" json:"last_password_update"`
 	FailedAttempts     int    `gorm:"column:failedAttempts; not null;" json:"failed_attempts"`
 	Locale             string `gorm:"column:locale; not null;" json:"locale"`
-	Role               Role   `gorm:"column:role; not null;" json:"-"`
+	Role               Role   `gorm:"ForeignKey:IDRole;" json:"-"`
+	IDRole             uint64 `gorm:"column:idRole; not null;" json:"idRole"`
 	Avatar             string `gorm:"column:avatar;" json:"avatar, omitempty"`
 	NickName           string `gorm:"column:nickName; unique" json:"nickname, omitempty"`
 	FirstName          string `gorm:"column:firstName;" json:"first_name, omitempty"`

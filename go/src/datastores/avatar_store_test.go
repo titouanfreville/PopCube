@@ -4,17 +4,17 @@
 package datastores
 
 import (
-	. "github.com/smartystreets/goconvey/convey"
 	. "models"
 	"testing"
 	u "utils"
+
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestAvatarStore(t *testing.T) {
 	ds := dbStore{}
 	ds.InitConnection("root", "popcube_test", "popcube_dev")
 	db := *ds.Db
-	// asi := AvatarStoreImpl{}
 	asi := NewAvatarStore()
 	Convey("Testing save function", t, func() {
 		dbError := u.NewLocAppError("avatarStoreImpl.Save", "save.transaction.create.encounterError", nil, "")

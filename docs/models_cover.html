@@ -191,7 +191,7 @@ var (
 
 // Channel type is a model for DB Channel table
 type Channel struct {
-        ChannelID   uint64 `gorm:"primary_key;column:idChannel;AUTO_INCREMENT" json:"-"`
+        IDChannel   uint64 `gorm:"primary_key;column:idChannel;AUTO_INCREMENT" json:"-"`
         WebID       string `gorm:"column:webID;not null;unique" json:"web_id"`
         ChannelName string `gorm:"column:channelName;not null;unique" json:"display_name"`
         Type        string `gorm:"column:type;not null" json:"type"`
@@ -243,7 +243,7 @@ func (channel *Channel) IsValid(isUpdate bool) *u.AppError <span class="cov10" t
                 return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebID)
         }</span>
 
-        <span class="cov9" title="36">if !IsValidChannelIdentifier(channel.ChannelName) </span><span class="cov6" title="9">{
+        <span class="cov9" title="36">if !IsValidIDChannelentifier(channel.ChannelName) </span><span class="cov6" title="9">{
                 return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebID)
         }</span>
 
@@ -296,12 +296,12 @@ func (channel *Channel) PreUpdate() <span class="cov1" title="1">{
         }</span>
 }
 
-// GetDMNameFromIDs Create Direct message name from 2 userIDs
-func GetDMNameFromIDs(userID1, userID2 string) string <span class="cov0" title="0">{
-        if userID1 &gt; userID2 </span><span class="cov0" title="0">{
-                return userID2 + "__" + userID1
+// GetDMNameFromIDs Create Direct message name from 2 IDUsers
+func GetDMNameFromIDs(IDUser1, IDUser2 string) string <span class="cov0" title="0">{
+        if IDUser1 &gt; IDUser2 </span><span class="cov0" title="0">{
+                return IDUser2 + "__" + IDUser1
         }</span>
-        <span class="cov0" title="0">return userID1 + "__" + userID2</span>
+        <span class="cov0" title="0">return IDUser1 + "__" + IDUser2</span>
 
 }
 </pre>
@@ -464,10 +464,10 @@ import (
 
 // Member describe the associtive table member between USER, CHANNEL, and ROLE
 type Member struct {
-        MemberID uint64  `gorm:"primary_key;column:idMember;AUTO_INCREMENT" json:"-"`
-        User     User    `gorm:"column:user; not null; ForeignKey:IDUser;" json:"-`
-        Channel  Channel `gorm:"column:channel; not null; ForeignKey:IDChannel;" json:"-"`
-        Role     Role    `gorm:"column:role; ForeignKey:IDRole;" json:"-"`
+        // IDMember uint64  `gorm:"primary_key;column:idMember;AUTO_INCREMENT" json:"-"`
+        User    User    `gorm:"column:user; primary_key; not null;" json:"-"`
+        Channel Channel `gorm:"column:channel; primary_key; not null;" json:"-"`
+        Role    Role    `gorm:"column:role; ForeignKey:IDRole;" json:"-"`
 }
 
 // IsValid check validity of member object
@@ -886,12 +886,13 @@ package models
 import (
         "encoding/json"
         "fmt"
-        "golang.org/x/crypto/bcrypt"
         "io"
         "regexp"
         "strings"
         "unicode/utf8"
         u "utils"
+
+        "golang.org/x/crypto/bcrypt"
 )
 
 const (
@@ -948,7 +949,7 @@ var (
 - lastActivityAt: Date &amp;&amp; Time of the last activity of the user.
 */
 type User struct {
-        UserID             uint64 `gorm:"primary_key;column:idUser;AUTO_INCREMENT" json:"-"`
+        IDUser             uint64 `gorm:"primary_key;column:idUser;AUTO_INCREMENT" json:"-"`
         WebID              string `gorm:"column:webID; not null; unique;" json:"web_id"`
         Username           string `gorm:"column:userName; not null; unique;" json:"username"`
         Email              string `gorm:"column:email; not null; unique;" json:"email"`
@@ -959,7 +960,8 @@ type User struct {
         LastPasswordUpdate int64  `gorm:"column:lastPasswordUpdate; not null;" json:"last_password_update"`
         FailedAttempts     int    `gorm:"column:failedAttempts; not null;" json:"failed_attempts"`
         Locale             string `gorm:"column:locale; not null;" json:"locale"`
-        Role               Role   `gorm:"column:role; not null;" json:"-"`
+        Role               Role   `gorm:"ForeignKey:IDRole;" json:"-"`
+        IDRole             uint64 `gorm:"column:idRole; not null;" json:"idRole"`
         Avatar             string `gorm:"column:avatar;" json:"avatar, omitempty"`
         NickName           string `gorm:"column:nickName; unique" json:"nickname, omitempty"`
         FirstName          string `gorm:"column:firstName;" json:"first_name, omitempty"`
@@ -1359,8 +1361,8 @@ var reservedName = []string{
         "oauth",
 }
 
-//IsValidChannelIdentifier check if string provided is a correct channel identifier
-func IsValidChannelIdentifier(s string) bool <span class="cov5" title="36">{
+//IsValidIDChannelentifier check if string provided is a correct channel identifier
+func IsValidIDChannelentifier(s string) bool <span class="cov5" title="36">{
         return IsValidAlphaNum(s, true)
 }</span>
 

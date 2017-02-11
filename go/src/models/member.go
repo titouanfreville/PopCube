@@ -6,10 +6,10 @@ import (
 
 // Member describe the associtive table member between USER, CHANNEL, and ROLE
 type Member struct {
-	MemberID uint64  `gorm:"primary_key;column:idMember;AUTO_INCREMENT" json:"-"`
-	User     User    `gorm:"column:user; not null;" json:"-`
-	Channel  Channel `gorm:"column:channel; not null;" json:"-"`
-	Role     Role    `gorm:"column:role; ForeignKey:IDRole;" json:"-"`
+	// IDMember uint64  `gorm:"primary_key;column:idMember;AUTO_INCREMENT" json:"-"`
+	User    User    `gorm:"column:user; primary_key; not null;" json:"-"`
+	Channel Channel `gorm:"column:channel; primary_key; not null;" json:"-"`
+	Role    Role    `gorm:"column:role; ForeignKey:IDRole;" json:"-"`
 }
 
 // IsValid check validity of member object

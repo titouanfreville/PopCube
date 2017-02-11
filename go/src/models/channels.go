@@ -23,7 +23,7 @@ var (
 
 // Channel type is a model for DB Channel table
 type Channel struct {
-	ChannelID   uint64 `gorm:"primary_key;column:idChannel;AUTO_INCREMENT" json:"-"`
+	IDChannel   uint64 `gorm:"primary_key;column:idChannel;AUTO_INCREMENT" json:"-"`
 	WebID       string `gorm:"column:webID;not null;unique" json:"web_id"`
 	ChannelName string `gorm:"column:channelName;not null;unique" json:"display_name"`
 	Type        string `gorm:"column:type;not null" json:"type"`
@@ -75,7 +75,7 @@ func (channel *Channel) IsValid(isUpdate bool) *u.AppError {
 		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebID)
 	}
 
-	if !IsValidChannelIdentifier(channel.ChannelName) {
+	if !IsValidIDChannelentifier(channel.ChannelName) {
 		return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebID)
 	}
 
@@ -128,11 +128,11 @@ func (channel *Channel) PreUpdate() {
 	}
 }
 
-// GetDMNameFromIDs Create Direct message name from 2 userIDs
-func GetDMNameFromIDs(userID1, userID2 string) string {
-	if userID1 > userID2 {
-		return userID2 + "__" + userID1
+// GetDMNameFromIDs Create Direct message name from 2 IDUsers
+func GetDMNameFromIDs(IDUser1, IDUser2 string) string {
+	if IDUser1 > IDUser2 {
+		return IDUser2 + "__" + IDUser1
 	}
-	return userID1 + "__" + userID2
+	return IDUser1 + "__" + IDUser2
 
 }

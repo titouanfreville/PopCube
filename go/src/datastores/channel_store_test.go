@@ -75,7 +75,7 @@ func TestChannelStore(t *testing.T) {
 			appError := csi.Update(&channel, &channelNew, ds)
 			channelShouldResemble := channelNew
 			channelShouldResemble.WebID = channel.WebID
-			channelShouldResemble.ChannelID = channel.ChannelID
+			channelShouldResemble.IDChannel = channel.IDChannel
 			channelShouldResemble.UpdatedAt = channel.UpdatedAt
 			So(appError, ShouldBeNil)
 			So(appError, ShouldNotResemble, dbError)

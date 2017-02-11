@@ -4,10 +4,11 @@
 package datastores
 
 import (
-	. "github.com/smartystreets/goconvey/convey"
 	. "models"
 	"testing"
 	u "utils"
+
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestRoleStore(t *testing.T) {
@@ -127,6 +128,9 @@ func TestRoleStore(t *testing.T) {
 	})
 
 	Convey("Testing Getters", t, func() {
+
+		rsi.GetByName("owner", ds)
+
 		role0 := Role{
 			RoleName:      "classe",
 			CanUsePrivate: true,
@@ -208,6 +212,9 @@ func TestRoleStore(t *testing.T) {
 			role = rsi.GetByName(role3.RoleName, ds)
 			So(role, ShouldNotResemble, &Role{})
 			So(role, ShouldResemble, &role3)
+			role = rsi.GetByName("owner", ds)
+			So(role, ShouldNotResemble, &Role{})
+			So(role, ShouldResemble, Owner)
 			Convey("Should also work from updated value", func() {
 				role = rsi.GetByName(role1New.RoleName, ds)
 				So(role, ShouldNotResemble, &Role{})

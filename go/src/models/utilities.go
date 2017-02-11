@@ -201,8 +201,8 @@ var reservedName = []string{
 	"oauth",
 }
 
-//IsValidChannelIdentifier check if string provided is a correct channel identifier
-func IsValidChannelIdentifier(s string) bool {
+//IsValidIDChannelentifier check if string provided is a correct channel identifier
+func IsValidIDChannelentifier(s string) bool {
 	return IsValidAlphaNum(s, true)
 }
 
