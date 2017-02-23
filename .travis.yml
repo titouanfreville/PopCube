@@ -17,40 +17,40 @@ services:
 
 script:
   - docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY
-  - docker-compose build
-  - ./popcube.sh -t -y all
-  - docker-compose -f docker-compose.yml -f docker-compose.test.yml run back-test
-  - docker-compose -f docker-compose.yml -f docker-compose.test.yml run golint
+  # - docker-compose build
+  # - ./popcube.sh -t -y all
+  # - docker-compose -f docker-compose.yml -f docker-compose.test.yml run back-test
+  # - docker-compose -f docker-compose.yml -f docker-compose.test.yml run golint
 
-after_success:
-  - >-
-    if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY;
-    docker build -t go_base -f docker/go_base.Dockerfile .;
-    docker tag go_base $DOCKER_REGISTRY/go:base;
-    docker push $DOCKER_REGISTRY/go:base;
-    docker build -t nginx_front -f docker/nginx_front.Dockerfile .;
-    docker tag nginx_front $DOCKER_REGISTRY/nginx_front:latest;
-    docker push $DOCKER_REGISTRY/nginx_front:latest;
-    docker build -t $DOCKER_REGISTRY/docs:latest -f docker/docs.Dockerfile .;
-    docker push $DOCKER_REGISTRY/docs:latest;
-    curl -X POST --header 'Content-Type: application/json' --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{ "Image": "registry.le-corre.eu:5000/nginx_front:latest", "Env": [ "VIRTUAL_NETWORK=nginx-proxy", "LETSENCRYPT_HOST=master.popcube.xyz", "LETSENCRYPT_EMAIL=clement@popcube.xyz", "VIRTUAL_HOST=master.popcube.xyz", "VIRTUAL_PORT=80" ], "Hostname": "nginx_front" }' http://${DEPLOY_URL}/deploy;
-    curl -X POST --header 'Content-Type: application/json' --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{ "Image": "registry.le-corre.eu:5000/docs:latest", "Env": [ "VIRTUAL_NETWORK=nginx-proxy", "LETSENCRYPT_HOST=master.popcube.xyz", "LETSENCRYPT_EMAIL=clement@popcube.xyz", "VIRTUAL_HOST=docs.popcube.xyz" ], "Hostname": "docs" }' http://${DEPLOY_URL}/deploy;
-    fi
-  - >-
-    if [ "$TRAVIS_BRANCH" == "development" ]; then
-    docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY;
-    docker build -t go_base -f docker/go_base.Dockerfile .;
-    docker tag go_base $DOCKER_REGISTRY/go:base-dev;
-    docker push $DOCKER_REGISTRY/go:base-dev;
-    docker build -t nginx_front -f docker/nginx_front.Dockerfile .;
-    docker tag nginx_front $DOCKER_REGISTRY/nginx_front:dev;
-    docker push $DOCKER_REGISTRY/nginx_front:dev;
-    docker build -t $DOCKER_REGISTRY/docs:dev -f docker/docs.Dockerfile .;
-    docker push $DOCKER_REGISTRY/docs:dev;
-    curl -X POST --header 'Content-Type: application/json' --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{ "Image": "registry.le-corre.eu:5000/nginx_front:dev", "Env": [ "VIRTUAL_NETWORK=nginx-proxy", "LETSENCRYPT_HOST=dev.popcube.xyz", "LETSENCRYPT_EMAIL=clement@popcube.xyz", "VIRTUAL_HOST=dev.popcube.xyz", "VIRTUAL_PORT=80" ], "Hostname": "nginx_front-dev" }' http://${DEPLOY_URL}/deploy;
-    curl -X POST --header 'Content-Type: application/json' --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{ "Image": "registry.le-corre.eu:5000/docs:dev", "Env": [ "VIRTUAL_HOST=docs-dev.popcube.xyz" ], "Hostname": "docs-dev" }' http://${DEPLOY_URL}/deploy;
-    fi
+# after_success:
+#   - >-
+#     if [ "$TRAVIS_BRANCH" == "master" ]; then
+#     docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY;
+#     docker build -t go_base -f docker/go_base.Dockerfile .;
+#     docker tag go_base $DOCKER_REGISTRY/go:base;
+#     docker push $DOCKER_REGISTRY/go:base;
+#     docker build -t nginx_front -f docker/nginx_front.Dockerfile .;
+#     docker tag nginx_front $DOCKER_REGISTRY/nginx_front:latest;
+#     docker push $DOCKER_REGISTRY/nginx_front:latest;
+#     docker build -t $DOCKER_REGISTRY/docs:latest -f docker/docs.Dockerfile .;
+#     docker push $DOCKER_REGISTRY/docs:latest;
+#     curl -X POST --header 'Content-Type: application/json' --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{ "Image": "registry.le-corre.eu:5000/nginx_front:latest", "Env": [ "VIRTUAL_NETWORK=nginx-proxy", "LETSENCRYPT_HOST=master.popcube.xyz", "LETSENCRYPT_EMAIL=clement@popcube.xyz", "VIRTUAL_HOST=master.popcube.xyz", "VIRTUAL_PORT=80" ], "Hostname": "nginx_front" }' http://${DEPLOY_URL}/deploy;
+#     curl -X POST --header 'Content-Type: application/json' --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{ "Image": "registry.le-corre.eu:5000/docs:latest", "Env": [ "VIRTUAL_NETWORK=nginx-proxy", "LETSENCRYPT_HOST=master.popcube.xyz", "LETSENCRYPT_EMAIL=clement@popcube.xyz", "VIRTUAL_HOST=docs.popcube.xyz" ], "Hostname": "docs" }' http://${DEPLOY_URL}/deploy;
+#     fi
+#   - >-
+#     if [ "$TRAVIS_BRANCH" == "development" ]; then
+#     docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY;
+#     docker build -t go_base -f docker/go_base.Dockerfile .;
+#     docker tag go_base $DOCKER_REGISTRY/go:base-dev;
+#     docker push $DOCKER_REGISTRY/go:base-dev;
+#     docker build -t nginx_front -f docker/nginx_front.Dockerfile .;
+#     docker tag nginx_front $DOCKER_REGISTRY/nginx_front:dev;
+#     docker push $DOCKER_REGISTRY/nginx_front:dev;
+#     docker build -t $DOCKER_REGISTRY/docs:dev -f docker/docs.Dockerfile .;
+#     docker push $DOCKER_REGISTRY/docs:dev;
+#     curl -X POST --header 'Content-Type: application/json' --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{ "Image": "registry.le-corre.eu:5000/nginx_front:dev", "Env": [ "VIRTUAL_NETWORK=nginx-proxy", "LETSENCRYPT_HOST=dev.popcube.xyz", "LETSENCRYPT_EMAIL=clement@popcube.xyz", "VIRTUAL_HOST=dev.popcube.xyz", "VIRTUAL_PORT=80" ], "Hostname": "nginx_front-dev" }' http://${DEPLOY_URL}/deploy;
+#     curl -X POST --header 'Content-Type: application/json' --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{ "Image": "registry.le-corre.eu:5000/docs:dev", "Env": [ "VIRTUAL_HOST=docs-dev.popcube.xyz" ], "Hostname": "docs-dev" }' http://${DEPLOY_URL}/deploy;
+#     fi
 
 notifications:
   slack: societyco:T1mHeYKrOtopvRjIZ68MqOQo
