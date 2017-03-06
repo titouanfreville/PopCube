@@ -16,10 +16,10 @@ services:
       dockerfile: docker/goconvey.Dockerfile
     env_file: .env
     volumes:
-      - "./go/src/api:/go/src/api"
-      - "./go/src/datastores:/go/src/datastores"
-      - "./go/src/models:/go/src/models"
-      - "./go/src/utils:/go/src/utils"
+      - "./go/src/github.com/titouanfreville/popcubeapi/api:/go/src/github.com/titouanfreville/popcubeapi/api"
+      - "./go/src/github.com/titouanfreville/popcubeapi/datastores:/go/src/github.com/titouanfreville/popcubeapi/datastores"
+      - "./go/src/github.com/titouanfreville/popcubeapi/models:/go/src/github.com/titouanfreville/popcubeapi/models"
+      - "./go/src/github.com/titouanfreville/popcubeapi/utils:/go/src/github.com/titouanfreville/popcubeapi/utils"
       - "./docs:/home/docs"
       - "./coverage:/home/coverage"
     ports:
@@ -30,10 +30,10 @@ services:
       dockerfile: docker/go_test.Dockerfile
     env_file: .env
     volumes:
-      - "./go/src/api:/go/src/api"
-      - "./go/src/datastores:/go/src/datastores"
-      - "./go/src/models:/go/src/models"
-      - "./go/src/utils:/go/src/utils"
+      - "./go/src/github.com/titouanfreville/popcubeapi/api:/go/src/github.com/titouanfreville/popcubeapi/api"
+      - "./go/src/github.com/titouanfreville/popcubeapi/datastores:/go/src/github.com/titouanfreville/popcubeapi/datastores"
+      - "./go/src/github.com/titouanfreville/popcubeapi/models:/go/src/github.com/titouanfreville/popcubeapi/models"
+      - "./go/src/github.com/titouanfreville/popcubeapi/utils:/go/src/github.com/titouanfreville/popcubeapi/utils"
       - "./docs:/home/docs"
       - "./coverage:/home/coverage"
   golint:
@@ -42,10 +42,10 @@ services:
       dockerfile: docker/golinter.Dockerfile
     env_file: .env
     volumes:
-      - "./go/src/api:/go/src/api"
-      - "./go/src/datastores:/go/src/datastores"
-      - "./go/src/models:/go/src/models"
-      - "./go/src/utils:/go/src/utils"
+      - "./go/src/github.com/titouanfreville/popcubeapi/api:/go/src/github.com/titouanfreville/popcubeapi/api"
+      - "./go/src/github.com/titouanfreville/popcubeapi/datastores:/go/src/github.com/titouanfreville/popcubeapi/datastores"
+      - "./go/src/github.com/titouanfreville/popcubeapi/models:/go/src/github.com/titouanfreville/popcubeapi/models"
+      - "./go/src/github.com/titouanfreville/popcubeapi/utils:/go/src/github.com/titouanfreville/popcubeapi/utils"
   database:
     env_file: .env
     ports:
