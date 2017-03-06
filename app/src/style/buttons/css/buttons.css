@@ -949,13 +949,13 @@ button.button:disabled {
   background: -moz-linear-gradient(top, #99389f, #752a79);
   background: -webkit-linear-gradient(top, #99389f, #752a79);
   background: linear-gradient(to bottom, #99389f, #752a79);
-  background-color: #87318C;
+  background-color: #40335A;
   border-color: #632466;
   color: #FFFFFF;
   text-shadow: 0 -1px 1px rgba(26, 9, 27, 0.35); }
   /* line 242, ../scss/partials/_buttons.scss */
   .button-royal:hover, .button-royal:focus {
-    background-color: #87318C;
+    background-color: #40335A;
     color: #FFFFFF;
     background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2FiM2ViMiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzc1MmE3OSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
     background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ab3eb2), color-stop(100%, #752a79));

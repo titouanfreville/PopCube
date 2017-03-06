@@ -6,9 +6,10 @@
     <br />
     <label for="name">Pasword</label>
     <input type="password" id="password" required>
+    <br /><br />
+    <button type="submit" [routerLink]="['/server']" class='button button-glow button-rounded button-royal'>Login</button>
     <br />
-    <button type="submit" [routerLink]="['./server']">Login</button>
-    <a [routerLink]="['register']">Register</a>
-    <a [routerLink]="['register']">Forgot password ?</a>
+    <a [routerLink]="['/register']">Register</a>
+    <a [routerLink]="['/register']">Forgot password ?</a>
   </form>
 </div> 

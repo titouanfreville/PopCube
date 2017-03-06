@@ -15,7 +15,6 @@ $greyUnfocus: #4E5967;
 header {
   background-color: $header;
   padding: 16px;
-  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -23,11 +22,9 @@ header {
 }
 
 main {
-  padding: 1em;
   font-family: Arial, Helvetica, sans-serif;
-  //text-align: center;
-  margin-top: 50px;
   display: block;
+  height: calc(100% - 51px);
 }
 
 footer {

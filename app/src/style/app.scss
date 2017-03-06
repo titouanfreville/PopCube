@@ -9,9 +9,14 @@ $background: #262A2B;
 $greyFocus: #C9CDD1;
 $greyUnfocus: #4E5967;
 
+html{
+    height: 100%;
+}
 body {
     background: $background;
     color: $white;
+    margin: 0;
+    height: 100%;
 }
 
 a, a:hover {

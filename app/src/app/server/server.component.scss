@@ -1,3 +1,57 @@
-* {
-  color: #f87c08;
+$white: #FFF;
+
+$header: #40335A;
+
+$background: #262A2B;
+$serverBgFocus: #272C33;
+$serverBgUnFocus: #1F2329;
+$chanelBgFocus: #363E48;
+$chanelBgUnFocus: #2E353D;
+
+$greyFocus: #C9CDD1;
+$greyUnfocus: #4E5967;
+
+#navigation{
+  display: table;
+  height: 100%;
+}
+
+#serverNav{
+  display: table-cell;
+  height:100%;
+  background-color: $serverBgUnFocus;
+  vertical-align: top;
+  text-align: center;
+  width: 75px;
+}
+
+.server{
+    background-color: $serverBgUnFocus;
+    padding: 0.5em;
+}
+
+.serverFocus{
+  background-color: $serverBgFocus;
+}
+
+#chanelNav{
+  height:100%;
+  background-color: $chanelBgUnFocus;
+  width: 150px;
+  text-align: center;
+}
+
+.chanel{
+    background-color: $chanelBgUnFocus;
+    padding: 0.5em;
+}
+
+.chanelFocus{
+  background-color: $chanelBgFocus;
+  border-left: 3px solid $header;
+}
+
+.title{
+  color:$greyUnfocus;
+  margin:0;
 }
