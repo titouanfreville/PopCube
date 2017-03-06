@@ -5,6 +5,7 @@ ENV TERM xterm-256color
 MAINTAINER FREVILLE Titouan titouanfreville@gmail.com
 ENV WATCHING 0
 ENV TERM xterm-256color
+ENV GOCOPYPATH go/src/github.com/titouanfreville/popcubeapi
 
 ENV GOSU_VERSION 1.9
 RUN set -x \
@@ -25,4 +26,4 @@ RUN set -x \
     
 COPY utils/go_test_entrypoint.sh /bin/entrypoint
 
-ENTRYPOINT entrypoint /go $WATCHING
+ENTRYPOINT entrypoint /$GOCOPYPATH $WATCHING
