@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { Http } from '@angular/http';
 
 @Component({
   selector: 'my-home',
   template: require('./home.component.html'),
-  styles: [require('./home.component.scss')]
+  styles: [require('./home.component.scss')],
 })
 export class HomeComponent implements OnInit {
 
-  constructor() {
+  constructor(public http: Http) {
     // Do stuff
   }
 
@@ -15,4 +16,8 @@ export class HomeComponent implements OnInit {
     console.log('Hello Home');
   }
 
+  find(event, domainName) {
+    event.preventDefault();
+    let body = JSON.stringify({domainName});
+  }
 }

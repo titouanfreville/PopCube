@@ -5,7 +5,9 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
-import { RegisterComponent} from './register/register.component';
+import { ServerComponent} from './server/server.component';
+import { LoginComponent} from './server/login/login.component';
+import { RegisterComponent} from './server/register/register.component';
 
 import { ApiService } from './shared';
 import { routing } from './app.routing';
@@ -20,6 +22,8 @@ import { routing } from './app.routing';
     AppComponent,
     HomeComponent,
     AboutComponent,
+    ServerComponent,
+    LoginComponent,
     RegisterComponent
   ],
   providers: [

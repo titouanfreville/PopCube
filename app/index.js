@@ -15,6 +15,7 @@ function createWindow () {
 
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/dist/index.html`)
+  //mainWindow.setMenu(null)
 
   if (npmLifecycle === 'start-watch') {
     livereload.create(mainWindow)

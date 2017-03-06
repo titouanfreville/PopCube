@@ -1,10 +1,19 @@
 // styles applied on :host are applied on the current component, "app" in this case
+$white: #FFF;
+
+$header: #40335A;
+
+$background: #262A2B;
+
+$greyFocus: #C9CDD1;
+$greyUnfocus: #4E5967;
+
 :host {
   display: block;
 }
 
 header {
-  background-color: #fff;
+  background-color: $header;
   padding: 16px;
   position: fixed;
   top: 0;
@@ -16,7 +25,7 @@ header {
 main {
   padding: 1em;
   font-family: Arial, Helvetica, sans-serif;
-  text-align: center;
+  //text-align: center;
   margin-top: 50px;
   display: block;
 }
