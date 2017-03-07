@@ -1,20 +1,16 @@
 <div id="navigation">
   <div id="serverNav" class=''>
-    <div id="server1" class='server serverFocus'>
-      <div id="logo1">SV1
-      </div>
-    </div>
-        <div id="server1" class='server'>
-      <div id="logo1">SV2
+    <div *ngFor="let server of servers" id="{{'server' + 'server.id'}}" class="{{server.status}}" (click)="serverClick(server.id)">
+      <div id="logo1">
+        {{server.domainMin}}
       </div>
     </div>
   </div>
 
   <div id="chanelNav">
-    <p class='title'>Chanel Text</p>
-    <div id="chanel1" class='chanel'><label>Chanel 1</label></div>
-    <div id="chanel2" class='chanel chanelFocus'><label>Chanel 2</label></div>
-    <div id="chanel3" class='chanel'><label>Chanel 3</label></div>
-    <p class='title'>Chanel VoIP</p>
+    <p class='title'>CHANEL TEXT</p>
+    <div *ngFor="let chanelT of chanelsText" id="{{'chanel' + 'chanelT.id'}}" class="{{chanelT.status}}" (click)="chanelTextClick(chanelT.id)"><label>{{chanelT.chanelName}}</label></div>
+    <p class='title'>CHANEL VOICE</p>
+    <div *ngFor="let chanelV of chanelsVoice" id="{{'chanel' + 'chanelV.id'}}" class="{{chanelV.status}}" (click)="chanelVoiceClick(chanelV.id)"><label>{{chanelV.chanelName}}</label></div>
   </div>
 </div>

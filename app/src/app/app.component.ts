@@ -17,26 +17,29 @@ const remote = require('electron').remote;
 })
 export class AppComponent {
   url = 'https://github.com/preboot/angular2-webpack';
+  public img = 'img/tab.svg';
 
   constructor(private api: ApiService) {
   }
 
-  minimize(){
-    var window = remote.getCurrentWindow();
+  minimize() {
+    let window = remote.getCurrentWindow();
     window.minimize();
   }
 
-  maximize(){
-    var window = remote.getCurrentWindow();
+  maximize() {
+    let window = remote.getCurrentWindow();
     if (!window.isMaximized()) {
-           window.maximize();          
+           window.maximize();
+           this.img = 'img/multi-tab.svg';
        } else {
            window.unmaximize();
+           this.img = 'img/tab.svg';
     }
   }
 
-  close(){
-    var window = remote.getCurrentWindow();
+  close() {
+    let window = remote.getCurrentWindow();
     window.close();
   }
 }

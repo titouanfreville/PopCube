@@ -29,10 +29,12 @@ $greyUnfocus: #4E5967;
 .server{
     background-color: $serverBgUnFocus;
     padding: 0.5em;
+    color: $greyUnfocus;
 }
 
 .serverFocus{
   background-color: $serverBgFocus;
+  color: white;
 }
 
 #chanelNav{
@@ -40,20 +42,22 @@ $greyUnfocus: #4E5967;
   height:100%;
   background-color: $chanelBgUnFocus;
   width: 150px;
-  text-align: center;
 }
 
 .chanel{
     background-color: $chanelBgUnFocus;
     padding: 0.5em;
+    color: $greyUnfocus;
 }
 
 .chanelFocus{
   background-color: $chanelBgFocus;
   border-left: 3px solid $header;
+  color: white;
 }
 
 .title{
   color:$greyUnfocus;
-  margin:0;
+  padding-top:0.5em;
+  text-align: center;
 }

@@ -3,9 +3,9 @@
     <a [routerLink]="['']">Popcube</a>
   </nav>
   <div id="manager-window">
-      <div class='mg-win' (click)="minimize()">-</div>
-      <div class='mg-win' (click)="maximize()">+</div>
-      <div class='mg-win' (click)="close()"><img src="img/cancel.svg" width="100%" height="100%"/></div>
+      <div class='mg-win' (click)="minimize()"><img src="img/substract.svg" width="80%" height="80%"/></div>
+      <div class='mg-win' (click)="maximize()"><img src="{{img}}" width="80%" height="80%"/></div>
+      <div class='mg-win' (click)="close()"><img src="img/cancel.svg" width="80%" height="80%"/></div>
   </div>
 </header>
 <main>
