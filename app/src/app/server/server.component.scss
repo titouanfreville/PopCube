@@ -12,12 +12,13 @@ $greyFocus: #C9CDD1;
 $greyUnfocus: #4E5967;
 
 #navigation{
-  display: table;
+  display: flex;
   height: 100%;
 }
 
 #serverNav{
-  display: table-cell;
+  //display: table-cell;
+  order: 1;
   height:100%;
   background-color: $serverBgUnFocus;
   vertical-align: top;
@@ -35,6 +36,7 @@ $greyUnfocus: #4E5967;
 }
 
 #chanelNav{
+  order: 2;
   height:100%;
   background-color: $chanelBgUnFocus;
   width: 150px;

@@ -4,6 +4,8 @@ import { ApiService } from './shared';
 
 import '../style/app.scss';
 
+const remote = require('electron').remote;
+
 /*
  * App Component
  * Top Level Component
@@ -17,5 +19,24 @@ export class AppComponent {
   url = 'https://github.com/preboot/angular2-webpack';
 
   constructor(private api: ApiService) {
+  }
+
+  minimize(){
+    var window = remote.getCurrentWindow();
+    window.minimize();
+  }
+
+  maximize(){
+    var window = remote.getCurrentWindow();
+    if (!window.isMaximized()) {
+           window.maximize();          
+       } else {
+           window.unmaximize();
+    }
+  }
+
+  close(){
+    var window = remote.getCurrentWindow();
+    window.close();
   }
 }
