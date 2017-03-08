@@ -1,15 +1,15 @@
 <div class='main'>
-  <div class='left'>
+  <div>
     <h1>New way to comunicate !</h1>
     <p>Join the comunity to find the new fast way</p>
   </div>
-
-  <div class='right'>
+<br />
+  <div>
     <form class='form domainForm' >
       <p class='tips'> Already have a domain ?</p>
-      <label for="domainName">Domain</label>
-      <input type="text" id="domainName" required>
+      <input type="text" id="domainName" class="form-control" placeholder="Domain" required>
       <button type="submit" [routerLink]="['login']" class='button button-glow button-rounded button-royal'>Find</button>
+      <br /><br />
       <p class='tips'>If you want to create a new team let's start now !</p>
       <a [routerLink]="['newDomain']">Create Domain</a>
     </form>

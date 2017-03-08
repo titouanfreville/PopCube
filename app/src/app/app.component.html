@@ -1,11 +1,11 @@
 <header>
   <nav>
-    <a [routerLink]="['']">Popcube</a>
+    <a [routerLink]="['']" class='noDrag'>Popcube</a>
   </nav>
   <div id="manager-window">
-      <div class='mg-win' (click)="minimize()"><img src="img/substract.svg" width="80%" height="80%"/></div>
-      <div class='mg-win' (click)="maximize()"><img src="{{img}}" width="80%" height="80%"/></div>
-      <div class='mg-win' (click)="close()"><img src="img/cancel.svg" width="80%" height="80%"/></div>
+      <div class='mg-win noDrag' (click)="minimize()"><img src="img/substract.svg" width="70%" height="70%"/></div>
+      <div class='mg-win noDrag' (click)="maximize()"><img src="{{img}}" width="70%" height="70%"/></div>
+      <div class='mg-win noDrag' (click)="close()"><img src="img/cancel.svg" width="70%" height="70%"/></div>
   </div>
 </header>
 <main>

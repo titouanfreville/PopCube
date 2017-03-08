@@ -10,18 +10,16 @@ $greyUnfocus: #4E5967;
 
 .main{
   text-align: center;
-  padding-top: 50px;
-}
-
-.left{
-  display: inline-block;
-  margin-right: 5%;
-}
-
-.right{
-  display: inline-block;
+  padding-top: 20%;
+  display: flux;
+  justify-content: space-around;
 }
 
 .tips{
   color: $greyUnfocus;
+}
+
+.form-control{
+  width: 200px;
+  display: inline-block;
 }

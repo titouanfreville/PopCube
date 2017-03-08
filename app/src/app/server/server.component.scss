@@ -1,63 +1,90 @@
-$white: #FFF;
+@import '../../style/var';
 
-$header: #87318C;
+//Main
 
-$background: #262A2B;
-$serverBgFocus: #272C33;
-$serverBgUnFocus: #1F2329;
-$chanelBgFocus: #363E48;
-$chanelBgUnFocus: #2E353D;
+#mainPage{
+  display: flex;
+  height: 100%;
+  justify-content: space-between;
+}
 
-$greyFocus: #C9CDD1;
-$greyUnfocus: #4E5967;
+// Server Nav
 
 #navigation{
   display: flex;
-  height: 100%;
+  width: 225px;
 }
 
 #serverNav{
   //display: table-cell;
   order: 1;
   height:100%;
-  background-color: $serverBgUnFocus;
+  background-color: $grey1;
   vertical-align: top;
   text-align: center;
   width: 75px;
 }
 
 .server{
-    background-color: $serverBgUnFocus;
+    background-color: $grey1;
     padding: 0.5em;
-    color: $greyUnfocus;
+    color: $grey3;
 }
 
 .serverFocus{
-  background-color: $serverBgFocus;
+  background-color: $grey2;
   color: white;
 }
 
 #chanelNav{
   order: 2;
   height:100%;
-  background-color: $chanelBgUnFocus;
+  background-color: $grey2;
   width: 150px;
 }
 
 .chanel{
-    background-color: $chanelBgUnFocus;
+    background-color: $grey2;
     padding: 0.5em;
-    color: $greyUnfocus;
+    color: $grey5;
 }
 
 .chanelFocus{
-  background-color: $chanelBgFocus;
-  border-left: 3px solid $header;
+  background-color: $grey3;
+  border-left: 3px solid $royal;
   color: white;
 }
 
 .title{
-  color:$greyUnfocus;
+  color:$grey5;
   padding-top:0.5em;
   text-align: center;
+}
+
+// text
+#chanelArea{
+  display: flex;
+  background-color: $grey4;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  justify-content: space-between;
+}
+
+#message{
+  height: 70%;
+}
+
+#userMessage{
+  height: 10%;
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+// last
+
+#lastFrame{
+  width: 200px;
+  background-color: $grey2;
 }

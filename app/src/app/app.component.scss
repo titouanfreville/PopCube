@@ -1,25 +1,25 @@
 // styles applied on :host are applied on the current component, "app" in this case
-$white: #FFF;
 
-$header: #87318C;
-
-$background: #262A2B;
-
-$greyFocus: #C9CDD1;
-$greyUnfocus: #4E5967;
+@import '../style/var';
 
 :host {
   display: block;
 }
 
 header {
-  background-color: $header;
+  background-color: $royal;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: space-between;
   height: 51px;
   width: 100%;
   align-items: center;
+  -ms-overflow-style: scrollbar;
+  -webkit-app-region:drag;
+}
+
+.noDrag{
+  -webkit-app-region: no-drag;
 }
 
 main {
@@ -30,7 +30,7 @@ main {
 
 nav{
   order: 1;
-  padding-left: 15px;
+  padding-left: 5px;
 }
 
 #manager-window{
@@ -39,7 +39,7 @@ nav{
   width: 120px;
   justify-content: space-around;
   height: 70%;
-  padding-right: 10px;
+  padding-right: 5px;
 }
 
 .mg-win{
