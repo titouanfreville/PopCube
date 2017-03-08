@@ -1,0 +1,32 @@
+<div id="mainPage">
+  <div id="navigation">
+    <div id="organisationNav" class=''>
+      <div *ngFor="let organisation of organisations" id="{{'organisation' + organisation._idOrganisation}}" class="{{'organisation ' + organisation.status}}"
+        (click)="organisationClick(organisation._idOrganisation)">
+        <div id="logo1">
+          {{organisation.avatar}}
+        </div>
+      </div>
+    </div>
+    <div id="channelNav">
+      <p class='title'>CHANNEL TEXT</p>
+      <div *ngFor="let channelT of channelsText" id="{{'channel' + channelT._idChannel}}" class="{{'channel ' + channelT.status}}"
+        (click)="channelClick(channelT._idChannel)"><label>{{channelT.channelName}}</label></div>
+      <p class='title'>CHANNEL VOICE</p>
+      <div *ngFor="let channelV of channelsVoice" id="{{'channel' + channelV._idChannel}}" class="{{'channel ' +channelV.status}}"
+        (click)="channelClick(channelV._idChannel)"><label>{{channelV.channelName}}</label></div>
+    </div>
+  </div>
+  <div id="channelArea">
+    <div id="message">
+
+    </div>
+    <div id="userMessage">
+      <form>
+        <input id="msg" type="text" class="form-control" placeholder="Send a message">
+      </form>
+    </div>
+  </div>
+  <div id="lastFrame">
+  </div>
+</div>

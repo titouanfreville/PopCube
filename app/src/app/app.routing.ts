@@ -2,14 +2,14 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
-import { ServerComponent} from './server/server.component';
-import { LoginComponent} from './server/login/login.component';
-import { RegisterComponent} from './server/register/register.component';
+import { OrganisationComponent} from './organisation/organisation.component';
+import { LoginComponent} from './organisation/login/login.component';
+import { RegisterComponent} from './organisation/register/register.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'about', component: AboutComponent},
-  { path: 'server', component: ServerComponent},
+  { path: 'organisation', component: OrganisationComponent},
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent}
 ];

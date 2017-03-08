@@ -8,16 +8,15 @@
   justify-content: space-between;
 }
 
-// Server Nav
+// Organisation Nav
 
 #navigation{
   display: flex;
   width: 225px;
 }
 
-#serverNav{
+#organisationNav{
   //display: table-cell;
-  order: 1;
   height:100%;
   background-color: $grey1;
   vertical-align: top;
@@ -25,31 +24,30 @@
   width: 75px;
 }
 
-.server{
+.organisation{
     background-color: $grey1;
     padding: 0.5em;
     color: $grey3;
 }
 
-.serverFocus{
+.organisationFocus{
   background-color: $grey2;
   color: white;
 }
 
-#chanelNav{
-  order: 2;
+#channelNav{
   height:100%;
   background-color: $grey2;
   width: 150px;
 }
 
-.chanel{
+.channel{
     background-color: $grey2;
     padding: 0.5em;
     color: $grey5;
 }
 
-.chanelFocus{
+.channelFocus{
   background-color: $grey3;
   border-left: 3px solid $royal;
   color: white;
@@ -62,7 +60,7 @@
 }
 
 // text
-#chanelArea{
+#channelArea{
   display: flex;
   background-color: $grey4;
   flex-direction: column;

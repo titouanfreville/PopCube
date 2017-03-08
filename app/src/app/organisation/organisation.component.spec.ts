@@ -8,15 +8,15 @@
 
 import { TestBed } from '@angular/core/testing';
 
-import { ServerComponent } from './server.component';
+import { OrganisationComponent } from './organisation.component';
 
-describe('Server Component', () => {
+describe('Organisation Component', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [ServerComponent]});
+    TestBed.configureTestingModule({declarations: [OrganisationComponent]});
   });
 
   it('should ...', () => {
-    const fixture = TestBed.createComponent(ServerComponent);
+    const fixture = TestBed.createComponent(OrganisationComponent);
     fixture.detectChanges();
   });
 });
