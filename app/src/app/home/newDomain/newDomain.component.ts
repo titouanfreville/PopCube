@@ -3,8 +3,8 @@ import { Http } from '@angular/http';
 
 @Component({
   selector: 'my-new-domain',
-  template: require('./newDomain.component.spec'),
-  styles: [require('./NewDomain.component.scss')],
+  template: require('./newDomain.component.html'),
+  styles: [require('./newDomain.component.scss')],
 })
 export class NewDomainComponent implements OnInit {
 

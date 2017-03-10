@@ -16,7 +16,7 @@ describe('NewDomain Component', () => {
   it('should ...', () => {
     const fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
-    expect(fixture.nativeElement.children[0].textContent).toContain('NewDomain Works!');
+    expect(fixture.nativeElement.children[0].textContent).toContain('Home Works!');
   });
 
 });
