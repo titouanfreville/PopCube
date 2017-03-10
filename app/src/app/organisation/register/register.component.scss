@@ -1,4 +1,12 @@
 // component styles are encapsulated and only applied to their components
-* {
-  color: #FFEF00;
+
+.form-group{
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 15%;
+  width: 80%;
+}
+
+.form-control{
+  margin: 10px;
 }

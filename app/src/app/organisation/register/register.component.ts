@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpModule, JsonpModule } from '@angular/http';
+
+import { User } from '../../../model/user';
+
+import { UserService } from '../../../service/user';
 
 @Component({
   selector: 'my-register',
@@ -6,8 +11,10 @@ import { Component, OnInit } from '@angular/core';
   styles: [require('./register.component.scss')]
 })
 export class RegisterComponent implements OnInit {
+  errorMessage: string;
+  user: User;
 
-  constructor() {
+  constructor(private userService: UserService) {
     // Do stuff
   }
 
@@ -15,4 +22,9 @@ export class RegisterComponent implements OnInit {
     console.log('Hello Register');
   }
 
+  addUser() {
+    this.userService.addUser(1, this.user)
+    .then()
+    .catch();
+  }
 }

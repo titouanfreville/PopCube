@@ -36,8 +36,9 @@ nav{
 #manager-window{
   display: flex;
   order: 2;
-  width: 120px;
-  justify-content: space-around;
+  width: 100px;
+  justify-content: space-around, center;
+  align-items: center;
   height: 70%;
   padding-right: 5px;
 }
