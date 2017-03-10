@@ -1,3 +1,17 @@
-<p>
-  Home Works!
-</p>
+<div class='main'>
+  <div>
+    <h1>A new way to communicate !</h1>
+    <p>Join the community to find the new fast way</p>
+  </div>
+<br />
+  <div>
+    <form class='form domainForm' >
+      <p class='tips'> Already have a domain ?</p>
+      <input type="text" id="domainName" class="form-control" placeholder="Domain" required>
+      <button type="submit" [routerLink]="['login']" class='button button-glow button-rounded button-royal'>Find</button>
+      <br /><br />
+      <p class='tips'>If you want to create a new team let's start now !</p>
+      <a [routerLink]="['newDomain']">Create Domain</a>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div class='main'>
+  <form class="form-group">
+    <p class='tips'>If you already are signed in to this domain</p>
+    <input type="text" id="username" class="form-control" placeholder="Username" required>
+    <br />
+    <br />
+    <input type="password" id="password" class="form-control" placeholder="Password" required>
+    <br /><br />
+    <button type="submit" [routerLink]="['/organisation']" class='button button-glow button-rounded button-royal'>Login</button>
+    <br /><br />
+    <a [routerLink]="['/register']">Register</a>
+    <a [routerLink]="['/register']">Forgot password ?</a>
+  </form>
+</div> 

@@ -4,6 +4,8 @@ import { ApiService } from './shared';
 
 import '../style/app.scss';
 
+const remote = require('electron').remote;
+
 /*
  * App Component
  * Top Level Component
@@ -15,7 +17,29 @@ import '../style/app.scss';
 })
 export class AppComponent {
   url = 'https://github.com/preboot/angular2-webpack';
+  public img = 'img/tab.svg';
 
   constructor(private api: ApiService) {
+  }
+
+  minimize() {
+    let window = remote.getCurrentWindow();
+    window.minimize();
+  }
+
+  maximize() {
+    let window = remote.getCurrentWindow();
+    if (!window.isMaximized()) {
+           window.maximize();
+           this.img = 'img/multi-tab.svg';
+       } else {
+           window.unmaximize();
+           this.img = 'img/tab.svg';
+    }
+  }
+
+  close() {
+    let window = remote.getCurrentWindow();
+    window.close();
   }
 }

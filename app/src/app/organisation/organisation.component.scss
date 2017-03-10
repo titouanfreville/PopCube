@@ -1,0 +1,88 @@
+@import '../../style/var';
+
+//Main
+
+#mainPage{
+  display: flex;
+  height: 100%;
+  justify-content: space-between;
+}
+
+// Organisation Nav
+
+#navigation{
+  display: flex;
+  width: 225px;
+}
+
+#organisationNav{
+  //display: table-cell;
+  height:100%;
+  background-color: $grey1;
+  vertical-align: top;
+  text-align: center;
+  width: 75px;
+}
+
+.organisation{
+    background-color: $grey1;
+    padding: 0.5em;
+    color: $grey3;
+}
+
+.organisationFocus{
+  background-color: $grey2;
+  color: white;
+}
+
+#channelNav{
+  height:100%;
+  background-color: $grey2;
+  width: 150px;
+}
+
+.channel{
+    background-color: $grey2;
+    padding: 0.5em;
+    color: $grey5;
+}
+
+.channelFocus{
+  background-color: $grey3;
+  border-left: 3px solid $royal;
+  color: white;
+}
+
+.title{
+  color:$grey5;
+  padding-top:0.5em;
+  text-align: center;
+}
+
+// text
+#channelArea{
+  display: flex;
+  background-color: $grey4;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  justify-content: space-between;
+}
+
+#message{
+  height: 70%;
+}
+
+#userMessage{
+  height: 10%;
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+// last
+
+#lastFrame{
+  width: 200px;
+  background-color: $grey2;
+}

@@ -1,17 +1,15 @@
 <header>
   <nav>
-    <a [routerLink]="['']">Home</a>
-    <a [routerLink]="['about']">About</a>
+    <a [routerLink]="['']" class='noDrag'>Popcube</a>
   </nav>
+  <div id="manager-window">
+      <div class='mg-win noDrag' (click)="minimize()"><img src="img/substract.svg" width="40%" height="40%"/></div>
+      <div class='mg-win noDrag' (click)="maximize()"><img src="{{img}}" width="40%" height="40%"/></div>
+      <div class='mg-win noDrag' (click)="close()"><img src="img/cancel.svg" width="40%" height="40%"/></div>
+  </div>
 </header>
 <main>
-  <h1 class='title'>Hello from {{api.title}}!</h1>
-
-  <!-- Images (and assets) are parsed and loaded from within the public directory -->
-  <img src="./img/angular.png">
-
   <router-outlet></router-outlet>
 </main>
 <footer>
-  <a [href]="url">Webpack Angular 2 Starter</a>
 </footer>

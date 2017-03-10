@@ -9,10 +9,10 @@ $greyFocus: #C9CDD1;
 $greyUnfocus: #4E5967;
 
 .main{
-  text-align: center;
+  display: flex;
   padding-top: 20%;
-  display: flux;
-  justify-content: space-around;
+  justify-content: center;
+  text-align: center;
 }
 
 .tips{
@@ -20,6 +20,6 @@ $greyUnfocus: #4E5967;
 }
 
 .form-control{
-  width: 200px;
+  width: 250px;
   display: inline-block;
 }

@@ -11,10 +11,11 @@ let mainWindow
 const npmLifecycle = process.env.npm_lifecycle_event
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({width: 800, height: 600, frame: false,})
 
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/dist/index.html`)
+  //mainWindow.setMenu(null)
 
   if (npmLifecycle === 'start-watch') {
     livereload.create(mainWindow)

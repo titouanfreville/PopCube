@@ -1,8 +1,19 @@
 // styles in src/style directory are applied to the whole page
-body {
-    background: #0147A7;
-    color: #fff;
+
+@import 'var';
+
+html{
+    height: 100%;
 }
-a {
-    color: #03A9F4;
+
+body {
+    background: $grey1;
+    color: white;
+    margin: 0;
+    height: 100%;
+}
+
+a, a:hover {
+    color: white;
+    text-decoration-style: none;
 }
