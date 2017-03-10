@@ -1,0 +1,19 @@
+// component styles are encapsulated and only applied to their components
+
+@import '../../../style/var';
+
+.main{
+  text-align: center;
+  padding-top: 20%;
+  display: flux;
+  justify-content: space-around;
+}
+
+.tips{
+  color: $grey3;
+}
+
+.form-control{
+  width: 200px;
+  display: inline-block;
+}

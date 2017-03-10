@@ -8,6 +8,7 @@ import { AboutComponent } from './about/about.component';
 import { OrganisationComponent} from './organisation/organisation.component';
 import { LoginComponent} from './organisation/login/login.component';
 import { RegisterComponent} from './organisation/register/register.component';
+import { NewDomainComponent } from './home/newDomain/newDomain.component';
 
 import { ApiService } from './shared';
 import { routing } from './app.routing';
@@ -24,7 +25,8 @@ import { routing } from './app.routing';
     AboutComponent,
     OrganisationComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    NewDomainComponent
   ],
   providers: [
     ApiService

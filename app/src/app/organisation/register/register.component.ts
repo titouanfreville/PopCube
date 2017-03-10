@@ -3,7 +3,7 @@ import { HttpModule, JsonpModule } from '@angular/http';
 
 import { User } from '../../../model/user';
 
-import { UserService } from '../../../service/user';
+//import { UserService } from '../../../service/user';
 
 @Component({
   selector: 'my-register',
@@ -14,7 +14,7 @@ export class RegisterComponent implements OnInit {
   errorMessage: string;
   user: User;
 
-  constructor(private userService: UserService) {
+  constructor() {
     // Do stuff
   }
 
@@ -23,8 +23,6 @@ export class RegisterComponent implements OnInit {
   }
 
   addUser() {
-    this.userService.addUser(1, this.user)
-    .then()
-    .catch();
+    
   }
 }

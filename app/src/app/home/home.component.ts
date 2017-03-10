@@ -17,7 +17,6 @@ export class HomeComponent implements OnInit {
   }
 
   find(event, domainName) {
-    event.preventDefault();
-    let body = JSON.stringify({domainName});
+    
   }
 }
