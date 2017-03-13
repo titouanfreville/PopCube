@@ -18,6 +18,8 @@ export class OrganisationComponent implements OnInit {
   public channelsText = [];
   public channelsVoice = [];
 
+  public channelTitle: string;
+
   constructor() {
 
     this.organisations.push(new Organisation(1, 'Pop', 'Serveur de développement', 'Pop'));
@@ -58,6 +60,8 @@ export class OrganisationComponent implements OnInit {
     for (let c of this.channels) {
       if (c._idChannel === parseInt(channelId, 10)) {
         c.status = 'channelFocus';
+        this.channelTitle = c.channelName;
+        console.log(this.channelTitle);
       }else {
         c.status = '';
       }
