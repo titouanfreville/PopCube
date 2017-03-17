@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { Organisation } from '../../model/organisation';
 import { Channel } from '../../model/channel';
+import { Message } from '../../model/message';
+import { User } from '../../model/user';
 
 @Component({
   selector: 'my-organisation',
@@ -10,43 +12,66 @@ import { Channel } from '../../model/channel';
 })
 export class OrganisationComponent implements OnInit {
 
-  public organisation1 = {status};
-  public organisation2 = {status};
+  organisations: Organisation[] = [];
+  channels: Channel[] = [];
+  messages: Message[] = [];
 
-  public organisations = [];
-  public channels = [];
-  public channelsText = [];
-  public channelsVoice = [];
+  user: User = new User(1, '1', '1', '1', '1', '1');
 
-  public channelTitle: string;
+  currentChannel: number;
+  content: {value: string};
+  channelsText: Channel[] = [];
+  channelsVoice: Channel[] = [];
+
+  channelTitle: string;
 
   constructor() {
-
+    // Init organisation 1
     this.organisations.push(new Organisation(1, 'Pop', 'Serveur de développement', 'Pop'));
+    
+    // Init channels of organisation 1
+    this.channels.push(new Channel(1, 'Developpement', 'Text', 'chanel'));
+    this.channels.push(new Channel(2, 'Infrastructure', 'Text', 'chanel'));
+    this.channels.push(new Channel(3, 'Marketing', 'Text', 'chanel'));
+
+    this.channels.push(new Channel(4, 'Developpement', 'Voice', 'chanel'));
+    this.channels.push(new Channel(5, 'Infrastructure', 'Voice', 'chanel'));
+    this.channels.push(new Channel(6, 'Everyones', 'Voice', 'chanel'));
+
+    this.organisations.find(o => o._idOrganisation === 1)
+    .channels = this.channels;
+
+    this.organisations.find(o => o._idOrganisation === 1)
+    .channels.find(c => c._idChannel === 1)
+    .messages.push(new Message(1, 'Content', this.user));
+
+    this.channels = [];
+
+    // Init organisation 2
     this.organisations.push(new Organisation(2, 'Cube', 'Serveur de test', 'Cub'));
 
+    // Init channels of organisation 2
+    this.channels.push(new Channel(1, 'Developpement', 'Text', 'chanel'));
+    this.channels.push(new Channel(2, 'Infrastructure', 'Text', 'chanel'));
+    this.channels.push(new Channel(3, 'Marketing', 'Text', 'chanel'));
+
+    this.channels.push(new Channel(4, 'Developpement', 'Voice', 'chanel'));
+    this.channels.push(new Channel(5, 'Infrastructure', 'Voice', 'chanel'));
+    this.channels.push(new Channel(6, 'Everyones', 'Voice', 'chanel'));
+
+    this.organisations.find(or => or._idOrganisation === 2)
+    .channels = this.channels;
+
+    this.channels = [];
   }
 
-  ngOnInit() {
-    console.log('Hello Organisation');
-  }
+  ngOnInit() {  this.content.value = 'Test'; }
 
   organisationClick(organisationId) {
     for (let o of this.organisations) {
       if (o._idOrganisation === organisationId) {
         o.status = 'organisationFocus';
-
-        if (organisationId === 1) {
-          this.channels.push(new Channel(1, 'Developpement', 'Text', 'chanel'));
-          this.channels.push(new Channel(2, 'Infrastructure', 'Text', 'chanel'));
-          this.channels.push(new Channel(3, 'Marketing', 'Text', 'chanel'));
-
-          this.channels.push(new Channel(4, 'Developpement', 'Voice', 'chanel'));
-          this.channels.push(new Channel(5, 'Infrastructure', 'Voice', 'chanel'));
-          this.channels.push(new Channel(6, 'Everyones', 'Voice', 'chanel'));
-        }else {
-          this.channels = [];
-        }
+        this.channels = o.channels;
       }else {
         o.status = '';
       }
@@ -61,7 +86,8 @@ export class OrganisationComponent implements OnInit {
       if (c._idChannel === parseInt(channelId, 10)) {
         c.status = 'channelFocus';
         this.channelTitle = c.channelName;
-        console.log(this.channelTitle);
+        this.currentChannel = c._idChannel;
+        this.messages = c.messages;
       }else {
         c.status = '';
       }
@@ -80,5 +106,17 @@ export class OrganisationComponent implements OnInit {
         this.channelsVoice.push(c);
       }
     }
+  }
+
+  addMessage() {
+    console.log('corp du message:' + this.content);
+    let idMessage = this.channels.find(c => c._idChannel === this.currentChannel)
+    .messages.length + 2;
+    this.channels.find(c => c._idChannel === this.currentChannel)
+    .messages.push(new Message(idMessage, this.content, this.user));
+    this.messages = this.channels.find(c => c._idChannel === this.currentChannel)
+    .messages;
+    this.content.value = '';
+
   }
 }

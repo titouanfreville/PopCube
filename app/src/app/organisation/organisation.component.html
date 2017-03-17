@@ -19,12 +19,13 @@
   </div>
   <div id="channelArea">
     <div id="message">
-
+      <div *ngFor="let msg of messages" class="{'message' + messageStatus}">
+        <p>{{msg.content}}</p>
+      </div>
     </div>
     <div id="userMessage">
-      <form>
-        <input id="msg" type="text" class="form-control" placeholder="Send a message">
-      </form>
+      <input #msg type="text" class="form-control" placeholder="Send a message" [value]=content.value (keyup.enter)="addMessage()">
+      <p>{{content}}</p>
     </div>
   </div>
   <div id="lastFrame">
