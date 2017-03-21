@@ -19,8 +19,6 @@ export class AppComponent {
   url = 'https://github.com/preboot/angular2-webpack';
   public img = 'img/tab.svg';
 
-  @Input() channelTitle;
-
   constructor(private api: ApiService) {
   }
 
