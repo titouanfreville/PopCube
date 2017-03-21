@@ -8,7 +8,7 @@
         </div>
       </div>
     </div>
-    <div id="channelNav">
+    <div id="channelNav" *ngIf="currentOrganisation != null">
       <p class='title'>CHANNEL TEXT</p>
       <div *ngFor="let channelT of channelsText" id="{{'channel' + channelT._idChannel}}" class="{{'channel ' + channelT.status}}"
         (click)="channelClick(channelT._idChannel)"><label>{{channelT.channelName}}</label></div>
@@ -17,15 +17,24 @@
         (click)="channelClick(channelV._idChannel)"><label>{{channelV.channelName}}</label></div>
     </div>
   </div>
-  <div id="channelArea">
+  <div id="channelArea" *ngIf="currentChannel != null">
     <div id="message">
-      <div *ngFor="let msg of messages" class="{'message' + messageStatus}">
-        <p>{{msg.content}}</p>
+      <div *ngFor="let msg of messages" class="message">
+        <div id="userAvatarMsg" class="avatar">
+          {{msg.creator.avatar}}
+        </div>
+        <div id="UserContent">
+          <div id="userMsg" class='user'>
+            {{msg.creator.userName}}
+          </div>
+          <div id="contentMsg" class='content'>
+            <p>{{msg.content}}</p>
+          </div>
+        </div>
       </div>
     </div>
     <div id="userMessage">
-      <input #msg type="text" class="form-control" placeholder="Send a message" [value]=content.value (keyup.enter)="addMessage()">
-      <p>{{content}}</p>
+      <input type="text" class="form-control" placeholder="Send a message" [(ngModel)]="content" (keyup.enter)="addMessage()">
     </div>
   </div>
   <div id="lastFrame">

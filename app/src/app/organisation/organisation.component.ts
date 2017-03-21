@@ -16,10 +16,12 @@ export class OrganisationComponent implements OnInit {
   channels: Channel[] = [];
   messages: Message[] = [];
 
-  user: User = new User(1, '1', '1', '1', '1', '1');
+  user: User = new User(1, 'Davaï', '1', '1', '1', '1', '1');
 
+  currentOrganisation: number;
   currentChannel: number;
-  content: {value: string};
+  content: string;
+
   channelsText: Channel[] = [];
   channelsVoice: Channel[] = [];
 
@@ -51,13 +53,13 @@ export class OrganisationComponent implements OnInit {
     this.organisations.push(new Organisation(2, 'Cube', 'Serveur de test', 'Cub'));
 
     // Init channels of organisation 2
-    this.channels.push(new Channel(1, 'Developpement', 'Text', 'chanel'));
-    this.channels.push(new Channel(2, 'Infrastructure', 'Text', 'chanel'));
-    this.channels.push(new Channel(3, 'Marketing', 'Text', 'chanel'));
+    this.channels.push(new Channel(1, 'Les sodomites', 'Text', 'chanel'));
+    this.channels.push(new Channel(2, 'FAQ', 'Text', 'chanel'));
+    this.channels.push(new Channel(3, 'What did you expect', 'Text', 'chanel'));
 
-    this.channels.push(new Channel(4, 'Developpement', 'Voice', 'chanel'));
-    this.channels.push(new Channel(5, 'Infrastructure', 'Voice', 'chanel'));
-    this.channels.push(new Channel(6, 'Everyones', 'Voice', 'chanel'));
+    this.channels.push(new Channel(4, 'Fuck', 'Voice', 'chanel'));
+    this.channels.push(new Channel(5, 'The', 'Voice', 'chanel'));
+    this.channels.push(new Channel(6, 'Police mothafoka', 'Voice', 'chanel'));
 
     this.organisations.find(or => or._idOrganisation === 2)
     .channels = this.channels;
@@ -65,13 +67,17 @@ export class OrganisationComponent implements OnInit {
     this.channels = [];
   }
 
-  ngOnInit() {  this.content.value = 'Test'; }
+  ngOnInit() {
+    this.currentOrganisation = null;
+    this.currentChannel = null;
+  }
 
   organisationClick(organisationId) {
     for (let o of this.organisations) {
       if (o._idOrganisation === organisationId) {
         o.status = 'organisationFocus';
         this.channels = o.channels;
+        this.currentOrganisation = o._idOrganisation;
       }else {
         o.status = '';
       }
@@ -116,7 +122,7 @@ export class OrganisationComponent implements OnInit {
     .messages.push(new Message(idMessage, this.content, this.user));
     this.messages = this.channels.find(c => c._idChannel === this.currentChannel)
     .messages;
-    this.content.value = '';
+    this.content = '';
 
   }
 }
