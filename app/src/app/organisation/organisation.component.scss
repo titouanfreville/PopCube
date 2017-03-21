@@ -82,10 +82,19 @@
 }
 
 // message
+
+#channelTitle {
+  text-align: center;
+  padding: 10px;
+  margin: 0;
+  background-color: $grey2;
+}
+
 .message{
   width: 95%;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 10px;
   display: flex;
   border-bottom: 1px solid $grey5;
 }

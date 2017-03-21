@@ -19,6 +19,7 @@
   </div>
   <div id="channelArea" *ngIf="currentChannel != null">
     <div id="message">
+      <h3 id="channelTitle">{{channelTitle}}</h3>
       <div *ngFor="let msg of messages" class="message">
         <div id="userAvatarMsg" class="avatar">
           {{msg.creator.avatar}}
