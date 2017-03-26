@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 
 import { Organisation } from '../../model/organisation';
 import { Channel } from '../../model/channel';
@@ -10,7 +10,9 @@ import { User } from '../../model/user';
   template: require('./organisation.component.html'),
   styles: [require('./organisation.component.scss')]
 })
-export class OrganisationComponent implements OnInit {
+export class OrganisationComponent implements OnInit, AfterViewChecked {
+
+  @ViewChild('message') private myScrollContainer: ElementRef;
 
   organisations: Organisation[] = [];
   channels: Channel[] = [];
@@ -64,13 +66,24 @@ export class OrganisationComponent implements OnInit {
     this.organisations.find(or => or._idOrganisation === 2)
     .channels = this.channels;
 
-    this.channels = [];
+    this.initStatus();
   }
 
   ngOnInit() {
     this.currentOrganisation = null;
     this.currentChannel = null;
+    this.scrollToBottom();
   }
+
+  ngAfterViewChecked() {
+        this.scrollToBottom();
+    } 
+
+    scrollToBottom(): void {
+        try {
+            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+        } catch(err) { }
+    }
 
   organisationClick(organisationId) {
     for (let o of this.organisations) {
@@ -115,14 +128,29 @@ export class OrganisationComponent implements OnInit {
   }
 
   addMessage() {
-    console.log('corp du message:' + this.content);
-    let idMessage = this.channels.find(c => c._idChannel === this.currentChannel)
-    .messages.length + 2;
-    this.channels.find(c => c._idChannel === this.currentChannel)
-    .messages.push(new Message(idMessage, this.content, this.user));
-    this.messages = this.channels.find(c => c._idChannel === this.currentChannel)
-    .messages;
-    this.content = '';
+    if (this.content != null) {
+      let idMessage = this.channels.find(c => c._idChannel === this.currentChannel)
+      .messages.length + 2;
+      this.channels.find(c => c._idChannel === this.currentChannel)
+      .messages.push(new Message(idMessage, this.content, this.user));
+      this.messages = this.channels.find(c => c._idChannel === this.currentChannel)
+      .messages;
+      this.content = '';
+      try {
+        console.log(this.myScrollContainer.nativeElement.scrollHeight);
+        this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight + 61;
+      } catch (err) {
+        console.log(err);
+      }
+     }
+  }
 
+  initStatus(){
+    for (let o of this.organisations) {
+      o.status = '';
+      for (let c of o.channels) {
+        c.status = '';
+      }
+    }
   }
 }

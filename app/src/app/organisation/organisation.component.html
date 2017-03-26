@@ -11,15 +11,23 @@
     <div id="channelNav" *ngIf="currentOrganisation != null">
       <p class='title'>CHANNEL TEXT</p>
       <div *ngFor="let channelT of channelsText" id="{{'channel' + channelT._idChannel}}" class="{{'channel ' + channelT.status}}"
-        (click)="channelClick(channelT._idChannel)"><label>{{channelT.channelName}}</label></div>
+        (click)="channelClick(channelT._idChannel)">
+          <label>{{channelT.channelName}}</label>
+          <img *ngIf="channelT.status === 'channelFocus'" src="img/settings.svg" class="img-set" />
+          <img *ngIf="channelT.status === ''" src="img/settings-unfocus.svg" class="img-set" />
+        </div>
       <p class='title'>CHANNEL VOICE</p>
       <div *ngFor="let channelV of channelsVoice" id="{{'channel' + channelV._idChannel}}" class="{{'channel ' +channelV.status}}"
-        (click)="channelClick(channelV._idChannel)"><label>{{channelV.channelName}}</label></div>
+        (click)="channelClick(channelV._idChannel)">
+          <label>{{channelV.channelName}}</label>
+          <img *ngIf="channelV.status === 'channelFocus'" src="img/settings.svg" class="img-set" />
+          <img *ngIf="channelV.status === ''" src="img/settings-unfocus.svg" class="img-set" />
+        </div>
     </div>
   </div>
   <div id="channelArea" *ngIf="currentChannel != null">
-    <div id="message">
-      <h3 id="channelTitle">{{channelTitle}}</h3>
+    <h3 id="channelTitle">#{{channelTitle}}</h3>
+    <div #message id="message">
       <div *ngFor="let msg of messages" class="message">
         <div id="userAvatarMsg" class="avatar">
           {{msg.creator.avatar}}
