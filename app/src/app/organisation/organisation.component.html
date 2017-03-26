@@ -23,6 +23,13 @@
           <img *ngIf="channelV.status === 'channelFocus'" src="img/settings.svg" class="img-set" />
           <img *ngIf="channelV.status === ''" src="img/settings-unfocus.svg" class="img-set" />
         </div>
+        <p class='title'>CHANNEL VIDEO</p>
+      <div *ngFor="let channelV of channelsVideo" id="{{'channel' + channelV._idChannel}}" class="{{'channel ' +channelV.status}}"
+        (click)="channelClick(channelV._idChannel)">
+          <label>{{channelV.channelName}}</label>
+          <img *ngIf="channelV.status === 'channelFocus'" src="img/settings.svg" class="img-set" />
+          <img *ngIf="channelV.status === ''" src="img/settings-unfocus.svg" class="img-set" />
+        </div>
     </div>
   </div>
   <div id="channelArea" *ngIf="currentChannel != null">
@@ -34,7 +41,7 @@
         </div>
         <div id="UserContent">
           <div id="userMsg" class='user'>
-            {{msg.creator.userName}}
+            {{msg.creator.userName + ' ' + msg.date}}
           </div>
           <div id="contentMsg" class='content'>
             <p>{{msg.content}}</p>
