@@ -17,7 +17,6 @@ import { User } from '../../../model/user'
 export class LoginComponent implements OnInit {
 
   loginVar = {login: 'devowner', password: 'popcube'};
-  private user: User;
 
   constructor(
     public http: Http,
@@ -36,9 +35,8 @@ export class LoginComponent implements OnInit {
   login() {
     let request = this._loginService.login(this.loginVar);
     request.then((data) => {
-        this.user = data.user;
         this._token.generateNewToken(data.token);
-        this._user.generateNewUser(this.user);
+        this._user.generateNewUser(data.user.id);
         this.router.navigate(['/organisation']);
       }).catch((ex) => {
        console.error('Error fetching users', ex);

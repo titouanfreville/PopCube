@@ -28,7 +28,7 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
 
   token: String;
   messageSvc: MessageService;
-  currentUser: User;
+  currentUser;
 
   currentOrganisation: number;
   currentChannel: number;
@@ -51,7 +51,6 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
     this.token = this._token.retrieveToken();
     this.messageSvc = this._message;
     this.currentUser = this._user.retrieveUser();
-    console.log(this.currentUser);
     // Organisations
     let requestOrganisation = this._organisation.getOrganisation(this.token);
     requestOrganisation.then((data) => {
@@ -170,14 +169,19 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
   }
 
   addMessage() {
+    let user = null;
     if (this.content != null) {
+      for(let u of this.users){
+         if(this.currentUser.idUser === u._idUser){
+              user = u;
+              console.log(user)
+            }
+      }
       let idMessage = this.channels.find(c => c._idChannel === this.currentChannel)
-      .messages.length + 2;
-      let message = new Message(idMessage, (new Date()).getTime(), this.content, this.currentUser, this.currentChannel)
-      this.channels.find(c => c._idChannel === this.currentChannel)
-      .messages.push(message);
-      this.messages = this.channels.find(c => c._idChannel === this.currentChannel)
-      .messages;
+      .messages.length + 1;
+      let message = new Message(idMessage, (new Date()).getTime(), this.content, user, this.currentChannel)
+      this.channels.find(c => c._idChannel === this.currentChannel).messages.push(message);
+      this.messages = this.channels.find(c => c._idChannel === this.currentChannel).messages;
       this.content = '';
       this.messageSvc.addMessage(this.token, message);
       try {
