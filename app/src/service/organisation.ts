@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class OrganisationService {
 
-    private organisationsUrl = 'https://api-alpha.popcube.xyz/organisation';  // URL to web api
+    private organisationsUrl = 'https://api-alpha.popcube.xyz';  // URL to web api
 
     constructor(private http: Http) { }
 
@@ -17,7 +17,7 @@ export class OrganisationService {
             'Content-Type': 'application/json'
         });
         return this.http
-            .get(`${this.organisationsUrl}`, { headers: headers })
+            .get(`${this.organisationsUrl + '/organisation'}`, { headers: headers })
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);

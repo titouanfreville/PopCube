@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class LoginService {
 
-    private loginUrl = 'https://api-alpha.popcube.xyz/login';  // URL to web api
+    private loginUrl = 'https://api-alpha.popcube.xyz';  // URL to web api
 
     constructor(private http: Http) { }
 
@@ -16,7 +16,7 @@ export class LoginService {
             'Content-Type': 'application/json',
         });
         return this.http
-            .post(`${this.loginUrl}`, JSON.stringify(login), { headers: headers })
+            .post(`${this.loginUrl + '/login'}`, JSON.stringify(login), { headers: headers })
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);

@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class ChannelService {
 
-    private channelUrl = 'https://api-alpha.popcube.xyz/channel/all';  // URL to web api
+    private channelUrl = 'https://api-alpha.popcube.xyz';  // URL to web api
 
     constructor(private http: Http) { }
 
@@ -17,7 +17,7 @@ export class ChannelService {
             'Content-Type': 'application/json'
         });
         return this.http
-            .get(`${this.channelUrl}`, { headers: headers })
+            .get(`${this.channelUrl + '/channel'}`, { headers: headers })
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);

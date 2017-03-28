@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class InitOrganisationService {
 
-    private loginUrl = 'alpha-api.popcube.xyz/login';  // URL to web api
+    private loginUrl = 'alpha-api.popcube.xyz';  // URL to web api
 
     constructor(private http: Http) { }
     /* Object
@@ -48,7 +48,7 @@ export class InitOrganisationService {
             'Content-Type': 'application/json',
         });
         console.log(this.http
-            .post(`${this.loginUrl}`,JSON.stringify(organisation) + JSON.stringify(user), { headers: headers })
+            .post(`${this.loginUrl + '/login'}`,JSON.stringify(organisation) + JSON.stringify(user), { headers: headers })
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError))

@@ -2,13 +2,12 @@ import 'rxjs/add/operator/toPromise';
 
 import { Headers, Http } from '@angular/http';
 
-import { User } from '../model/user';
 import { Injectable } from '@angular/core';
 
 @Injectable()
 export class UserService {
 
-    private usersUrl = 'https://api-alpha.popcube.xyz/user';  // URL to web api
+    private usersUrl = 'https://api-alpha.popcube.xyz';  // URL to web api
     private userKey = 'currentUser';
 
     constructor(private http: Http) { }
@@ -19,7 +18,7 @@ export class UserService {
             'Content-Type': 'application/json'
         });
         return this.http
-            .get(`${this.usersUrl}`, { headers: headers })
+            .get(`${this.usersUrl + '/user'}`, { headers: headers })
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);
@@ -36,9 +35,9 @@ export class UserService {
         return storedUser;
     }
 
-    public generateNewUser(user: User) {
+    public generateNewUser(idUser: number) {
         let currentTime:number = (new Date()).getTime() + 60*60;
-        this.store({ttl: currentTime, user});
+        this.store({ttl: currentTime, idUser});
     }
 
 
@@ -47,7 +46,7 @@ export class UserService {
         try {
             let storedUser = JSON.parse(this.retrieve());
             if(storedUser.ttl < currentTime) throw 'invalid user found';
-            user = storedUser.user;
+            user = storedUser;
         }
         catch(err) {
             console.error(err);

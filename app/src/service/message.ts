@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class MessageService {
 
-    private messageUrl = 'https://api-alpha.popcube.xyz/message';  // URL to web api
+    private messageUrl = 'https://api-alpha.popcube.xyz';  // URL to web api
 
     constructor(private http: Http) { }
 
@@ -18,26 +18,29 @@ export class MessageService {
             'Content-Type': 'application/json'
         });
         return this.http
-            .get(`${this.messageUrl}`, { headers: headers })
+            .get(`${this.messageUrl + '/message'}`, { headers: headers })
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);
     }
 
     addMessage(token, message: Message) {
+        console.log("message : ");
+        console.log(message);
         let formatMessage =  {
             content: message.content,
             date: message.date,
             id: message._idMessage,
             id_channel: message.idChannel,
             id_user: message.creator._idUser
-        }
+        };
+        console.log(formatMessage);
         let headers = new Headers({
             'Authorization': 'bearer ' + token,
             'Content-Type': 'application/json'
         });
         return this.http
-            .post(`${this.messageUrl}`, JSON.stringify(formatMessage), { headers: headers })
+            .post(`${this.messageUrl + '/message'}`, JSON.stringify(formatMessage), { headers: headers })
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);
