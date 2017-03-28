@@ -35,6 +35,11 @@
   color: white;
 }
 
+.add-organisation {
+  width: 30px;
+  height: 30px;
+}
+
 #channelNav{
   height:100%;
   background-color: $grey2;
@@ -59,11 +64,19 @@
   color:$grey5;
   padding-top:0.5em;
   text-align: center;
+  display: flex;
+  justify-content: space-around;
 }
 
 .img-set{
   width: 20px;
   height: 20px;
+}
+
+.add-channel {
+  width: 15px;
+  height: 15px;
+  display: flex;
 }
 
 // text

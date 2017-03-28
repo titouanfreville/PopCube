@@ -7,23 +7,24 @@
           {{organisation.avatar}}
         </div>
       </div>
+      <img src="img/plus.svg" class="add-organisation" />
     </div>
     <div id="channelNav" *ngIf="currentOrganisation != null">
-      <p class='title'>CHANNEL TEXT</p>
+      <p class='title'>CHANNEL TEXT <img src="img/plus-symbol.svg" class="add-channel" /> </p>
       <div *ngFor="let channelT of channelsText" id="{{'channel' + channelT._idChannel}}" class="{{'channel ' + channelT.status}}"
         (click)="channelClick(channelT._idChannel)">
           <label>{{channelT.channelName}}</label>
-          <img *ngIf="channelT.status === 'channelFocus'" src="img/settings.svg" class="img-set" />
+          <img *ngIf="channelT.status === 'channelFocus'" src="img/settings.svg" class="add-set" />
           <img *ngIf="channelT.status === ''" src="img/settings-unfocus.svg" class="img-set" />
         </div>
-      <p class='title'>CHANNEL VOICE</p>
+      <p class='title'>CHANNEL VOICE <img src="img/plus-symbol.svg" class="add-channel" /> </p>
       <div *ngFor="let channelV of channelsVoice" id="{{'channel' + channelV._idChannel}}" class="{{'channel ' +channelV.status}}"
         (click)="channelClick(channelV._idChannel)">
           <label>{{channelV.channelName}}</label>
           <img *ngIf="channelV.status === 'channelFocus'" src="img/settings.svg" class="img-set" />
           <img *ngIf="channelV.status === ''" src="img/settings-unfocus.svg" class="img-set" />
         </div>
-        <p class='title'>CHANNEL VIDEO</p>
+        <p class='title'>CHANNEL VIDEO <img src="img/plus-symbol.svg" class="add-channel" /></p>
       <div *ngFor="let channelV of channelsVideo" id="{{'channel' + channelV._idChannel}}" class="{{'channel ' +channelV.status}}"
         (click)="channelClick(channelV._idChannel)">
           <label>{{channelV.channelName}}</label>
