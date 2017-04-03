@@ -25,6 +25,9 @@ export class TokenManager {
         let currentTime:number = (new Date()).getTime(), token = null;
         try {
             let storedToken = JSON.parse(this.retrieve());
+            console.log("Token :");
+            console.log(storedToken.ttl - currentTime)
+            console.log(storedToken.ttl)
             if(storedToken.ttl < currentTime) throw 'invalid token found';
             token = storedToken.token;
         }

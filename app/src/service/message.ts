@@ -29,8 +29,8 @@ export class MessageService {
         console.log(message);
         let formatMessage =  {
             content: message.content,
-            date: message.date,
-            id: message._idMessage,
+            //date: message.date,
+            //id: message._idMessage,
             id_channel: message.idChannel,
             id_user: message.creator._idUser
         };
