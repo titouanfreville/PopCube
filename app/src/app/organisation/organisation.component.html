@@ -7,7 +7,7 @@
           {{organisation.avatar}}
         </div>
       </div>
-      <img src="img/plus.svg" class="add-organisation" />
+      <a (click)="openSettings()"> <img src="img/plus.svg" class="add-organisation" /></a>
     </div>
     <div id="channelNav" *ngIf="currentOrganisation != null">
       <p class='title'>CHANNEL TEXT <img src="img/plus-symbol.svg" class="add-channel" /> </p>

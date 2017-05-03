@@ -1,13 +1,11 @@
-import { Component, OnInit } from '@angular/core'
-import { Http } from '@angular/http'
-import { Router } from '@angular/router'
+import { Component, OnInit } from '@angular/core';
+import { Http } from '@angular/http';
+import { Router } from '@angular/router';
 
-import { LoginService } from '../../../service/login'
-import { UserService } from '../../../service/user'
-import { localOrganisationService } from '../../../service/localOrganisationService'
-import { TokenManager } from '../../../service/tokenManager'
-
-import { User } from '../../../model/user'
+import { LoginService } from '../../../service/login';
+import { UserService } from '../../../service/user';
+import { localOrganisationService } from '../../../service/localOrganisationService';
+import { TokenManager } from '../../../service/tokenManager';
 
 @Component({
   selector: 'my-login',
@@ -31,16 +29,16 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(localStorage)
+    console.log(localStorage);
   }
 
   login() {
     let request = this._loginService.login(this.loginVar);
     request.then((data) => {
         this._token.generateNewToken(data.token);
-        console.log(this._token.retrieveToken())
+        console.log(this._token.retrieveToken());
         this._user.generateNewUser(data.user.id);
-        this._localOrganisation.generateNewOrganisation(1, data.user.id, data.token)
+        this._localOrganisation.generateNewOrganisation(1, data.user.id, data.token);
         console.log(this._localOrganisation.retrieveOrganisation());
         this.router.navigate(['/organisation']);
       }).catch((ex) => {

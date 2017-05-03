@@ -1,15 +1,18 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core'
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 
-import { Organisation } from '../../model/organisation'
-import { Channel } from '../../model/channel'
-import { Message } from '../../model/message'
-import { User } from '../../model/user'
+import { Organisation } from '../../model/organisation';
+import { Channel } from '../../model/channel';
+import { Message } from '../../model/message';
+import { User } from '../../model/user';
 
-import { OrganisationService } from '../../service/organisation'
-import { ChannelService } from '../../service/channel'
-import { MessageService } from '../../service/message'
-import { UserService } from '../../service/user'
-import { TokenManager } from '../../service/tokenManager'
+import { OrganisationService } from '../../service/organisation';
+import { ChannelService } from '../../service/channel';
+import { MessageService } from '../../service/message';
+import { UserService } from '../../service/user';
+import { TokenManager } from '../../service/tokenManager';
+
+const remote = require('electron').remote;
+const BrowserWindow = remote.BrowserWindow;
 
 @Component({
   selector: 'my-organisation',
@@ -42,7 +45,7 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
 
   constructor(
     private _organisation: OrganisationService,
-    private _token: TokenManager, 
+    private _token: TokenManager,
     private _channel: ChannelService,
     private _message: MessageService,
     private _user: UserService
@@ -64,7 +67,7 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
       // Users list
       let requestUser = this._user.getUsers(this.token);
       requestUser.then((data) => {
-          for(let d of data) {
+          for (let d of data) {
              this.users.push(new User(d.id, d.username, d.password, d.email, d.firstName, d.lastName, d.avatar));
           }
         }).catch((ex) => {
@@ -72,7 +75,7 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
         });
 
     // Local test
-    //this.initAllLocal();
+    // this.initAllLocal();
 
     this.initStatus();
   }
@@ -85,12 +88,12 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
 
   ngAfterViewChecked() {
         this.scrollToBottom();
-    } 
+    }
 
     scrollToBottom(): void {
         try {
             this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-        } catch(err) { }
+        } catch (err) { }
     }
 
   organisationClick(organisationId) {
@@ -104,7 +107,7 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
         // Channels
         let requestChannel = this._channel.getChannel(this.token);
         requestChannel.then((data) => {
-          for(let d of data){
+          for (let d of data) {
             this.channels.push(new Channel(d.id, d.name, d.type, d.description));
           }
           this.sortChannelType();
@@ -129,11 +132,11 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
         // Messages
         let requestMessage = this._message.getMessage(this.token);
         requestMessage.then((data) => {
-          for(let d of data){
-            if(d.id_channel === channelId) {
+          for (let d of data){
+            if (d.id_channel === channelId) {
               // Find correct user
-              for(let u of this.users) {
-                if(d.id_user === u._idUser){
+              for (let u of this.users) {
+                if (d.id_user === u._idUser) {
                   user = u;
                 }
               }
@@ -171,15 +174,15 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
   addMessage() {
     let user = null;
     if (this.content != null) {
-      for(let u of this.users){
-         if(this.currentUser.idUser === u._idUser){
+      for (let u of this.users) {
+         if (this.currentUser.idUser === u._idUser) {
               user = u;
-              console.log(user)
+              console.log(user);
             }
       }
       let idMessage = this.channels.find(c => c._idChannel === this.currentChannel)
       .messages.length + 1;
-      let message = new Message(idMessage, (new Date()).getTime(), this.content, user, this.currentChannel)
+      let message = new Message(idMessage, (new Date()).getTime(), this.content, user, this.currentChannel);
       this.channels.find(c => c._idChannel === this.currentChannel).messages.push(message);
       this.messages = this.channels.find(c => c._idChannel === this.currentChannel).messages;
       this.content = '';
@@ -192,7 +195,7 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
      }
   }
 
-  initStatus(){
+  initStatus() {
     for (let o of this.organisations) {
       o.status = '';
       for (let c of o.channels) {
@@ -201,41 +204,9 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  initAllLocal() {
-     // Init organisation 1
-    this.organisations.push(new Organisation(1, 'Pop', 'Serveur de développement', 'Pop'));
-    
-    // Init channels of organisation 1
-    this.channels.push(new Channel(1, 'Developpement', 'Text', 'chanel'));
-    this.channels.push(new Channel(2, 'Infrastructure', 'Text', 'chanel'));
-    this.channels.push(new Channel(3, 'Marketing', 'Text', 'chanel'));
-
-    this.channels.push(new Channel(4, 'Developpement', 'Voice', 'chanel'));
-    this.channels.push(new Channel(5, 'Infrastructure', 'Voice', 'chanel'));
-    this.channels.push(new Channel(6, 'Everyones', 'Voice', 'chanel'));
-
-    this.organisations.find(o => o._idOrganisation === 1)
-    .channels = this.channels;
-
-    this.organisations.find(o => o._idOrganisation === 1)
-    .channels.find(c => c._idChannel === 1)
-    .messages.push(new Message(1, 'Content', 1));
-
-    this.channels = [];
-
-    // Init organisation 2
-    this.organisations.push(new Organisation(2, 'Cube', 'Serveur de test', 'Cub'));
-
-    // Init channels of organisation 2
-    this.channels.push(new Channel(1, 'Les sodomites', 'Text', 'chanel'));
-    this.channels.push(new Channel(2, 'FAQ', 'Text', 'chanel'));
-    this.channels.push(new Channel(3, 'What did you expect', 'Text', 'chanel'));
-
-    this.channels.push(new Channel(4, 'Fuck', 'Voice', 'chanel'));
-    this.channels.push(new Channel(5, 'The', 'Voice', 'chanel'));
-    this.channels.push(new Channel(6, 'Police mothafoka', 'Voice', 'chanel'));
-
-    this.organisations.find(or => or._idOrganisation === 2)
-    .channels = this.channels;
+  openSettings() {
+    let mainWindow;
+    mainWindow = new BrowserWindow({width: 800, height: 600, frame: false});
+    mainWindow.loadURL(`file://${__dirname}/dist/settings/index.html`);
   }
 }

@@ -11,6 +11,7 @@ import { OrganisationComponent} from './organisation/organisation.component';
 import { LoginComponent} from './organisation/login/login.component';
 import { RegisterComponent} from './organisation/register/register.component';
 import { NewDomainComponent } from './home/newDomain/newDomain.component';
+import { SettingsComponent } from './settings/settings.component';
 
 import { ApiService } from './shared';
 import { routing } from './app.routing';
@@ -30,7 +31,8 @@ import { routing } from './app.routing';
     OrganisationComponent,
     LoginComponent,
     RegisterComponent,
-    NewDomainComponent
+    NewDomainComponent,
+    SettingsComponent
   ],
   providers: [
     ApiService

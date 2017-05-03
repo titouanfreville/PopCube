@@ -1,0 +1,46 @@
+<header>
+  <div id="container-nav-user">
+    <div id="manager-user" class="noDrag">
+      Ceylass
+    </div>
+  </div>
+
+  <div id="manager-Popcube">
+    <nav>
+      <a [routerLink]="['']" class='noDrag'>Popcube</a>
+    </nav>
+  </div>
+  <div id="container-organisation-window">
+    <div class="manager-organisation">
+      <div id="settings-organisation">
+        <div class='mg-win noDrag'><img src="img/settings.svg" class="mg-img"></div>
+      </div>
+    </div>
+    <div id="manager-window">
+        <div class='mg-win noDrag' (click)="minimize()"><img src="img/substract.svg" class='mg-img'/></div>
+        <div class='mg-win noDrag' (click)="maximize()"><img src="{{img}}" class='mg-img'/></div>
+        <div class='mg-win noDrag' (click)="close()"><img src="img/cancel.svg" class='mg-img'/></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div id="settingPage">
+  <div id="navigation">
+    <ul>
+      <li>Profil</li>
+      <li>Organisation</li>
+      <li>Channel</li>
+      <li>Client</li>
+    </ul>
+  </div>
+  <div id="content">
+    <div id="profil"></div>
+    <div id="organisation"></div>
+    <div id="channel"></div>
+    <div id="client"></div>
+  </div>
+</div>
+</main>
+<footer>
+</footer>
