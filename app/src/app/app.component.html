@@ -1,7 +1,7 @@
 <header>
   <div id="container-nav-user">
-    <div id="manager-user" class="noDrag">
-      Ceylass
+    <div id="manager-user" class="noDrag" *ngIf="currentUser != null;">
+      {{currentUser.nickname}}
     </div>
   </div>
 
