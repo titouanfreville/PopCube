@@ -1,46 +1,51 @@
-<header>
-  <div id="container-nav-user">
-    <div id="manager-user" class="noDrag">
-      Ceylass
-    </div>
-  </div>
-
-  <div id="manager-Popcube">
-    <nav>
-      <a [routerLink]="['']" class='noDrag'>Popcube</a>
-    </nav>
-  </div>
-  <div id="container-organisation-window">
-    <div class="manager-organisation">
-      <div id="settings-organisation">
-        <div class='mg-win noDrag'><img src="img/settings.svg" class="mg-img"></div>
-      </div>
-    </div>
-    <div id="manager-window">
-        <div class='mg-win noDrag' (click)="minimize()"><img src="img/substract.svg" class='mg-img'/></div>
-        <div class='mg-win noDrag' (click)="maximize()"><img src="{{img}}" class='mg-img'/></div>
-        <div class='mg-win noDrag' (click)="close()"><img src="img/cancel.svg" class='mg-img'/></div>
-    </div>
-  </div>
-</header>
-
-<main>
-  <div id="settingPage">
+<div id="settingPage">
   <div id="navigation">
     <ul>
-      <li>Profil</li>
-      <li>Organisation</li>
-      <li>Channel</li>
-      <li>Client</li>
+      <li class='' [routerLink]="['/organisation']" >go back</li>
+      <li class='' (click)="profilClick()">Profil</li>
+      <li class='' (click)="organisationClick()">Organisation</li>
+      <li class='' (click)="channelClick()">Channel</li>
+      <li class='' (click)="clientClick()">Client</li>
     </ul>
   </div>
   <div id="content">
-    <div id="profil"></div>
-    <div id="organisation"></div>
-    <div id="channel"></div>
-    <div id="client"></div>
+    <div id="profil" *ngIf="nav === 'profil'">
+      <form>
+        <label>Change your avatar</label>
+        <br />
+        <label> Change your nickname</label>
+        <br />
+        <input type="text" class="form-control" />
+        <br />
+        <label>Change password</label>
+        <br />
+        <input type="password" class="form-control" />
+        <br /><br />
+        <button class='button button-glow button-rounded button-royal'>Submit</button>
+      </form>
+    </div>
+
+    <div id="organisation" *ngIf="nav === 'organisation'">
+      <form>
+        <br /><br />
+        <button class='button button-glow button-rounded button-royal'>Submit</button>
+      </form>
+    </div>
+
+    <div id="channel" *ngIf="nav === 'channel'">
+<form>
+        <label>Create new channel</label>
+        <br /><br />
+        <button class='button button-glow button-rounded button-royal'>Submit</button>
+      </form>
+    </div>
+
+    <div id="client" *ngIf="nav === 'client'">
+      <form>
+        <br /><br />
+        <button class='button button-glow button-rounded button-royal'>Submit</button>
+      </form>
+    </div>
+
   </div>
 </div>
-</main>
-<footer>
-</footer>

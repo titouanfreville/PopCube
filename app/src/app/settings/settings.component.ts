@@ -10,30 +10,25 @@ const remote = require('electron').remote;
   styles: [require('./settings.component.scss')],
 })
 export class SettingsComponent {
-url = 'https://github.com/preboot/angular2-webpack';
-  public img = 'img/tab.svg';
+
+  private nav;
 
   constructor(private api: ApiService) {
   }
 
-  minimize() {
-    let window = remote.getCurrentWindow();
-    window.minimize();
+  profilClick() {
+    this.nav = 'profil';
   }
 
-  maximize() {
-    let window = remote.getCurrentWindow();
-    if (!window.isMaximized()) {
-           window.maximize();
-           this.img = 'img/multi-tab.svg';
-       } else {
-           window.unmaximize();
-           this.img = 'img/tab.svg';
-    }
+  organisationClick() {
+    this.nav = 'organisation';
   }
 
-  close() {
-    let window = remote.getCurrentWindow();
-    window.close();
+  channelClick() {
+    this.nav = 'channel';
+  }
+
+  clientClick() {
+    this.nav = 'client';
   }
 }

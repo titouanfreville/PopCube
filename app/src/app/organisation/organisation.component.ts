@@ -11,9 +11,6 @@ import { MessageService } from '../../service/message';
 import { UserService } from '../../service/user';
 import { TokenManager } from '../../service/tokenManager';
 
-const remote = require('electron').remote;
-const BrowserWindow = remote.BrowserWindow;
-
 @Component({
   selector: 'my-organisation',
   template: require('./organisation.component.html'),
@@ -204,9 +201,4 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  openSettings() {
-    let mainWindow;
-    mainWindow = new BrowserWindow({width: 800, height: 600, frame: false});
-    mainWindow.loadURL(`file://${__dirname}/dist/settings/index.html`);
-  }
 }
