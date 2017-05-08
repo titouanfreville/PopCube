@@ -28,6 +28,7 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
 
   token: String;
   messageSvc: MessageService;
+  currentUserId;
   currentUser;
 
   currentOrganisation: number;
@@ -50,7 +51,9 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
 
     this.token = this._token.retrieveToken();
     this.messageSvc = this._message;
-    this.currentUser = this._user.retrieveUser();
+    this.currentUserId = this._user.retrieveUser();
+    console.log('User id :');
+    console.log(this.currentUserId);
     // Organisations
     let requestOrganisation = this._organisation.getOrganisation(this.token);
     requestOrganisation.then((data) => {
@@ -67,12 +70,15 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
           for (let d of data) {
              this.users.push(new User(d.id, d.username, d.password, d.email, d.firstName, d.lastName, d.avatar));
           }
+          //currentUser
+          for (let u of this.users) {
+                  if (this.currentUserId.idUser === u._idUser) {
+                    this.currentUser = u;
+                  }
+          }
         }).catch((ex) => {
         console.error('Error fetching users', ex);
         });
-
-    // Local test
-    // this.initAllLocal();
 
     this.initStatus();
   }
@@ -172,7 +178,7 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
     let user = null;
     if (this.content != null) {
       for (let u of this.users) {
-         if (this.currentUser.idUser === u._idUser) {
+         if (this.currentUserId.idUser === u._idUser) {
               user = u;
               console.log(user);
             }

@@ -11,30 +11,56 @@
   <div id="content">
     <div id="profil" *ngIf="nav === 'profil'">
       <form>
-        <label>Change your avatar</label>
-        <br />
-        <label> Change your nickname</label>
-        <br />
-        <input type="text" class="form-control" />
-        <br />
-        <label>Change password</label>
-        <br />
-        <input type="password" class="form-control" />
-        <br /><br />
+        <div id="mainProfil">
+          <div id="avatar">
+            <img src="" class="avatar" />
+            <a>Change your avatar</a>
+          </div>
+          <div id="userInformation">
+            <input type="text" name="nickname" placeholder="{{currentUser.nickname}}" class="form-control" />
+            <input type="text" name="name" placeholder="{{currentUser.firstName}}" class="form-control" disabled />
+            <input type="text" name="lastname" placeholder="{{currentUser.lastName}}" class="form-control" disabled />
+            <input type="email" name="email" placeholder="{{currentUser.email}}" class="form-control" />
+            <input type="password" name="password" class="form-control" />
+          </div>
+        </div>
+        <div id="group">
+          list of groups
+        </div>
         <button class='button button-glow button-rounded button-royal'>Submit</button>
       </form>
     </div>
 
     <div id="organisation" *ngIf="nav === 'organisation'">
       <form>
-        <br /><br />
+        <div id="organisationInformation">
+          <input type="text" name="email" placeholder="organisation name" class="form-control" />
+          <textarea name="description" placeholder="description of organisation" class="form-control"> </textarea>
+          <label>private</label>
+          <input type="checkbox" checked data-toggle="toggle">
+        </div>
+        <div id="members">
+          All members
+        </div>
         <button class='button button-glow button-rounded button-royal'>Submit</button>
       </form>
     </div>
 
     <div id="channel" *ngIf="nav === 'channel'">
-<form>
-        <label>Create new channel</label>
+      <form>
+        <label>Channel Text</label> +
+        <table>
+          <tr>
+            <td>Name</td> <td> description </td> <td>private</td>
+          </tr>
+          <tr>
+            <td></td><td></td><td><input type="checkbox" checked data-toggle="toggle"></td>
+          </tr>
+        </table>
+        <label>Channel Voice</label> +
+
+        <label>Channel Video</label> +
+
         <br /><br />
         <button class='button button-glow button-rounded button-royal'>Submit</button>
       </form>

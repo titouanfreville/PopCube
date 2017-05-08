@@ -31,6 +31,20 @@
           <img *ngIf="channelV.status === 'channelFocus'" src="img/settings.svg" class="img-set" />
           <img *ngIf="channelV.status === ''" src="img/settings-unfocus.svg" class="img-set" />
         </div>
+        <p class='title'>MEMBERS <span class="add-channel"></span></p>
+        <div *ngFor="let user of users" id="userlist" class="channel">
+          <label>{{user.userName}}</label>
+        </div>
+        <div id="currentUser" class="bottom">
+          <div id="nickname">
+            <label>{{currentUser.userName}}</label>
+          </div>
+          <div id="button-user">
+            <button class="btn micro"></button>
+            <button class=" btn audio"></button>
+            <button class="btn settings"></button>
+          </div>
+        </div>
     </div>
   </div>
   <div id="channelArea" *ngIf="currentChannel != null">

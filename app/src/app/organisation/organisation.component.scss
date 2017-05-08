@@ -79,6 +79,49 @@
   display: flex;
 }
 
+// account
+.bottom {
+  display: flex;
+  justify-content: space-around;
+  width: 175px;
+  position: fixed;
+  bottom: 0px;
+  padding: 1em;
+}
+
+  //button
+
+#button-user {
+  border: 1px solid #1c1e22;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: #2e3136;
+}
+
+.btn {
+  background-color: #2e3136;
+  border-radius: 3px 0 0 3px;
+  width: 22px;
+  height: 22px;
+  border-right: 1px solid #1c1e22;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-size: 16px;
+}
+
+.micro {
+  background-image: url(img/account/micro_on.svg);
+}
+
+.audio {
+  background-image: url(img/account/audio_on.svg);
+}
+
+.settings {
+  background-image: url(img/settings.svg);
+}
+
 // text
 #channelArea{
   display: flex;
