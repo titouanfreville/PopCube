@@ -59,6 +59,8 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
 
     this.storedInformations = this._localOrganisation.retrieveOrganisation(1);
 
+    console.log(parseInt(this.storedInformations.ttl, 10) - (new Date()).getTime());
+
     this.token = this.storedInformations.tokenKey;
     this.currentUserId = this.storedInformations.userKey;
 

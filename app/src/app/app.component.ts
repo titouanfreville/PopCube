@@ -24,7 +24,7 @@ export class AppComponent {
   constructor(
     private api: ApiService
     ) {
-    localStorage.clear();
+
   }
 
   minimize() {

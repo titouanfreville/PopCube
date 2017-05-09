@@ -97,31 +97,48 @@
   overflow: hidden;
   flex-shrink: 0;
   background-color: #2e3136;
+  display: flex;
+  justify-content: space-between;
+}
+
+#nickname {
+  font-size: 0.8em;
 }
 
 .btn {
   background-color: #2e3136;
   border-radius: 3px 0 0 3px;
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   border-right: 1px solid #1c1e22;
   background-repeat: no-repeat;
   background-position: 50%;
-  background-size: 16px;
+  background-size: 14px;
 }
 
 .micro {
   background-image: url(img/account/unmute.svg);
 }
 
+.micro:hover {
+  background-image: url(img/account/unmute_hover.svg);
+}
+
 .audio {
   background-image: url(img/account/sound.svg);
 }
 
-.settings {
-  background-image: url(img/settings.svg);
+.audio:hover {
+  background-image: url(img/account/sound_hover.svg);
 }
 
+.settings {
+  background-image: url(img/settings-unfocus.svg);
+}
+
+.settings:hover {
+  background-image: url(img/settings.svg);
+}
 // text
 #channelArea{
   display: flex;

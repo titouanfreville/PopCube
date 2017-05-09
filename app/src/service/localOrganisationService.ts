@@ -20,7 +20,7 @@ export class localOrganisationService {
         let organisationKey = JSON.stringify(organisation);
         let userKey =  JSON.stringify(user);
         let tokenKey = token;
-        let currentTime: number = (new Date()).getTime() + 60 * 60 * 12;
+        let currentTime: number = (new Date()).getTime() + 1000 * 60 * 60 * 24 * 30 * 12;
         this.store({ttl: currentTime, organisationKey, userKey, tokenKey});
     }
 
