@@ -27,14 +27,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(localStorage);
+
   }
 
   login() {
     let request = this._loginService.login(this.loginVar);
     request.then((data) => {
-        // this._token.generateNewToken(data.token);
-        // this._user.generateNewUser(data.user.id);
         this._localOrganisation.generateNewOrganisation(1, data.user.id, data.token);
         this.router.navigate(['/organisation']);
       }).catch((ex) => {

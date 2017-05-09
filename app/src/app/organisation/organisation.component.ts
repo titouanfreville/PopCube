@@ -55,23 +55,12 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     private _localOrganisation: localOrganisationService
     ) {
 
-    // this.token = this._token.retrieveToken();
     this.messageSvc = this._message;
-    // this.currentUserId = this._user.retrieveUser();
 
     this.storedInformations = this._localOrganisation.retrieveOrganisation(1);
 
     this.token = this.storedInformations.tokenKey;
     this.currentUserId = this.storedInformations.userKey;
-
-    console.log('storedInformations : ');
-    console.log(this.storedInformations);
-
-    console.log('token :');
-    console.log(this.token);
-
-    console.log('currentUserId : ');
-    console.log(this.currentUserId);
 
     // Organisations
     this.isOrganisationLoad = false;
@@ -94,7 +83,6 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
           //currentUser
           for (let u of this.users) {
                   if (parseInt(this.currentUserId, 10) === u._idUser) {
-                    console.log(u);
                     this.currentUser = u;
                   }
           }

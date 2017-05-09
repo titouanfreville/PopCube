@@ -29,9 +29,6 @@ export class localOrganisationService {
         let organisation = null;
         try {
             let storedOrganisation = JSON.parse(this.retrieve(organisationId));
-            // console.log('organisation :');
-            // console.log(storedOrganisation.ttl - currentTime2);
-            // console.log(storedOrganisation.ttl);
             if (storedOrganisation.ttl < currentTime2) throw 'invalid organisation found';
             organisation = storedOrganisation;
         }
