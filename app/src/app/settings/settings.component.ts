@@ -9,7 +9,6 @@ import { OrganisationService } from '../../service/organisation';
 import { ChannelService } from '../../service/channel';
 import { MessageService } from '../../service/message';
 import { UserService } from '../../service/user';
-import { TokenManager } from '../../service/tokenManager';
 import { localOrganisationService } from '../../service/localOrganisationService';
 
 
@@ -17,7 +16,7 @@ import { localOrganisationService } from '../../service/localOrganisationService
   selector: 'my-settings',
   template: require('./settings.component.html'),
   styles: [require('./settings.component.scss')],
-  providers: [OrganisationService, TokenManager, ChannelService, MessageService, UserService, localOrganisationService]
+  providers: [OrganisationService, ChannelService, MessageService, UserService, localOrganisationService]
 })
 export class SettingsComponent {
 
@@ -26,7 +25,6 @@ export class SettingsComponent {
 
   constructor(
     private _organisation: OrganisationService,
-    private _token: TokenManager,
     private _channel: ChannelService,
     private _message: MessageService,
     private _user: UserService,

@@ -9,14 +9,13 @@ import { OrganisationService } from '../../service/organisation';
 import { ChannelService } from '../../service/channel';
 import { MessageService } from '../../service/message';
 import { UserService } from '../../service/user';
-import { TokenManager } from '../../service/tokenManager';
 import { localOrganisationService } from '../../service/localOrganisationService';
 
 @Component({
   selector: 'my-organisation',
   template: require('./organisation.component.html'),
   styles: [require('./organisation.component.scss')],
-  providers: [OrganisationService, TokenManager, ChannelService, MessageService, UserService, localOrganisationService]
+  providers: [OrganisationService, ChannelService, MessageService, UserService, localOrganisationService]
 })
 export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
@@ -50,7 +49,6 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
 
   constructor(
     private _organisation: OrganisationService,
-    private _token: TokenManager,
     private _channel: ChannelService,
     private _message: MessageService,
     private _user: UserService,
