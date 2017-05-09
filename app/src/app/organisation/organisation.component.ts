@@ -30,18 +30,15 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
 
   token: String;
   messageSvc: MessageService;
-  currentUserId;
-  currentUser;
+  currentUser: User;
 
-  currentOrganisation: number;
-  currentChannel: number;
+  currentOrganisation: Organisation;
+  currentChannel: Channel;
   content: string;
 
   channelsText: Channel[] = [];
   channelsVoice: Channel[] = [];
   channelsVideo: Channel[] = [];
-
-  channelTitle: string;
 
   isOrganisationLoad;
   isChannelLoad;
@@ -59,10 +56,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
 
     this.storedInformations = this._localOrganisation.retrieveOrganisation(1);
 
-    console.log(parseInt(this.storedInformations.ttl, 10) - (new Date()).getTime());
-
     this.token = this.storedInformations.tokenKey;
-    this.currentUserId = this.storedInformations.userKey;
 
     // Organisations
     this.isOrganisationLoad = false;
@@ -84,7 +78,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
           }
           //currentUser
           for (let u of this.users) {
-                  if (parseInt(this.currentUserId, 10) === u._idUser) {
+                  if (parseInt(this.storedInformations.userKey, 10) === u._idUser) {
                     this.currentUser = u;
                   }
           }
@@ -96,8 +90,6 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
   }
 
   ngOnInit() {
-    this.currentOrganisation = null;
-    this.currentChannel = null;
     this.isOrganisationLoad = false;
   }
 
@@ -135,7 +127,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
         }).catch((ex) => {
         console.error('Error fetching channels', ex);
       });
-        this.currentOrganisation = o._idOrganisation;
+        this.currentOrganisation = o;
       }else {
         o.status = '';
       }
@@ -149,8 +141,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     for (let c of this.channels) {
       if (c._idChannel === channelId) {
         c.status = 'channelFocus';
-        this.channelTitle = c.channelName;
-        this.currentChannel = c._idChannel;
+        this.currentChannel = c;
         // Messages
         let requestMessage = this._message.getMessage(this.token);
         requestMessage.then((data) => {
@@ -165,7 +156,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
               this.messages.push(new Message(d.id, d.date, d.content, user, channelId));
             }
           }
-          this.channels.find(c => c._idChannel === this.currentChannel).messages = this.messages;
+          this.channels.find(c => c._idChannel === this.currentChannel._idChannel).messages = this.messages;
           this.isMessageLoad = true;
           }).catch((ex) => {
           console.error('Error fetching messages', ex);
@@ -198,16 +189,16 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     let user = null;
     if (this.content != null) {
       for (let u of this.users) {
-         if ( parseInt(this.currentUserId, 10) === u._idUser) {
+         if ( this.currentUser._idUser === u._idUser) {
               user = u;
               console.log(user);
             }
       }
-      let idMessage = this.channels.find(c => c._idChannel === this.currentChannel)
+      let idMessage = this.channels.find(c => c._idChannel === this.currentChannel._idChannel)
       .messages.length + 1;
-      let message = new Message(idMessage, (new Date()).getTime(), this.content, user, this.currentChannel);
-      this.channels.find(c => c._idChannel === this.currentChannel).messages.push(message);
-      this.messages = this.channels.find(c => c._idChannel === this.currentChannel).messages;
+      let message = new Message(idMessage, (new Date()).getTime(), this.content, user, this.currentChannel._idChannel);
+      this.channels.find(c => c._idChannel === this.currentChannel._idChannel).messages.push(message);
+      this.messages = this.channels.find(c => c._idChannel === this.currentChannel._idChannel).messages;
       this.content = '';
       this.messageSvc.addMessage(this.token, message);
       try {

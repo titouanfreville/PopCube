@@ -48,7 +48,13 @@
     </div>
   </div>
   <div id="channelArea" *ngIf="currentChannel != null && isMessageLoad === true">
-    <h3 id="channelTitle">#{{channelTitle}}</h3>
+
+    <!-- testing -->
+    <div id="video" *ngIf='currentChannel.type === "video"'>
+    </div>
+    <!-- -->
+
+    <h3 id="channelTitle">#{{currentChannel.channelName}}</h3>
     <div #message id="message">
       <div *ngFor="let msg of messages" class="message">
         <div id="userAvatarMsg" class="avatar">
