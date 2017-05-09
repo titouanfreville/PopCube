@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { ApiService } from './shared';
 
@@ -22,9 +23,12 @@ export class AppComponent {
   currentUser;
 
   constructor(
-    private api: ApiService
+    private api: ApiService,
+    private router: Router
     ) {
-
+      if (localStorage.getItem('isConnected') === '1') {
+        this.router.navigate(['/organisation']);
+      }
   }
 
   minimize() {

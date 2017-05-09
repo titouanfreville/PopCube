@@ -4,9 +4,11 @@ import {Injectable} from '@angular/core';
 export class localOrganisationService {
 
     private localOrganisationKey: string = 'local_organisation';
+    private isConnected: string = 'isConnected';
 
     private store(content: Object) {
         localStorage.setItem(this.localOrganisationKey, JSON.stringify(content));
+        if (localStorage.getItem(this.isConnected)) { }else { localStorage.setItem(this.isConnected, JSON.stringify(1)); }
     }
 
     private retrieve(organisationId) {
