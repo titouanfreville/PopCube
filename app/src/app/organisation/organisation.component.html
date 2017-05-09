@@ -1,6 +1,6 @@
 <div id="mainPage">
   <div id="navigation">
-    <div id="organisationNav" class=''>
+    <div id="organisationNav" class='' *ngIf='isOrganisationLoad === true'>
       <div *ngFor="let organisation of organisations" id="{{'organisation' + organisation._idOrganisation}}" class="{{'organisation ' + organisation.status}}"
         (click)="organisationClick(organisation._idOrganisation)">
         <div id="logo1">
@@ -9,7 +9,7 @@
       </div>
       <a [routerLink]="['/settings']"> <img src="img/plus.svg" class="add-organisation" /></a>
     </div>
-    <div id="channelNav" *ngIf="currentOrganisation != null">
+    <div id="channelNav" *ngIf="currentOrganisation != null && isChannelLoad === true">
       <p class='title'>CHANNEL TEXT <img src="img/plus-symbol.svg" class="add-channel" /> </p>
       <div *ngFor="let channelT of channelsText" id="{{'channel' + channelT._idChannel}}" class="{{'channel ' + channelT.status}}"
         (click)="channelClick(channelT._idChannel)">
@@ -35,7 +35,7 @@
         <div *ngFor="let user of users" id="userlist" class="channel">
           <label>{{user.userName}}</label>
         </div>
-        <div id="currentUser" class="bottom">
+        <div id="currentUser" class="bottom" *ngIf='currentUser != null'>
           <div id="nickname">
             <label>{{currentUser.userName}}</label>
           </div>
@@ -47,7 +47,7 @@
         </div>
     </div>
   </div>
-  <div id="channelArea" *ngIf="currentChannel != null">
+  <div id="channelArea" *ngIf="currentChannel != null && isMessageLoad === true">
     <h3 id="channelTitle">#{{channelTitle}}</h3>
     <div #message id="message">
       <div *ngFor="let msg of messages" class="message">

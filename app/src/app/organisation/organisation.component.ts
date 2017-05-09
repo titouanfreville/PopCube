@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, AfterViewChecked } from '@angular/core';
 
 import { Organisation } from '../../model/organisation';
 import { Channel } from '../../model/channel';
@@ -10,14 +10,15 @@ import { ChannelService } from '../../service/channel';
 import { MessageService } from '../../service/message';
 import { UserService } from '../../service/user';
 import { TokenManager } from '../../service/tokenManager';
+import { localOrganisationService } from '../../service/localOrganisationService';
 
 @Component({
   selector: 'my-organisation',
   template: require('./organisation.component.html'),
   styles: [require('./organisation.component.scss')],
-  providers: [OrganisationService, TokenManager, ChannelService, MessageService, UserService]
+  providers: [OrganisationService, TokenManager, ChannelService, MessageService, UserService, localOrganisationService]
 })
-export class OrganisationComponent implements OnInit, AfterViewChecked {
+export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   @ViewChild('message') private myScrollContainer: ElementRef;
 
@@ -25,6 +26,8 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
   channels: Channel[] = [];
   messages: Message[] = [];
   users: User[] = [];
+
+  storedInformations;
 
   token: String;
   messageSvc: MessageService;
@@ -41,25 +44,45 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
 
   channelTitle: string;
 
+  isOrganisationLoad;
+  isChannelLoad;
+  isMessageLoad;
+
   constructor(
     private _organisation: OrganisationService,
     private _token: TokenManager,
     private _channel: ChannelService,
     private _message: MessageService,
-    private _user: UserService
+    private _user: UserService,
+    private _localOrganisation: localOrganisationService
     ) {
 
-    this.token = this._token.retrieveToken();
+    // this.token = this._token.retrieveToken();
     this.messageSvc = this._message;
-    this.currentUserId = this._user.retrieveUser();
-    console.log('User id :');
+    // this.currentUserId = this._user.retrieveUser();
+
+    this.storedInformations = this._localOrganisation.retrieveOrganisation(1);
+
+    this.token = this.storedInformations.tokenKey;
+    this.currentUserId = this.storedInformations.userKey;
+
+    console.log('storedInformations : ');
+    console.log(this.storedInformations);
+
+    console.log('token :');
+    console.log(this.token);
+
+    console.log('currentUserId : ');
     console.log(this.currentUserId);
+
     // Organisations
+    this.isOrganisationLoad = false;
     let requestOrganisation = this._organisation.getOrganisation(this.token);
     requestOrganisation.then((data) => {
         this.organisations.push(new Organisation(data.id, data.name, data.description, data.avatar));
 
       this.organisations.find(o => o._idOrganisation === data.id).channels = this.channels;
+      this.isOrganisationLoad = true;
       }).catch((ex) => {
        console.error('Error fetching users', ex);
       });
@@ -72,7 +95,8 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
           }
           //currentUser
           for (let u of this.users) {
-                  if (this.currentUserId.idUser === u._idUser) {
+                  if (parseInt(this.currentUserId, 10) === u._idUser) {
+                    console.log(u);
                     this.currentUser = u;
                   }
           }
@@ -86,7 +110,11 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
   ngOnInit() {
     this.currentOrganisation = null;
     this.currentChannel = null;
-    this.scrollToBottom();
+    this.isOrganisationLoad = false;
+  }
+
+  ngAfterViewInit() {
+
   }
 
   ngAfterViewChecked() {
@@ -108,12 +136,14 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
       if (o._idOrganisation === organisationId) {
         o.status = 'organisationFocus';
         // Channels
+        this.isChannelLoad = false;
         let requestChannel = this._channel.getChannel(this.token);
         requestChannel.then((data) => {
           for (let d of data) {
             this.channels.push(new Channel(d.id, d.name, d.type, d.description));
           }
           this.sortChannelType();
+          this.isChannelLoad = true;
         }).catch((ex) => {
         console.error('Error fetching channels', ex);
       });
@@ -126,6 +156,7 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
 
   channelClick(channelId) {
     this.messages = [];
+    this.isMessageLoad = false;
     let user: User = null;
     for (let c of this.channels) {
       if (c._idChannel === channelId) {
@@ -147,6 +178,7 @@ export class OrganisationComponent implements OnInit, AfterViewChecked {
             }
           }
           this.channels.find(c => c._idChannel === this.currentChannel).messages = this.messages;
+          this.isMessageLoad = true;
           }).catch((ex) => {
           console.error('Error fetching messages', ex);
         });

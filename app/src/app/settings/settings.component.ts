@@ -10,14 +10,14 @@ import { ChannelService } from '../../service/channel';
 import { MessageService } from '../../service/message';
 import { UserService } from '../../service/user';
 import { TokenManager } from '../../service/tokenManager';
+import { localOrganisationService } from '../../service/localOrganisationService';
 
-const remote = require('electron').remote;
 
 @Component({
   selector: 'my-settings',
   template: require('./settings.component.html'),
   styles: [require('./settings.component.scss')],
-  providers: [OrganisationService, TokenManager, ChannelService, MessageService, UserService]
+  providers: [OrganisationService, TokenManager, ChannelService, MessageService, UserService, localOrganisationService]
 })
 export class SettingsComponent {
 
@@ -29,9 +29,10 @@ export class SettingsComponent {
     private _token: TokenManager,
     private _channel: ChannelService,
     private _message: MessageService,
-    private _user: UserService
+    private _user: UserService,
+    private _localOrganisation: localOrganisationService
   ) {
-    this.currentUser = this._user.retrieveUser();
+    this.currentUser = this._localOrganisation.retrieveOrganisation(1).userKey;
   }
 
   profilClick() {

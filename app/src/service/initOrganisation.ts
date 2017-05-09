@@ -48,10 +48,11 @@ export class InitOrganisationService {
             'Content-Type': 'application/json',
         });
         console.log(this.http
-            .post(`${this.loginUrl + '/login'}`,JSON.stringify(organisation) + JSON.stringify(user), { headers: headers })
+            .post(`${this.loginUrl + '/login'}`, JSON.stringify(organisation) + JSON.stringify(user), { headers: headers })
             .toPromise()
             .then(response => response.json())
-            .catch(this.handleError))
+            .catch(this.handleError)
+            );
     }
 
     private handleError(error: any) {

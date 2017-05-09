@@ -35,14 +35,12 @@ export class LoginComponent implements OnInit {
   login() {
     let request = this._loginService.login(this.loginVar);
     request.then((data) => {
-        this._token.generateNewToken(data.token);
-        console.log(this._token.retrieveToken());
-        this._user.generateNewUser(data.user.id);
+        // this._token.generateNewToken(data.token);
+        // this._user.generateNewUser(data.user.id);
         this._localOrganisation.generateNewOrganisation(1, data.user.id, data.token);
-        console.log(this._localOrganisation.retrieveOrganisation());
         this.router.navigate(['/organisation']);
       }).catch((ex) => {
-       console.error('Error fetching users', ex);
+       console.error('Error login', ex);
       });
   }
 }

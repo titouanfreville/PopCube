@@ -2,10 +2,6 @@ import { Component } from '@angular/core';
 
 import { ApiService } from './shared';
 
-import { User } from '../model/user';
-
-import { UserService } from '../service/user';
-
 import '../style/app.scss';
 
 const remote = require('electron').remote;
@@ -18,7 +14,6 @@ const remote = require('electron').remote;
   selector: 'my-app', // <my-app></my-app>
   template: require('./app.component.html'),
   styles: [require('./app.component.scss')],
-  providers: [UserService]
 })
 export class AppComponent {
   url = 'https://github.com/preboot/angular2-webpack';
@@ -27,10 +22,9 @@ export class AppComponent {
   currentUser;
 
   constructor(
-    private api: ApiService,
-    private _user: UserService
+    private api: ApiService
     ) {
-    this.currentUser = this._user.retrieveUser();
+    localStorage.clear();
   }
 
   minimize() {
