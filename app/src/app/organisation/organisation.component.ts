@@ -198,7 +198,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     let user = null;
     if (this.content != null) {
       for (let u of this.users) {
-         if (this.currentUserId.idUser === u._idUser) {
+         if ( parseInt(this.currentUserId, 10) === u._idUser) {
               user = u;
               console.log(user);
             }
