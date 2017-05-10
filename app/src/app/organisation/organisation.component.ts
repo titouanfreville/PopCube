@@ -44,6 +44,11 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
   isChannelLoad;
   isMessageLoad;
 
+  // Peerjs
+  peer;
+  anotherid;
+  mypeerid;
+
   constructor(
     private _organisation: OrganisationService,
     private _channel: ChannelService,
@@ -86,11 +91,31 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
         console.error('Error fetching users', ex);
         });
 
+        // Peerjs
+        this.peer = new Peer('abc', {key: 'tcgi4gqxdbcsor'});
+        setTimeout(() => {
+          this.mypeerid = this.peer.id;
+          console.log(this.peer);
+        });
+
+        this.peer.on('connection', function(conn) {
+          conn.on('data', function(data) {
+            console.log(data);
+          });
+        });
+
     this.initStatus();
   }
 
   ngOnInit() {
     this.isOrganisationLoad = false;
+  }
+
+  connect() {
+    let conn = this.peer.connect(this.anotherid);
+    conn.on('open', function() {
+      conn.send('hi');
+    });
   }
 
   ngAfterViewInit() {
