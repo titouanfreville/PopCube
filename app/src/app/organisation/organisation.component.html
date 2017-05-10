@@ -53,6 +53,8 @@
     <div id="video" *ngIf='currentChannel.type === "video"'>
       <h1 *ngIf="mypeerid">my peerid - {{mypeerid}}</h1>
       <input type="text" [(ngModel)]="anotherid">
+      <video #myVideo></video>
+      <button (click)="videoConnect()">Video</button>
       <button (click)="connect()">Connect</button>
     </div>
     <!-- -->

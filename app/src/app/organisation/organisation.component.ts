@@ -20,6 +20,7 @@ import { localOrganisationService } from '../../service/localOrganisationService
 export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   @ViewChild('message') private myScrollContainer: ElementRef;
+  @ViewChild('myVideo') private myVideo: any;
 
   organisations: Organisation[] = [];
   channels: Channel[] = [];
@@ -107,7 +108,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
             console.log(data);
           });
         });
-
+        
     this.initStatus();
   }
 
@@ -122,12 +123,51 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     });
   }
 
+  videoConnect() {
+    let video = this.myVideo.nativeElement;
+    var localvar = this.peer;
+    var fname = this.anotherid;
+
+    var n = <any>navigator;
+
+    n.getUserMedia = n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
+
+    n.getUserMedia({video: true, audio: true}, function(stream) {
+      var call = localvar.call(fname, stream);
+      call.on('stream', function(remotestream) {
+        video.src = URL.createObjectURL(remotestream);
+        video.play();
+      });
+    }, function(err) {
+      console.log(err);
+    });
+  }
+
   ngAfterViewInit() {
 
   }
 
   ngAfterViewChecked() {
         this.scrollToBottom();
+
+        if(this.myVideo){
+          let video = this.myVideo.nativeElement;
+          var n = <any>navigator;
+
+          n.getUserMedia = n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
+
+          this.peer.on('call', function(call) {
+            n.getUserMedia({video: true, audio: true}, function(stream){
+              call.answer(stream);
+              call.on('stream', function(remotestream) {
+                video.src = URL.createObjectURL(remotestream);
+                video.play();
+              });
+            }, function(err) {
+              console.log(err);
+            });
+          });
+        }
     }
 
     scrollToBottom(): void {
