@@ -92,10 +92,11 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
         });
 
         // Peerjs
-        this.peer = new Peer('abc', {key: 'tcgi4gqxdbcsor'});
+        this.peer = new Peer({key: 'tcgi4gqxdbcsor'});
         setTimeout(() => {
           this.mypeerid = this.peer.id;
           console.log(this.peer);
+          
         });
 
         this.peer.on('connection', function(conn) {
