@@ -24,6 +24,17 @@ export class UserService {
             .catch(this.handleError);
     }
 
+    newUser(user) {
+        let headers = new Headers({
+            'Content-Type': 'application/json'
+        });
+        return this.http
+            .post(`${this.usersUrl + '/publicuser/new'}`, JSON.stringify(user), {headers: headers})
+            .toPromise()
+            .then(response => response.json())
+            .catch(this.handleError);
+    }
+
     // Local Storage User
     private store(content:Object) {
         localStorage.setItem(this.userKey, JSON.stringify(content));
