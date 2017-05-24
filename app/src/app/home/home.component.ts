@@ -38,4 +38,9 @@ export class HomeComponent implements OnInit {
         }
     }
   }
+
+  resetLocal(){
+    localStorage.clear();
+    console.log('ok');
+  }
 }

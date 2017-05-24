@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class MessageService {
 
-    private messageUrl = 'https://api-alpha.popcube.xyz';  // URL to web api
+    private messageUrl = 'https://' + localStorage.getItem('Stack');  // URL to web api
 
     constructor(private http: Http) { }
 

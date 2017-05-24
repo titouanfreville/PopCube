@@ -14,7 +14,7 @@ import { localOrganisationService } from '../../../service/localOrganisationServ
 })
 export class LoginComponent implements OnInit {
 
-  loginVar = {login: 'devowner', password: 'popcube'};
+  loginVar = {login: '', password: ''};
 
   constructor(
     public http: Http,
@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit {
           i = 1;
         }
         this._localOrganisation.generateNewOrganisation(i, data.user.id, data.token);
+        console.log(localStorage);
         this.router.navigate(['/organisation']);
       }).catch((ex) => {
        console.error('Error login', ex);

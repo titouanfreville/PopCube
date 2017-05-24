@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class InitOrganisationService {
 
-    private loginUrl = 'alpha-api.popcube.xyz';  // URL to web api
+    private loginUrl = 'https://' + localStorage.getItem('Stack');  // URL to web api
 
     constructor(private http: Http) { }
     /* Object

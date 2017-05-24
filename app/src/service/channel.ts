@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class ChannelService {
 
-    private channelUrl = 'https://api-alpha.popcube.xyz';  // URL to web api
+    private channelUrl = 'https://' + localStorage.getItem('Stack');  // URL to web api
 
     constructor(private http: Http) { }
 

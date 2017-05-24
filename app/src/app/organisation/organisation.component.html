@@ -4,7 +4,7 @@
       <div *ngFor="let organisation of organisations" id="{{'organisation' + organisation._idOrganisation}}" class="{{'organisation ' + organisation.status}}"
         (click)="organisationClick(organisation._idOrganisation)">
         <div id="logo1">
-          {{organisation.avatar}}
+          {{organisation.organisationName}}
         </div>
       </div>
       <a [routerLink]="['/settings']"> <img src="img/plus.svg" class="add-organisation" /></a>
