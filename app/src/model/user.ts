@@ -15,7 +15,8 @@ export class User {
     nickName: string;
     firstName: string;
     lastName: string;
-    constructor(userName, email, password, updateAt, lastPasswordUpdate, locale, idRole, firstName, lastName, nickName, avatar) {
+    constructor(idUser, userName, email, password, updateAt, lastPasswordUpdate, locale, idRole, firstName, lastName, nickName, avatar) {
+        this._idUser = idUser;
         this.userName = userName;
         this.email = email;
         this.updatedAt = updateAt;
@@ -26,5 +27,5 @@ export class User {
         this.lastName = lastName;
         this.nickName = nickName;
         this.avatar = avatar;
-    }
+    } 
 }

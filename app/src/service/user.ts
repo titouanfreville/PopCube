@@ -1,13 +1,14 @@
 import 'rxjs/add/operator/toPromise';
 
 import { Headers, Http } from '@angular/http';
+import { User } from '../model/user';
 
 import { Injectable } from '@angular/core';
 
 @Injectable()
 export class UserService {
 
-    private usersUrl = 'https://api-alpha.popcube.xyz';  // URL to web api
+    private usersUrl = 'https://' + localStorage.getItem('Stack');  // URL to web api
     private userKey = 'currentUser';
 
     constructor(private http: Http) { }
@@ -24,12 +25,24 @@ export class UserService {
             .catch(this.handleError);
     }
 
-    newUser(user) {
+    newUser(user: User) {
         let headers = new Headers({
             'Content-Type': 'application/json'
         });
+        let formatUser = {
+            avatar: user.avatar,
+            deleted: false,
+            email: user.email,
+            first_name: user.firstName,
+            id_role: 1,
+            last_name: user.lastName,
+            nickname: user.nickName,
+            password: user.password,
+            username: user.userName,
+        };
+        console.log(JSON.stringify(formatUser));
         return this.http
-            .post(`${this.usersUrl + '/publicuser/new'}`, JSON.stringify(user), {headers: headers})
+            .post(`${this.usersUrl + '/publicuser/new'}`, JSON.stringify(formatUser), {headers: headers})
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);

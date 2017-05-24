@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     private _user: UserService,
     private _localOrganisation: localOrganisationService
   ) {
-    // Do things
+
   }
 
   ngOnInit() {
@@ -33,7 +33,13 @@ export class LoginComponent implements OnInit {
   login() {
     let request = this._loginService.login(this.loginVar);
     request.then((data) => {
-        this._localOrganisation.generateNewOrganisation(1, data.user.id, data.token);
+        let i: number;
+        if (localStorage.getItem('organisationSet')) {
+          i = parseInt(localStorage.getItem('organisationSet'), 10) + 1;
+        }else {
+          i = 1;
+        }
+        this._localOrganisation.generateNewOrganisation(i, data.user.id, data.token);
         this.router.navigate(['/organisation']);
       }).catch((ex) => {
        console.error('Error login', ex);

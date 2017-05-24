@@ -5,18 +5,20 @@ import { Headers, Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class LoginService {
+export class Stack {
 
-    private loginUrl = 'https://' + localStorage.getItem('Stack');  // URL to web api
+    private externalUrl = '';  // Waiting for external API
+    private auth = ''; // Waiting for auth
 
     constructor(private http: Http) { }
 
-    login(login) {
+    getOrganisation(organisation) {
         let headers = new Headers({
-            'Content-Type': 'application/json',
+            'Authorization': 'bearer ' + this.auth,
+            'Content-Type': 'application/json'
         });
-        return this.http
-            .post(`${this.loginUrl + '/login'}`, JSON.stringify(login), { headers: headers })
+        this.http
+            .get(`${this.externalUrl + '/'}`, { headers: headers })
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);
@@ -25,5 +27,9 @@ export class LoginService {
     private handleError(error: any) {
         console.error('An error occurred', error);
         return Promise.reject(error.message || error);
+    }
+
+    getOrg() {
+        return ['maxime', 'society'];
     }
 }

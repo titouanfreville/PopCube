@@ -50,6 +50,8 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
   anotherid;
   mypeerid;
 
+  storedInformationsTest;
+
   constructor(
     private _organisation: OrganisationService,
     private _channel: ChannelService,
@@ -60,8 +62,11 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
 
     this.messageSvc = this._message;
 
-    this.storedInformations = this._localOrganisation.retrieveOrganisation(1);
+    // retrieveAllOrganisation
+    this.storedInformationsTest = this._localOrganisation.retrieveAllOrganisation();
+    console.log(this.storedInformationsTest);
 
+    this.storedInformations = this._localOrganisation.retrieveOrganisation(1);
     this.token = this.storedInformations.tokenKey;
 
     // Organisations
@@ -80,7 +85,8 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
       let requestUser = this._user.getUsers(this.token);
       requestUser.then((data) => {
           for (let d of data) {
-             this.users.push(new User(d.id, d.username, d.password, d.email, d.firstName, d.lastName, d.avatar));
+             this.users.push(new User(d.id, d.username, d.email, null, d.updateAt, d.lastPasswordUpdate, 
+             d.locale, d.idRole, d.firstName, d.lastName, d.nickName, d.avatar));
           }
           //currentUser
           for (let u of this.users) {

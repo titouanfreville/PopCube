@@ -5,11 +5,12 @@
   </div>
 <br />
   <div>
-    <form class='form domainForm' >
+    <form class='form domainForm' #f="ngForm" >
       <p class='tips'> Already have a domain ?</p>
-      <input type="text" id="domainName" class="form-control" placeholder="Domain" required>
-      <button type="submit" [routerLink]="['login']" class='button button-glow button-rounded button-royal'>Find</button>
-      <br /><br />
+      <div *ngIf='errorMsg != null'>{{errorMsg}}</div>
+      <input type="text" name="domainName" class="form-control" placeholder="Domain" [(ngModel)]="organisation" required>
+      <button (click)="findOrganisation()" class='button button-glow button-rounded button-royal'>Find</button>
+      <br /><br /><br />
       <p class='tips'>If you want to create a new team let's start now !</p>
       <a [routerLink]="['/newDomain']">Create Domain !</a>
     </form>
