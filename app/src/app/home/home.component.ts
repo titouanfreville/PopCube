@@ -30,14 +30,18 @@ export class HomeComponent implements OnInit {
   findOrganisation() {
     if (this.organisation != null) {
       let findOrganisation = this.organisation + '.popcube.xyz';
-      let localOrganisations = this._localOrg.retrieveAllOrganisation();
-      let externalOrganisations = this._stack.getOrg();
       let isAlreadySet = false;
-      for(let l of localOrganisations) {
-        if(l.stack === findOrganisation) {
-          isAlreadySet = true;
+      try {
+         let localOrganisations = this._localOrg.retrieveAllOrganisation();
+         for(let l of localOrganisations) {
+         if(l.stack === findOrganisation) {
+            isAlreadySet = true;
+          }
         }
+      }catch (e) {
+        console.log(e);
       }
+      let externalOrganisations = this._stack.getOrg();
       if(!isAlreadySet){
         for (let o of externalOrganisations) {
           if (o ===  findOrganisation) {

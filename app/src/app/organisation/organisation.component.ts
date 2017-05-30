@@ -25,7 +25,6 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
   @ViewChild('myVideo') private myVideo: any;
 
   organisations: Organisation[] = [];
-  organisationNamesOnly: any[] = [];
   channels: Channel[] = [];
   messages: Message[] = [];
   users: User[] = [];
@@ -68,10 +67,6 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
 
     // retrieveAllOrganisation
     this.storedInformationsTest = this._localOrganisation.retrieveAllOrganisation();
-    console.log(this.storedInformationsTest);
-
-    this.storedInformations = this._localOrganisation.retrieveOrganisation(1);
-    this.token = this.storedInformations.tokenKey;
 
     // Organisation
 
@@ -92,22 +87,6 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
           console.error('Error fetching users', ex);
        });
     }
-      // Users list
-      let requestUser = this._user.getUsers(this.token);
-      requestUser.then((data) => {
-          for (let d of data) {
-             this.users.push(new User(d.id, d.username, d.email, null, d.updateAt, d.lastPasswordUpdate, 
-             d.locale, d.idRole, d.firstName, d.lastName, d.nickName, d.avatar));
-          }
-          //currentUser
-          for (let u of this.users) {
-                  if (parseInt(this.storedInformations.userKey, 10) === u._idUser) {
-                    this.currentUser = u;
-                  }
-          }
-        }).catch((ex) => {
-        console.error('Error fetching users', ex);
-        });
 
         // Peerjs
         this.peer = new Peer({
@@ -194,13 +173,14 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     }
 
   organisationClick(organisationName) {
-    console.log('clic');
     this.channels = [];
     this.channelsText = [];
     this.channelsVoice = [];
     this.channelsVideo = [];
+    this.users = [];
     this.setToken(organisationName);
     this.setStack(organisationName);
+    this.setUserList();
     for (let o of this.organisations) {
       if (o.organisationName === organisationName) {
         o.status = 'organisationFocus';
@@ -324,8 +304,25 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     }
   }
 
-  setCurrentUser() {
-
+  setUserList() {
+    // Users list
+      let requestUser = this._user.getUsers(this.token);
+      requestUser.then((data) => {
+          for (let d of data) {
+             this.users.push(new User(d.id, d.username, d.email, null, d.updateAt, d.lastPasswordUpdate, 
+             d.locale, d.idRole, d.firstName, d.lastName, d.nickName, d.avatar));
+          }
+          //currentUser
+          for (let u of this.users) {
+            for(let st of this.storedInformationsTest){
+                  if (parseInt(st.userKey, 10) === u._idUser) {
+                    this.currentUser = u;
+                  }
+            }
+          }
+        }).catch((ex) => {
+        console.error('Error fetching users', ex);
+        });
   }
 
   setAllMembers() {

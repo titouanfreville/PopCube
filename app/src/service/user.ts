@@ -7,8 +7,6 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class UserService {
-
-    private usersUrl = 'https://' + localStorage.getItem('Stack');  // URL to web api
     private userKey = 'currentUser';
 
     constructor(private http: Http) { }
@@ -19,7 +17,7 @@ export class UserService {
             'Content-Type': 'application/json'
         });
         return this.http
-            .get(`${this.usersUrl + '/user'}`, { headers: headers })
+            .get(`${'https://' + localStorage.getItem('Stack') + '/user'}`, { headers: headers })
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);
@@ -42,7 +40,7 @@ export class UserService {
         };
         console.log(JSON.stringify(formatUser));
         return this.http
-            .post(`${this.usersUrl + '/publicuser/new'}`, JSON.stringify(formatUser), {headers: headers})
+            .post(`${'https://' + localStorage.getItem('Stack') + '/publicuser/new'}`, JSON.stringify(formatUser), {headers: headers})
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);

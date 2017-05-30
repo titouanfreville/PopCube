@@ -8,8 +8,6 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class MessageService {
 
-    private messageUrl = 'https://' + localStorage.getItem('Stack');  // URL to web api
-
     constructor(private http: Http) { }
 
     getMessage(token){
@@ -18,7 +16,7 @@ export class MessageService {
             'Content-Type': 'application/json'
         });
         return this.http
-            .get(`${this.messageUrl + '/message'}`, { headers: headers })
+            .get(`${'https://' + localStorage.getItem('Stack') + '/message'}`, { headers: headers })
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);
@@ -40,7 +38,7 @@ export class MessageService {
             'Content-Type': 'application/json'
         });
         return this.http
-            .post(`${this.messageUrl + '/message'}`, JSON.stringify(formatMessage), { headers: headers })
+            .post(`${'https://' + localStorage.getItem('Stack') + '/message'}`, JSON.stringify(formatMessage), { headers: headers })
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);

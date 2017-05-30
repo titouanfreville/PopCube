@@ -7,8 +7,6 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class OrganisationService {
 
-    private organisationsUrl = 'https://' + localStorage.getItem('Stack');  // URL to web api
-
     constructor(private http: Http) { }
 
     getOrganisation(token){
@@ -17,7 +15,7 @@ export class OrganisationService {
             'Content-Type': 'application/json'
         });
         return this.http
-            .get(`${this.organisationsUrl + '/organisation'}`, { headers: headers })
+            .get(`${'https://' + localStorage.getItem('Stack') + '/organisation'}`, { headers: headers })
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);
