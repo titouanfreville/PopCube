@@ -1,13 +1,13 @@
 <div id="mainPage">
   <div id="navigation">
     <div id="organisationNav" class='' *ngIf='isOrganisationLoad === true'>
-      <div *ngFor="let organisation of organisations" id="{{'organisation' + organisation._idOrganisation}}" class="{{'organisation ' + organisation.status}}"
-        (click)="organisationClick(organisation._idOrganisation)">
+      <div *ngFor="let organisation of organisations" id="{{organisation.organisationName}}" class="{{'organisation ' + organisation.status}}"
+        (click)="organisationClick(organisation.organisationName)">
         <div id="logo1">
           {{organisation.organisationName}}
         </div>
       </div>
-      <a [routerLink]="['/settings']"> <img src="img/plus.svg" class="add-organisation" /></a>
+      <a [routerLink]="['']"> <img src="img/plus.svg" class="add-organisation" /></a>
     </div>
     <div id="channelNav" *ngIf="currentOrganisation != null && isChannelLoad === true">
       <p class='title'>CHANNEL TEXT <img src="img/plus-symbol.svg" class="add-channel" /> </p>

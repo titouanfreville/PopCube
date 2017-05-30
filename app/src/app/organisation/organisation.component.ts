@@ -11,11 +11,13 @@ import { MessageService } from '../../service/message';
 import { UserService } from '../../service/user';
 import { localOrganisationService } from '../../service/localOrganisationService';
 
+import { Stack } from '../../service/external/stack'
+
 @Component({
   selector: 'my-organisation',
   template: require('./organisation.component.html'),
   styles: [require('./organisation.component.scss')],
-  providers: [OrganisationService, ChannelService, MessageService, UserService, localOrganisationService]
+  providers: [OrganisationService, ChannelService, MessageService, UserService, localOrganisationService, Stack]
 })
 export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
@@ -23,6 +25,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
   @ViewChild('myVideo') private myVideo: any;
 
   organisations: Organisation[] = [];
+  organisationNamesOnly: any[] = [];
   channels: Channel[] = [];
   messages: Message[] = [];
   users: User[] = [];
@@ -50,14 +53,15 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
   anotherid;
   mypeerid;
 
-  storedInformationsTest;
+  storedInformationsTest: any[];
 
   constructor(
     private _organisation: OrganisationService,
     private _channel: ChannelService,
     private _message: MessageService,
     private _user: UserService,
-    private _localOrganisation: localOrganisationService
+    private _localOrganisation: localOrganisationService,
+    private _stack: Stack
     ) {
 
     this.messageSvc = this._message;
@@ -69,18 +73,25 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     this.storedInformations = this._localOrganisation.retrieveOrganisation(1);
     this.token = this.storedInformations.tokenKey;
 
+    // Organisation
+
     // Organisations
     this.isOrganisationLoad = false;
-    let requestOrganisation = this._organisation.getOrganisation(this.token);
-    requestOrganisation.then((data) => {
+    let i = 0;
+    for(let org of this.storedInformationsTest) {
+      i++;
+      let requestOrganisation = this._organisation.getOrganisationWithStack(org.tokenKey, org.stack);
+      requestOrganisation.then((data) => {
         this.organisations.push(new Organisation(data.id, data.name, data.description, data.avatar));
-
-      this.organisations.find(o => o._idOrganisation === data.id).channels = this.channels;
-      this.isOrganisationLoad = true;
-      }).catch((ex) => {
-       console.error('Error fetching users', ex);
-      });
-
+        this.organisations.find(o => o._idOrganisation === data.id).channels = this.channels;
+        console.log(data);
+        if(i === this.storedInformationsTest.length) {
+        this.isOrganisationLoad = true;
+       }
+       }).catch((ex) => {
+          console.error('Error fetching users', ex);
+       });
+    }
       // Users list
       let requestUser = this._user.getUsers(this.token);
       requestUser.then((data) => {
@@ -114,7 +125,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
             console.log(data);
           });
         });
-        
+    console.log(this.organisations);
     this.initStatus();
   }
 
@@ -182,13 +193,16 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
         } catch (err) { }
     }
 
-  organisationClick(organisationId) {
+  organisationClick(organisationName) {
+    console.log('clic');
     this.channels = [];
     this.channelsText = [];
     this.channelsVoice = [];
     this.channelsVideo = [];
+    this.setToken(organisationName);
+    this.setStack(organisationName);
     for (let o of this.organisations) {
-      if (o._idOrganisation === organisationId) {
+      if (o.organisationName === organisationName) {
         o.status = 'organisationFocus';
         // Channels
         this.isChannelLoad = false;
@@ -291,6 +305,31 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
         c.status = '';
       }
     }
+  }
+
+  setToken(organisationName) {
+    for(let o of this.storedInformationsTest) {
+      if(organisationName === o.organisationName) {
+        this.token = o.tokenKey;
+      }
+    }
+  }
+
+  setStack(organisationName) {
+    for(let o of this.storedInformationsTest) {
+      if(organisationName === o.organisationName) {
+        console.log(o.stack);
+        this._stack.setStack(o.stack);
+      }
+    }
+  }
+
+  setCurrentUser() {
+
+  }
+
+  setAllMembers() {
+
   }
 
 }

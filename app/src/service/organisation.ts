@@ -23,6 +23,19 @@ export class OrganisationService {
             .catch(this.handleError);
     }
 
+    getOrganisationWithStack(token, stack: string){
+        let headers = new Headers({
+            'Authorization': 'bearer ' + token,
+            'Content-Type': 'application/json'
+        });
+        let url = 'https://' + stack;
+        return this.http
+            .get(`${url + '/organisation'}`, { headers: headers })
+            .toPromise()
+            .then(response => response.json())
+            .catch(this.handleError);
+    }
+
     private handleError(error: any) {
         console.error('An error occurred', error);
         return Promise.reject(error.message || error);

@@ -29,11 +29,22 @@ export class localOrganisationService {
 
     public generateNewOrganisation(i: number, user: number, token: string) {
         let organisationKey = JSON.stringify(i);
+        let y: string;
+        let organisationName: string = '';
+        let x: number = 0;
+        do {
+            organisationName += localStorage.getItem('Stack').charAt(x);
+            y = localStorage.getItem('Stack').charAt(x+1);
+            x++;
+            console.log('x : ' + x + 'y : ' + y );
+
+        } while (y != '.');
+        console.log(organisationName);
         let stack = localStorage.getItem('Stack');
         let userKey =  JSON.stringify(user);
         let tokenKey = token;
         let currentTime: number = (new Date()).getTime() + 1000 * 60 * 60 * 24 * 30 * 12;
-        this.store({ttl: currentTime, organisationKey, userKey, tokenKey, stack});
+        this.store({ttl: currentTime, organisationKey, organisationName, userKey, tokenKey, stack,});
     }
 
     public retrieveOrganisation(i: number) {
@@ -59,9 +70,10 @@ export class localOrganisationService {
         }else {
             max = 1;
         }
-        for (let i = 0; i++; i <= max) {
+        for (let i = 1; i<= max; i++) {
             try {
                 let storedOrganisation = JSON.parse(this.retrieve(i));
+                console.log('all Organisation : ' + storedOrganisation);
                 if (storedOrganisation.ttl < currentTime2) throw 'invalid organisation found';
                 organisations.push(storedOrganisation);
             }

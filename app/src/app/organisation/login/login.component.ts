@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   constructor(
     public http: Http,
     private _loginService: LoginService,
-    private router: Router,
+    private _router: Router,
     private _user: UserService,
     private _localOrganisation: localOrganisationService
   ) {
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
         }
         this._localOrganisation.generateNewOrganisation(i, data.user.id, data.token);
         console.log(localStorage);
-        this.router.navigate(['/organisation']);
+        this._router.navigate(['/organisation']);
       }).catch((ex) => {
        console.error('Error login', ex);
       });

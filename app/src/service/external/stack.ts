@@ -30,6 +30,10 @@ export class Stack {
     }
 
     getOrg() {
-        return ['maxime', 'society'];
+        return ['maxime.popcube.xyz', 'society.popcube.xyz'];
+    }
+
+    setStack(stack: string) {
+        localStorage.setItem('Stack', stack);
     }
 }
