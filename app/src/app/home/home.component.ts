@@ -21,7 +21,9 @@ export class HomeComponent implements OnInit {
     private _router: Router,
     private _localOrg: LocalOrganisationService
   ) {
-
+    // if (localStorage.getItem('isConnected') === '1') {
+    //     this._router.navigate(['/organisation']);
+    //   }
   }
 
   ngOnInit() {

@@ -24,18 +24,16 @@ export class AppComponent {
 
   constructor(
     private api: ApiService,
-    private router: Router
+    private _router: Router
     ) {
-      if (localStorage.getItem('isConnected') === '1') {
-        this.router.navigate(['/organisation']);
-      }
+
   }
 
   popcubeNavigate() {
     if (localStorage.getItem('isConnected') === '1') {
-        this.router.navigate(['/organisation']);
+        this._router.navigate(['/organisation']);
     }else {
-      this.router.navigate(['']);
+      this._router.navigate(['']);
     }
   }
 

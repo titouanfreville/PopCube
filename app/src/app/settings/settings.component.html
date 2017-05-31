@@ -17,10 +17,10 @@
             <a>Change your avatar</a>
           </div>
           <div id="userInformation">
-            <input type="text" name="nickname" placeholder="{{currentUser.nickname}}" class="form-control" />
-            <input type="text" name="name" placeholder="{{currentUser.firstName}}" class="form-control" disabled />
-            <input type="text" name="lastname" placeholder="{{currentUser.lastName}}" class="form-control" disabled />
-            <input type="email" name="email" placeholder="{{currentUser.email}}" class="form-control" />
+            <input type="text" name="nickname" [(ngModel)]="currentUser.nickName" class="form-control" />
+            <input type="text" name="name" [(ngModel)]="currentUser.firstName" class="form-control" disabled />
+            <input type="text" name="lastname" [(ngModel)]="currentUser.lastName" class="form-control" disabled />
+            <input type="email" name="email" [(ngModel)]="currentUser.email" class="form-control" />
             <input type="password" name="password" class="form-control" />
           </div>
         </div>

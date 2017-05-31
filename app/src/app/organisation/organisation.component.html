@@ -14,8 +14,8 @@
       <div *ngFor="let channelT of channelsText" id="{{'channel' + channelT._idChannel}}" class="{{'channel ' + channelT.status}}"
         (click)="channelClick(channelT._idChannel)">
           <label>{{channelT.channelName}}</label>
-          <img *ngIf="channelT.status === 'channelFocus'" src="img/settings.svg" class="img-set" />
-          <img *ngIf="channelT.status === ''" src="img/settings-unfocus.svg" class="img-set" />
+          <img *ngIf="channelT.status === 'channelFocus'" src="img/settings.svg" class="img-set" [routerLink]="['/settings']" />
+          <img *ngIf="channelT.status === ''" src="img/settings-unfocus.svg" class="img-set" [routerLink]="['/settings']"/>
         </div>
       <p class='title'>CHANNEL VOICE <img src="img/plus-symbol.svg" class="add-channel" /> </p>
       <div *ngFor="let channelV of channelsVoice" id="{{'channel' + channelV._idChannel}}" class="{{'channel ' +channelV.status}}"

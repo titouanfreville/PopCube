@@ -40,7 +40,6 @@ export class LoginComponent implements OnInit {
           i = 1;
         }
         this._localOrganisation.generateNewOrganisation(i, data.user.id, data.token);
-        console.log(localStorage);
         this._router.navigate(['/organisation']);
       }).catch((ex) => {
        console.error('Error login', ex);
