@@ -27,17 +27,15 @@ export class AppComponent {
     private router: Router
     ) {
       if (localStorage.getItem('isConnected') === '1') {
-        console.log("Is connected");
         this.router.navigate(['/organisation']);
       }
   }
 
   popcubeNavigate() {
     if (localStorage.getItem('isConnected') === '1') {
-        console.log("Is connected");
         this.router.navigate(['/organisation']);
-    }else{
-      this.router.navigate([""]);
+    }else {
+      this.router.navigate(['']);
     }
   }
 

@@ -3,13 +3,13 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { Stack } from '../../service/external/stack';
-import { localOrganisationService } from '../../service/localOrganisationService'
+import { LocalOrganisationService } from '../../service/localOrganisationService';
 
 @Component({
   selector: 'my-home',
   template: require('./home.component.html'),
   styles: [require('./home.component.scss')],
-  providers: [Stack, FormsModule, localOrganisationService]
+  providers: [Stack, FormsModule, LocalOrganisationService]
 })
 export class HomeComponent implements OnInit {
 
@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private _stack: Stack,
     private _router: Router,
-    private _localOrg: localOrganisationService
+    private _localOrg: LocalOrganisationService
   ) {
 
   }
@@ -33,8 +33,8 @@ export class HomeComponent implements OnInit {
       let isAlreadySet = false;
       try {
          let localOrganisations = this._localOrg.retrieveAllOrganisation();
-         for(let l of localOrganisations) {
-         if(l.stack === findOrganisation) {
+         for (let l of localOrganisations) {
+         if (l.stack === findOrganisation) {
             isAlreadySet = true;
           }
         }
@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
         console.log(e);
       }
       let externalOrganisations = this._stack.getOrg();
-      if(!isAlreadySet){
+      if (!isAlreadySet) {
         for (let o of externalOrganisations) {
           if (o ===  findOrganisation) {
             this._stack.setStack(findOrganisation);
@@ -51,13 +51,13 @@ export class HomeComponent implements OnInit {
             this.errorMsg = 'Couldn\'t find the domain';
           }
         }
-      }else{
+      }else {
         this.errorMsg = 'Already log in';
       }
     }
   }
 
-  resetLocal(){
+  resetLocal() {
     localStorage.clear();
     console.log('Clear');
   }

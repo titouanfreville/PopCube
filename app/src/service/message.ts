@@ -10,7 +10,7 @@ export class MessageService {
 
     constructor(private http: Http) { }
 
-    getMessage(token){
+    getMessage(token) {
         let headers = new Headers({
             'Authorization': 'bearer ' + token,
             'Content-Type': 'application/json'
@@ -23,12 +23,10 @@ export class MessageService {
     }
 
     addMessage(token, message: Message) {
-        console.log("message : ");
-        console.log(message);
         let formatMessage =  {
             content: message.content,
-            //date: message.date,
-            //id: message._idMessage,
+            // date: message.date,
+            // id: message._idMessage,
             id_channel: message.idChannel,
             id_user: message.creator._idUser
         };

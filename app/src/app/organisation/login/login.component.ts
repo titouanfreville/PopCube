@@ -4,13 +4,13 @@ import { Router } from '@angular/router';
 
 import { LoginService } from '../../../service/login';
 import { UserService } from '../../../service/user';
-import { localOrganisationService } from '../../../service/localOrganisationService';
+import { LocalOrganisationService } from '../../../service/localOrganisationService';
 
 @Component({
   selector: 'my-login',
   template: require('./login.component.html'),
   styles: [require('./login.component.scss')],
-  providers: [LoginService, UserService, localOrganisationService],
+  providers: [LoginService, UserService, LocalOrganisationService],
 })
 export class LoginComponent implements OnInit {
 
@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
     private _loginService: LoginService,
     private _router: Router,
     private _user: UserService,
-    private _localOrganisation: localOrganisationService
+    private _localOrganisation: LocalOrganisationService
   ) {
 
   }

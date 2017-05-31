@@ -13,7 +13,7 @@ export class NewDomainComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('Hello NewDomain');
+
   }
 
   find(event, domainName) {

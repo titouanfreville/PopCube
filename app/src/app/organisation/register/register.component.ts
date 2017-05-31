@@ -40,8 +40,8 @@ export class RegisterComponent implements OnInit {
         }else {
           i = 1;
         }
-    }catch(e) {
-      console.log(e)
+    } catch (e) {
+      console.log(e);
     }
     this.router.navigate(['/login']);
   }

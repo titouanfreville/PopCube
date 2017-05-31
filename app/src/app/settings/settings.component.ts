@@ -9,14 +9,14 @@ import { OrganisationService } from '../../service/organisation';
 import { ChannelService } from '../../service/channel';
 import { MessageService } from '../../service/message';
 import { UserService } from '../../service/user';
-import { localOrganisationService } from '../../service/localOrganisationService';
+import { LocalOrganisationService } from '../../service/localOrganisationService';
 
 
 @Component({
   selector: 'my-settings',
   template: require('./settings.component.html'),
   styles: [require('./settings.component.scss')],
-  providers: [OrganisationService, ChannelService, MessageService, UserService, localOrganisationService]
+  providers: [OrganisationService, ChannelService, MessageService, UserService, LocalOrganisationService]
 })
 export class SettingsComponent {
 
@@ -28,7 +28,7 @@ export class SettingsComponent {
     private _channel: ChannelService,
     private _message: MessageService,
     private _user: UserService,
-    private _localOrganisation: localOrganisationService
+    private _localOrganisation: LocalOrganisationService
   ) {
     this.currentUser = this._localOrganisation.retrieveOrganisation(1).userKey;
   }

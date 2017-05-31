@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 
 @Injectable()
-export class localOrganisationService {
+export class LocalOrganisationService {
 
     private localOrganisationKey: string = 'local_organisation';
     private isConnected: string = 'isConnected';
@@ -10,9 +10,7 @@ export class localOrganisationService {
     private store(content: Object) {
         let i: number;
          if (localStorage.getItem(this.organisationSet)) {
-            console.log("OrganisationSet is set at :")
             i = parseInt(localStorage.getItem(this.organisationSet), 10) + 1;
-            console.log(i);
          }else {
             i = 1;
          }
@@ -23,7 +21,7 @@ export class localOrganisationService {
 
     private retrieve(i) {
         let storedOrganisation: string = localStorage.getItem(this.localOrganisationKey + i);
-        if(!storedOrganisation) throw 'no organisation found';
+        if (!storedOrganisation) throw 'no organisation found';
         return storedOrganisation;
     }
 
@@ -34,17 +32,15 @@ export class localOrganisationService {
         let x: number = 0;
         do {
             organisationName += localStorage.getItem('Stack').charAt(x);
-            y = localStorage.getItem('Stack').charAt(x+1);
+            y = localStorage.getItem('Stack').charAt(x + 1);
             x++;
-            console.log('x : ' + x + 'y : ' + y );
 
-        } while (y != '.');
-        console.log(organisationName);
+        } while (y !== '.');
         let stack = localStorage.getItem('Stack');
         let userKey =  JSON.stringify(user);
         let tokenKey = token;
         let currentTime: number = (new Date()).getTime() + 1000 * 60 * 60 * 24 * 30 * 12;
-        this.store({ttl: currentTime, organisationKey, organisationName, userKey, tokenKey, stack,});
+        this.store({ttl: currentTime, organisationKey, organisationName, userKey, tokenKey, stack, });
     }
 
     public retrieveOrganisation(i: number) {
@@ -54,8 +50,7 @@ export class localOrganisationService {
             let storedOrganisation = JSON.parse(this.retrieve(i));
             if (storedOrganisation.ttl < currentTime2) throw 'invalid organisation found';
             organisation = storedOrganisation;
-        }
-        catch (err) {
+        } catch (err) {
             console.error(err);
         }
         return organisation;
@@ -70,14 +65,12 @@ export class localOrganisationService {
         }else {
             max = 1;
         }
-        for (let i = 1; i<= max; i++) {
+        for (let i = 1; i <= max; i++) {
             try {
                 let storedOrganisation = JSON.parse(this.retrieve(i));
-                console.log('all Organisation : ' + storedOrganisation);
                 if (storedOrganisation.ttl < currentTime2) throw 'invalid organisation found';
                 organisations.push(storedOrganisation);
-            }
-            catch (err) {
+            } catch (err) {
                 console.error(err);
             }
         }

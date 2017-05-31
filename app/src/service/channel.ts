@@ -7,12 +7,9 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class ChannelService {
 
-    private channelUrl = 'https://' + localStorage.getItem('Stack');  // URL to web api
-
     constructor(private http: Http) { }
 
-    getChannel(token){
-        console.log(localStorage.getItem('Stack'));
+    getChannel(token) {
         let headers = new Headers({
             'Authorization': 'bearer ' + token,
             'Content-Type': 'application/json'

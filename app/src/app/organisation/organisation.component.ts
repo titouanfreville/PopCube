@@ -9,15 +9,15 @@ import { OrganisationService } from '../../service/organisation';
 import { ChannelService } from '../../service/channel';
 import { MessageService } from '../../service/message';
 import { UserService } from '../../service/user';
-import { localOrganisationService } from '../../service/localOrganisationService';
+import { LocalOrganisationService } from '../../service/localOrganisationService';
 
-import { Stack } from '../../service/external/stack'
+import { Stack } from '../../service/external/stack';
 
 @Component({
   selector: 'my-organisation',
   template: require('./organisation.component.html'),
   styles: [require('./organisation.component.scss')],
-  providers: [OrganisationService, ChannelService, MessageService, UserService, localOrganisationService, Stack]
+  providers: [OrganisationService, ChannelService, MessageService, UserService, LocalOrganisationService, Stack]
 })
 export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
@@ -59,7 +59,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     private _channel: ChannelService,
     private _message: MessageService,
     private _user: UserService,
-    private _localOrganisation: localOrganisationService,
+    private _localOrganisation: LocalOrganisationService,
     private _stack: Stack
     ) {
 
@@ -73,14 +73,13 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     // Organisations
     this.isOrganisationLoad = false;
     let i = 0;
-    for(let org of this.storedInformationsTest) {
+    for (let org of this.storedInformationsTest) {
       i++;
       let requestOrganisation = this._organisation.getOrganisationWithStack(org.tokenKey, org.stack);
       requestOrganisation.then((data) => {
         this.organisations.push(new Organisation(data.id, data.name, data.description, data.avatar));
         this.organisations.find(o => o._idOrganisation === data.id).channels = this.channels;
-        console.log(data);
-        if(i === this.storedInformationsTest.length) {
+        if (i === this.storedInformationsTest.length) {
         this.isOrganisationLoad = true;
        }
        }).catch((ex) => {
@@ -121,15 +120,15 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
 
   videoConnect() {
     let video = this.myVideo.nativeElement;
-    var localvar = this.peer;
-    var fname = this.anotherid;
+    let localvar = this.peer;
+    let fname = this.anotherid;
 
-    var n = <any>navigator;
+    let n = <any>navigator;
 
     n.getUserMedia = n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
 
     n.getUserMedia({video: true, audio: true}, function(stream) {
-      var call = localvar.call(fname, stream);
+      let call = localvar.call(fname, stream);
       call.on('stream', function(remotestream) {
         video.src = URL.createObjectURL(remotestream);
         video.play();
@@ -146,9 +145,9 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
   ngAfterViewChecked() {
         this.scrollToBottom();
 
-        if(this.myVideo){
+        if (this.myVideo) {
           let video = this.myVideo.nativeElement;
-          var n = <any>navigator;
+          let n = <any>navigator;
 
           n.getUserMedia = n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
 
@@ -260,7 +259,6 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
       for (let u of this.users) {
          if ( this.currentUser._idUser === u._idUser) {
               user = u;
-              console.log(user);
             }
       }
       let idMessage = this.channels.find(c => c._idChannel === this.currentChannel._idChannel)
@@ -288,17 +286,16 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
   }
 
   setToken(organisationName) {
-    for(let o of this.storedInformationsTest) {
-      if(organisationName === o.organisationName) {
+    for (let o of this.storedInformationsTest) {
+      if (organisationName === o.organisationName) {
         this.token = o.tokenKey;
       }
     }
   }
 
   setStack(organisationName) {
-    for(let o of this.storedInformationsTest) {
-      if(organisationName === o.organisationName) {
-        console.log(o.stack);
+    for (let o of this.storedInformationsTest) {
+      if (organisationName === o.organisationName) {
         this._stack.setStack(o.stack);
       }
     }
@@ -309,12 +306,12 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
       let requestUser = this._user.getUsers(this.token);
       requestUser.then((data) => {
           for (let d of data) {
-             this.users.push(new User(d.id, d.username, d.email, null, d.updateAt, d.lastPasswordUpdate, 
+             this.users.push(new User(d.id, d.username, d.email, null, d.updateAt, d.lastPasswordUpdate,
              d.locale, d.idRole, d.firstName, d.lastName, d.nickName, d.avatar));
           }
-          //currentUser
+          // CurrentUser
           for (let u of this.users) {
-            for(let st of this.storedInformationsTest){
+            for (let st of this.storedInformationsTest){
                   if (parseInt(st.userKey, 10) === u._idUser) {
                     this.currentUser = u;
                   }
