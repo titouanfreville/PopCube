@@ -177,8 +177,9 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     }
     if(this.currentChannel.type === 'video') {
         this.newPeer();
+        this.videoConnect();
     }
-    this.connect();
+    //this.connect();
     this.channelsText = [];
     this.channelsVoice = [];
     this.channelsVideo = [];
@@ -308,8 +309,6 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
   }
 
     videoConnect() {
-      let video = this.myVideo.nativeElement;
-      let localvar = this.peer;
 
       if (this.myVideo) {
           let video = this.myVideo.nativeElement;
@@ -320,7 +319,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
             
           for(let u of this.users) {
             n.getUserMedia({video: true, audio: true}, function(stream) {
-            let call = localvar.call(u.webId + this.currentChannel._idChannel, stream);
+            let call = this.peer.call(u.webId + this.currentChannel._idChannel, stream);
             call.on('stream', function(remotestream) {
               video.src = URL.createObjectURL(remotestream);
               video.play();
