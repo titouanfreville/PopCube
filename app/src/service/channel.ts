@@ -9,7 +9,8 @@ export class ChannelService {
 
     constructor(private http: Http) { }
 
-    getChannel(token) {
+    getChannel(token){
+        console.log(localStorage.getItem('Stack'));
         let headers = new Headers({
             'Authorization': 'bearer ' + token,
             'Content-Type': 'application/json'

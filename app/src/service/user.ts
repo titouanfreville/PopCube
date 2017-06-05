@@ -76,6 +76,9 @@ export class UserService {
         return user;
     }
 
+    public formatUser(user): User {
+        return new User(user.id, user.username, user.email, user.password, user.last_activity_at, user.last_password_update, 'fr', user.id_role, user.first_name, user.last_name, user.nickname, user.avartar);
+    }
 
     private handleError(error: any) {
         console.error('An error occurred', error);

@@ -10,7 +10,7 @@
       <a [routerLink]="['']"> <img src="img/plus.svg" class="add-organisation" /></a>
     </div>
     <div id="channelNav" *ngIf="currentOrganisation != null && isChannelLoad === true">
-      <p class='title'>CHANNEL TEXT <img src="img/plus-symbol.svg" class="add-channel" /> </p>
+      <p class='title'>CHANNEL TEXT <img src="img/plus-symbol.svg" class="add-channel" (click)='navigateToChannel()'/> </p>
       <div *ngFor="let channelT of channelsText" id="{{'channel' + channelT._idChannel}}" class="{{'channel ' + channelT.status}}"
         (click)="channelClick(channelT._idChannel)">
           <label>{{channelT.channelName}}</label>
@@ -68,7 +68,7 @@
         </div>
         <div id="UserContent">
           <div id="userMsg" class='user'>
-            {{msg.creator.userName + ' ' + msg.date}}
+            {{msg.creator.userName}} {{ msg.date * 1000 | date }}
           </div>
           <div id="contentMsg" class='content'>
             <p>{{msg.content}}</p>

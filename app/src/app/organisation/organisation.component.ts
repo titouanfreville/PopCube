@@ -5,6 +5,8 @@ import { Channel } from '../../model/channel';
 import { Message } from '../../model/message';
 import { User } from '../../model/user';
 
+import { Router } from '@angular/router';
+
 import { OrganisationService } from '../../service/organisation';
 import { ChannelService } from '../../service/channel';
 import { MessageService } from '../../service/message';
@@ -60,7 +62,8 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     private _message: MessageService,
     private _user: UserService,
     private _localOrganisation: LocalOrganisationService,
-    private _stack: Stack
+    private _stack: Stack,
+    private _router: Router
     ) {
 
     this.messageSvc = this._message;
@@ -322,8 +325,9 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
         });
   }
 
-  setAllMembers() {
-
+  navigateToChannel() {
+    localStorage.setItem('settingsNav', 'channel');
+    this._router.navigate(['/settings']);
   }
 
 }

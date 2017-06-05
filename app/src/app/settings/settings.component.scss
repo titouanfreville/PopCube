@@ -42,4 +42,8 @@
     color: $grey4;
     font-size: 1.1em;
   }
+
+  .table-hover>tbody>tr:hover {
+    background-color: $grey4;
+  }
 }

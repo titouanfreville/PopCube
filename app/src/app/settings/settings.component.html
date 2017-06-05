@@ -6,6 +6,7 @@
       <li class='' (click)="organisationClick()">Organisation</li>
       <li class='' (click)="channelClick()">Channel</li>
       <li class='' (click)="clientClick()">Client</li>
+      <li class='' (click)="rightClick()">Right</li>
     </ul>
   </div>
   <div id="content">
@@ -49,20 +50,48 @@
     <div id="channel" *ngIf="nav === 'channel'">
       <form>
         <label>Channel Text</label> +
-        <table>
-          <tr>
+        <table class="table table-hover">
+          <thead>
             <td>Name</td> <td> description </td> <td>private</td>
-          </tr>
-          <tr>
-            <td></td><td></td><td><input type="checkbox" checked data-toggle="toggle"></td>
+          </thead>
+          <tr *ngFor="let channelT of channelsText" id="{{'channel' + channelT._idChannel}}"
+        (click)="oneChannelClick(channelT._idChannel)">
+            <td>{{channelT.channelName}}</td>
+            <td>{{channelT.description}}</td>
+            <td><input type="checkbox" checked data-toggle="toggle"></td>
           </tr>
         </table>
         <label>Channel Voice</label> +
-
+        <table class="table table-hover">
+          <thead>
+            <td>Name</td> <td> description </td> <td>private</td>
+          </thead>
+          <tr *ngFor="let channelV of channelsVoice" id="{{'channel' + channelV._idChannel}}"
+        (click)="channelClick(channelT._idChannel)">
+            <td>{{channelV.channelName}}</td>
+            <td>{{channelV.description}}</td>
+            <td><input type="checkbox" checked data-toggle="toggle"></td>
+          </tr>
+          <tr>
+          </tr>
+        </table>
         <label>Channel Video</label> +
-
+        <table class="table table-hover">
+          <thead>
+            <td>Name</td> <td> description </td> <td>private</td>
+          </thead>
+          <tr *ngFor="let channelV of channelsVideo" id="{{'channel' + channelV._idChannel}}"
+        (click)="channelClick(channelT._idChannel)">
+            <td>{{channelV.channelName}}</td>
+            <td>{{channelV.description}}</td>
+            <td><input type="checkbox" checked data-toggle="toggle"></td>
+          </tr>
+        </table>
         <br /><br />
-        <button class='button button-glow button-rounded button-royal'>Submit</button>
+        <div *ngIf="currentChannel != null">
+          <input type="Text" name="channelName" class="form-control" [(ngModel)]="currentChannel.channelName"/>
+          <button class='button button-glow button-rounded button-royal'>Submit</button>
+        </div>
       </form>
     </div>
 
@@ -73,5 +102,11 @@
       </form>
     </div>
 
+  <div id="right" *ngIf="nav === 'right'">
+      <form>
+        <br /><br />
+        <button class='button button-glow button-rounded button-royal'>Submit</button>
+      </form>
+    </div>
   </div>
 </div>
