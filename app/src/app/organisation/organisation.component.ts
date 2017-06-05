@@ -116,7 +116,6 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     this.channelsVoice = [];
     this.channelsVideo = [];
     this.users = [];
-    console.log(this.users);
     this.setToken(organisationName);
     this.setStack(organisationName);
     this.setUserList();
@@ -265,7 +264,8 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
           }
         }).catch((ex) => {
         console.error('Error fetching users', ex);
-        });
+      });
+      console.log(this.users);
   }
 
   navigateToChannel() {
@@ -298,19 +298,12 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
 
   connect() {
     for(let u of this.users) {
-<<<<<<< HEAD
         if(u._idUser !== this.currentUser._idUser){
         let conn = this.peer.connect(u.webId + this.currentChannel._idChannel);
         conn.on('open', function() {
           conn.send('hi');
         });
       }
-=======
-      let conn = this.peer.connect(u.webId + this.currentChannel._idChannel);
-      conn.on('open', function() {
-        conn.send('hi');
-      });
->>>>>>> issue-4-view
     }
   }
 
