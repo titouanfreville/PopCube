@@ -49,12 +49,10 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
   isChannelLoad;
   isMessageLoad;
 
-  // Peerjs
-  peer;
-  anotherid;
-  mypeerid;
-
   storedInformationsTest: any[];
+
+  // PeerJS
+  peer;
 
   constructor(
     private _organisation: OrganisationService,
@@ -90,22 +88,6 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
        });
     }
 
-        // Peerjs
-        this.peer = new Peer({
-            config: {'iceServers': [
-              { url: 'stun:stun.l.google.com:19302' },
-              { url: 'turn:homeo@turn.bistri.com:80', credential: 'homeo' }
-            ]}, key: 'tcgi4gqxdbcsor'});
-          setTimeout(() => {
-            this.mypeerid = this.peer.id;
-            console.log(this.peer);
-        });
-
-        this.peer.on('connection', function(conn) {
-          conn.on('data', function(data) {
-            console.log(data);
-          });
-        });
     console.log(this.organisations);
     this.initStatus();
   }
@@ -114,58 +96,12 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     this.isOrganisationLoad = false;
   }
 
-  connect() {
-    let conn = this.peer.connect(this.anotherid);
-    conn.on('open', function() {
-      conn.send('hi');
-    });
-  }
-
-  videoConnect() {
-    let video = this.myVideo.nativeElement;
-    let localvar = this.peer;
-    let fname = this.anotherid;
-
-    let n = <any>navigator;
-
-    n.getUserMedia = n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
-
-    n.getUserMedia({video: true, audio: true}, function(stream) {
-      let call = localvar.call(fname, stream);
-      call.on('stream', function(remotestream) {
-        video.src = URL.createObjectURL(remotestream);
-        video.play();
-      });
-    }, function(err) {
-      console.log(err);
-    });
-  }
-
   ngAfterViewInit() {
 
   }
 
   ngAfterViewChecked() {
         this.scrollToBottom();
-
-        if (this.myVideo) {
-          let video = this.myVideo.nativeElement;
-          let n = <any>navigator;
-
-          n.getUserMedia = n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
-
-          this.peer.on('call', function(call) {
-            n.getUserMedia({video: true, audio: true}, function(stream){
-              call.answer(stream);
-              call.on('stream', function(remotestream) {
-                video.src = URL.createObjectURL(remotestream);
-                video.play();
-              });
-            }, function(err) {
-              console.log(err);
-            });
-          });
-        }
     }
 
     scrollToBottom(): void {
@@ -206,6 +142,9 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
   }
 
   channelClick(channelId) {
+    if(this.peer){
+      this.closePeer();
+    }
     this.messages = [];
     this.isMessageLoad = false;
     let user: User = null;
@@ -236,6 +175,10 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
         c.status = '';
       }
     }
+    if(this.currentChannel.type === 'video') {
+        this.newPeer();
+    }
+    this.connect();
     this.channelsText = [];
     this.channelsVoice = [];
     this.channelsVideo = [];
@@ -309,8 +252,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
       let requestUser = this._user.getUsers(this.token);
       requestUser.then((data) => {
           for (let d of data) {
-             this.users.push(new User(d.id, d.username, d.email, null, d.updateAt, d.lastPasswordUpdate,
-             d.locale, d.idRole, d.firstName, d.lastName, d.nickName, d.avatar));
+             this.users.push(this._user.formatUser(d));
           }
           // CurrentUser
           for (let u of this.users) {
@@ -330,4 +272,73 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     this._router.navigate(['/settings']);
   }
 
+  newPeer() {      
+
+        // Peerjs
+        this.peer = new Peer([this.currentUser.webId + this.currentChannel._idChannel], {
+            config: {'iceServers': [
+              { url: 'stun:stun.l.google.com:19302' },
+              { url: 'turn:homeo@turn.bistri.com:80', credential: 'homeo' }
+            ]}, key: 'tcgi4gqxdbcsor'});
+          setTimeout(() => {
+            console.log(this.peer);
+        });
+
+        this.peer.on('connection', function(conn) {
+          conn.on('data', function(data) {
+            console.log(data);
+          });
+        });
+  }
+
+  closePeer() {
+    this.peer.destroy();
+  }
+
+  connect() {
+    for(let u of this.users) {
+      let conn = this.peer.connect(u.webId + this.currentChannel._idChannel);
+      conn.on('open', function() {
+        conn.send('hi');
+      });
+    }
+  }
+
+    videoConnect() {
+      let video = this.myVideo.nativeElement;
+      let localvar = this.peer;
+
+      if (this.myVideo) {
+          let video = this.myVideo.nativeElement;
+          let n = <any>navigator;
+
+          n.getUserMedia = n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
+
+            
+          for(let u of this.users) {
+            n.getUserMedia({video: true, audio: true}, function(stream) {
+            let call = localvar.call(u.webId + this.currentChannel._idChannel, stream);
+            call.on('stream', function(remotestream) {
+              video.src = URL.createObjectURL(remotestream);
+              video.play();
+            });
+          }, function(err) {
+            console.log(err);
+          });
+          }          
+        
+
+      this.peer.on('call', function(call) {
+            n.getUserMedia({video: true, audio: true}, function(stream){
+              call.answer(stream);
+              call.on('stream', function(remotestream) {
+                video.src = URL.createObjectURL(remotestream);
+                video.play();
+              });
+            }, function(err) {
+              console.log(err);
+            });
+          });
+        }
+    }
 }
