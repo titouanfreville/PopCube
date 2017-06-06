@@ -111,14 +111,21 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     }
 
   organisationClick(organisationName) {
+    // Set to empty all the global for an organisation
     this.channels = [];
     this.channelsText = [];
     this.channelsVoice = [];
     this.channelsVideo = [];
     this.users = [];
+
+    // Set the settings to call the API of this organisation
     this.setToken(organisationName);
     this.setStack(organisationName);
+
+    // Get all the users of this organisations and set it to global var
     this.setUserList();
+
+    // Get all the channels for this organisation and set it to global
     for (let o of this.organisations) {
       if (o.organisationName === organisationName) {
         o.status = 'organisationFocus';
@@ -142,12 +149,18 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
   }
 
   channelClick(channelId) {
+    // Close previous Peer if exist
     if(this.peer){
       this.closePeer();
     }
+
+    // Reset messages to set it with the new messages of this channel
     this.messages = [];
     this.isMessageLoad = false;
+
     let user: User = null;
+
+    // Get all the messages of this channels
     for (let c of this.channels) {
       if (c._idChannel === channelId) {
         c.status = 'channelFocus';
@@ -157,7 +170,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
         requestMessage.then((data) => {
           for (let d of data){
             if (d.id_channel === channelId) {
-              // Find correct user
+              // Find correct user of the message
               for (let u of this.users) {
                 if (d.id_user === u._idUser) {
                   user = u;
@@ -175,17 +188,27 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
         c.status = '';
       }
     }
+
+    // Automatique call all the members connected to the channels
+
+    // Call audio
+
+    // Call Video
     if(this.currentChannel.type === 'video') {
         this.newPeer();
         this.videoConnect();
     }
+
     //this.connect();
+
+    // Reload the channels with the messages
     this.channelsText = [];
     this.channelsVoice = [];
     this.channelsVideo = [];
     this.sortChannelType();
   }
 
+  // Set all the channels by type.
   sortChannelType() {
     for (let c of this.channels){
       if (c.type === 'text') {
@@ -200,6 +223,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     }
   }
 
+  // Send messages to the API
   addMessage() {
     let user = null;
     if (this.content != null) {
@@ -308,39 +332,48 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     }
   }
 
-    videoConnect() {
+  videoConnect() {
 
-      if (this.myVideo) {
-          let video = this.myVideo.nativeElement;
-          let n = <any>navigator;
+    console.log(this.myVideo);
+    // If myVideo div exist
+    if (this.myVideo) {
+        let video = this.myVideo.nativeElement;
+        let n = <any>navigator;
+        let localPeer = this.peer;
+        let localChanId = this.currentChannel._idChannel;
+        let localCurU = this.currentUser._idUser;
 
-          n.getUserMedia = n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
+        n.getUserMedia = n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
+          
+        for(let u of this.users) {
+          n.getUserMedia({video: true, audio: true}, function(stream) {
+            if(u._idUser !== localCurU) {
+              let call = localPeer.call(u.webId + localChanId, stream);
+              console.log('Dest id is : ' + u.webId + localChanId);
+              call.on('stream', function(remotestream) {
+                video.src = URL.createObjectURL(remotestream);
+                video.play();
+                console.log('stream');
+              });
+            }
+        }, function(err) {
+          console.log(err);
+        });
+        }          
+      
 
-            
-          for(let u of this.users) {
-            n.getUserMedia({video: true, audio: true}, function(stream) {
-            let call = this.peer.call(u.webId + this.currentChannel._idChannel, stream);
+    this.peer.on('call', function(call) {
+          n.getUserMedia({video: true, audio: true}, function(stream){
+            call.answer(stream);
             call.on('stream', function(remotestream) {
+              console.log(remotestream);
               video.src = URL.createObjectURL(remotestream);
               video.play();
             });
           }, function(err) {
             console.log(err);
           });
-          }          
-        
-
-      this.peer.on('call', function(call) {
-            n.getUserMedia({video: true, audio: true}, function(stream){
-              call.answer(stream);
-              call.on('stream', function(remotestream) {
-                video.src = URL.createObjectURL(remotestream);
-                video.play();
-              });
-            }, function(err) {
-              console.log(err);
-            });
-          });
-        }
-    }
+        });
+      }
+  }
 }
