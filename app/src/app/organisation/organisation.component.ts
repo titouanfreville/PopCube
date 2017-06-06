@@ -24,7 +24,11 @@ import { Stack } from '../../service/external/stack';
 export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   @ViewChild('message') private myScrollContainer: ElementRef;
-  @ViewChild('myVideo') private myVideo: any;
+  @ViewChild('myVideo1') private myVideo1: any;
+  @ViewChild('myVideo2') private myVideo2: any;
+  @ViewChild('myVideo3') private myVideo3: any;
+  @ViewChild('myVideo4') private myVideo4: any;
+  @ViewChild('myVideo5') private myVideo5: any;
 
   organisations: Organisation[] = [];
   channels: Channel[] = [];
@@ -334,14 +338,21 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
 
   videoConnect() {
 
-    console.log(this.myVideo);
-    // If myVideo div exist
-    if (this.myVideo) {
-        let video = this.myVideo.nativeElement;
+    console.log(this.myVideo1);
+  
+    // If myVideo1 div exist
+    if (this.myVideo1) {
+        let video1 = this.myVideo1.nativeElement;
+        let video2 = this.myVideo2.nativeElement;
+        let video3 = this.myVideo3.nativeElement;
+        let video4 = this.myVideo4.nativeElement;
+        let video5 = this.myVideo5.nativeElement;
+
         let n = <any>navigator;
         let localPeer = this.peer;
         let localChanId = this.currentChannel._idChannel;
         let localCurU = this.currentUser._idUser;
+        let i: number = 0;
 
         n.getUserMedia = n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
           
@@ -351,10 +362,33 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
               let call = localPeer.call(u.webId + localChanId, stream);
               console.log('Dest id is : ' + u.webId + localChanId);
               call.on('stream', function(remotestream) {
-                video.src = URL.createObjectURL(remotestream);
-                video.play();
-                console.log('stream');
+                i++;
+                switch(i) {
+                  case 1: video1.src = URL.createObjectURL(remotestream);
+                          video1.play();
+                          console.log('stream');
+                          console.log('1');
+                        break;
+                  case 2: video2.src = URL.createObjectURL(remotestream);
+                          video2.play();
+                          console.log('stream');
+                          console.log('2');
+                        break;
+                  case 3: video3.src = URL.createObjectURL(remotestream);
+                          video3.play();
+                          console.log('stream');
+                          console.log('3');
+                        break;
+                  case 4: video4.src = URL.createObjectURL(remotestream);
+                          video4.play();
+                          console.log('stream');
+                        break;
+                  default: console.log('bitch');
+                        break;
+                }
               });
+            }else{
+              // ToDo myVideo5 is set to local cam
             }
         }, function(err) {
           console.log(err);
