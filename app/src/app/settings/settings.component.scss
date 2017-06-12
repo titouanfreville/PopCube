@@ -38,12 +38,51 @@
     margin-left: auto;
   }
 
-  label{
-    color: $grey4;
+  #channel {
+    margin-top: 20px;
+  }
+
+  .label{
+    color: white;
     font-size: 1.1em;
+    padding: 5px;
+    display: flex;
+    width: 98%;
+  }
+
+  .title_channel {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background-color: $royal;
+    margin: 5px;
+  }
+
+  .hide-mod {
+    display: flex;
+    color: white;
+    font-size: 1.5em;
+    width: 2%;
   }
 
   .table-hover>tbody>tr:hover {
     background-color: $grey4;
+  }
+}
+
+// table
+// .channel-list {
+//   background-color: white;
+//   color: black;
+// }
+
+.table {
+  thead {
+    td {
+      text-align: center;
+    }
+  }
+  td:first-child {
+    width: 150px;
   }
 }

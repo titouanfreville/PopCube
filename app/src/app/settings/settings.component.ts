@@ -34,6 +34,14 @@ export class SettingsComponent {
 
   private currentChannel: Channel;
 
+  private newChannelT: Channel = new Channel(null, null, null, null);
+  private newChannelV: Channel = new Channel(null, null, null, null);
+  private newChannelVi: Channel = new Channel(null, null, null, null);
+
+  private hideT: Boolean = true;
+  private hideV: Boolean = true;
+  private hideVi: Boolean = true;
+
   constructor(
     private _organisation: OrganisationService,
     private _channel: ChannelService,
@@ -132,5 +140,45 @@ export class SettingsComponent {
         this.currentChannel = c;
       }
     }
+  }
+
+  // Channel
+  newChannel() {
+    if(this.newChannelT.channelName !== null &&  this.newChannelT.description !== null) {
+      this.newChannelT.type = 'text';
+      this._channel.newChannel(this.token, this.newChannelT);
+    }else{
+      if(this.newChannelV.channelName !== null &&  this.newChannelV.description !== null) {
+        this.newChannelV.type = 'voice';
+        this._channel.newChannel(this.token, this.newChannelV);
+      }else{
+        if(this.newChannelVi.channelName !== null &&  this.newChannelVi.description !== null) {
+          this.newChannelT.type = 'video';
+          this._channel.newChannel(this.token, this.newChannelVi);
+        }else{
+
+        }
+      }
+    }
+  }
+
+  hideText() {
+    if (this.hideT === false) { this.hideT = true; } else { this.hideT = false; }
+  }
+
+  hideVoice() {
+    if (this.hideV === false) { this.hideV = true; } else { this.hideV = false; }
+  }
+
+  hideVideo() {
+    if (this.hideVi === false) { this.hideVi = true; } else { this.hideVi = false; }
+  }
+  
+  modifyChannel(channel:Channel) {
+    this._channel.updateChannel(this.token, channel);
+  }
+
+  deleteChannel(channel:Channel) {
+    this._channel.deleteChannel(this.token, channel);
   }
 }

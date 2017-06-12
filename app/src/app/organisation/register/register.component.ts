@@ -14,7 +14,7 @@ import { UserService } from '../../../service/user';
 })
 export class RegisterComponent implements OnInit {
   errorMessage: string;
-  user: User = new User('', null, null, null, null, null, null, null, null, null, null, null);
+  user: User = new User('', null, null, null, null, null, null, null, null, null, null, null, null);
   constructor(
     private userSvc: UserService,
     private router: Router

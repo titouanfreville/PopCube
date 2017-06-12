@@ -363,6 +363,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
               console.log('Dest id is : ' + u.webId + localChanId);
               call.on('stream', function(remotestream) {
                 i++;
+                console.log(i);
                 switch(i) {
                   case 1: video1.src = URL.createObjectURL(remotestream);
                           video1.play();
@@ -401,8 +402,8 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
             call.answer(stream);
             call.on('stream', function(remotestream) {
               console.log(remotestream);
-              video.src = URL.createObjectURL(remotestream);
-              video.play();
+              video5.src = URL.createObjectURL(remotestream);
+              video5.play();
             });
           }, function(err) {
             console.log(err);

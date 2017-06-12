@@ -47,51 +47,88 @@
       </form>
     </div>
 
+    <!-- Channel Text -->
     <div id="channel" *ngIf="nav === 'channel'">
       <form>
-        <label>Channel Text</label> +
-        <table class="table table-hover">
+        <div class="title_channel" (click)="hideText()">
+          <div class="label">Channel Text</div>
+          <div class="hide-mod" *ngIf="hideT === true">+</div>
+          <div class="hide-mod" *ngIf="hideT === false">-</div>
+          </div>
+        <table class="table table-hover channel-list" *ngIf="hideT !== true">
           <thead>
-            <td>Name</td> <td> description </td> <td>private</td>
+            <td>Name</td> <td> description </td> <td>private</td><td></td><td></td>
           </thead>
           <tr *ngFor="let channelT of channelsText" id="{{'channel' + channelT._idChannel}}"
         (click)="oneChannelClick(channelT._idChannel)">
-            <td>{{channelT.channelName}}</td>
-            <td>{{channelT.description}}</td>
+            <td><input name="channelName" type="text" class="form-control name" [(ngModel)]="channelT.channelName" [ngModelOptions]="{standalone: true}" /></td>
+            <td><input type="text" class="form-control description" [(ngModel)]="channelT.description" [ngModelOptions]="{standalone: true}"/></td>
             <td><input type="checkbox" checked data-toggle="toggle"></td>
+            <td><button class='button button-glow button-rounded button-royal' (click)=modifyChannel(channelT)>Modify</button></td>
+            <td><button class='button button-glow button-rounded button-caution' (click)=deleteChannel(channelT)>Del</button></td>
           </tr>
-        </table>
-        <label>Channel Voice</label> +
-        <table class="table table-hover">
+          <tr>
+            <td><input name="channelName" type="text" class="form-control name" [(ngModel)]="newChannelT.channelName" [ngModelOptions]="{standalone: true}" /></td>
+            <td><input type="text" class="form-control description" [(ngModel)]="newChannelT.description" [ngModelOptions]="{standalone: true}"/></td>
+            <td><input type="checkbox" data-toggle="toggle"></td>
+            <td><button class='button button-glow button-rounded button-royal' (click)=newChannel()>Add</button></td>
+            <td></td>
+          </tr>
+        </table>       
+
+        <!-- Channel Voice -->
+        <div class="title_channel" (click)="hideVoice()">
+          <div class="label">Channel Voice</div>
+          <div class="hide-mod" *ngIf="hideV === true">+</div>
+          <div class="hide-mod" *ngIf="hideV === false">-</div>
+          </div>
+        <table class="table table-hover" *ngIf="hideV !== true">
           <thead>
-            <td>Name</td> <td> description </td> <td>private</td>
+            <td>Name</td> <td> description </td> <td>private</td><td></td><td></td>
           </thead>
           <tr *ngFor="let channelV of channelsVoice" id="{{'channel' + channelV._idChannel}}"
         (click)="channelClick(channelT._idChannel)">
-            <td>{{channelV.channelName}}</td>
-            <td>{{channelV.description}}</td>
+            <td><input name="channelName" type="text" class="form-control name" [(ngModel)]="channelV.channelName" [ngModelOptions]="{standalone: true}" /></td>
+            <td><input type="text" class="form-control description" [(ngModel)]="channelV.description" [ngModelOptions]="{standalone: true}"/></td>
             <td><input type="checkbox" checked data-toggle="toggle"></td>
+            <td><button class='button button-glow button-rounded button-royal' (click)=modifyChannel(channelV)>Modify</button></td>
+            <td><button class='button button-glow button-rounded button-caution' (click)=deleteChannel(channelV)>Del</button></td>
           </tr>
           <tr>
+            <td><input name="channelName" type="text" class="form-control name" [(ngModel)]="newChannelV.channelName" [ngModelOptions]="{standalone: true}" /></td>
+            <td><input type="text" class="form-control description" [(ngModel)]="newChannelV.description" [ngModelOptions]="{standalone: true}"/></td>
+            <td><input type="checkbox" data-toggle="toggle"></td>
+            <td><button class='button button-glow button-rounded button-royal' (click)=newChannel()>Add</button></td>
+            <td></td>
           </tr>
         </table>
-        <label>Channel Video</label> +
-        <table class="table table-hover">
+
+        <!-- Channel Video -->
+        <div class="title_channel" (click)="hideVideo()">
+          <div class="label">Channel Video</div>
+          <div class="hide-mod" *ngIf="hideVi === true">+</div>
+          <div class="hide-mod" *ngIf="hideVi === false">-</div>
+          </div>
+        <table class="table table-hover" *ngIf="hideVi !== true">
           <thead>
-            <td>Name</td> <td> description </td> <td>private</td>
+            <td>Name</td> <td> description </td> <td>private</td><td></td><td></td>
           </thead>
           <tr *ngFor="let channelV of channelsVideo" id="{{'channel' + channelV._idChannel}}"
         (click)="channelClick(channelT._idChannel)">
-            <td>{{channelV.channelName}}</td>
-            <td>{{channelV.description}}</td>
+            <td><input name="channelName" type="text" class="form-control name" [(ngModel)]="channelV.channelName" [ngModelOptions]="{standalone: true}" /></td>
+            <td><input type="text" class="form-control description" [(ngModel)]="channelV.description" [ngModelOptions]="{standalone: true}"/></td>
             <td><input type="checkbox" checked data-toggle="toggle"></td>
+            <td><button class='button button-glow button-rounded button-royal' (click)=modifyChannel(channelV._idChannel)>Modify</button></td>
+            <td><button class='button button-glow button-rounded button-caution' (click)=deleteChannel(channelV._idChannel)>Del</button></td>
+          </tr>
+          <tr>
+            <td><input name="channelName" type="text" class="form-control name" [(ngModel)]="newChannelVi.channelName" [ngModelOptions]="{standalone: true}" /></td>
+            <td><input type="text" class="form-control description" [(ngModel)]="newChannelVi.description" [ngModelOptions]="{standalone: true}"/></td>
+            <td><input type="checkbox" data-toggle="toggle"></td>
+            <td><button class='button button-glow button-rounded button-royal' (click)=newChannel()>Add</button></td>
+            <td></td>
           </tr>
         </table>
-        <br /><br />
-        <div *ngIf="currentChannel != null">
-          <input type="Text" name="channelName" class="form-control" [(ngModel)]="currentChannel.channelName"/>
-          <button class='button button-glow button-rounded button-royal'>Submit</button>
-        </div>
       </form>
     </div>
 
