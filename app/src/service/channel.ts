@@ -10,7 +10,7 @@ export class ChannelService {
 
     constructor(private http: Http) { }
 
-    getChannel(token){
+    getChannel(token) {
         console.log(localStorage.getItem('Stack'));
         let headers = new Headers({
             'Authorization': 'bearer ' + token,
@@ -23,7 +23,7 @@ export class ChannelService {
             .catch(this.handleError);
     }
 
-    newChannel(token, channel:Channel) {
+    newChannel(token, channel: Channel) {
 
         let formatChannel = this.formatChannel(channel);
         let headers = new Headers({
@@ -31,7 +31,7 @@ export class ChannelService {
             'Content-Type': 'application/json'
         });
         return this.http
-            .post(`${'https://' + localStorage.getItem('Stack') + '/channel/new'}`, JSON.stringify(formatChannel), { headers: headers })
+            .post(`${'https://' + localStorage.getItem('Stack') + '/channel'}`, JSON.stringify(formatChannel), { headers: headers })
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);
@@ -50,7 +50,7 @@ export class ChannelService {
             .catch(this.handleError);
     }
 
-    deleteChannel(token, channel:Channel) {
+    deleteChannel(token, channel: Channel) {
         let headers = new Headers({
             'Authorization': 'bearer ' + token,
             'Content-Type': 'application/json'
@@ -62,13 +62,12 @@ export class ChannelService {
             .catch(this.handleError);
     }
 
-    formatChannel(channel:Channel) {
+    formatChannel(channel: Channel) {
        return {
             description: channel.description,
             type: channel.type,
             name: channel.channelName,
-            id: channel._idChannel
-        }
+        };
     }
 
     private handleError(error: any) {

@@ -4,6 +4,7 @@ import { Organisation } from '../../model/organisation';
 import { Channel } from '../../model/channel';
 import { Message } from '../../model/message';
 import { User } from '../../model/user';
+import { Role } from '../../model/role';
 
 import { OrganisationService } from '../../service/organisation';
 import { ChannelService } from '../../service/channel';
@@ -11,13 +12,14 @@ import { MessageService } from '../../service/message';
 import { UserService } from '../../service/user';
 import { LocalOrganisationService } from '../../service/localOrganisationService';
 import { Stack } from '../../service/external/stack';
+import { RoleService } from '../../service/role';
 
 
 @Component({
   selector: 'my-settings',
   template: require('./settings.component.html'),
   styles: [require('./settings.component.scss')],
-  providers: [OrganisationService, ChannelService, MessageService, UserService, LocalOrganisationService, Stack]
+  providers: [OrganisationService, ChannelService, MessageService, UserService, LocalOrganisationService, Stack, RoleService]
 })
 export class SettingsComponent {
 
@@ -25,7 +27,8 @@ export class SettingsComponent {
   currentUser: User;
   private token;
   private users: User[] = [];
-  private currentOrganisation;
+  private currentOrganisation: Organisation;
+private roles: Role[] = [];
 
   private channels: Channel[] = [];
   private channelsText: Channel[] = [];
@@ -48,7 +51,8 @@ export class SettingsComponent {
     private _message: MessageService,
     private _user: UserService,
     private _localOrganisation: LocalOrganisationService,
-    private _stack: Stack
+    private _stack: Stack,
+    private _role: RoleService
   ) {
 
     this.nav = localStorage.getItem('settingsNav');
@@ -62,10 +66,12 @@ export class SettingsComponent {
     }
     this.setUserList();
     this.setChannelsList();
+    this.setRolesList();
+    console.log(this.roles);
   }
 
   profilClick() {
-    this.nav = 'profil'
+    this.nav = 'profil';
     localStorage.setItem('settingsNav', 'profil');
   }
 
@@ -120,6 +126,16 @@ export class SettingsComponent {
       });
     }
 
+    setRolesList() {
+      let requestRole = this._role.getAllRole(this.token);
+      requestRole.then((data) => {
+        for (let d of data) {
+          this.roles.push(new Role(d.id, d.name, d.can_use_private, d.can_moderate, d.can_archive, d.can_invite, d.can_manage, d.can_manage_user));
+        }
+        console.log(this.roles);
+      });
+    }
+
   sortChannelType() {
     for (let c of this.channels){
       if (c.type === 'text') {
@@ -136,7 +152,7 @@ export class SettingsComponent {
 
   oneChannelClick(id ) {
     for (let c of this.channels) {
-      if( c._idChannel === id) {
+      if ( c._idChannel === id) {
         this.currentChannel = c;
       }
     }
@@ -144,18 +160,18 @@ export class SettingsComponent {
 
   // Channel
   newChannel() {
-    if(this.newChannelT.channelName !== null &&  this.newChannelT.description !== null) {
+    if (this.newChannelT.channelName !== null &&  this.newChannelT.description !== null) {
       this.newChannelT.type = 'text';
       this._channel.newChannel(this.token, this.newChannelT);
-    }else{
-      if(this.newChannelV.channelName !== null &&  this.newChannelV.description !== null) {
+    }else {
+      if (this.newChannelV.channelName !== null &&  this.newChannelV.description !== null) {
         this.newChannelV.type = 'voice';
         this._channel.newChannel(this.token, this.newChannelV);
-      }else{
-        if(this.newChannelVi.channelName !== null &&  this.newChannelVi.description !== null) {
+      }else {
+        if (this.newChannelVi.channelName !== null &&  this.newChannelVi.description !== null) {
           this.newChannelT.type = 'video';
           this._channel.newChannel(this.token, this.newChannelVi);
-        }else{
+        }else {
 
         }
       }
@@ -173,12 +189,12 @@ export class SettingsComponent {
   hideVideo() {
     if (this.hideVi === false) { this.hideVi = true; } else { this.hideVi = false; }
   }
-  
-  modifyChannel(channel:Channel) {
+
+  modifyChannel(channel: Channel) {
     this._channel.updateChannel(this.token, channel);
   }
 
-  deleteChannel(channel:Channel) {
+  deleteChannel(channel: Channel) {
     this._channel.deleteChannel(this.token, channel);
   }
 }

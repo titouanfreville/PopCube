@@ -25,9 +25,6 @@
             <input type="password" name="password" class="form-control" />
           </div>
         </div>
-        <div id="group">
-          list of groups
-        </div>
         <button class='button button-glow button-rounded button-royal'>Submit</button>
       </form>
     </div>
@@ -35,13 +32,20 @@
     <div id="organisation" *ngIf="nav === 'organisation'">
       <form>
         <div id="organisationInformation">
-          <input type="text" name="email" placeholder="organisation name" class="form-control" />
-          <textarea name="description" placeholder="description of organisation" class="form-control"> </textarea>
+          <input type="text" name="orgName" class="form-control" [(ngModel)]="currentOrganisation.organisationName" [ngModelOptions]="{standalone: true}" />
+          <textarea name="orgDescription" class="form-control" [(ngModel)]="currentOrganisation.description" [ngModelOptions]="{standalone: true}"> </textarea>
           <label>private</label>
-          <input type="checkbox" checked data-toggle="toggle">
+          <input type="checkbox" [checked]="currentOrganisation.private" data-toggle="toggle">
         </div>
         <div id="members">
-          All members
+          <table class="table table-hover channel-list">
+            <thead>
+                <td>nickname</td><td>firstName</td><td>lastName</td><td>Group</td>
+            </thead>
+            <tr *ngFor="let user of users">
+              <td>{{user.nickName}}</td><td>{{user.firstName}}</td><td>{{user.lastName}}</td><td>user.group</td>
+            </tr>
+          </table>
         </div>
         <button class='button button-glow button-rounded button-royal'>Submit</button>
       </form>
@@ -63,7 +67,7 @@
         (click)="oneChannelClick(channelT._idChannel)">
             <td><input name="channelName" type="text" class="form-control name" [(ngModel)]="channelT.channelName" [ngModelOptions]="{standalone: true}" /></td>
             <td><input type="text" class="form-control description" [(ngModel)]="channelT.description" [ngModelOptions]="{standalone: true}"/></td>
-            <td><input type="checkbox" checked data-toggle="toggle"></td>
+            <td><input type="checkbox" [checked]="channelT.private" data-toggle="toggle"></td>
             <td><button class='button button-glow button-rounded button-royal' (click)=modifyChannel(channelT)>Modify</button></td>
             <td><button class='button button-glow button-rounded button-caution' (click)=deleteChannel(channelT)>Del</button></td>
           </tr>
@@ -90,7 +94,7 @@
         (click)="channelClick(channelT._idChannel)">
             <td><input name="channelName" type="text" class="form-control name" [(ngModel)]="channelV.channelName" [ngModelOptions]="{standalone: true}" /></td>
             <td><input type="text" class="form-control description" [(ngModel)]="channelV.description" [ngModelOptions]="{standalone: true}"/></td>
-            <td><input type="checkbox" checked data-toggle="toggle"></td>
+            <td><input type="checkbox" [checked]="channelV.private" data-toggle="toggle"></td>
             <td><button class='button button-glow button-rounded button-royal' (click)=modifyChannel(channelV)>Modify</button></td>
             <td><button class='button button-glow button-rounded button-caution' (click)=deleteChannel(channelV)>Del</button></td>
           </tr>
@@ -117,7 +121,7 @@
         (click)="channelClick(channelT._idChannel)">
             <td><input name="channelName" type="text" class="form-control name" [(ngModel)]="channelV.channelName" [ngModelOptions]="{standalone: true}" /></td>
             <td><input type="text" class="form-control description" [(ngModel)]="channelV.description" [ngModelOptions]="{standalone: true}"/></td>
-            <td><input type="checkbox" checked data-toggle="toggle"></td>
+            <td><input type="checkbox" [checked]="channelV.private" data-toggle="toggle"></td>
             <td><button class='button button-glow button-rounded button-royal' (click)=modifyChannel(channelV._idChannel)>Modify</button></td>
             <td><button class='button button-glow button-rounded button-caution' (click)=deleteChannel(channelV._idChannel)>Del</button></td>
           </tr>
@@ -141,7 +145,19 @@
 
   <div id="right" *ngIf="nav === 'right'">
       <form>
-        <br /><br />
+        <table class="table table-hover channel-list">
+            <thead>
+                <td>name</td><td>invite</td><td>manage</td><td>manage user</td><td>moderate</td><td>use private</td>
+            </thead>
+            <tr *ngFor="let role of roles">
+              <td><input name="rolename" type="text" class="form-control" [(ngModel)]="role.name" [ngModelOptions]="{standalone: true}" /></td>
+              <td><input type="checkbox" data-toggle="toggle" [checked]="role.can_invite"></td>
+              <td><input type="checkbox" data-toggle="toggle" [checked]="role.can_manage"></td>
+              <td><input type="checkbox" data-toggle="toggle" [checked]="role.can_user_manage"></td>
+              <td><input type="checkbox" data-toggle="toggle" [checked]="role.can_moderate"></td>
+              <td><input type="checkbox" data-toggle="toggle" [checked]="role.can_use_private"></td>
+            </tr>
+          </table>
         <button class='button button-glow button-rounded button-royal'>Submit</button>
       </form>
     </div>

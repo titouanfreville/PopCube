@@ -32,7 +32,7 @@
           <img *ngIf="channelV.status === ''" src="img/settings-unfocus.svg" class="img-set" />
         </div>
         <p class='title'>MEMBERS <span class="add-channel"></span></p>
-        <div *ngFor="let user of users" id="userlist" class="channel">
+        <div *ngFor="let user of users" id="userlist" class="channel" (click)="userClick(user._idUser)">
           <label>{{user.userName}}</label>
         </div>
         <div id="currentUser" class="bottom" *ngIf='currentUser != null'>

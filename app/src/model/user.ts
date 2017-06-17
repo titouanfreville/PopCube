@@ -15,6 +15,7 @@ export class User {
     nickName: string;
     firstName: string;
     lastName: string;
+
     constructor(idUser, webId, userName, email, password, updateAt, lastPasswordUpdate, locale, idRole, firstName, lastName, nickName, avatar) {
         this._idUser = idUser;
         this.webId = webId;
