@@ -56,7 +56,7 @@ export class ChannelService {
             'Content-Type': 'application/json'
         });
         return this.http
-            .delete(`${'https://' + localStorage.getItem('Stack') + '/channel/' + channel._idChannel.toString()}`, { headers: headers })
+            .delete(`${'https://' + localStorage.getItem('Stack') + '/channel/' + channel._idChannel}`, { headers: headers })
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);
@@ -64,6 +64,7 @@ export class ChannelService {
 
     formatChannel(channel: Channel) {
        return {
+            id: channel._idChannel,
             description: channel.description,
             type: channel.type,
             name: channel.channelName,

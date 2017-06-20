@@ -38,6 +38,22 @@
     margin-left: auto;
   }
 
+  #profil {
+    margin-top: 50px;
+  }
+
+  #organisation {
+    margin-top: 50px;
+  }
+
+  #client {
+    margin-top: 50px;
+  }
+
+  #right {
+    margin-top: 50px;
+  }
+
   #channel {
     margin-top: 20px;
   }
@@ -86,3 +102,19 @@
     width: 150px;
   }
 }
+
+.cb-center {
+  text-align: center;
+}
+
+.avatarDiv{
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+  }

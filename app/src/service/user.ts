@@ -38,7 +38,6 @@ export class UserService {
             password: user.password,
             username: user.userName,
         };
-        console.log(JSON.stringify(formatUser));
         return this.http
             .post(`${'https://' + localStorage.getItem('Stack') + '/publicuser/new'}`, JSON.stringify(formatUser), {headers: headers})
             .toPromise()
@@ -77,7 +76,31 @@ export class UserService {
     }
 
     public formatUser(user): User {
-        return new User(user.id, user.web_id, user.username, user.email, user.password, user.last_activity_at, user.last_password_update, 'fr', user.id_role, user.first_name, user.last_name, user.nickname, user.avartar);
+        return new User(user.id, user.web_id, user.username, user.email, user.password, user.last_activity_at, user.last_password_update, 'fr', user.id_role, user.first_name, user.last_name, user.nickname, user.avatar);
+    }
+
+    public updateUser(token, user: User) {
+
+        let formatUser = {
+            avatar: user.avatar,
+            deleted: false,
+            email: user.email,
+            first_name: user.firstName,
+            id_role: 1,
+            last_name: user.lastName,
+            nickname: user.nickName,
+            password: user.password,
+            username: user.userName,
+        };
+        let headers = new Headers({
+            'Authorization': 'bearer ' + token,
+            'Content-Type': 'application/json'
+        });
+        return this.http
+            .put(`${'https://' + localStorage.getItem('Stack') + '/user/' + user._idUser}`, JSON.stringify(formatUser), {headers: headers})
+            .toPromise()
+            .then(response => response.json())
+            .catch(this.handleError);
     }
 
     private handleError(error: any) {

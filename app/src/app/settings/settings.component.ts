@@ -28,7 +28,7 @@ export class SettingsComponent {
   private token;
   private users: User[] = [];
   private currentOrganisation: Organisation;
-private roles: Role[] = [];
+  private roles: Role[] = [];
 
   private channels: Channel[] = [];
   private channelsText: Channel[] = [];
@@ -44,6 +44,23 @@ private roles: Role[] = [];
   private hideT: Boolean = true;
   private hideV: Boolean = true;
   private hideVi: Boolean = true;
+  private hAvatar: Boolean = true;
+
+  private load = null;
+
+  private port = "80";
+
+  private avatarList: String[] = [
+    "boy.svg",
+    "boy-1.svg",
+    "girl.svg",
+    "girl-1.svg",
+    "default.svg",
+    "man-1.svg",
+    "man-2.svg",
+    "man-3.svg",
+    "man-4.svg"
+  ];
 
   constructor(
     private _organisation: OrganisationService,
@@ -67,7 +84,6 @@ private roles: Role[] = [];
     this.setUserList();
     this.setChannelsList();
     this.setRolesList();
-    console.log(this.roles);
   }
 
   profilClick() {
@@ -108,23 +124,29 @@ private roles: Role[] = [];
                     this.currentUser = u;
                   }
           }
-        }).catch((ex) => {
-        console.error('Error fetching users', ex);
-        });
+          this.load = 1;
+      }).catch((ex) => {
+      console.error('Error fetching users', ex);
+      });
   }
 
   setChannelsList() {
-        // Channels
-        let requestChannel = this._channel.getChannel(this.token);
-        requestChannel.then((data) => {
-          for (let d of data) {
-            this.channels.push(new Channel(d.id, d.name, d.type, d.description));
-          }
-          this.sortChannelType();
-        }).catch((ex) => {
-        console.error('Error fetching channels', ex);
-      });
-    }
+    this.channels = [];
+    this.channelsText = [];
+    this.channelsVideo = [];
+    this.channelsVoice = [];
+
+    // Channels
+    let requestChannel = this._channel.getChannel(this.token);
+      requestChannel.then((data) => {
+        for (let d of data) {
+          this.channels.push(new Channel(d.id, d.name, d.type, d.description));
+        }
+        this.sortChannelType();
+    }).catch((ex) => {
+    console.error('Error fetching channels', ex);
+    });
+  }
 
     setRolesList() {
       let requestRole = this._role.getAllRole(this.token);
@@ -132,7 +154,6 @@ private roles: Role[] = [];
         for (let d of data) {
           this.roles.push(new Role(d.id, d.name, d.can_use_private, d.can_moderate, d.can_archive, d.can_invite, d.can_manage, d.can_manage_user));
         }
-        console.log(this.roles);
       });
     }
 
@@ -176,6 +197,7 @@ private roles: Role[] = [];
         }
       }
     }
+    this.setChannelsList();
   }
 
   hideText() {
@@ -190,11 +212,23 @@ private roles: Role[] = [];
     if (this.hideVi === false) { this.hideVi = true; } else { this.hideVi = false; }
   }
 
+  hideAvatar() {
+    if (this.hAvatar === false) { this.hAvatar = true; } else { this.hAvatar = false; }
+  }
+
   modifyChannel(channel: Channel) {
     this._channel.updateChannel(this.token, channel);
   }
 
   deleteChannel(channel: Channel) {
     this._channel.deleteChannel(this.token, channel);
+  }
+
+  setAvatar(avatar) {
+    this.currentUser.avatar = avatar;
+  }
+
+  updateUser(user: User) {
+    this._user.updateUser(this.token, user);
   }
 }

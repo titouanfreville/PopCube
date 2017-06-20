@@ -64,11 +64,11 @@
       <div *ngFor="let msg of messages" class="message">
         <div id="userAvatarMsg" class="avatar">
           <!-- {{msg.creator.avatar}} -->
-          <img src="img/avatar/boy.svg" />
+          <img src="img/avatar/{{msg.creator.avatar}}" />
         </div>
         <div id="UserContent">
           <div id="userMsg" class='user'>
-            {{msg.creator.userName}} {{ msg.date * 1000 | date }}
+            {{msg.creator.nickName}} {{ msg.date * 1000 | date }}
           </div>
           <div id="contentMsg" class='content'>
             <p>{{msg.content}}</p>

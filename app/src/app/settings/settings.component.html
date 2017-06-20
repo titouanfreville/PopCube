@@ -1,4 +1,4 @@
-<div id="settingPage">
+<div id="settingPage" *ngIf='load === 1'>
   <div id="navigation">
     <ul>
       <li class='' [routerLink]="['/organisation']" >go back</li>
@@ -13,19 +13,30 @@
     <div id="profil" *ngIf="nav === 'profil'">
       <form>
         <div id="mainProfil">
-          <div id="avatar">
-            <img src="" class="avatar" />
-            <a>Change your avatar</a>
+          <div id="currentAvatar">
+            <img src="img/avatar/{{currentUser.avatar}}" class="avatar" />
           </div>
+            <label (click)='hideAvatar()'>Change avatar</label>
+            <div class="avatarList" *ngIf='hAvatar === false'>
+              <span *ngFor='let avatar of avatarList'>
+                <img src="img/avatar/{{avatar}}" class="avatar" (click)='setAvatar(avatar)'/>
+              </span>
+            </div>
+          <br />
           <div id="userInformation">
             <input type="text" name="nickname" [(ngModel)]="currentUser.nickName" class="form-control" />
+            <br />
             <input type="text" name="name" [(ngModel)]="currentUser.firstName" class="form-control" disabled />
+            <br />
             <input type="text" name="lastname" [(ngModel)]="currentUser.lastName" class="form-control" disabled />
+            <br />
             <input type="email" name="email" [(ngModel)]="currentUser.email" class="form-control" />
+            <br />
             <input type="password" name="password" class="form-control" />
+            <br />
           </div>
         </div>
-        <button class='button button-glow button-rounded button-royal'>Submit</button>
+        <button class='button button-glow button-rounded button-royal' (click)="updateUser(currentUser)">Submit</button>
       </form>
     </div>
 
@@ -33,9 +44,11 @@
       <form>
         <div id="organisationInformation">
           <input type="text" name="orgName" class="form-control" [(ngModel)]="currentOrganisation.organisationName" [ngModelOptions]="{standalone: true}" />
+          <br />
           <textarea name="orgDescription" class="form-control" [(ngModel)]="currentOrganisation.description" [ngModelOptions]="{standalone: true}"> </textarea>
-          <label>private</label>
-          <input type="checkbox" [checked]="currentOrganisation.private" data-toggle="toggle">
+          <br />
+          <p>Private : <input type="checkbox" [checked]="currentOrganisation.private" data-toggle="toggle"></p>
+          <br />
         </div>
         <div id="members">
           <table class="table table-hover channel-list">
@@ -43,7 +56,14 @@
                 <td>nickname</td><td>firstName</td><td>lastName</td><td>Group</td>
             </thead>
             <tr *ngFor="let user of users">
-              <td>{{user.nickName}}</td><td>{{user.firstName}}</td><td>{{user.lastName}}</td><td>user.group</td>
+              <td>{{user.nickName}}</td>
+              <td>{{user.firstName}}</td>
+              <td>{{user.lastName}}</td>
+              <td>
+                <select data-ng-selected="user.idRole" class="form-control">
+                  <option *ngFor='let role of roles' value="{{role.id}}">{{role.name}}</option>
+                </select>
+              </td>
             </tr>
           </table>
         </div>
@@ -67,14 +87,14 @@
         (click)="oneChannelClick(channelT._idChannel)">
             <td><input name="channelName" type="text" class="form-control name" [(ngModel)]="channelT.channelName" [ngModelOptions]="{standalone: true}" /></td>
             <td><input type="text" class="form-control description" [(ngModel)]="channelT.description" [ngModelOptions]="{standalone: true}"/></td>
-            <td><input type="checkbox" [checked]="channelT.private" data-toggle="toggle"></td>
+            <td class='cb-center'><input type="checkbox" [checked]="channelT.private" data-toggle="toggle" ></td>
             <td><button class='button button-glow button-rounded button-royal' (click)=modifyChannel(channelT)>Modify</button></td>
             <td><button class='button button-glow button-rounded button-caution' (click)=deleteChannel(channelT)>Del</button></td>
           </tr>
           <tr>
             <td><input name="channelName" type="text" class="form-control name" [(ngModel)]="newChannelT.channelName" [ngModelOptions]="{standalone: true}" /></td>
             <td><input type="text" class="form-control description" [(ngModel)]="newChannelT.description" [ngModelOptions]="{standalone: true}"/></td>
-            <td><input type="checkbox" data-toggle="toggle"></td>
+            <td class='cb-center'><input type="checkbox" data-toggle="toggle" [checked]="newChannelT.private"></td>
             <td><button class='button button-glow button-rounded button-royal' (click)=newChannel()>Add</button></td>
             <td></td>
           </tr>
@@ -94,14 +114,14 @@
         (click)="channelClick(channelT._idChannel)">
             <td><input name="channelName" type="text" class="form-control name" [(ngModel)]="channelV.channelName" [ngModelOptions]="{standalone: true}" /></td>
             <td><input type="text" class="form-control description" [(ngModel)]="channelV.description" [ngModelOptions]="{standalone: true}"/></td>
-            <td><input type="checkbox" [checked]="channelV.private" data-toggle="toggle"></td>
+            <td class='cb-center'><input type="checkbox" [checked]="channelV.private" data-toggle="toggle"></td>
             <td><button class='button button-glow button-rounded button-royal' (click)=modifyChannel(channelV)>Modify</button></td>
             <td><button class='button button-glow button-rounded button-caution' (click)=deleteChannel(channelV)>Del</button></td>
           </tr>
           <tr>
             <td><input name="channelName" type="text" class="form-control name" [(ngModel)]="newChannelV.channelName" [ngModelOptions]="{standalone: true}" /></td>
             <td><input type="text" class="form-control description" [(ngModel)]="newChannelV.description" [ngModelOptions]="{standalone: true}"/></td>
-            <td><input type="checkbox" data-toggle="toggle"></td>
+            <td class='cb-center'><input type="checkbox" data-toggle="toggle" [checked]="newChannelV.private"></td>
             <td><button class='button button-glow button-rounded button-royal' (click)=newChannel()>Add</button></td>
             <td></td>
           </tr>
@@ -121,14 +141,14 @@
         (click)="channelClick(channelT._idChannel)">
             <td><input name="channelName" type="text" class="form-control name" [(ngModel)]="channelV.channelName" [ngModelOptions]="{standalone: true}" /></td>
             <td><input type="text" class="form-control description" [(ngModel)]="channelV.description" [ngModelOptions]="{standalone: true}"/></td>
-            <td><input type="checkbox" [checked]="channelV.private" data-toggle="toggle"></td>
+            <td class='cb-center' ><input type="checkbox" [checked]="channelV.private" data-toggle="toggle"></td>
             <td><button class='button button-glow button-rounded button-royal' (click)=modifyChannel(channelV._idChannel)>Modify</button></td>
             <td><button class='button button-glow button-rounded button-caution' (click)=deleteChannel(channelV._idChannel)>Del</button></td>
           </tr>
           <tr>
             <td><input name="channelName" type="text" class="form-control name" [(ngModel)]="newChannelVi.channelName" [ngModelOptions]="{standalone: true}" /></td>
             <td><input type="text" class="form-control description" [(ngModel)]="newChannelVi.description" [ngModelOptions]="{standalone: true}"/></td>
-            <td><input type="checkbox" data-toggle="toggle"></td>
+            <td class='cb-center'><input type="checkbox" data-toggle="toggle" [checked]="newChannelVi.private"></td>
             <td><button class='button button-glow button-rounded button-royal' (click)=newChannel()>Add</button></td>
             <td></td>
           </tr>
@@ -138,6 +158,13 @@
 
     <div id="client" *ngIf="nav === 'client'">
       <form>
+        <label>Change port :</label>
+        <input type="text" class='form-control' style="width: 200px" [ngModel]="port" [ngModelOptions]="{standalone: true}">
+        <br />
+        <label>Change application style</label>
+        <select class="form-control">
+          <option>comming soon</option>
+        </select>
         <br /><br />
         <button class='button button-glow button-rounded button-royal'>Submit</button>
       </form>
@@ -150,12 +177,12 @@
                 <td>name</td><td>invite</td><td>manage</td><td>manage user</td><td>moderate</td><td>use private</td>
             </thead>
             <tr *ngFor="let role of roles">
-              <td><input name="rolename" type="text" class="form-control" [(ngModel)]="role.name" [ngModelOptions]="{standalone: true}" /></td>
-              <td><input type="checkbox" data-toggle="toggle" [checked]="role.can_invite"></td>
-              <td><input type="checkbox" data-toggle="toggle" [checked]="role.can_manage"></td>
-              <td><input type="checkbox" data-toggle="toggle" [checked]="role.can_user_manage"></td>
-              <td><input type="checkbox" data-toggle="toggle" [checked]="role.can_moderate"></td>
-              <td><input type="checkbox" data-toggle="toggle" [checked]="role.can_use_private"></td>
+              <td class='cb-center'><input name="rolename" type="text" class="form-control" [(ngModel)]="role.name" [ngModelOptions]="{standalone: true}" /></td>
+              <td class='cb-center'><input type="checkbox" data-toggle="toggle" [checked]="role.can_invite"></td>
+              <td class='cb-center'><input type="checkbox" data-toggle="toggle" [checked]="role.can_manage"></td>
+              <td class='cb-center'><input type="checkbox" data-toggle="toggle" [checked]="role.can_user_manage"></td>
+              <td class='cb-center'><input type="checkbox" data-toggle="toggle" [checked]="role.can_moderate"></td>
+              <td class='cb-center'><input type="checkbox" data-toggle="toggle" [checked]="role.can_use_private"></td>
             </tr>
           </table>
         <button class='button button-glow button-rounded button-royal'>Submit</button>
