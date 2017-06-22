@@ -86,7 +86,7 @@ export class UserService {
             deleted: false,
             email: user.email,
             first_name: user.firstName,
-            id_role: 1,
+            id_role: user.idRole,
             last_name: user.lastName,
             nickname: user.nickName,
             password: user.password,

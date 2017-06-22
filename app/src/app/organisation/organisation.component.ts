@@ -4,6 +4,7 @@ import { Organisation } from '../../model/organisation';
 import { Channel } from '../../model/channel';
 import { Message } from '../../model/message';
 import { User } from '../../model/user';
+import { Role } from '../../model/role';
 
 import { Router } from '@angular/router';
 
@@ -12,6 +13,7 @@ import { ChannelService } from '../../service/channel';
 import { MessageService } from '../../service/message';
 import { UserService } from '../../service/user';
 import { LocalOrganisationService } from '../../service/localOrganisationService';
+import { RoleService } from '../../service/role';
 
 import { Stack } from '../../service/external/stack';
 
@@ -19,7 +21,7 @@ import { Stack } from '../../service/external/stack';
   selector: 'my-organisation',
   template: require('./organisation.component.html'),
   styles: [require('./organisation.component.scss')],
-  providers: [OrganisationService, ChannelService, MessageService, UserService, LocalOrganisationService, Stack]
+  providers: [OrganisationService, ChannelService, MessageService, UserService, LocalOrganisationService, Stack, RoleService]
 })
 export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
@@ -43,6 +45,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
 
   currentOrganisation: Organisation;
   currentChannel: Channel;
+  private currentRole: Role;
   content: string;
 
   channelsText: Channel[] = [];
@@ -65,7 +68,8 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     private _user: UserService,
     private _localOrganisation: LocalOrganisationService,
     private _stack: Stack,
-    private _router: Router
+    private _router: Router,
+    private _role: RoleService
     ) {
 
     this.messageSvc = this._message;
@@ -114,6 +118,17 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
         } catch (err) { }
     }
 
+    setRolesList() {
+      let requestRole = this._role.getAllRole(this.token);
+      requestRole.then((data) => {
+        for (let d of data) {
+          if (this.currentUser.idRole === d.id) {
+            this.currentRole = d;
+          }
+        }
+      });
+    }
+
   organisationClick(organisationName) {
     // Set to empty all the global for an organisation
     this.channels = [];
@@ -121,6 +136,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     this.channelsVoice = [];
     this.channelsVideo = [];
     this.users = [];
+    this.currentRole = [];
 
     // Set the settings to call the API of this organisation
     this.setToken(organisationName);
@@ -299,6 +315,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
                   }
             }
           }
+          this.setRolesList();
         }).catch((ex) => {
         console.error('Error fetching users', ex);
       });

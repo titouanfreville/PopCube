@@ -57,4 +57,9 @@ export class AppComponent {
     let window = remote.getCurrentWindow();
     window.close();
   }
+
+  navigateToSettings() {
+    localStorage.setItem('settingsNav', 'profil');
+    this._router.navigate(['/settings']);
+  }
 }

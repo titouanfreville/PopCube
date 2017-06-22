@@ -35,8 +35,6 @@ export class SettingsComponent {
   private channelsVoice: Channel[] = [];
   private channelsVideo: Channel[] = [];
 
-  private currentChannel: Channel;
-
   private newChannelT: Channel = new Channel(null, null, null, null);
   private newChannelV: Channel = new Channel(null, null, null, null);
   private newChannelVi: Channel = new Channel(null, null, null, null);
@@ -46,9 +44,12 @@ export class SettingsComponent {
   private hideVi: Boolean = true;
   private hAvatar: Boolean = true;
 
-  private load = null;
+  private loadUser = null;
+  private loadRole = null;
 
   private port = "80";
+
+  private currentRole: Role;
 
   private avatarList: String[] = [
     "boy.svg",
@@ -82,8 +83,6 @@ export class SettingsComponent {
       }
     }
     this.setUserList();
-    this.setChannelsList();
-    this.setRolesList();
   }
 
   profilClick() {
@@ -124,7 +123,8 @@ export class SettingsComponent {
                     this.currentUser = u;
                   }
           }
-          this.load = 1;
+          this.setChannelsList();
+          this.loadUser = 1;
       }).catch((ex) => {
       console.error('Error fetching users', ex);
       });
@@ -143,6 +143,7 @@ export class SettingsComponent {
           this.channels.push(new Channel(d.id, d.name, d.type, d.description));
         }
         this.sortChannelType();
+        this.setRolesList();
     }).catch((ex) => {
     console.error('Error fetching channels', ex);
     });
@@ -154,6 +155,12 @@ export class SettingsComponent {
         for (let d of data) {
           this.roles.push(new Role(d.id, d.name, d.can_use_private, d.can_moderate, d.can_archive, d.can_invite, d.can_manage, d.can_manage_user));
         }
+        for (let role of this.roles) {
+          if (this.currentUser.idRole === role.id) {
+            this.currentRole = role;
+          }
+        }
+        this.loadRole = 1;
       });
     }
 
@@ -167,14 +174,6 @@ export class SettingsComponent {
       }
       if (c.type === 'video') {
         this.channelsVideo.push(c);
-      }
-    }
-  }
-
-  oneChannelClick(id ) {
-    for (let c of this.channels) {
-      if ( c._idChannel === id) {
-        this.currentChannel = c;
       }
     }
   }
@@ -229,6 +228,11 @@ export class SettingsComponent {
   }
 
   updateUser(user: User) {
+    this._user.updateUser(this.token, user);
+  }
+
+  updateRole(user: User, role) {
+    user.idRole = parseInt(role[3], 10);
     this._user.updateUser(this.token, user);
   }
 }
