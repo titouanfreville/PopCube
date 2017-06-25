@@ -53,6 +53,8 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
   isChannelLoad;
   isMessageLoad;
 
+  private externalPeer;
+
   storedInformationsTest: any[];
 
   // PeerJS
@@ -93,7 +95,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
        });
     }
 
-    this.peer = new Peer([this.currentUser.webId], {
+    this.peer = new Peer({
             config: {'iceServers': [
               { url: 'stun:stun.l.google.com:19302' },
               { url: 'turn:homeo@turn.bistri.com:80', credential: 'homeo' }
@@ -394,7 +396,9 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
   videoConnect() {
     let video = this.myVideo.nativeElement;
     let localvar = this.peer;
-    let fname = "3sn77n9uhpbspf4kyj8f9773cc";
+    let fname = this.externalPeer;
+
+    console.log(fname);
 
     let n = <any>navigator;
 

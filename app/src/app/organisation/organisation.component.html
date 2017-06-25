@@ -53,6 +53,7 @@
     <div id="video" *ngIf='currentChannel.type === "video"'>
         <video #myVideo style="width: 200px; height: 200px; display: inline-block;"></video>
         <video #myVideo5 style="width: 200px; height: 200px; display: inline-block;"></video>
+        <input type="text" class="form-control" [(ngModel)]="externalPeer" />
         <button class='button button-glow button-rounded button-royal' (click)="videoConnect()">Connect</button>
     </div>
     <!-- -->
