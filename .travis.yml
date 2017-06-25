@@ -1,28 +1,40 @@
 sudo: required
 dist: trusty
-language: node_js - "7.7.2"
+
+language: node_js
+  - "7.7.2"
+
+matrix:
+  include:
+    - os: linux
+      env: DEPLOY_FILE=Popcube-linux-x64.zip
+    - os: osx
+      env: DEPLOY_FILE=Popcube-darwin-x64.zip
 cache:
   directories:
-  - app/node_modules
+    - app/node_modules
+
 script:
-- npm install electron electron-packager -g
-- cd app; npm install; cd ..;
-- electron-packager app Popcube --platform=darwin --arch=x64 --icon=logo/app.ico --overwrite
-- electron-packager app Popcube --platform=linux --arch=x64 --icon=logo/app.ico --overwrite
-- zip -r Popcube-linux-x64.zip Popcube-linux-x64
-- zip -r Popcube-darwin-x64.zip Popcube-darwin-x64
-after_success:
-- if [ "$TRAVIS_BRANCH" == "master" ]; then fi
-- if [ "$TRAVIS_BRANCH" == "development" ]; then fi
+  - npm install electron electron-packager -g
+  - cd app; npm install; cd ..;
+  - if [ $TRAVIS_OS_NAME == "linux" ]; then
+        electron-packager app Popcube --platform=linux --arch=x64 --icon=logo/app.ico --overwrite;
+        zip -r Popcube-linux-x64.zip Popcube-linux-x64;
+    fi
+  - if [ $TRAVIS_OS_NAME == "osx" ]; then
+        electron-packager app Popcube --platform=darwin --arch=x64 --icon=logo/app.ico --overwrite;
+        zip -r Popcube-darwin-x64.zip Popcube-darwin-x64;
+    fi
+
 deploy:
   provider: releases
   api_key:
-    secure: lKLjNdNl9TtZWgOWXnNzgPIen+2RzgqGp3mQyg+ZzBFXnW+NNhmYAa49LxdAkm1IaksmiDvO/oiqz+AloIOPq3iggJ/0XMJgkvHfPVFp8lxNJj+VyfZRCGcWazJCYR+fmpwranCd2yPNF+mPfMBbIhn6h+ZMQMi+8bQMiEQvpp66yLck544d+fBCzqIpJNvN41TGJ4Smlh5kOdXEQen1ZKytXM1Hzk9Jj6TT9Q8aTI1erJRFPH7+qPMsnL7+kknqaMx2pOditgmnMXZh94hfOuyD/jVhnrlvx4mk38VPSeuy2SaDdvKyz9wpcSOb2DZ79WljkFxGpkX66ufyp5QXcELMbNQz4/hXoBBl4hAK85p6JKOKYbNr1bNiUNGxQ/avh0wkS0lgSPuBd0B9fSYkUdo+l8tnIGUCRpAI1wyZdbu1pKYrL8WLs72M5ABjNHQV0iNJkK8ebZVxgLLr05ow7DH+dPgz18zGPYkyCM1syF4BDXdUGqeL4N8Pz2od3wATfrMi90VifvcMdktrZFRVYDRdCw1khYpgdYJEnc85IGYPR3knx/ZbxCs1fHTTtk5TtcJBa3RaztbsDUBbbqkOafd+vXUikLFBLsz9u7aXRObMdNe6KUyz4c/dE60elxBdOxue3vOYlDhFOkPwdgD4bLWouBrE0IKH0tcPcXyBXeA=
+    secure: VtW1GUBqih7Bn0BC6RxUS1SB/3tC9xhiAPxnpcwTXxipOvFkPFv+amFo+QnEZbVbvSb4q7MEhxBGmN3GbT9MCiRQr22Ui4dH5QalwDQEfJwmk39tTqytynbhHE82Xh77p+DAY9l93bqG+F538HlUiYiiMVJW/xTT1oTXz9HEYvpyIIWJbRanOi01o1BkVpClJQGKKCOG+5ofHoNbegAjDtl+6hd0A/KnMey9qBhOBzkCQO7RqG6Ja3A454hvODeULut6mIFp+L8curblry8s2ECi2sFhgKUEAQM++P2qsp8hROm5Y6gg4uFezWqnf+iI44J2ofXHzKZ1dzD8qLRHL1Z53mTL9zpi+4O9le6lbQVGqXDqrD4nmBe7Xb/qdwNBLMERYeYXFVPKTGhWHrJYx2+cHCfm/dDP/FsDot5XycAGitbgYesBkhRaLcv7ZrTlESMaaTtGPLYpiqoP2SoYdADsv2NPY0PCRFAAP8GZf6Lysmiumy82cvh6lHTmp82d9VksddADWgYrwrXroOufnpqprr+FeOxEgSyKwbbUPQezXdBOjE6pnTC/swb8HaOET0eAIRXKJTPc5sPpHyogt16+uiaOc+1kCKyOfr123xLgxdS0NTIUIKgbiAM7rYAo+nOaLMDk2kX3EwIZc2zzXqXDYY1I2DOE2+/DgUeXjOg=
   file:
-    - "Popcube-darwin-x64.zip"
-    - "Popcube-linux-x64.zip"
+    - $DEPLOY_FILE
   skip_cleanup: true
   on:
     tags: true
+  
 notifications:
   slack: societyco:T1mHeYKrOtopvRjIZ68MqOQo
