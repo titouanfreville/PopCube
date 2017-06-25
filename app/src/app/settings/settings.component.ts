@@ -43,6 +43,10 @@ export class SettingsComponent {
   private hideV: Boolean = true;
   private hideVi: Boolean = true;
   private hAvatar: Boolean = true;
+  private hidePass: Boolean = true;
+
+  private password = null;
+  private passwordConfirm = null;
 
   private loadUser = null;
   private loadRole = null;
@@ -215,6 +219,10 @@ export class SettingsComponent {
     if (this.hAvatar === false) { this.hAvatar = true; } else { this.hAvatar = false; }
   }
 
+  hidePass() {
+    if (this.hidePass === false) { this.hidePass = true; } else { this.hidePass = false; }
+  }
+
   modifyChannel(channel: Channel) {
     this._channel.updateChannel(this.token, channel);
   }
@@ -228,6 +236,13 @@ export class SettingsComponent {
   }
 
   updateUser(user: User) {
+    if (this.password !== null) {
+      if (this.password === this.passwordConfirm) {
+        if (this.password.length > 7) {
+          user.password = this.password;
+        }
+      }
+    }
     this._user.updateUser(this.token, user);
   }
 

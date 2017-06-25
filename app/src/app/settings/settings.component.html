@@ -32,7 +32,13 @@
             <br />
             <input type="email" name="email" [(ngModel)]="currentUser.email" class="form-control" />
             <br />
-            <input type="password" name="password" class="form-control" />
+            <label (click)="hidePass()">Change password</label>
+            <br />
+            <div *ngIf='hidePass === false'>
+              <input type="password" name="password" class="form-control" [ngModel]="password" />
+              <br />
+              <input type="password" name="password" class="form-control" [ngModel]="passwordConfirm"/>
+            </div>
             <br />
           </div>
         </div>

@@ -52,10 +52,8 @@
     <!-- testing -->
     <div id="video" *ngIf='currentChannel.type === "video"'>
         <video #myVideo1 style="background-color: white; width: 200px; height: 200px; display: inline-block;"></video>
-        <video #myVideo2 style="background-color: white; width: 200px; height: 200px; display: inline-block;"></video>
-        <video #myVideo3 style="background-color: white; width: 200px; height: 200px; display: inline-block;"></video>
-        <video #myVideo4 style="background-color: white; width: 200px; height: 200px; display: inline-block;"></video>
         <video #myVideo5 style="background-color: white; width: 200px; height: 200px; display: inline-block;"></video>
+        <button class='button button-glow button-rounded button-royal' (click)="videoConnect()">Connect</button>
     </div>
     <!-- -->
 
@@ -68,7 +66,7 @@
         </div>
         <div id="UserContent">
           <div id="userMsg" class='user'>
-            {{msg.creator.nickName}} {{ msg.date * 1000 | date }}
+            {{msg.creator.nickName}} 25 Jun 15:18
           </div>
           <div id="contentMsg" class='content'>
             <p>{{msg.content}}</p>
