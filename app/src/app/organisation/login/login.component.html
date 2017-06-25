@@ -1,0 +1,14 @@
+<div class='main'>
+  <form class="form-group">
+    <p class='tips'>Login to this domain</p>
+    <input type="text" id="username" class="form-control" placeholder="Username" [(ngModel)]="loginVar.login" [ngModelOptions]="{standalone: true}" required>
+    <br />
+    <br />
+    <input type="password" id="password" class="form-control" placeholder="Password" [(ngModel)]="loginVar.password" [ngModelOptions]="{standalone: true}" required>
+    <br /><br />
+    <button type="submit" class='button button-glow button-rounded button-royal' (click)="login()">Login</button>
+    <br /><br />
+    <a [routerLink]="['/register']">Register</a>
+    <a [routerLink]="['/register']">Forgot password ?</a>
+  </form>
+</div> 

@@ -1,0 +1,52 @@
+version: "2"
+services:
+  # front:
+  #   ports:
+  #     - 8080:80
+  #     - 443:443
+  #   volumes:
+  #     - "./app/:/usr/share/nginx/html/app"
+  #     - "./docs/:/usr/share/nginx/html/docs"
+  # compass:
+  #   volumes:
+  #     - "./app/styles:/home/style"
+  goconvey:
+    build:
+      context: .
+      dockerfile: docker/goconvey.Dockerfile
+    env_file: .env
+    volumes:
+      - "./go/src/api:/go/src/api"
+      - "./go/src/datastores:/go/src/datastores"
+      - "./go/src/models:/go/src/models"
+      - "./go/src/utils:/go/src/utils"
+      - "./docs:/home/docs"
+      - "./coverage:/home/coverage"
+    ports:
+      - 8082:8080
+  back-test:
+    build:
+      context: .
+      dockerfile: docker/go_test.Dockerfile
+    env_file: .env
+    volumes:
+      - "./go/src/api:/go/src/api"
+      - "./go/src/datastores:/go/src/datastores"
+      - "./go/src/models:/go/src/models"
+      - "./go/src/utils:/go/src/utils"
+      - "./docs:/home/docs"
+      - "./coverage:/home/coverage"
+  golint:
+    build:
+      context: .
+      dockerfile: docker/golinter.Dockerfile
+    env_file: .env
+    volumes:
+      - "./go/src/api:/go/src/api"
+      - "./go/src/datastores:/go/src/datastores"
+      - "./go/src/models:/go/src/models"
+      - "./go/src/utils:/go/src/utils"
+  database:
+    env_file: .env
+    ports:
+      - 3306:3306

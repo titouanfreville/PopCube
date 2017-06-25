@@ -1,0 +1,14 @@
+version: "2"
+services:
+  front:
+    build:
+      context: .
+      dockerfile: docker/nginx_front.Dockerfile
+    ports:
+      - 80:80
+      - 443:443
+  database:
+    image: mongo:3.4.0
+    hostname: mongo
+  compass:
+    entrypoint: /bin/sh -c "exit 0"

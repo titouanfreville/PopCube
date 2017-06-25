@@ -1,0 +1,24 @@
+version: "2"
+services:
+  back:
+    build:
+      context: .
+      dockerfile:  docker/go_base.Dockerfile
+    env_file: .env
+    image: registry.le-corre.eu:5000/go:base
+  database:
+    image: mariadb:10.1.20
+    env_file: .env
+    hostname: database
+    volumes :
+      - ./database/:/docker-entrypoint-initdb.d/
+  # front:
+  #   build:
+  #     context: .
+  #     dockerfile: docker/nginx_front.Dockerfile
+  #   env_file: .env
+  # compass:
+  #   build:
+  #     context: .
+  #     dockerfile: docker/compass.Dockerfile
+  #   env_file: .env

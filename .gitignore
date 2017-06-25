@@ -92,6 +92,21 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
 bin
 pkg
-src
+go/src/github.com/*
+!go/src/github.com/titouanfreville
+golang.org
+gopkg.in
+sourcegraph.com
+
+# Workbench
+*.bak
+
+.env
+.env.old
+
+# Docs
+docs/*_documentation.html
+coverage/*

@@ -1,0 +1,85 @@
+<div id="mainPage">
+  <div id="navigation">
+    <div id="organisationNav" class='' *ngIf='isOrganisationLoad === true'>
+      <div *ngFor="let organisation of organisations" id="{{organisation.organisationName}}" class="{{'organisation ' + organisation.status}}"
+        (click)="organisationClick(organisation.organisationName)">
+        <div id="logo1">
+          {{organisation.organisationName}}
+        </div>
+      </div>
+      <a [routerLink]="['']"> <img src="img/plus.svg" class="add-organisation" /></a>
+    </div>
+    <div id="channelNav" *ngIf="currentOrganisation != null && isChannelLoad === true">
+      <p class='title'>CHANNEL TEXT <img src="img/plus-symbol.svg" class="add-channel" (click)='navigateToChannel()' *ngIf="currentRole.can_manage" /> </p>
+      <div *ngFor="let channelT of channelsText" id="{{'channel' + channelT._idChannel}}" class="{{'channel ' + channelT.status}}"
+        (click)="channelClick(channelT._idChannel)">
+          <label>{{channelT.channelName}}</label>
+          <img *ngIf="channelT.status === 'channelFocus' && currentRole.can_manage" src="img/settings.svg" class="img-set" (click)='navigateToChannel()' />
+          <img *ngIf="channelT.status === '' && currentRole.can_manage" src="img/settings-unfocus.svg" class="img-set" (click)='navigateToChannel()'/>
+        </div>
+      <p class='title'>CHANNEL VOICE <img src="img/plus-symbol.svg" class="add-channel" (click)='navigateToChannel()'/> </p>
+      <div *ngFor="let channelV of channelsVoice" id="{{'channel' + channelV._idChannel}}" class="{{'channel ' +channelV.status}}"
+        (click)="channelClick(channelV._idChannel)">
+          <label>{{channelV.channelName}}</label>
+          <img *ngIf="channelV.status === 'channelFocus' && currentRole.can_manage" src="img/settings.svg" class="img-set" (click)='navigateToChannel()' />
+          <img *ngIf="channelV.status === '' && currentRole.can_manage" src="img/settings-unfocus.svg" class="img-set" (click)='navigateToChannel()' />
+        </div>
+        <p class='title'>CHANNEL VIDEO <img src="img/plus-symbol.svg" class="add-channel" *ngIf="currentRole.can_manage" (click)='navigateToChannel()'/></p>
+      <div *ngFor="let channelV of channelsVideo" id="{{'channel' + channelV._idChannel}}" class="{{'channel ' +channelV.status}}"
+        (click)="channelClick(channelV._idChannel)">
+          <label>{{channelV.channelName}}</label>
+          <img *ngIf="channelV.status === 'channelFocus' && currentRole.can_manage" src="img/settings.svg" class="img-set" (click)='navigateToChannel()' />
+          <img *ngIf="channelV.status === '' && currentRole.can_manage" src="img/settings-unfocus.svg" class="img-set" (click)='navigateToChannel()' />
+        </div>
+        <p class='title'>MEMBERS <span class="add-channel"></span></p>
+        <div *ngFor="let user of users" id="userlist" class="channel" (click)="userClick(user._idUser)">
+          <label>{{user.userName}}</label>
+        </div>
+        <div id="currentUser" class="bottom" *ngIf='currentUser != null'>
+          <div id="nickname">
+            <label>{{currentUser.userName}}</label>
+          </div>
+          <div id="button-user">
+            <button class="btn micro"></button>
+            <button class=" btn audio"></button>
+            <button class="btn settings"></button>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div id="channelArea" *ngIf="currentChannel != null && isMessageLoad === true">
+
+    <!-- testing -->
+    <div id="video" *ngIf='currentChannel.type === "video"'>
+        <video #myVideo1 style="background-color: white; width: 200px; height: 200px; display: inline-block;"></video>
+        <video #myVideo2 style="background-color: white; width: 200px; height: 200px; display: inline-block;"></video>
+        <video #myVideo3 style="background-color: white; width: 200px; height: 200px; display: inline-block;"></video>
+        <video #myVideo4 style="background-color: white; width: 200px; height: 200px; display: inline-block;"></video>
+        <video #myVideo5 style="background-color: white; width: 200px; height: 200px; display: inline-block;"></video>
+    </div>
+    <!-- -->
+
+    <h3 id="channelTitle">#{{currentChannel.channelName}}</h3>
+    <div #message id="message">
+      <div *ngFor="let msg of messages" class="message">
+        <div id="userAvatarMsg" class="avatar">
+          <!-- {{msg.creator.avatar}} -->
+          <img src="img/avatar/{{msg.creator.avatar}}" />
+        </div>
+        <div id="UserContent">
+          <div id="userMsg" class='user'>
+            {{msg.creator.nickName}} {{ msg.date * 1000 | date }}
+          </div>
+          <div id="contentMsg" class='content'>
+            <p>{{msg.content}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="userMessage">
+      <input type="text" class="form-control" placeholder="Send a message" [(ngModel)]="content" (keyup.enter)="addMessage()">
+    </div>
+  </div>
+  <div id="lastFrame">
+  </div>
+</div>

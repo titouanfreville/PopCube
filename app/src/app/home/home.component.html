@@ -1,0 +1,19 @@
+<div class='main'>
+  <div>
+    <h1>A new way to communicate !</h1>
+    <p>Join the community to find the new fast way</p>
+  </div>
+<br />
+  <div>
+    <form class='form domainForm' #f="ngForm" >
+      <p class='tips'> Already have a domain ?</p>
+      <div *ngIf='errorMsg != null'>{{errorMsg}}</div>
+      <input type="text" name="domainName" class="form-control" placeholder="Domain" [(ngModel)]="organisation" required>
+      <button (click)="findOrganisation()" class='button button-glow button-rounded button-royal'>Find</button>
+      <button (click)="resetLocal()" class="button button-glow button-rounded button-royal">Reset</button>
+      <br /><br /><br />
+      <p class='tips'>If you want to create a new team let's start now !</p>
+      <a [routerLink]="['/newDomain']">Create Domain !</a>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+// styles in src/style directory are applied to the whole page
+
+@import 'var';
+
+html{
+    height: 100%;
+    min-width: 800px;
+    min-height: 600px;
+}
+
+body {
+    background: $grey1;
+    color: white;
+    margin: 0;
+    height: 100%;
+}
+
+a, a:hover {
+    color: white;
+    text-decoration-style: none;
+}
+
+// form
+.form-control {
+    height: 2.3em;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+
+}

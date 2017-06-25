@@ -1,0 +1,25 @@
+// component styles are encapsulated and only applied to their components
+$white: #FFF;
+
+$header: #40335A;
+
+$background: #262A2B;
+
+$greyFocus: #C9CDD1;
+$greyUnfocus: #4E5967;
+
+.main{
+  text-align: center;
+  padding-top: 20%;
+  display: flux;
+  justify-content: space-around;
+}
+
+.tips{
+  color: $greyUnfocus;
+}
+
+.form-control{
+  width: 200px;
+  display: inline-block;
+}

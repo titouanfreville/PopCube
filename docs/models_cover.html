@@ -1,0 +1,1573 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">models/avatar.go (84.0%)</option>
+				
+				<option value="file1">models/channels.go (81.8%)</option>
+				
+				<option value="file2">models/emojis.go (85.2%)</option>
+				
+				<option value="file3">models/folders.go (86.2%)</option>
+				
+				<option value="file4">models/member.go (100.0%)</option>
+				
+				<option value="file5">models/message.go (85.7%)</option>
+				
+				<option value="file6">models/organisation.go (90.0%)</option>
+				
+				<option value="file7">models/parameter.go (91.3%)</option>
+				
+				<option value="file8">models/roles.go (87.1%)</option>
+				
+				<option value="file9">models/user.go (89.3%)</option>
+				
+				<option value="file10">models/utilities.go (54.9%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">no coverage</span>
+				<span class="cov1">low coverage</span>
+				<span class="cov2">*</span>
+				<span class="cov3">*</span>
+				<span class="cov4">*</span>
+				<span class="cov5">*</span>
+				<span class="cov6">*</span>
+				<span class="cov7">*</span>
+				<span class="cov8">*</span>
+				<span class="cov9">*</span>
+				<span class="cov10">high coverage</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package models
+
+import (
+        "encoding/json"
+        "io"
+        u "github.com/titouanfreville/popcubeapi/utils"
+)
+
+// Avatar type is a DB model for avatar storage
+type Avatar struct {
+        IDAvatar uint64 `gorm:"primary_key;column:idAvatar;AUTO_INCREMENT" json:"-"`
+        Name     string `gorm:"column:name;not null;unique" json:"name"`
+        Link     string `gorm:"column:link;not null;unique" json:"link"`
+}
+
+// IsValid check the validity of on Avatar object before saving it to DB in update or creation process
+func (avatar *Avatar) IsValid() *u.AppError <span class="cov10" title="6">{
+        if len(avatar.Name) == 0 || len(avatar.Name) &gt; 64 </span><span class="cov4" title="2">{
+                return u.NewLocAppError("Avatar.IsValid", "model.avatar.name.app_error", nil, "")
+        }</span>
+
+        <span class="cov7" title="4">if len(avatar.Link) == 0 </span><span class="cov1" title="1">{
+                return u.NewLocAppError("Avatar.IsValid", "model.avatar.link.app_error", nil, "")
+        }</span>
+
+        <span class="cov6" title="3">return nil</span>
+}
+
+// ToJSON function take an avatar and tranform it into Json object
+func (avatar *Avatar) ToJSON() string <span class="cov1" title="1">{
+        b, err := json.Marshal(avatar)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov1" title="1">return string(b)</span>
+}
+
+// AvatarFromJSON Take a json and try to transform it into an avatar
+func AvatarFromJSON(data io.Reader) *Avatar <span class="cov1" title="1">{
+        decoder := json.NewDecoder(data)
+        var avatar Avatar
+        err := decoder.Decode(&amp;avatar)
+        if err == nil </span><span class="cov1" title="1">{
+                return &amp;avatar
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+// AvatarListToJSON Take an avatar list and transform it into json object
+func AvatarListToJSON(avatarList []*Avatar) string <span class="cov1" title="1">{
+        b, err := json.Marshal(avatarList)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov1" title="1">return string(b)</span>
+}
+
+// AvatarListFromJSON Try to parse a json object as an avatar list
+func AvatarListFromJSON(data io.Reader) []*Avatar <span class="cov1" title="1">{
+        decoder := json.NewDecoder(data)
+        var avatarList []*Avatar
+        err := decoder.Decode(&amp;avatarList)
+        if err == nil </span><span class="cov1" title="1">{
+                return avatarList
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package models
+
+import (
+        "encoding/json"
+        "io"
+        "strings"
+        "unicode/utf8"
+        u "github.com/titouanfreville/popcubeapi/utils"
+)
+
+const (
+        defaultChannel             = "general"
+        channelDislayNameMaxRunes  = 64
+        channelNameMaxLength       = 64
+        channelDescriptionMaxRunes = 1024
+        channelSubjectMaxRunes     = 250
+)
+
+var (
+        // ChannelAvailableTypes Used to have knowsledge on type a channel can take
+        ChannelAvailableTypes = []string{"direct", "text", "audio", "video"}
+)
+
+// Channel type is a model for DB Channel table
+type Channel struct {
+        IDChannel   uint64 `gorm:"primary_key;column:idChannel;AUTO_INCREMENT" json:"-"`
+        WebID       string `gorm:"column:webId;not null;unique" json:"web_id"`
+        ChannelName string `gorm:"column:channelName;not null;unique" json:"display_name"`
+        Type        string `gorm:"column:type;not null" json:"type"`
+        UpdatedAt   int64  `gorm:"column:updatedAt;not null;" json:"updated_at"`
+        Private     bool   `gorm:"column:private;not null" json:"private"`
+        Description string `gorm:"column:desciption" json:"description,omitempty"`
+        Subject     string `gorm:"column:subject" json:"subject,omitempty"`
+        Avatar      string `gorm:"column:avatar" json:"avatar,omitempty"`
+}
+
+// ToJSON Take a channel and convert it into json
+func (channel *Channel) ToJSON() string <span class="cov1" title="1">{
+        b, err := json.Marshal(channel)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov1" title="1">return string(b)</span>
+}
+
+// ChannelFromJSON try to parse a json object as channel object
+func ChannelFromJSON(data io.Reader) *Channel <span class="cov1" title="1">{
+        decoder := json.NewDecoder(data)
+        var channel Channel
+        err := decoder.Decode(&amp;channel)
+        if err == nil </span><span class="cov1" title="1">{
+                return &amp;channel
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+// Etag is a small function used to create cache ID
+func (channel *Channel) Etag() string <span class="cov0" title="0">{
+        return Etag(channel.WebID, channel.UpdatedAt)
+}</span>
+
+// IsValid check the correctness of a channel object
+func (channel *Channel) IsValid(isUpdate bool) *u.AppError <span class="cov10" title="46">{
+        if !isUpdate </span><span class="cov10" title="46">{
+                if len(channel.WebID) != 26 </span><span class="cov2" title="2">{
+                        return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.id.app_error", nil, "")
+                }</span>
+        }
+
+        <span class="cov9" title="44">if channel.UpdatedAt == 0 </span><span class="cov1" title="1">{
+                return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.update_at.app_error", nil, "id="+channel.WebID)
+        }</span>
+
+        <span class="cov9" title="43">if utf8.RuneCountInString(channel.ChannelName) &gt; channelDislayNameMaxRunes || utf8.RuneCountInString(channel.ChannelName) == 0 </span><span class="cov5" title="7">{
+                return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.channel_name.app_error", nil, "id="+channel.WebID)
+        }</span>
+
+        <span class="cov9" title="36">if !IsValidIDChannelentifier(channel.ChannelName) </span><span class="cov6" title="9">{
+                return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.not_alphanum_channel_name.app_error", nil, "id="+channel.WebID)
+        }</span>
+
+        <span class="cov8" title="27">if utf8.RuneCountInString(channel.Description) &gt; channelDescriptionMaxRunes </span><span class="cov1" title="1">{
+                return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.description.app_error", nil, "id="+channel.WebID)
+        }</span>
+
+        <span class="cov8" title="26">if utf8.RuneCountInString(channel.Subject) &gt; channelSubjectMaxRunes </span><span class="cov1" title="1">{
+                return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.subject.app_error", nil, "id="+channel.WebID)
+        }</span>
+
+        <span class="cov8" title="25">if !u.StringInArray(channel.Type, ChannelAvailableTypes) </span><span class="cov1" title="1">{
+                return u.NewLocAppError("Channel.IsValid", "model.channel.is_valid.type.app_error", nil, "id="+channel.WebID)
+        }</span>
+
+        <span class="cov8" title="24">return nil</span>
+}
+
+// PreSave Is used to add default values to channel before saving it in DB
+func (channel *Channel) PreSave() <span class="cov3" title="3">{
+        if channel.WebID == "" </span><span class="cov2" title="2">{
+                channel.WebID = NewID()
+        }</span>
+
+        <span class="cov3" title="3">channel.ChannelName = strings.ToLower(channel.ChannelName)
+
+        channel.UpdatedAt = GetMillis()
+
+        if channel.Avatar == "" </span><span class="cov2" title="2">{
+                channel.Avatar = "default_channel_avatar.svg"
+        }</span>
+
+        <span class="cov3" title="3">if channel.Type == "" </span><span class="cov2" title="2">{
+                channel.Type = "text"
+        }</span>
+
+        <span class="cov3" title="3">if channel.Type == "direct" </span><span class="cov0" title="0">{
+                channel.Private = true
+        }</span>
+}
+
+// PreUpdate Is used to add default values to channel before updating it in DB
+func (channel *Channel) PreUpdate() <span class="cov1" title="1">{
+        channel.ChannelName = strings.ToLower(channel.ChannelName)
+
+        channel.UpdatedAt = GetMillis()
+
+        if channel.Type == "direct" </span><span class="cov0" title="0">{
+                channel.Private = true
+        }</span>
+}
+
+// GetDMNameFromIDs Create Direct message name from 2 IDUsers
+func GetDMNameFromIDs(IDUser1, IDUser2 string) string <span class="cov0" title="0">{
+        if IDUser1 &gt; IDUser2 </span><span class="cov0" title="0">{
+                return IDUser2 + "__" + IDUser1
+        }</span>
+        <span class="cov0" title="0">return IDUser1 + "__" + IDUser2</span>
+
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package models
+
+import (
+        "encoding/json"
+        "io"
+        u "github.com/titouanfreville/popcubeapi/utils"
+)
+
+// Emoji Type descibe the Emoji table for Popcube DB
+type Emoji struct {
+        IDEmoji  uint64 `gorm:"primary_key;column:idEmoji;AUTO_INCREMENT" json:"-"`
+        Name     string `gorm:"column:name;not null;unique" json:"name"`
+        Shortcut string `gorm:"column:shortcut;not null;unique" json:"shortcut"`
+        Link     string `gorm:"column:link;not null;unique" json:"link"`
+}
+
+// IsValid is used to check validity of Emoji objects
+func (emoji *Emoji) IsValid() *u.AppError <span class="cov10" title="9">{
+        if len(emoji.Name) == 0 || len(emoji.Name) &gt; 64 </span><span class="cov3" title="2">{
+                return u.NewLocAppError("Emoji.IsValid", "model.emoji.name.app_error", nil, "")
+        }</span>
+
+        <span class="cov8" title="7">if len(emoji.Shortcut) == 0 || len(emoji.Shortcut) &gt; 20 </span><span class="cov3" title="2">{
+                return u.NewLocAppError("Emoji.IsValid", "model.emoji.shortcut.app_error", nil, "")
+        }</span>
+
+        <span class="cov7" title="5">if len(emoji.Link) == 0 </span><span class="cov1" title="1">{
+                return u.NewLocAppError("Emoji.IsValid", "model.emoji.link.app_error", nil, "")
+        }</span>
+
+        <span class="cov6" title="4">return nil</span>
+}
+
+// ToJSON transfoorm an Emoji into JSON
+func (emoji *Emoji) ToJSON() string <span class="cov1" title="1">{
+        b, err := json.Marshal(emoji)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov1" title="1">return string(b)</span>
+}
+
+// EmojiFromJSON Try to parse a json object as emoji
+func EmojiFromJSON(data io.Reader) *Emoji <span class="cov1" title="1">{
+        decoder := json.NewDecoder(data)
+        var emoji Emoji
+        err := decoder.Decode(&amp;emoji)
+        if err == nil </span><span class="cov1" title="1">{
+                return &amp;emoji
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+// EmojiListToJSON Convert an emoji list into a json array
+func EmojiListToJSON(emojiList []*Emoji) string <span class="cov1" title="1">{
+        b, err := json.Marshal(emojiList)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov1" title="1">return string(b)</span>
+}
+
+// EmojiListFromJSON Try converting a json array into emoji list
+func EmojiListFromJSON(data io.Reader) []*Emoji <span class="cov1" title="1">{
+        decoder := json.NewDecoder(data)
+        var emojiList []*Emoji
+        err := decoder.Decode(&amp;emojiList)
+        if err == nil </span><span class="cov1" title="1">{
+                return emojiList
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package models
+
+import (
+        "encoding/json"
+        "io"
+        u "github.com/titouanfreville/popcubeapi/utils"
+)
+
+// Folder Type descibe the Folder table for Popcube DB. It is linked to Message table
+type Folder struct {
+        IDFolder uint64  `gorm:"primary_key;column:idFolder;AUTO_INCREMENT" json:"-"`
+        Link     string  `gorm:"column:link;not null;unique" json:"link"`
+        Name     string  `gorm:"column:name;not null;unique" json:"name"`
+        Type     string  `gorm:"column:type;not null;" json:"type"`
+        Message  Message `gorm:"column:message; not null;ForeignKey:IDMessage;" json:"-"`
+}
+
+// IsValid is used to check validity of Folder objects
+func (folder *Folder) IsValid() *u.AppError <span class="cov10" title="30">{
+        if len(folder.Name) == 0 </span><span class="cov7" title="10">{
+                return u.NewLocAppError("Folder.IsValid", "model.folder.name.app_error", nil, "")
+        }</span>
+
+        <span class="cov8" title="20">if len(folder.Link) == 0 </span><span class="cov5" title="5">{
+                return u.NewLocAppError("Folder.IsValid", "model.folder.link.app_error", nil, "")
+        }</span>
+        <span class="cov8" title="15">if len(folder.Type) == 0 </span><span class="cov5" title="5">{
+                return u.NewLocAppError("Folder.IsValid", "model.folder.type.app_error", nil, "")
+        }</span>
+        <span class="cov7" title="10">if folder.Message == (Message{}) </span><span class="cov5" title="5">{
+                return u.NewLocAppError("Folder.IsValid", "model.folder.message.app_error", nil, "")
+        }</span>
+        <span class="cov5" title="5">return nil</span>
+}
+
+// ToJSON transfoorm an Folder into JSON
+func (folder *Folder) ToJSON() string <span class="cov1" title="1">{
+        b, err := json.Marshal(folder)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov1" title="1">return string(b)</span>
+}
+
+// FolderFromJSON Try to parse a json object as emoji
+func FolderFromJSON(data io.Reader) *Folder <span class="cov1" title="1">{
+        decoder := json.NewDecoder(data)
+        var folder Folder
+        err := decoder.Decode(&amp;folder)
+        if err == nil </span><span class="cov1" title="1">{
+                return &amp;folder
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+// FolderListToJSON Convert an emoji list into a json array
+func FolderListToJSON(folderList []*Folder) string <span class="cov1" title="1">{
+        b, err := json.Marshal(folderList)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov1" title="1">return string(b)</span>
+}
+
+// FolderListFromJSON Try converting a json array into emoji list
+func FolderListFromJSON(data io.Reader) []*Folder <span class="cov1" title="1">{
+        decoder := json.NewDecoder(data)
+        var folderList []*Folder
+        err := decoder.Decode(&amp;folderList)
+        if err == nil </span><span class="cov1" title="1">{
+                return folderList
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package models
+
+import (
+        u "github.com/titouanfreville/popcubeapi/utils"
+)
+
+// Member describe the associtive table member between USER, CHANNEL, and ROLE
+type Member struct {
+        // IDMember uint64  `gorm:"primary_key;column:idMember;AUTO_INCREMENT" json:"-"`
+        User    User    `gorm:"column:user; primary_key; not null;" json:"-"`
+        Channel Channel `gorm:"column:channel; primary_key; not null;" json:"-"`
+        Role    Role    `gorm:"column:role; ForeignKey:IDRole;" json:"-"`
+}
+
+// IsValid check validity of member object
+func (member *Member) IsValid() *u.AppError <span class="cov10" title="9">{
+        if member.User == (User{}) </span><span class="cov6" title="4">{
+                return u.NewLocAppError("Member.IsValid", "model.member.user.app_error", nil, "")
+        }</span>
+        <span class="cov7" title="5">if member.Channel == (Channel{}) </span><span class="cov3" title="2">{
+                return u.NewLocAppError("Member.IsValid", "model.member.channel.app_error", nil, "")
+        }</span>
+        <span class="cov5" title="3">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package models
+
+import (
+        "encoding/json"
+        "io"
+        u "github.com/titouanfreville/popcubeapi/utils"
+)
+
+// Message describe the message table for  PovpCube project. It is linked to User table and Channel table
+type Message struct {
+        IDMessage uint64  `gorm:"primary_key;column:idMessage;AUTO_INCREMENT" json:"-"`
+        Date      int64   `gorm:"column:date;not null" json:"date"`
+        Content   string  `gorm:"column:content;type:longtext" json:"content"`
+        Creator   User    `gorm:"column:creator; not null;ForeignKey:IDUser;" json:"-"`
+        Channel   Channel `gorm:"column:channel; not null;ForeignKey:IDChannel;" json:"-"`
+}
+
+// IsValid function is used to check that the provided message correspond to the message model. It has to be use before tring to store it in the db.
+func (message *Message) IsValid() *u.AppError <span class="cov10" title="20">{
+        if message.Date == 0 </span><span class="cov7" title="8">{
+                return u.NewLocAppError("Message.IsValid", "model.message.date.app_error", nil, "")
+        }</span>
+        <span class="cov8" title="12">if message.Creator == (User{}) </span><span class="cov5" title="4">{
+                return u.NewLocAppError("Message.IsValid", "model.message.creator.app_error", nil, "")
+        }</span>
+        <span class="cov7" title="8">if message.Channel == (Channel{}) </span><span class="cov5" title="4">{
+                return u.NewLocAppError("Message.IsValid", "model.message.channel.app_error", nil, "")
+        }</span>
+
+        <span class="cov5" title="4">return nil</span>
+}
+
+// PreSave need to be called before saving a new or an updated mesage in the DB so it will have good time store.
+func (message *Message) PreSave() <span class="cov5" title="5">{
+        message.Date = GetMillis()
+}</span>
+
+// ToJSON take the message object and transfor it into a json object for api usage.
+func (message *Message) ToJSON() string <span class="cov1" title="1">{
+        b, err := json.Marshal(message)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov1" title="1">return string(b)</span>
+}
+
+// MessageFromJSON Try to convert a Json object into Message object
+func MessageFromJSON(data io.Reader) *Message <span class="cov1" title="1">{
+        decoder := json.NewDecoder(data)
+        var message Message
+        err := decoder.Decode(&amp;message)
+        if err == nil </span><span class="cov1" title="1">{
+                return &amp;message
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+// MessageListToJSON transgorm a Message list into Json Array
+func MessageListToJSON(messageList []*Message) string <span class="cov1" title="1">{
+        b, err := json.Marshal(messageList)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov1" title="1">return string(b)</span>
+}
+
+// MessageListFromJSON Try to transform a json array into a Message list
+func MessageListFromJSON(data io.Reader) []*Message <span class="cov1" title="1">{
+        decoder := json.NewDecoder(data)
+        var messageList []*Message
+        err := decoder.Decode(&amp;messageList)
+        if err == nil </span><span class="cov1" title="1">{
+                return messageList
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">package models
+
+import (
+        "encoding/json"
+        "io"
+        "strconv"
+        "strings"
+        "unicode/utf8"
+        u "github.com/titouanfreville/popcubeapi/utils"
+)
+
+const (
+        organisationDisplayNameMaxRunes = 64
+        organisationNameMaxLength       = 64
+        organisationDescriptionMaxRunes = 1024
+        organisationSubjectMaxRunes     = 250
+)
+
+// Organisation Type descibe the Organisation table for Popcube DB
+type Organisation struct {
+        IDOrganisation   uint64 `gorm:"primary_key;column:idOrganisation;AUTO_INCREMENT" json:"-"`
+        DockerStack      int    `gorm:"column:dockerStack;not null;unique" json:"docker_stack"`
+        OrganisationName string `gorm:"column:organisationName;not null;unique" json:"display_name"`
+        Description      string `gorm:"column:desciption" json:"description,omitempty"`
+        Avatar           string `gorm:"column:avatar" json:"avatar,omitempty"`
+        Domain           string `gorm:"column:domain" json:"avatar,omitempty"`
+}
+
+// ToJSON transfoorm an Organisation into JSON
+func (organisation *Organisation) ToJSON() string <span class="cov1" title="1">{
+        b, err := json.Marshal(organisation)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov1" title="1">return string(b)</span>
+}
+
+// OganisationFromJSON Try to parse a json object as emoji
+func OganisationFromJSON(data io.Reader) *Organisation <span class="cov1" title="1">{
+        decoder := json.NewDecoder(data)
+        var organisation Organisation
+        err := decoder.Decode(&amp;organisation)
+        if err == nil </span><span class="cov1" title="1">{
+                return &amp;organisation
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+// IsValid is used to check validity of Organisation objects
+func (organisation *Organisation) IsValid() *u.AppError <span class="cov10" title="28">{
+
+        if len(organisation.OrganisationName) == 0 || utf8.RuneCountInString(organisation.OrganisationName) &gt; organisationDisplayNameMaxRunes </span><span class="cov5" title="6">{
+                return u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IDOrganisation, 10))
+        }</span>
+
+        <span class="cov9" title="22">if !IsValidOrganisationIdentifier(organisation.OrganisationName) </span><span class="cov6" title="9">{
+                return u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.not_alphanum_organisation_name.app_error", nil, "id="+strconv.FormatUint(organisation.IDOrganisation, 10))
+        }</span>
+
+        <span class="cov7" title="13">if utf8.RuneCountInString(organisation.Description) &gt; organisationDescriptionMaxRunes </span><span class="cov1" title="1">{
+                return u.NewLocAppError("Organisation.IsValid", "model.organisation.is_valid.description.app_error", nil, "id="+strconv.FormatUint(organisation.IDOrganisation, 10))
+        }</span>
+
+        <span class="cov7" title="12">return nil</span>
+}
+
+// PreSave is used to add some default values to organisation before saving in DB (creation).
+func (organisation *Organisation) PreSave() <span class="cov3" title="3">{
+        organisation.OrganisationName = strings.ToLower(organisation.OrganisationName)
+
+        if organisation.Avatar == "" </span><span class="cov2" title="2">{
+                organisation.Avatar = "default_organisation_avatar.svg"
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">package models
+
+import (
+        "encoding/json"
+        "io"
+        u "github.com/titouanfreville/popcubeapi/utils"
+)
+
+const (
+        // DefaultLocale is a string to describe the default language used in the app
+        DefaultLocale = "fr_FR"
+        // DefaultTimeZone is a string to describe the default time zone used in the app
+        DefaultTimeZone = "UTC-0"
+        localMaxSize    = 5
+        timeZoneMaxSize = 6
+        maxTime         = 1440
+)
+
+// Parameter Type descibe the Parameter table for Popcube DB
+type Parameter struct {
+        IDParameter uint64 `gorm:"primary_key;column:idParameter;AUTO_INCREMENT" json:"-"`
+        Local       string `gorm:"column:local;not null; unique" json:"local"`
+        TimeZone    string `gorm:"column:timeZone;not null; unique;" json:"time_zone"`
+        SleepStart  int    `gorm:"column:sleepStart;not null;unique" json:"sleep_start"`
+        SleepEnd    int    `gorm:"column:sleepEnd;not null;unique" json:"sleep_end"`
+}
+
+// ToJSON transfoorm an Parameter into JSON
+func (parameter *Parameter) ToJSON() string <span class="cov1" title="1">{
+        b, err := json.Marshal(parameter)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov1" title="1">return string(b)</span>
+}
+
+// ParameterFromJSON Try to parse a json object as emoji
+func ParameterFromJSON(data io.Reader) *Parameter <span class="cov1" title="1">{
+        decoder := json.NewDecoder(data)
+        var parameter Parameter
+        err := decoder.Decode(&amp;parameter)
+        if err == nil </span><span class="cov1" title="1">{
+                return &amp;parameter
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+// IsValid is used to check validity of Parameter objects
+func (parameter *Parameter) IsValid() *u.AppError <span class="cov10" title="21">{
+
+        if len(parameter.Local) == 0 || len(parameter.Local) &gt; localMaxSize </span><span class="cov4" title="3">{
+                return u.NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_local.app_error", nil, "")
+        }</span>
+
+        <span class="cov9" title="18">if len(parameter.TimeZone) == 0 || len(parameter.TimeZone) &gt; timeZoneMaxSize </span><span class="cov3" title="2">{
+                return u.NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_timezone.app_error", nil, "")
+        }</span>
+
+        <span class="cov9" title="16">if parameter.SleepStart &lt; 0 || parameter.SleepStart &gt; maxTime </span><span class="cov3" title="2">{
+                return u.NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_sleep_start.app_error", nil, "")
+        }</span>
+
+        <span class="cov8" title="14">if parameter.SleepEnd &lt; 0 || parameter.SleepEnd &gt; maxTime </span><span class="cov3" title="2">{
+                return u.NewLocAppError("Parameter.IsValid", "model.parameter.is_valid.parameter_sleep_end.app_error", nil, "")
+        }</span>
+
+        <span class="cov8" title="12">return nil</span>
+}
+
+// PreSave is to be used before saving to add default value if needed
+func (parameter *Parameter) PreSave() <span class="cov1" title="1">{
+        if parameter.Local == "" </span><span class="cov1" title="1">{
+                parameter.Local = DefaultLocale
+        }</span>
+        <span class="cov1" title="1">if parameter.TimeZone == "" </span><span class="cov1" title="1">{
+                parameter.TimeZone = DefaultTimeZone
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">package models
+
+import (
+        "encoding/json"
+        "io"
+        "regexp"
+        u "github.com/titouanfreville/popcubeapi/utils"
+)
+
+// Role Type descibe the Role table for Popcube DB
+type Role struct {
+        IDRole        uint64 `gorm:"primary_key;column:idRole;AUTO_INCREMENT" json:"-"`
+        RoleName      string `gorm:"column:roleName;unique_index;not null;unique" json:"name"`
+        CanUsePrivate bool   `gorm:"column:canUsePrivate;not null" json:"canUsePrivate"`
+        CanModerate   bool   `gorm:"column:canModerate;not null" json:"canModerate"`
+        CanArchive    bool   `gorm:"column:canArchive;not null" json:"canArchive"`
+        CanInvite     bool   `gorm:"column:canInvite;not null" json:"canInvite"`
+        CanManage     bool   `gorm:"column:canManage;not null" json:"canManage"`
+        CanManageUser bool   `gorm:"column:canManageUser;not null" json:"canManageUser"`
+}
+
+var (
+        // Owner is one of the defaul roles. Have all rights.
+        Owner = Role{
+                RoleName:      "owner",
+                CanUsePrivate: true,
+                CanModerate:   true,
+                CanArchive:    true,
+                CanInvite:     true,
+                CanManage:     true,
+                CanManageUser: true,
+        }
+        // Admin is one of the defaul roles. Have all rights.
+        Admin = Role{
+                RoleName:      "admin",
+                CanUsePrivate: true,
+                CanModerate:   true,
+                CanArchive:    true,
+                CanInvite:     true,
+                CanManage:     true,
+                CanManageUser: true,
+        }
+        // Standart is one of the defaul roles. Have all channel rights.
+        Standart = Role{
+                RoleName:      "standart",
+                CanUsePrivate: true,
+                CanModerate:   true,
+                CanArchive:    true,
+                CanInvite:     false,
+                CanManage:     false,
+                CanManageUser: false,
+        }
+        // Guest is one of the defaul roles. Have no rights.
+        Guest = Role{
+                RoleName:      "guest",
+                CanUsePrivate: false,
+                CanModerate:   false,
+                CanArchive:    false,
+                CanInvite:     false,
+                CanManage:     false,
+                CanManageUser: false,
+        }
+        // BasicsRoles defines the list of basics roles
+        BasicsRoles = []*Role{
+                &amp;Owner,
+                &amp;Admin,
+                &amp;Standart,
+                &amp;Guest,
+        }
+        restrictedRoleNames = []string{
+                "owner",
+                "admin",
+                "standart",
+                "guest",
+        }
+        validRoleNameChars = regexp.MustCompile(`^[a-z]+$`)
+)
+
+// IsValid is used to check validity of Role objects
+func (role *Role) IsValid() *u.AppError <span class="cov6" title="9">{
+        if !IsValidRoleName(role.RoleName) </span><span class="cov5" title="7">{
+                return u.NewLocAppError("Role.IsValid", "model.role.rolename.app_error", nil, "")
+        }</span>
+
+        <span class="cov2" title="2">return nil</span>
+}
+
+// ToJSON transfoorm an Role into JSON
+func (role *Role) ToJSON() string <span class="cov1" title="1">{
+        b, err := json.Marshal(role)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov1" title="1">return string(b)</span>
+}
+
+// IsValidRoleName Check that provided string is correctly formed to be used as a RoleName
+func IsValidRoleName(u string) bool <span class="cov9" title="23">{
+        if len(u) == 0 || len(u) &gt; 64 </span><span class="cov2" title="2">{
+                return false
+        }</span>
+
+        <span class="cov8" title="21">if !validRoleNameChars.MatchString(u) </span><span class="cov7" title="11">{
+                return false
+        }</span>
+
+        <span class="cov6" title="10">for _, restrictedRoleName := range restrictedRoleNames </span><span class="cov10" title="34">{
+                if u == restrictedRoleName </span><span class="cov4" title="4">{
+                        return false
+                }</span>
+        }
+
+        <span class="cov5" title="6">return true</span>
+}
+
+// RoleFromJSON Try to parse a json object as emoji
+func RoleFromJSON(data io.Reader) *Role <span class="cov1" title="1">{
+        decoder := json.NewDecoder(data)
+        var role Role
+        err := decoder.Decode(&amp;role)
+        if err == nil </span><span class="cov1" title="1">{
+                return &amp;role
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+
+}
+
+// RoleListToJSON Convert a list of roles into a JSON array
+func RoleListToJSON(roleList []*Role) string <span class="cov1" title="1">{
+        b, err := json.Marshal(roleList)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov1" title="1">return string(b)</span>
+
+}
+
+// RoleListFromJSON Try to parse a JSON array into a role list
+func RoleListFromJSON(data io.Reader) []*Role <span class="cov1" title="1">{
+        decoder := json.NewDecoder(data)
+        var roleList []*Role
+        err := decoder.Decode(&amp;roleList)
+        if err == nil </span><span class="cov1" title="1">{
+                return roleList
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">/*Package models implements the basics databases models used by PopCube chat api.
+
+Models
+
+The following is a list of models described:
+        Avatar: Contain all informations for avatar management
+        Channel: Contain all informations for channel management
+        Emojis: Contain all informations for emojis management
+        Organisation: Contain all informations for organisation management
+        Parameter: Contain all informations for parmeters management
+        Role: Contain all informations for roles management
+        User: Contain all informations for users management
+*/
+// Created by Titouan FREVILLE &lt;titouanfreville@gmail.com&gt;
+//
+// Inspired by mattermost project
+package models
+
+import (
+        "encoding/json"
+        "fmt"
+        "io"
+        "regexp"
+        "strings"
+        "unicode/utf8"
+        u "github.com/titouanfreville/popcubeapi/utils"
+
+        "golang.org/x/crypto/bcrypt"
+)
+
+const (
+        userNotifyAll           = "all"
+        userNotifyMention       = "mention"
+        userNotifyNone          = "none"
+        userAuthServiceEmail    = "email"
+        userAuthServiceUsername = "username"
+)
+
+var (
+        userChannel = []string{"general", "random"}
+        // Protected user name cause they are taken by system or used for special mentions.
+        restrictedUsernames = []string{
+                "all",
+                "channel",
+                "popcubebot",
+                "here",
+        }
+        // Definition of character user can possess in there names.
+        validUsernameChars = regexp.MustCompile(`^[a-z0-9\.\-_]+$`)
+)
+
+/*User object
+
+- webwebID: String unique and non null to webIDentify the user on application services. - REQUIRED
+
+- username: Store the user username used to log into the service. - REQUIRED
+
+- email: user mail ;). - REQUIRED
+
+- emailVerified: true if email was verified by user. - REQUIRED
+
+- updatedAt: Time of the last update. Used to create tag for browser cache. - REQUIRED
+
+- deleted: True if user is deleted. - REQUIRED
+
+- password: Hashed password. - REQUIRED
+
+- lastpasswordUpdate: Date of the last password modification. - REQUIRED
+
+- failedAttemps: Number of fail try to connect to account. - REQUIRED
+
+- locale: user favorite langage. - REQUIRED
+
+- role : int referencing a user role existing in the database. - REQUIRED
+
+- nickname: Name to use in communication channel (by default : username).
+
+- first name: user true first name.
+
+- last name: user true last name.
+
+- lastActivityAt: Date &amp;&amp; Time of the last activity of the user.
+*/
+type User struct {
+        IDUser             uint64 `gorm:"primary_key;column:idUser;AUTO_INCREMENT" json:"-"`
+        WebID              string `gorm:"column:webID; not null; unique;" json:"web_id"`
+        Username           string `gorm:"column:userName; not null; unique;" json:"username"`
+        Email              string `gorm:"column:email; not null; unique;" json:"email"`
+        EmailVerified      bool   `gorm:"column:emailVerified; not null;" json:"email_verified"`
+        UpdatedAt          int64  `gorm:"column:updatedAt; not null;" json:"update_at"`
+        Deleted            bool   `gorm:"column:deleted; not null;" json:"deleted"`
+        Password           string `gorm:"column:password; not null;" json:"password"`
+        LastPasswordUpdate int64  `gorm:"column:lastPasswordUpdate; not null;" json:"last_password_update"`
+        FailedAttempts     int    `gorm:"column:failedAttempts; not null;" json:"failed_attempts"`
+        Locale             string `gorm:"column:locale; not null;" json:"locale"`
+        Role               Role   `gorm:"ForeignKey:IDRole;" json:"-"`
+        IDRole             uint64 `gorm:"column:idRole; not null;" json:"idRole"`
+        Avatar             string `gorm:"column:avatar;" json:"avatar, omitempty"`
+        NickName           string `gorm:"column:nickName; unique" json:"nickname, omitempty"`
+        FirstName          string `gorm:"column:firstName;" json:"first_name, omitempty"`
+        LastName           string `gorm:"column:lastName;" json:"last_name, omitempty"`
+        LastActivityAt     int64  `db:"-" json:"last_activity_at,omitempty"`
+}
+
+// IsValid valwebIDates the user and returns an error if it isn't configured
+// correctly.
+func (user *User) IsValid(isUpdate bool) *u.AppError <span class="cov5" title="25">{
+        if !isUpdate </span><span class="cov5" title="25">{
+                if len(user.WebID) != 26 </span><span class="cov1" title="1">{
+                        return u.NewLocAppError("user.IsValid", "model.user.is_valid.WebID.app_error", nil, "")
+                }</span>
+        }
+
+        <span class="cov5" title="24">if !IsValidUsername(user.Username) </span><span class="cov4" title="9">{
+                return u.NewLocAppError("user.IsValid", "model.user.is_valid.Username.app_error", nil, "user_webID="+user.WebID)
+        }</span>
+
+        <span class="cov4" title="15">if len(user.Email) == 0 || len(user.Email) &gt; 128 || !IsValidEmail(user.Email) </span><span class="cov2" title="3">{
+                return u.NewLocAppError("user.IsValid", "model.user.is_valid.Email.app_error", nil, "user_webID="+user.WebID)
+        }</span>
+
+        <span class="cov4" title="12">if utf8.RuneCountInString(user.NickName) &gt; 64 </span><span class="cov1" title="1">{
+                return u.NewLocAppError("user.IsValid", "model.user.is_valid.NickName.app_error", nil, "user_webID="+user.WebID)
+        }</span>
+
+        <span class="cov4" title="11">if utf8.RuneCountInString(user.FirstName) &gt; 64 </span><span class="cov1" title="1">{
+                return u.NewLocAppError("user.IsValid", "model.user.is_valid.first_name.app_error", nil, "user_webID="+user.WebID)
+        }</span>
+
+        <span class="cov4" title="10">if utf8.RuneCountInString(user.LastName) &gt; 64 </span><span class="cov1" title="1">{
+                return u.NewLocAppError("user.IsValid", "model.user.is_valid.last_name.app_error", nil, "user_webID="+user.WebID)
+        }</span>
+
+        <span class="cov4" title="9">if !isUpdate </span><span class="cov4" title="9">{
+                if len(user.Password) == 0 </span><span class="cov1" title="1">{
+                        return u.NewLocAppError("user.IsValid", "model.user.is_valid.auth_data_pwd.app_error", nil, "user_webID="+user.WebID)
+                }</span>
+        }
+
+        <span class="cov4" title="8">return nil</span>
+}
+
+// PreSave have to be run before saving user in DB. It will fill necessary information (webID, username, etc. ) and hash password
+func (user *User) PreSave() <span class="cov5" title="26">{
+        if user.WebID == "" </span><span class="cov5" title="24">{
+                user.WebID = NewID()
+        }</span>
+
+        <span class="cov5" title="26">if user.Username == "" </span><span class="cov5" title="16">{
+                user.Username = NewID()
+        }</span>
+
+        <span class="cov5" title="26">user.Username = strings.ToLower(user.Username)
+        user.Email = strings.ToLower(user.Email)
+
+        user.UpdatedAt = GetMillis()
+        user.LastPasswordUpdate = user.UpdatedAt
+
+        if user.Locale == "" </span><span class="cov5" title="24">{
+                user.Locale = DefaultLocale
+        }</span>
+
+        <span class="cov5" title="26">if len(user.Password) &gt; 0 </span><span class="cov5" title="25">{
+                user.Password = HashPassword(user.Password)
+        }</span>
+}
+
+// PreUpdate should be run before updating the user in the db.
+func (user *User) PreUpdate() <span class="cov0" title="0">{
+        user.Username = strings.ToLower(user.Username)
+        user.Email = strings.ToLower(user.Email)
+        user.UpdatedAt = GetMillis()
+
+        if len(user.Password) &gt; 0 </span><span class="cov0" title="0">{
+                user.Password = HashPassword(user.Password)
+                user.LastPasswordUpdate = user.UpdatedAt
+        }</span>
+}
+
+// ToJSON convert a user to a json string
+func (user *User) ToJSON() string <span class="cov1" title="1">{
+        b, err := json.Marshal(user)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+        <span class="cov1" title="1">return string(b)</span>
+}
+
+// UserFromJSON will decode the input and return a user
+func UserFromJSON(data io.Reader) *User <span class="cov1" title="1">{
+        decoder := json.NewDecoder(data)
+        var user User
+        err := decoder.Decode(&amp;user)
+        if err == nil </span><span class="cov1" title="1">{
+                return &amp;user
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+// IsValidUsername will check if provided userName is correct
+func IsValidUsername(user string) bool <span class="cov8" title="144">{
+        if len(user) == 0 || len(user) &gt; 64 </span><span class="cov2" title="3">{
+                return false
+        }</span>
+
+        <span class="cov8" title="141">if !validUsernameChars.MatchString(user) </span><span class="cov6" title="49">{
+                return false
+        }</span>
+
+        <span class="cov7" title="92">for _, restrictedUsername := range restrictedUsernames </span><span class="cov9" title="358">{
+                if user == restrictedUsername </span><span class="cov3" title="7">{
+                        return false
+                }</span>
+        }
+
+        <span class="cov7" title="85">return true</span>
+}
+
+// Etag Generate a valwebID strong Etag so the browser can cache the results
+func (user *User) Etag(showFullName, showemail bool) string <span class="cov2" title="3">{
+        return Etag(user.WebID, user.UpdatedAt, showFullName, showemail)
+}</span>
+
+// GetFullName of the user
+func (user *User) GetFullName() string <span class="cov4" title="15">{
+        if user.LastName == "" </span><span class="cov3" title="7">{
+                return user.FirstName
+        }</span>
+        <span class="cov4" title="8">if user.FirstName == "" </span><span class="cov3" title="4">{
+                return user.LastName
+        }</span>
+        <span class="cov3" title="4">return user.FirstName + " " + user.LastName</span>
+}
+
+// GetDisplayName of the user
+func (user *User) GetDisplayName() string <span class="cov3" title="5">{
+        if user.NickName != "" </span><span class="cov1" title="1">{
+                return user.NickName
+        }</span>
+        <span class="cov3" title="4">if user.GetFullName() != "" </span><span class="cov2" title="3">{
+                return user.GetFullName()
+        }</span>
+        <span class="cov1" title="1">return user.Username</span>
+}
+
+// HashPassword generates a hash using the bcrypt.GenerateFrompassword
+func HashPassword(password string) string <span class="cov5" title="28">{
+        hash, err := bcrypt.GenerateFromPassword([]byte(password), 10)
+        if err != nil </span><span class="cov0" title="0">{
+                panic(err)</span>
+        }
+
+        <span class="cov5" title="28">return string(hash)</span>
+}
+
+// ComparePassword compares the hash
+func ComparePassword(hash string, password string) bool <span class="cov3" title="7">{
+
+        if len(password) == 0 || len(hash) == 0 </span><span class="cov1" title="1">{
+                return false
+        }</span>
+
+        <span class="cov3" title="6">err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+        return err == nil</span>
+}
+
+// CleanUsername Transform user name to meet requirement
+func CleanUsername(s string) string <span class="cov7" title="60">{
+        s = strings.ToLower(strings.Replace(s, " ", "-", -1))
+
+        for _, value := range reservedName </span><span class="cov9" title="420">{
+                if s == value </span><span class="cov1" title="1">{
+                        s = strings.Replace(s, value, "", -1)
+                }</span>
+        }
+
+        <span class="cov7" title="60">s = strings.TrimSpace(s)
+
+        for _, c := range s </span><span class="cov10" title="443">{
+                char := fmt.Sprintf("%c", c)
+                if !validUsernameChars.MatchString(char) </span><span class="cov6" title="35">{
+                        s = strings.Replace(s, char, "-", -1)
+                }</span>
+        }
+
+        <span class="cov7" title="60">if !IsValidUsername(s) </span><span class="cov3" title="4">{
+                s = "a" + NewID()
+        }</span>
+
+        <span class="cov7" title="60">return s</span>
+}
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">package models
+
+import (
+        "bytes"
+        "crypto/rand"
+        "encoding/base32"
+        "fmt"
+        "net/mail"
+        "net/url"
+        "regexp"
+        "strings"
+        "time"
+        u "github.com/titouanfreville/popcubeapi/utils"
+
+        "github.com/pborman/uuid"
+)
+
+const (
+        lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz"
+        upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        numbers          = "0123456789"
+        symbols          = " !\"\\#$%&amp;'()*+,-./:;&lt;=&gt;?@[]^_`|~"
+        //CurrentVersion  exprt the current application version (Used for Etags)
+        CurrentVersion = "0.0.0"
+)
+
+// StringInterface Interface for map[string]
+// type StringInterface map[string]interface{}
+
+// // StringMap Redefine type map[string]string
+// type StringMap map[string]string
+
+// // StringArray Reddefine type []string
+// type StringArray []string
+
+// //EncryptStringMap define type map[string]string for encryption usage
+// type EncryptStringMap map[string]string
+
+var encoding = base32.NewEncoding("ybndrfg8ejkmcpqxot1uwisza345h769")
+
+// NewID is a globally unique identifier.  It is a [A-Z0-9] string 26
+// characters long.  It is a UUID version 4 Guid that is zbased32 encoded
+// with the padding stripped off.
+func NewID() string <span class="cov10" title="1073">{
+        var b bytes.Buffer
+        encoder := base32.NewEncoder(encoding, &amp;b)
+        encoder.Write(uuid.NewRandom())
+        encoder.Close()
+        b.Truncate(26) // removes the '==' padding
+        return b.String()
+}</span>
+
+//NewRandomString Generate a randow string length by provided int.
+func NewRandomString(length int) string <span class="cov9" title="1000">{
+        var b bytes.Buffer
+        str := make([]byte, length+8)
+        rand.Read(str)
+        encoder := base32.NewEncoder(encoding, &amp;b)
+        encoder.Write(str)
+        encoder.Close()
+        b.Truncate(length) // removes the '==' padding
+        return b.String()
+}</span>
+
+// GetMillis is a convience method to get milliseconds since epoch.
+func GetMillis() int64 <span class="cov6" title="68">{
+        return time.Now().UnixNano() / int64(time.Millisecond)
+}</span>
+
+// MapToJSON converts a map to a json string
+// func MapToJSON(objmap map[string]string) string {
+//         b, err := json.Marshal(objmap)
+//         if err != nil {
+//                 return ""
+//         }
+//         return string(b)
+// }
+
+// // MapFromJSON will decode the key/value pair map
+// func MapFromJSON(data io.Reader) map[string]string {
+//         decoder := json.NewDecoder(data)
+
+//         var objmap map[string]string
+//         if err := decoder.Decode(&amp;objmap); err != nil {
+//                 return make(map[string]string)
+//         }
+//         return objmap
+// }
+
+// // ArrayToJSON transfor an array into a json array
+// func ArrayToJSON(objmap []string) string {
+//         b, err := json.Marshal(objmap)
+//         if err != nil {
+//                 return ""
+//         }
+//         return string(b)
+// }
+
+// // ArrayFromJSON Try to parse a json array into a go string array
+// func ArrayFromJSON(data io.Reader) []string {
+//         decoder := json.NewDecoder(data)
+
+//         var objmap []string
+//         if err := decoder.Decode(&amp;objmap); err != nil {
+//                 return make([]string, 0)
+//         }
+//         return objmap
+// }
+
+// // ArrayFromInterface transfor an interface into a Json object
+// func ArrayFromInterface(data interface{}) []string {
+//         stringArray := []string{}
+
+//         dataArray, ok := data.([]interface{})
+//         if !ok {
+//                 return stringArray
+//         }
+
+//         for _, v := range dataArray {
+//                 if str, ok := v.(string); ok {
+//                         stringArray = append(stringArray, str)
+//                 }
+//         }
+
+//         return stringArray
+// }
+
+// // StringInArray Search if provided string exist in provided array
+// func StringInArray(a string, array []string) bool {
+//         for _, b := range array {
+//                 if b == a {
+//                         return true
+//                 }
+//         }
+//         return false
+// }
+
+// // StringInterfaceToJSON convert String interface into Json object
+// func StringInterfaceToJSON(objmap map[string]interface{}) string {
+//         b, err := json.Marshal(objmap)
+//         if err != nil {
+//                 return ""
+//         }
+//         return string(b)
+// }
+
+// // StringInterfaceFromJSON Try to parse a json into map[string]interace{}
+// func StringInterfaceFromJSON(data io.Reader) map[string]interface{} {
+//         decoder := json.NewDecoder(data)
+
+//         var objmap map[string]interface{}
+//         if err := decoder.Decode(&amp;objmap); err != nil {
+//                 return make(map[string]interface{})
+//         }
+//         return objmap
+// }
+
+// // StringToJSON convert provided string into Json object
+// func StringToJSON(s string) string {
+//         b, err := json.Marshal(s)
+//         if err != nil {
+//                 return ""
+//         }
+//         return string(b)
+// }
+
+// // StringFromJSON Convert providing json into string
+// func StringFromJSON(data io.Reader) string {
+//         decoder := json.NewDecoder(data)
+
+//         var s string
+//         if err := decoder.Decode(&amp;s); err != nil {
+//                 return ""
+//         }
+//         return s
+// }
+
+// u.IsLower check if a string contain only lower cas characters
+// func u.IsLower(s string) bool {
+//         return strings.ToLower(s) == s
+// }
+
+// IsValidEmail check email validity
+func IsValidEmail(email string) bool <span class="cov4" title="17">{
+        _, err := mail.ParseAddress(email)
+        return err == nil &amp;&amp; u.IsLower(email)
+}</span>
+
+// IsValidDomain check if provided value is a possible domain name
+func IsValidDomain(domain string) bool <span class="cov0" title="0">{
+        return u.IsLower(domain) &amp;&amp; IsValidAlphaNum(domain, true)
+}</span>
+
+var reservedName = []string{
+        "signup",
+        "login",
+        "admin",
+        "channel",
+        "post",
+        "api",
+        "oauth",
+}
+
+//IsValidIDChannelentifier check if string provided is a correct channel identifier
+func IsValidIDChannelentifier(s string) bool <span class="cov5" title="36">{
+        return IsValidAlphaNum(s, true)
+}</span>
+
+//IsValidOrganisationIdentifier check if string provided is a correct organisation identifier
+func IsValidOrganisationIdentifier(s string) bool <span class="cov4" title="22">{
+
+        return IsValidAlphaNum(s, true)
+}</span>
+
+var validAlphaNumUnderscore = regexp.MustCompile(`^[a-z0-9]+([a-z\-\_0-9]+|(__)?)[a-z0-9]+$`)
+var validAlphaNum = regexp.MustCompile(`^[a-z0-9]+([a-z\-0-9]+|(__)?)[a-z0-9]+$`)
+
+//IsValidAlphaNum Check that string is correct lower case alpha numeric chain
+func IsValidAlphaNum(s string, allowUnderscores bool) bool <span class="cov6" title="58">{
+        var match bool
+        if allowUnderscores </span><span class="cov6" title="58">{
+                match = validAlphaNumUnderscore.MatchString(s)
+        }</span><span class="cov0" title="0"> else {
+                match = validAlphaNum.MatchString(s)
+        }</span>
+
+        <span class="cov6" title="58">return match</span>
+}
+
+// Etag function create a string used for cache and coockies storage
+func Etag(parts ...interface{}) string <span class="cov2" title="4">{
+
+        Etag := CurrentVersion
+
+        for _, part := range parts </span><span class="cov4" title="14">{
+                Etag += fmt.Sprintf(".%v", part)
+        }</span>
+
+        <span class="cov2" title="4">return Etag</span>
+}
+
+var validHashtag = regexp.MustCompile(`^(#\pL[\pL\d\-_.]*[\pL\d])$`)
+var puncStart = regexp.MustCompile(`^[^\pL\d\s#]+`)
+var hashtagStart = regexp.MustCompile(`^#{2,}`)
+var puncEnd = regexp.MustCompile(`[^\pL\d\s]+$`)
+
+// ParseHashtags parse #xxxxxxxxx declaration in messages
+func ParseHashtags(text string) (string, string) <span class="cov5" title="38">{
+        words := strings.Fields(text)
+
+        hashtagString := ""
+        plainString := ""
+        for _, word := range words </span><span class="cov5" title="42">{
+                // trim off surrounding punctuation
+                word = puncStart.ReplaceAllString(word, "")
+                word = puncEnd.ReplaceAllString(word, "")
+
+                // and remove extra pound #s
+                word = hashtagStart.ReplaceAllString(word, "#")
+
+                if validHashtag.MatchString(word) </span><span class="cov5" title="33">{
+                        hashtagString += " " + word
+                }</span><span class="cov3" title="9"> else {
+                        plainString += " " + word
+                }</span>
+        }
+
+        <span class="cov5" title="38">if len(hashtagString) &gt; 1000 </span><span class="cov0" title="0">{
+                hashtagString = hashtagString[:999]
+                lastSpace := strings.LastIndex(hashtagString, " ")
+                if lastSpace &gt; -1 </span><span class="cov0" title="0">{
+                        hashtagString = hashtagString[:lastSpace]
+                }</span><span class="cov0" title="0"> else {
+                        hashtagString = ""
+                }</span>
+        }
+
+        <span class="cov5" title="38">return strings.TrimSpace(hashtagString), strings.TrimSpace(plainString)</span>
+}
+
+// func IsFileExtImage(ext string) bool {
+//         ext = strings.ToLower(ext)
+//         for _, imgExt := range IMAGE_EXTENSIONS {
+//                 if ext == imgExt {
+//                         return true
+//                 }
+//         }
+//         return false
+// }
+
+// func GetImageMimeType(ext string) string {
+//         ext = strings.ToLower(ext)
+//         if len(IMAGE_MIME_TYPES[ext]) == 0 {
+//                 return "image"
+//         } else {
+//                 return IMAGE_MIME_TYPES[ext]
+//         }
+// }
+
+// ClearMentionTags remove mention tags from messages
+func ClearMentionTags(post string) string <span class="cov0" title="0">{
+        post = strings.Replace(post, "&lt;mention&gt;", "", -1)
+        post = strings.Replace(post, "&lt;/mention&gt;", "", -1)
+        return post
+}</span>
+
+// URLRegex is a small variable to expose regexp matching URL
+var URLRegex = regexp.MustCompile(`^((?:[a-z]+:\/\/)?(?:(?:[a-z0-9\-]+\.)+(?:[a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|local|internal))(:[0-9]{1,5})?(?:\/[a-z0-9_\-\.~]+)*(\/([a-z0-9_\-\.]*)(?:\?[a-z0-9+_~\-\.%=&amp;amp;]*)?)?(?:#[a-zA-Z0-9!$&amp;'()*+.=-_~:@/?]*)?)(?:\s+|$)$`)
+
+// PartialURLRegex is a small variable to expose regexp matching URL (from parial parst)
+var PartialURLRegex = regexp.MustCompile(`/([A-Za-z0-9]{26})/([A-Za-z0-9]{26})/((?:[A-Za-z0-9]{26})?.+(?:\.[A-Za-z0-9]{3,})?)`)
+
+//SplitRunes Split runes define a table of runes saying if they are spliters or not
+var SplitRunes = map[rune]bool{',': true, ' ': true, '.': true, '!': true, '?': true, ':': true, ';': true, '\n': true, '&lt;': true, '&gt;': true, '(': true, ')': true, '{': true, '}': true, '[': true, ']': true, '+': true, '/': true, '\\': true}
+
+// IsValidHTTPURL check validity of provided string as http url
+func IsValidHTTPURL(rawURL string) bool <span class="cov0" title="0">{
+        if strings.Index(rawURL, "http://") != 0 &amp;&amp; strings.Index(rawURL, "https://") != 0 </span><span class="cov0" title="0">{
+                return false
+        }</span>
+
+        <span class="cov0" title="0">if _, err := url.ParseRequestURI(rawURL); err != nil </span><span class="cov0" title="0">{
+                return false
+        }</span>
+
+        <span class="cov0" title="0">return true</span>
+}
+
+// IsValidHTTPSURL check validity of provided string as https url
+func IsValidHTTPSURL(rawURL string) bool <span class="cov0" title="0">{
+        if strings.Index(rawURL, "https://") != 0 </span><span class="cov0" title="0">{
+                return false
+        }</span>
+
+        <span class="cov0" title="0">if _, err := url.ParseRequestURI(rawURL); err != nil </span><span class="cov0" title="0">{
+                return false
+        }</span>
+
+        <span class="cov0" title="0">return true</span>
+}
+
+// func IsValidTurnOrStunServer(rawURI string) bool {
+//         if strings.Index(rawURI, "turn:") != 0 &amp;&amp; strings.Index(rawURI, "stun:") != 0 {
+//                 return false
+//         }
+
+//         if _, err := url.ParseRequestURI(rawURI); err != nil {
+//                 return false
+//         }
+
+//         return true
+// }
+
+// IsSafeLink check if provided link can be considered as Safe
+func IsSafeLink(link *string) bool <span class="cov0" title="0">{
+        if link != nil </span><span class="cov0" title="0">{
+                if IsValidHTTPURL(*link) </span><span class="cov0" title="0">{
+                        return true
+                }</span>
+                <span class="cov0" title="0">if strings.HasPrefix(*link, "/") </span><span class="cov0" title="0">{
+                        return true
+                }</span>
+                <span class="cov0" title="0">return false</span>
+
+        }
+
+        <span class="cov0" title="0">return true</span>
+}
+
+// IsValidWebsocketURL Check if provided string can be used as websocked url.
+func IsValidWebsocketURL(rawURL string) bool <span class="cov0" title="0">{
+        if strings.Index(rawURL, "ws://") != 0 &amp;&amp; strings.Index(rawURL, "wss://") != 0 </span><span class="cov0" title="0">{
+                return false
+        }</span>
+
+        <span class="cov0" title="0">if _, err := url.ParseRequestURI(rawURL); err != nil </span><span class="cov0" title="0">{
+                return false
+        }</span>
+
+        <span class="cov0" title="0">return true</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

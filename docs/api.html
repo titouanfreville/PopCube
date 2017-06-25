@@ -19,7 +19,7 @@
 		
 		<div id="short-nav">
 			<dl>
-			<dd><code>import "./models/"</code></dd>
+			<dd><code>import "."</code></dd>
 			</dl>
 			<dl>
 			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
@@ -36,9 +36,23 @@
 			<div class="expanded">
 				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
 				<p>
-Here is the file which describe the user model.
-It provides bascis function to manipulate the model.
+Created by Titouan FREVILLE &lt;titouanfreville@gmail.com&gt;
+Inspired by mattermost project
 </p>
+<pre>Package Models.
+This package implements the basics databases models used by PopCube chat api.
+
+Models
+
+The following is a list of models described:
+	Avatar: Contain all informations for avatar management
+	Channel: Contain all informations for channel management
+	Emojis: Contain all informations for emojis management
+	Organisation: Contain all informations for organisation management
+	Parameter: Contain all informations for parmeters management
+	Role: Contain all informations for roles management
+	User: Contain all informations for users management
+</pre>
 
 			</div>
 		</div>
@@ -58,13 +72,163 @@ It provides bascis function to manipulate the model.
 				<dd><a href="#pkg-constants">Constants</a></dd>
 			
 			
+				<dd><a href="#pkg-variables">Variables</a></dd>
+			
 			
 				
-				<dd><a href="#ComparePassword">func ComparePassword(hash string, password string) bool</a></dd>
+				<dd><a href="#ArrayFromInterface">func ArrayFromInterface(data interface{}) []string</a></dd>
 			
 				
-				<dd><a href="#HashPassword">func HashPassword(password string) string</a></dd>
+				<dd><a href="#ArrayFromJson">func ArrayFromJson(data io.Reader) []string</a></dd>
 			
+				
+				<dd><a href="#ArrayToJson">func ArrayToJson(objmap []string) string</a></dd>
+			
+				
+				<dd><a href="#ClearMentionTags">func ClearMentionTags(post string) string</a></dd>
+			
+				
+				<dd><a href="#Etag">func Etag(parts ...interface{}) string</a></dd>
+			
+				
+				<dd><a href="#GetMillis">func GetMillis() int64</a></dd>
+			
+				
+				<dd><a href="#IsLower">func IsLower(s string) bool</a></dd>
+			
+				
+				<dd><a href="#IsSafeLink">func IsSafeLink(link *string) bool</a></dd>
+			
+				
+				<dd><a href="#IsValidAlphaNum">func IsValidAlphaNum(s string, allowUnderscores bool) bool</a></dd>
+			
+				
+				<dd><a href="#IsValidChannelIdentifier">func IsValidChannelIdentifier(s string) bool</a></dd>
+			
+				
+				<dd><a href="#IsValidDomain">func IsValidDomain(domain string) bool</a></dd>
+			
+				
+				<dd><a href="#IsValidEmail">func IsValidEmail(email string) bool</a></dd>
+			
+				
+				<dd><a href="#IsValidHttpUrl">func IsValidHttpUrl(rawUrl string) bool</a></dd>
+			
+				
+				<dd><a href="#IsValidHttpsUrl">func IsValidHttpsUrl(rawUrl string) bool</a></dd>
+			
+				
+				<dd><a href="#IsValidOrganisationIdentifier">func IsValidOrganisationIdentifier(s string) bool</a></dd>
+			
+				
+				<dd><a href="#IsValidTurnOrStunServer">func IsValidTurnOrStunServer(rawUri string) bool</a></dd>
+			
+				
+				<dd><a href="#IsValidWebsocketUrl">func IsValidWebsocketUrl(rawUrl string) bool</a></dd>
+			
+				
+				<dd><a href="#MapFromJson">func MapFromJson(data io.Reader) map[string]string</a></dd>
+			
+				
+				<dd><a href="#MapToJson">func MapToJson(objmap map[string]string) string</a></dd>
+			
+				
+				<dd><a href="#NewId">func NewId() string</a></dd>
+			
+				
+				<dd><a href="#NewRandomString">func NewRandomString(length int) string</a></dd>
+			
+				
+				<dd><a href="#ParseHashtags">func ParseHashtags(text string) (string, string)</a></dd>
+			
+				
+				<dd><a href="#StringFromJson">func StringFromJson(data io.Reader) string</a></dd>
+			
+				
+				<dd><a href="#StringInArray">func StringInArray(a string, array []string) bool</a></dd>
+			
+				
+				<dd><a href="#StringInterfaceFromJson">func StringInterfaceFromJson(data io.Reader) map[string]interface{}</a></dd>
+			
+				
+				<dd><a href="#StringInterfaceToJson">func StringInterfaceToJson(objmap map[string]interface{}) string</a></dd>
+			
+				
+				<dd><a href="#StringToJson">func StringToJson(s string) string</a></dd>
+			
+			
+				
+				<dd><a href="#AppError">type AppError</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#AppErrorFromJson">func AppErrorFromJson(data io.Reader) *AppError</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewLocAppError">func NewLocAppError(where string, id string, params map[string]interface{}, details string) *AppError</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#AppError.Error">func (er *AppError) Error() string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#AppError.SystemMessage">func (er *AppError) SystemMessage(T goi18n.TranslateFunc) string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#AppError.ToJson">func (er *AppError) ToJson() string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#AppError.Translate">func (er *AppError) Translate(T goi18n.TranslateFunc)</a></dd>
+				
+			
+				
+				<dd><a href="#Avatar">type Avatar</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Channel">type Channel</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Emoji">type Emoji</a></dd>
+				
+				
+			
+				
+				<dd><a href="#EncryptStringMap">type EncryptStringMap</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Organisation">type Organisation</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Parameter">type Parameter</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Role">type Role</a></dd>
+				
+				
+			
+				
+				<dd><a href="#StringArray">type StringArray</a></dd>
+				
+				
+			
+				
+				<dd><a href="#StringInterface">type StringInterface</a></dd>
+				
+				
+			
+				
+				<dd><a href="#StringMap">type StringMap</a></dd>
+				
+				
 			
 				
 				<dd><a href="#User">type User</a></dd>
@@ -82,7 +246,21 @@ It provides bascis function to manipulate the model.
 			<p>
 			<span style="font-size:90%">
 			
-				<a href="/src/target/user.go">user.go</a>
+				<a href="/src/avatar.go">avatar.go</a>
+			
+				<a href="/src/channels.go">channels.go</a>
+			
+				<a href="/src/emojis.go">emojis.go</a>
+			
+				<a href="/src/organisation.go">organisation.go</a>
+			
+				<a href="/src/parameter.go">parameter.go</a>
+			
+				<a href="/src/roles.go">roles.go</a>
+			
+				<a href="/src/user.go">user.go</a>
+			
+				<a href="/src/utilities.go">utilities.go</a>
 			
 			</span>
 			</p>
@@ -131,27 +309,174 @@ It provides bascis function to manipulate the model.
 			<h2 id="pkg-constants">Constants</h2>
 			
 				<pre>const (
-    <span id="USER_NOTIFY_ALL">USER_NOTIFY_ALL</span>            = &#34;all&#34;
-    <span id="USER_NOTIFY_MENTION">USER_NOTIFY_MENTION</span>        = &#34;mention&#34;
-    <span id="USER_NOTIFY_NONE">USER_NOTIFY_NONE</span>           = &#34;none&#34;
-    <span id="DEFAULT_LOCALE">DEFAULT_LOCALE</span>             = &#34;en&#34;
-    <span id="USER_AUTH_SERVICE_EMAIL">USER_AUTH_SERVICE_EMAIL</span>    = &#34;email&#34;
-    <span id="USER_AUTH_SERVICE_USERNAME">USER_AUTH_SERVICE_USERNAME</span> = &#34;username&#34;
-    <span id="USER_CHANNEL">USER_CHANNEL</span>               = &#34;general&#34;
+    <span id="DEFAULT_CHANNEL">DEFAULT_CHANNEL</span>                = &#34;general&#34;
+    <span id="CHANNEL_DISPLAY_NAME_MAX_RUNES">CHANNEL_DISPLAY_NAME_MAX_RUNES</span> = 64
+    <span id="CHANNEL_NAME_MAX_LENGTH">CHANNEL_NAME_MAX_LENGTH</span>        = 64
+    <span id="CHANNEL_DESCRIPTION_MAX_RUNES">CHANNEL_DESCRIPTION_MAX_RUNES</span>  = 1024
+    <span id="CHANNEL_SUBJECT_MAX_RUNES">CHANNEL_SUBJECT_MAX_RUNES</span>      = 250
+)</pre>
+				
+			
+				<pre>const (
+    <span id="ORGANISATION_DISPLAY_NAME_MAX_RUNES">ORGANISATION_DISPLAY_NAME_MAX_RUNES</span> = 64
+    <span id="ORGANISATION_NAME_MAX_LENGTH">ORGANISATION_NAME_MAX_LENGTH</span>        = 64
+    <span id="ORGANISATION_DESCRIPTION_MAX_RUNES">ORGANISATION_DESCRIPTION_MAX_RUNES</span>  = 1024
+    <span id="ORGANISATION_SUBJECT_MAX_RUNES">ORGANISATION_SUBJECT_MAX_RUNES</span>      = 250
+)</pre>
+				
+			
+				<pre>const (
+    <span id="DEFAULT_LOCALE">DEFAULT_LOCALE</span>     = &#34;fr_FR&#34;
+    <span id="DEFAULT_TIMEZONE">DEFAULT_TIMEZONE</span>   = &#34;UTC-0&#34;
+    <span id="LOCAL_MAX_SIZE">LOCAL_MAX_SIZE</span>     = 5
+    <span id="TIME_ZONE_MAX_SIZE">TIME_ZONE_MAX_SIZE</span> = 6
+    <span id="MAX_TIME">MAX_TIME</span>           = 1440
+)</pre>
+				
+			
+				<pre>const (
+    <span id="LOWERCASE_LETTERS">LOWERCASE_LETTERS</span> = &#34;abcdefghijklmnopqrstuvwxyz&#34;
+    <span id="UPPERCASE_LETTERS">UPPERCASE_LETTERS</span> = &#34;ABCDEFGHIJKLMNOPQRSTUVWXYZ&#34;
+    <span id="NUMBERS">NUMBERS</span>           = &#34;0123456789&#34;
+    <span id="SYMBOLS">SYMBOLS</span>           = &#34; !\&#34;\\#$%&amp;&#39;()*+,-./:;&lt;=&gt;?@[]^_`|~&#34;
+    <span id="CURRENT_VERSION">CURRENT_VERSION</span>   = &#34;0.0.0&#34;
+)</pre>
+				
+			
+				<pre>const (
+    <span id="DEFAULT_locale">DEFAULT_locale</span> = &#34;en&#34;
 )</pre>
 				
 			
 		
 		
+			<h2 id="pkg-variables">Variables</h2>
+			
+				<pre>var (
+    <span id="OWNER">OWNER</span> = <a href="#Role">Role</a>{
+        <a href="#RoleName">RoleName</a>:      &#34;owner&#34;,
+        <a href="#CanUsePrivate">CanUsePrivate</a>: <a href="/pkg/builtin/#true">true</a>,
+        <a href="#CanModerate">CanModerate</a>:   <a href="/pkg/builtin/#true">true</a>,
+        <a href="#CanArchive">CanArchive</a>:    <a href="/pkg/builtin/#true">true</a>,
+        <a href="#CanInvite">CanInvite</a>:     <a href="/pkg/builtin/#true">true</a>,
+        <a href="#CanManage">CanManage</a>:     <a href="/pkg/builtin/#true">true</a>,
+        <a href="#CanManageUser">CanManageUser</a>: <a href="/pkg/builtin/#true">true</a>,
+    }
+    <span id="ADMIN">ADMIN</span> = <a href="#Role">Role</a>{
+        <a href="#RoleName">RoleName</a>:      &#34;admin&#34;,
+        <a href="#CanUsePrivate">CanUsePrivate</a>: <a href="/pkg/builtin/#true">true</a>,
+        <a href="#CanModerate">CanModerate</a>:   <a href="/pkg/builtin/#true">true</a>,
+        <a href="#CanArchive">CanArchive</a>:    <a href="/pkg/builtin/#true">true</a>,
+        <a href="#CanInvite">CanInvite</a>:     <a href="/pkg/builtin/#true">true</a>,
+        <a href="#CanManage">CanManage</a>:     <a href="/pkg/builtin/#true">true</a>,
+        <a href="#CanManageUser">CanManageUser</a>: <a href="/pkg/builtin/#true">true</a>,
+    }
+    <span id="STANDART">STANDART</span> = <a href="#Role">Role</a>{
+        <a href="#RoleName">RoleName</a>:      &#34;standart&#34;,
+        <a href="#CanUsePrivate">CanUsePrivate</a>: <a href="/pkg/builtin/#true">true</a>,
+        <a href="#CanModerate">CanModerate</a>:   <a href="/pkg/builtin/#true">true</a>,
+        <a href="#CanArchive">CanArchive</a>:    <a href="/pkg/builtin/#true">true</a>,
+        <a href="#CanInvite">CanInvite</a>:     <a href="/pkg/builtin/#false">false</a>,
+        <a href="#CanManage">CanManage</a>:     <a href="/pkg/builtin/#false">false</a>,
+        <a href="#CanManageUser">CanManageUser</a>: <a href="/pkg/builtin/#false">false</a>,
+    }
+    <span id="GUEST">GUEST</span> = <a href="#Role">Role</a>{
+        <a href="#RoleName">RoleName</a>:      &#34;guest&#34;,
+        <a href="#CanUsePrivate">CanUsePrivate</a>: <a href="/pkg/builtin/#false">false</a>,
+        <a href="#CanModerate">CanModerate</a>:   <a href="/pkg/builtin/#false">false</a>,
+        <a href="#CanArchive">CanArchive</a>:    <a href="/pkg/builtin/#false">false</a>,
+        <a href="#CanInvite">CanInvite</a>:     <a href="/pkg/builtin/#false">false</a>,
+        <a href="#CanManage">CanManage</a>:     <a href="/pkg/builtin/#false">false</a>,
+        <a href="#CanManageUser">CanManageUser</a>: <a href="/pkg/builtin/#false">false</a>,
+    }
+    <span id="BASICS_ROLES">BASICS_ROLES</span> = []*<a href="#Role">Role</a>{
+        &amp;<a href="#OWNER">OWNER</a>,
+        &amp;<a href="#ADMIN">ADMIN</a>,
+        &amp;<a href="#STANDART">STANDART</a>,
+        &amp;<a href="#GUEST">GUEST</a>,
+    }
+)</pre>
+				
+			
+				<pre>var (
+    <span id="CHANNNEL_AVAILABLE_TYPES">CHANNNEL_AVAILABLE_TYPES</span> = []<a href="/pkg/builtin/#string">string</a>{&#34;direct&#34;, &#34;text&#34;, &#34;audio&#34;, &#34;video&#34;}
+)</pre>
+				
+			
+				<pre>var <span id="PartialUrlRegex">PartialUrlRegex</span> = <a href="/pkg/regexp/">regexp</a>.<a href="/pkg/regexp/#MustCompile">MustCompile</a>(`/([A-Za-z0-9]{26})/([A-Za-z0-9]{26})/((?:[A-Za-z0-9]{26})?.+(?:\.[A-Za-z0-9]{3,})?)`)</pre>
+				
+			
+				<pre>var <span id="SplitRunes">SplitRunes</span> = map[<a href="/pkg/builtin/#rune">rune</a>]<a href="/pkg/builtin/#bool">bool</a>{&#39;,&#39;: <a href="/pkg/builtin/#true">true</a>, &#39; &#39;: <a href="/pkg/builtin/#true">true</a>, &#39;.&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;!&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;?&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;:&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;;&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;\n&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;&lt;&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;&gt;&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;(&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;)&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;{&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;}&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;[&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;]&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;+&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;/&#39;: <a href="/pkg/builtin/#true">true</a>, &#39;\\&#39;: <a href="/pkg/builtin/#true">true</a>}</pre>
+				
+			
+				<pre>var <span id="UrlRegex">UrlRegex</span> = <a href="/pkg/regexp/">regexp</a>.<a href="/pkg/regexp/#MustCompile">MustCompile</a>(`^((?:[a-z]+:\/\/)?(?:(?:[a-z0-9\-]+\.)+(?:[a-z]{2}|aero|arpa|biz|com|coop|edu|gov|info|int|jobs|mil|museum|name|nato|net|org|pro|travel|local|internal))(:[0-9]{1,5})?(?:\/[a-z0-9_\-\.~]+)*(\/([a-z0-9_\-\.]*)(?:\?[a-z0-9+_~\-\.%=&amp;amp;]*)?)?(?:#[a-zA-Z0-9!$&amp;&#39;()*+.=-_~:@/?]*)?)(?:\s+|$)$`)</pre>
+				
+			
+		
 		
 			
 			
-			<h2 id="ComparePassword">func <a href="/src/target/user.go?s=3056:3111#L86">ComparePassword</a>
-				<a class="permalink" href="#ComparePassword">&#xb6;</a>
+			<h2 id="ArrayFromInterface">func <a href="/src/models/utilities.go?s=4421:4471#L166">ArrayFromInterface</a>
+				<a class="permalink" href="#ArrayFromInterface">&#xb6;</a>
 			</h2>
-			<pre>func ComparePassword(hash <a href="/pkg/builtin/#string">string</a>, password <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			<pre>func ArrayFromInterface(data interface{}) []<a href="/pkg/builtin/#string">string</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="ArrayFromJson">func <a href="/src/models/utilities.go?s=4211:4254#L155">ArrayFromJson</a>
+				<a class="permalink" href="#ArrayFromJson">&#xb6;</a>
+			</h2>
+			<pre>func ArrayFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) []<a href="/pkg/builtin/#string">string</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="ArrayToJson">func <a href="/src/models/utilities.go?s=4072:4112#L147">ArrayToJson</a>
+				<a class="permalink" href="#ArrayToJson">&#xb6;</a>
+			</h2>
+			<pre>func ArrayToJson(objmap []<a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="ClearMentionTags">func <a href="/src/models/utilities.go?s=8077:8118#L345">ClearMentionTags</a>
+				<a class="permalink" href="#ClearMentionTags">&#xb6;</a>
+			</h2>
+			<pre>func ClearMentionTags(post <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="Etag">func <a href="/src/models/utilities.go?s=6523:6561#L277">Etag</a>
+				<a class="permalink" href="#Etag">&#xb6;</a>
+			</h2>
+			<pre>func Etag(parts ...interface{}) <a href="/pkg/builtin/#string">string</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="GetMillis">func <a href="/src/models/utilities.go?s=3515:3537#L122">GetMillis</a>
+				<a class="permalink" href="#GetMillis">&#xb6;</a>
+			</h2>
+			<pre>func GetMillis() <a href="/pkg/builtin/#int64">int64</a></pre>
 			<p>
-ComparePassword compares the hash
+GetMillis is a convience method to get milliseconds since epoch.
 </p>
 
 			
@@ -160,84 +485,648 @@ ComparePassword compares the hash
 		
 			
 			
-			<h2 id="HashPassword">func <a href="/src/target/user.go?s=2853:2894#L76">HashPassword</a>
-				<a class="permalink" href="#HashPassword">&#xb6;</a>
+			<h2 id="IsLower">func <a href="/src/models/utilities.go?s=5572:5599#L231">IsLower</a>
+				<a class="permalink" href="#IsLower">&#xb6;</a>
 			</h2>
-			<pre>func HashPassword(password <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			<pre>func IsLower(s <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="IsSafeLink">func <a href="/src/models/utilities.go?s=9613:9647#L392">IsSafeLink</a>
+				<a class="permalink" href="#IsSafeLink">&#xb6;</a>
+			</h2>
+			<pre>func IsSafeLink(link *<a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="IsValidAlphaNum">func <a href="/src/models/utilities.go?s=6304:6362#L266">IsValidAlphaNum</a>
+				<a class="permalink" href="#IsValidAlphaNum">&#xb6;</a>
+			</h2>
+			<pre>func IsValidAlphaNum(s <a href="/pkg/builtin/#string">string</a>, allowUnderscores <a href="/pkg/builtin/#bool">bool</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="IsValidChannelIdentifier">func <a href="/src/models/utilities.go?s=5955:5999#L254">IsValidChannelIdentifier</a>
+				<a class="permalink" href="#IsValidChannelIdentifier">&#xb6;</a>
+			</h2>
+			<pre>func IsValidChannelIdentifier(s <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="IsValidDomain">func <a href="/src/models/utilities.go?s=5752:5790#L240">IsValidDomain</a>
+				<a class="permalink" href="#IsValidDomain">&#xb6;</a>
+			</h2>
+			<pre>func IsValidDomain(domain <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="IsValidEmail">func <a href="/src/models/utilities.go?s=5637:5673#L235">IsValidEmail</a>
+				<a class="permalink" href="#IsValidEmail">&#xb6;</a>
+			</h2>
+			<pre>func IsValidEmail(email <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="IsValidHttpUrl">func <a href="/src/models/utilities.go?s=8935:8974#L356">IsValidHttpUrl</a>
+				<a class="permalink" href="#IsValidHttpUrl">&#xb6;</a>
+			</h2>
+			<pre>func IsValidHttpUrl(rawUrl <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="IsValidHttpsUrl">func <a href="/src/models/utilities.go?s=9173:9213#L368">IsValidHttpsUrl</a>
+				<a class="permalink" href="#IsValidHttpsUrl">&#xb6;</a>
+			</h2>
+			<pre>func IsValidHttpsUrl(rawUrl <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="IsValidOrganisationIdentifier">func <a href="/src/models/utilities.go?s=6038:6087#L258">IsValidOrganisationIdentifier</a>
+				<a class="permalink" href="#IsValidOrganisationIdentifier">&#xb6;</a>
+			</h2>
+			<pre>func IsValidOrganisationIdentifier(s <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="IsValidTurnOrStunServer">func <a href="/src/models/utilities.go?s=9371:9419#L380">IsValidTurnOrStunServer</a>
+				<a class="permalink" href="#IsValidTurnOrStunServer">&#xb6;</a>
+			</h2>
+			<pre>func IsValidTurnOrStunServer(rawUri <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="IsValidWebsocketUrl">func <a href="/src/models/utilities.go?s=9822:9866#L406">IsValidWebsocketUrl</a>
+				<a class="permalink" href="#IsValidWebsocketUrl">&#xb6;</a>
+			</h2>
+			<pre>func IsValidWebsocketUrl(rawUrl <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="MapFromJson">func <a href="/src/models/utilities.go?s=3840:3890#L136">MapFromJson</a>
+				<a class="permalink" href="#MapFromJson">&#xb6;</a>
+			</h2>
+			<pre>func MapFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a></pre>
 			<p>
-HashPassword generates a hash using the bcrypt.GenerateFromPassword
+MapFromJson will decode the key/value pair map
 </p>
 
 			
 			
 
 		
+			
+			
+			<h2 id="MapToJson">func <a href="/src/models/utilities.go?s=3644:3691#L127">MapToJson</a>
+				<a class="permalink" href="#MapToJson">&#xb6;</a>
+			</h2>
+			<pre>func MapToJson(objmap map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+MapToJson converts a map to a json string
+</p>
+
+			
+			
+
 		
 			
 			
-			<h2 id="User">type <a href="/src/target/user.go?s=2010:2779#L57">User</a>
+			<h2 id="NewId">func <a href="/src/models/utilities.go?s=2985:3004#L101">NewId</a>
+				<a class="permalink" href="#NewId">&#xb6;</a>
+			</h2>
+			<pre>func NewId() <a href="/pkg/builtin/#string">string</a></pre>
+			<p>
+NewId is a globally unique identifier.  It is a [A-Z0-9] string 26
+characters long.  It is a UUID version 4 Guid that is zbased32 encoded
+with the padding stripped off.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="NewRandomString">func <a href="/src/models/utilities.go?s=3187:3226#L110">NewRandomString</a>
+				<a class="permalink" href="#NewRandomString">&#xb6;</a>
+			</h2>
+			<pre>func NewRandomString(length <a href="/pkg/builtin/#int">int</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="ParseHashtags">func <a href="/src/models/utilities.go?s=6895:6943#L293">ParseHashtags</a>
+				<a class="permalink" href="#ParseHashtags">&#xb6;</a>
+			</h2>
+			<pre>func ParseHashtags(text <a href="/pkg/builtin/#string">string</a>) (<a href="/pkg/builtin/#string">string</a>, <a href="/pkg/builtin/#string">string</a>)</pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="StringFromJson">func <a href="/src/models/utilities.go?s=5395:5437#L220">StringFromJson</a>
+				<a class="permalink" href="#StringFromJson">&#xb6;</a>
+			</h2>
+			<pre>func StringFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="StringInArray">func <a href="/src/models/utilities.go?s=4713:4762#L183">StringInArray</a>
+				<a class="permalink" href="#StringInArray">&#xb6;</a>
+			</h2>
+			<pre>func StringInArray(a <a href="/pkg/builtin/#string">string</a>, array []<a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="StringInterfaceFromJson">func <a href="/src/models/utilities.go?s=5008:5075#L200">StringInterfaceFromJson</a>
+				<a class="permalink" href="#StringInterfaceFromJson">&#xb6;</a>
+			</h2>
+			<pre>func StringInterfaceFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) map[<a href="/pkg/builtin/#string">string</a>]interface{}</pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="StringInterfaceToJson">func <a href="/src/models/utilities.go?s=4845:4909#L192">StringInterfaceToJson</a>
+				<a class="permalink" href="#StringInterfaceToJson">&#xb6;</a>
+			</h2>
+			<pre>func StringInterfaceToJson(objmap map[<a href="/pkg/builtin/#string">string</a>]interface{}) <a href="/pkg/builtin/#string">string</a></pre>
+			
+			
+			
+
+		
+			
+			
+			<h2 id="StringToJson">func <a href="/src/models/utilities.go?s=5267:5301#L211">StringToJson</a>
+				<a class="permalink" href="#StringToJson">&#xb6;</a>
+			</h2>
+			<pre>func StringToJson(s <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			
+			
+			
+
+		
+		
+			
+			
+			<h2 id="AppError">type <a href="/src/models/utilities.go?s=614:1440#L24">AppError</a>
+				<a class="permalink" href="#AppError">&#xb6;</a>
+			</h2>
+			<pre>type AppError struct {
+    Id            <a href="/pkg/builtin/#string">string</a> `json:&#34;id&#34;`
+    Message       <a href="/pkg/builtin/#string">string</a> `json:&#34;message&#34;`               <span class="comment">// Message to be display to the end user without debugging information</span>
+    DetailedError <a href="/pkg/builtin/#string">string</a> `json:&#34;detailed_error&#34;`        <span class="comment">// Internal error string to help the developer</span>
+    RequestId     <a href="/pkg/builtin/#string">string</a> `json:&#34;request_id,omitempty&#34;`  <span class="comment">// The RequestId that&#39;s also set in the header</span>
+    StatusCode    <a href="/pkg/builtin/#int">int</a>    `json:&#34;status_code,omitempty&#34;` <span class="comment">// The http status code</span>
+    Where         <a href="/pkg/builtin/#string">string</a> `json:&#34;-&#34;`                     <span class="comment">// The function where it happened in the form of Struct.Func</span>
+    IsOAuth       <a href="/pkg/builtin/#bool">bool</a>   `json:&#34;is_oauth,omitempty&#34;`    <span class="comment">// Whether the error is OAuth specific</span>
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="AppErrorFromJson">func <a href="/src/models/utilities.go?s=2047:2094#L65">AppErrorFromJson</a>
+					<a class="permalink" href="#AppErrorFromJson">&#xb6;</a>
+				</h3>
+				<pre>func AppErrorFromJson(data <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Reader">Reader</a>) *<a href="#AppError">AppError</a></pre>
+				<p>
+AppErrorFromJson will decode the input and return an AppError
+</p>
+
+				
+				
+			
+				
+				<h3 id="NewLocAppError">func <a href="/src/models/utilities.go?s=2463:2564#L84">NewLocAppError</a>
+					<a class="permalink" href="#NewLocAppError">&#xb6;</a>
+				</h3>
+				<pre>func NewLocAppError(where <a href="/pkg/builtin/#string">string</a>, id <a href="/pkg/builtin/#string">string</a>, params map[<a href="/pkg/builtin/#string">string</a>]interface{}, details <a href="/pkg/builtin/#string">string</a>) *<a href="#AppError">AppError</a></pre>
+				
+				
+				
+			
+
+			
+				
+				<h3 id="AppError.Error">func (*AppError) <a href="/src/models/utilities.go?s=1442:1476#L35">Error</a>
+					<a class="permalink" href="#AppError.Error">&#xb6;</a>
+				</h3>
+				<pre>func (er *<a href="#AppError">AppError</a>) Error() <a href="/pkg/builtin/#string">string</a></pre>
+				
+				
+				
+				
+			
+				
+				<h3 id="AppError.SystemMessage">func (*AppError) <a href="/src/models/utilities.go?s=1699:1763#L47">SystemMessage</a>
+					<a class="permalink" href="#AppError.SystemMessage">&#xb6;</a>
+				</h3>
+				<pre>func (er *<a href="#AppError">AppError</a>) SystemMessage(T <a href="/pkg/github.com/nicksnyder/go-i18n/i18n/">goi18n</a>.<a href="/pkg/github.com/nicksnyder/go-i18n/i18n/#TranslateFunc">TranslateFunc</a>) <a href="/pkg/builtin/#string">string</a></pre>
+				
+				
+				
+				
+			
+				
+				<h3 id="AppError.ToJson">func (*AppError) <a href="/src/models/utilities.go?s=1852:1887#L55">ToJson</a>
+					<a class="permalink" href="#AppError.ToJson">&#xb6;</a>
+				</h3>
+				<pre>func (er *<a href="#AppError">AppError</a>) ToJson() <a href="/pkg/builtin/#string">string</a></pre>
+				
+				
+				
+				
+			
+				
+				<h3 id="AppError.Translate">func (*AppError) <a href="/src/models/utilities.go?s=1545:1598#L39">Translate</a>
+					<a class="permalink" href="#AppError.Translate">&#xb6;</a>
+				</h3>
+				<pre>func (er *<a href="#AppError">AppError</a>) Translate(T <a href="/pkg/github.com/nicksnyder/go-i18n/i18n/">goi18n</a>.<a href="/pkg/github.com/nicksnyder/go-i18n/i18n/#TranslateFunc">TranslateFunc</a>)</pre>
+				
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="Avatar">type <a href="/src/models/avatar.go?s=51:283#L1">Avatar</a>
+				<a class="permalink" href="#Avatar">&#xb6;</a>
+			</h2>
+			<pre>type Avatar struct {
+    AvatarId <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idAvatar;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+    Name     <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:name;not null;unique&#34; json:&#34;name&#34;`
+    Link     <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:link;not null;unique&#34; json:&#34;link&#34;`
+}</pre>
+			
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Channel">type <a href="/src/models/channels.go?s=366:1042#L12">Channel</a>
+				<a class="permalink" href="#Channel">&#xb6;</a>
+			</h2>
+			<pre>type Channel struct {
+    ChannelId   <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idChannel;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+    WebId       <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:webId;not null;unique&#34; json:&#34;web_id&#34;`
+    ChannelName <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:channelName;not null;unique&#34; json:&#34;display_name&#34;`
+    Type        <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:type;not null&#34; json:&#34;type&#34;`
+    UpdatedAt   <a href="/pkg/builtin/#int64">int64</a>  `gorm:&#34;column:updatedAt;not null&#34; json:&#34;updated_at&#34;`
+    Private     <a href="/pkg/builtin/#bool">bool</a>   `gorm:&#34;column:private;not null&#34; json:&#34;private&#34;`
+    Description <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:desciption&#34; json:&#34;description,omitempty&#34;`
+    Subject     <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:subject&#34; json:&#34;subject,omitempty&#34;`
+    Avatar      <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:avatar&#34; json:&#34;avatar,omitempty&#34;`
+}</pre>
+			
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Emoji">type <a href="/src/models/emojis.go?s=51:355#L1">Emoji</a>
+				<a class="permalink" href="#Emoji">&#xb6;</a>
+			</h2>
+			<pre>type Emoji struct {
+    EmojiId  <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idEmoji;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+    Name     <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:name;not null;unique&#34; json:&#34;name&#34;`
+    Shortcut <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:shortcut;not null;unique&#34; json:&#34;shortcut&#34;`
+    Link     <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:link;not null;unique&#34; json:&#34;link&#34;`
+}</pre>
+			
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="EncryptStringMap">type <a href="/src/models/utilities.go?s=573:612#L22">EncryptStringMap</a>
+				<a class="permalink" href="#EncryptStringMap">&#xb6;</a>
+			</h2>
+			<pre>type EncryptStringMap map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a></pre>
+			
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Organisation">type <a href="/src/models/organisation.go?s=271:799#L8">Organisation</a>
+				<a class="permalink" href="#Organisation">&#xb6;</a>
+			</h2>
+			<pre>type Organisation struct {
+    OrganisationId   <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idOrganisation;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+    DockerStack      <a href="/pkg/builtin/#int">int</a>    `gorm:&#34;column:dockerStack;not null;unique&#34; json:&#34;docker_stack&#34;`
+    OrganisationName <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:organisationName;not null;unique&#34; json:&#34;display_name&#34;`
+    Description      <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:desciption&#34; json:&#34;description,omitempty&#34;`
+    Avatar           <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:avatar&#34; json:&#34;avatar,omitempty&#34;`
+    Domain           <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:domain&#34; json:&#34;avatar,omitempty&#34;`
+}</pre>
+			
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Parameter">type <a href="/src/models/parameter.go?s=197:618#L6">Parameter</a>
+				<a class="permalink" href="#Parameter">&#xb6;</a>
+			</h2>
+			<pre>type Parameter struct {
+    ParameterId <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idParameter;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+    Local       <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:local;not null; unique&#34; json:&#34;local&#34;`
+    TimeZone    <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:timeZone&#34;;not null; unique; json:&#34;time_zone&#34;`
+    SleepStart  <a href="/pkg/builtin/#int">int</a>    `gorm:&#34;column:sleepStart;not null;unique&#34; json:&#34;sleep_start&#34;`
+    SleepEnd    <a href="/pkg/builtin/#int">int</a>    `gorm:&#34;column:sleepEnd;not null;unique&#34; json:&#34;sleep_end&#34;`
+}</pre>
+			
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Role">type <a href="/src/models/roles.go?s=61:716#L1">Role</a>
+				<a class="permalink" href="#Role">&#xb6;</a>
+			</h2>
+			<pre>type Role struct {
+    RoleId        <a href="/pkg/builtin/#uint64">uint64</a> `gorm:&#34;primary_key;column:idRole;AUTO_INCREMENT&#34; json:&#34;-&#34;`
+    RoleName      <a href="/pkg/builtin/#string">string</a> `gorm:&#34;column:roleName;unique_index;not null;unique&#34; json:&#34;name&#34;`
+    CanUsePrivate <a href="/pkg/builtin/#bool">bool</a>   `gorm:&#34;column:canUsePrivate;not null&#34; json:&#34;canUsePrivate&#34;`
+    CanModerate   <a href="/pkg/builtin/#bool">bool</a>   `gorm:&#34;column:canModerate;not null&#34; json:&#34;canModerate&#34;`
+    CanArchive    <a href="/pkg/builtin/#bool">bool</a>   `gorm:&#34;column:canArchive;not null&#34; json:&#34;canArchive&#34;`
+    CanInvite     <a href="/pkg/builtin/#bool">bool</a>   `gorm:&#34;column:canInvite;not null&#34; json:&#34;canInvite&#34;`
+    CanManage     <a href="/pkg/builtin/#bool">bool</a>   `gorm:&#34;column:canManage;not null&#34; json:&#34;canManage&#34;`
+    CanManageUser <a href="/pkg/builtin/#bool">bool</a>   `gorm:&#34;column:canManageUser;not null&#34; json:&#34;canManageUser&#34;`
+}</pre>
+			
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="StringArray">type <a href="/src/models/utilities.go?s=547:572#L21">StringArray</a>
+				<a class="permalink" href="#StringArray">&#xb6;</a>
+			</h2>
+			<pre>type StringArray []<a href="/pkg/builtin/#string">string</a></pre>
+			
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="StringInterface">type <a href="/src/models/utilities.go?s=470:513#L19">StringInterface</a>
+				<a class="permalink" href="#StringInterface">&#xb6;</a>
+			</h2>
+			<pre>type StringInterface map[<a href="/pkg/builtin/#string">string</a>]interface{}</pre>
+			
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="StringMap">type <a href="/src/models/utilities.go?s=514:546#L20">StringMap</a>
+				<a class="permalink" href="#StringMap">&#xb6;</a>
+			</h2>
+			<pre>type StringMap map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a></pre>
+			
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="User">type <a href="/src/models/user.go?s=2396:3246#L73">User</a>
 				<a class="permalink" href="#User">&#xb6;</a>
 			</h2>
 			<pre>type User struct {
-    Id                 <a href="/pkg/builtin/#string">string</a> `json:&#34;id&#34;`
+    WebId              <a href="/pkg/builtin/#string">string</a> `json:&#34;webId&#34;`
+    UpdatedAt          <a href="/pkg/builtin/#int64">int64</a>  `json:&#34;update_at,omitempty&#34;`
     Deleted            <a href="/pkg/builtin/#bool">bool</a>   `json:&#34;deleted&#34;`
     Username           <a href="/pkg/builtin/#string">string</a> `json:&#34;username&#34;`
     Password           <a href="/pkg/builtin/#string">string</a> `json:&#34;password,omitempty&#34;`
-    Email              <a href="/pkg/builtin/#string">string</a> `json:&#34;email&#34;`
+    Email              <a href="/pkg/builtin/#string">string</a> `json:&#34;email,omitempty&#34;`
     EmailVerified      <a href="/pkg/builtin/#bool">bool</a>   `json:&#34;email_verified,omitempty&#34;`
     Nickname           <a href="/pkg/builtin/#string">string</a> `json:&#34;nickname&#34;`
     FirstName          <a href="/pkg/builtin/#string">string</a> `json:&#34;first_name&#34;`
     LastName           <a href="/pkg/builtin/#string">string</a> `json:&#34;last_name&#34;`
-    Roles              <a href="/pkg/builtin/#string">string</a> `json:&#34;roles&#34;`
+    Avatar             <a href="/pkg/builtin/#string">string</a> `json:&#34;avatar&#34;`
+    Role               <a href="/pkg/builtin/#int64">int64</a>  `json:&#34;roles,omitempty&#34;`
     LastPasswordUpdate <a href="/pkg/builtin/#int64">int64</a>  `json:&#34;last_password_update,omitempty&#34;`
     FailedAttempts     <a href="/pkg/builtin/#int">int</a>    `json:&#34;failed_attempts,omitempty&#34;`
     Locale             <a href="/pkg/builtin/#string">string</a> `json:&#34;locale&#34;`
     LastActivityAt     <a href="/pkg/builtin/#int64">int64</a>  `db:&#34;-&#34; json:&#34;last_activity_at,omitempty&#34;`
 }</pre>
 			<p>
-User object
+user object
 </p>
 <p>
-- ID: String unique and non null to identify the user.
+- webwebId: String unique and non null to webIdentify the user on application services. - REQUIRED
 </p>
 <p>
-- Deleted: True if user is deleted.
+- username: Store the user username used to log into the service. - REQUIRED
 </p>
 <p>
-- Username: Store the user username used to log into the service.
+- email: user mail ;). - REQUIRED
 </p>
 <p>
-- Password: Hashed password.
+- emailVerified: true if email was verified by user. - REQUIRED
 </p>
 <p>
-- Email: User mail ;).
+- updatedAt: Time of the last update. Used to create tag for browser cache. - REQUIRED
 </p>
 <p>
-- EmailVerified: true if email was verified by user.
+- deleted: True if user is deleted. - REQUIRED
 </p>
 <p>
-- Nickname: Name to use in communication channel (by default : username).
+- password: Hashed password. - REQUIRED
 </p>
 <p>
-- First name: User true first name.
+- lastpasswordUpdate: Date of the last password modification. - REQUIRED
 </p>
 <p>
-- Last name: User true last name.
+- failedAttemps: Number of fail try to connect to account. - REQUIRED
 </p>
 <p>
-- Roles: User role in the organisation (Owner, Admin, User, Invité).
+- locale: user favorite langage. - REQUIRED
 </p>
 <p>
-- LastPasswordUpdate: Date of the last password modification.
+- role : int referencing a user role existing in the database. - REQUIRED
 </p>
 <p>
-- FailedAttemps: Number of fail try to connect to account.
+- nickname: Name to use in communication channel (by default : username).
 </p>
 <p>
-- Locale: User favorite langage.
+- first name: user true first name.
 </p>
 <p>
-- LastActivityAt: Date &amp;&amp; Time of the last activity of the user.
+- last name: user true last name.
+</p>
+<p>
+- lastActivityAt: Date &amp;&amp; Time of the last activity of the user.
 </p>
 
 
