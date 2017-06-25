@@ -15,6 +15,7 @@ import { LocalOrganisationService } from '../../../service/localOrganisationServ
 export class LoginComponent implements OnInit {
 
   loginVar = {login: '', password: ''};
+  private errorMsg = null;
 
   constructor(
     public http: Http,
@@ -31,6 +32,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.errorMsg = null;
     let request = this._loginService.login(this.loginVar);
     request.then((data) => {
         let i: number;
@@ -43,6 +45,7 @@ export class LoginComponent implements OnInit {
         this._router.navigate(['/organisation']);
       }).catch((ex) => {
        console.error('Error login', ex);
+       this.errorMsg = 'Wrong username or password';
       });
   }
 }

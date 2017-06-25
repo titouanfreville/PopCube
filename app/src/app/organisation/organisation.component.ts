@@ -26,10 +26,7 @@ import { Stack } from '../../service/external/stack';
 export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   @ViewChild('message') private myScrollContainer: ElementRef;
-  @ViewChild('myVideo1') private myVideo1: any;
-  @ViewChild('myVideo2') private myVideo2: any;
-  @ViewChild('myVideo3') private myVideo3: any;
-  @ViewChild('myVideo4') private myVideo4: any;
+  @ViewChild('myVideo') private myVideo: any;
   @ViewChild('myVideo5') private myVideo5: any;
 
   organisations: Organisation[] = [];
@@ -55,6 +52,8 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
   isOrganisationLoad;
   isChannelLoad;
   isMessageLoad;
+
+  private externalPeer;
 
   storedInformationsTest: any[];
 
@@ -96,12 +95,77 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
        });
     }
 
-    console.log(this.organisations);
+    this.peer = new Peer({
+            config: {'iceServers': [
+              {url:'stun:stun01.sipphone.com'},
+              {url:'stun:stun.ekiga.net'},
+              {url:'stun:stun.fwdnet.net'},
+              {url:'stun:stun.ideasip.com'},
+              {url:'stun:stun.iptel.org'},
+              {url:'stun:stun.rixtelecom.se'},
+              {url:'stun:stun.schlund.de'},
+              {url:'stun:stun.l.google.com:19302'},
+              {url:'stun:stun1.l.google.com:19302'},
+              {url:'stun:stun2.l.google.com:19302'},
+              {url:'stun:stun3.l.google.com:19302'},
+              {url:'stun:stun4.l.google.com:19302'},
+              {url:'stun:stunserver.org'},
+              {url:'stun:stun.softjoys.com'},
+              {url:'stun:stun.voiparound.com'},
+              {url:'stun:stun.voipbuster.com'},
+              {url:'stun:stun.voipstunt.com'},
+              {url:'stun:stun.voxgratia.org'},
+              {url:'stun:stun.xten.com'},
+              {
+                url: 'turn:numb.viagenie.ca',
+                credential: 'muazkh',
+                username: 'webrtc@live.com'
+              },
+              {
+                url: 'turn:192.158.29.39:3478?transport=udp',
+                credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+                username: '28224511:1379330808'
+              },
+              {
+                url: 'turn:192.158.29.39:3478?transport=tcp',
+                credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+                username: '28224511:1379330808'
+              }
+            ]}, key: 'tcgi4gqxdbcsor'});
+          setTimeout(() => {
+            console.log(this.peer);
+        });
+
+    this.peer.on('connection', function(conn) {
+          conn.on('data', function(data) {
+            console.log(data);
+          });
+        });
+
     this.initStatus();
   }
 
   ngOnInit() {
     this.isOrganisationLoad = false;
+
+    if (this.myVideo) {
+          let video = this.myVideo.nativeElement;
+          let n = <any>navigator;
+
+          n.getUserMedia = n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
+
+          this.peer.on('call', function(call) {
+            n.getUserMedia({video: true, audio: true}, function(stream){
+              call.answer(stream);
+              call.on('stream', function(remotestream) {
+                video.src = URL.createObjectURL(remotestream);
+                video.play();
+              });
+            }, function(err) {
+              console.log(err);
+            });
+          });
+        }
   }
 
   ngAfterViewInit() {
@@ -171,7 +235,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
   channelClick(channelId) {
     // Close previous Peer if exist
     if (this.peer) {
-      this.closePeer();
+      //this.closePeer();
     }
 
     // Reset messages to set it with the new messages of this channel
@@ -214,10 +278,10 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     // Call audio
 
     // Call Video
-    if (this.currentChannel.type === 'video') {
-        this.newPeer();
-        this.videoConnect();
-    }
+    // if (this.currentChannel.type === 'video') {
+    //     this.newPeer();
+    //     this.videoConnect();
+    // }
 
     // this.connect();
 
@@ -316,6 +380,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
             }
           }
           this.setRolesList();
+          console.log(this.currentUser);
         }).catch((ex) => {
         console.error('Error fetching users', ex);
       });
@@ -327,32 +392,31 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
     this._router.navigate(['/settings']);
   }
 
-  newPeer() {
+  // newPeer() {
+  //       // Peerjs
+  //       // this.peer = new Peer([this.currentUser.webId + this.currentChannel._idChannel], {
+  //       //     config: {'iceServers': [
+  //       //       { url: 'stun:stun.l.google.com:19302' },
+  //       //       { url: 'turn:homeo@turn.bistri.com:80', credential: 'homeo' }
+  //       //     ]}, key: 'tcgi4gqxdbcsor'});
+  //       //   setTimeout(() => {
+  //       //     console.log(this.peer);
+  //       // });
 
-        // Peerjs
-        this.peer = new Peer([this.currentUser.webId + this.currentChannel._idChannel], {
-            config: {'iceServers': [
-              { url: 'stun:stun.l.google.com:19302' },
-              { url: 'turn:homeo@turn.bistri.com:80', credential: 'homeo' }
-            ]}, key: 'tcgi4gqxdbcsor'});
-          setTimeout(() => {
-            console.log(this.peer);
-        });
+  //       // this.peer.on('connection', function(conn) {
+  //       //   conn.on('data', function(data) {
+  //       //     console.log(data);
+  //       //   });
+  //       // });
+  // }
 
-        this.peer.on('connection', function(conn) {
-          conn.on('data', function(data) {
-            console.log(data);
-          });
-        });
-  }
-
-  closePeer() {
-    this.peer.destroy();
-  }
+  // closePeer() {
+  //   this.peer.destroy();
+  // }
 
   connect() {
     for (let u of this.users) {
-        if (u._idUser !== this.currentUser._idUser){
+        if (u._idUser !== this.currentUser._idUser) {
         let conn = this.peer.connect(u.webId + this.currentChannel._idChannel);
         conn.on('open', function() {
           conn.send('hi');
@@ -362,76 +426,94 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
   }
 
   videoConnect() {
+    let video = this.myVideo.nativeElement;
+    let localvar = this.peer;
+    let fname = this.externalPeer;
 
-    console.log(this.myVideo1);
+    console.log(fname);
+
+    let n = <any>navigator;
+
+    n.getUserMedia = n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
+
+    n.getUserMedia({video: true, audio: true}, function(stream) {
+      let call = localvar.call(fname, stream);
+      call.on('stream', function(remotestream) {
+        video.src = URL.createObjectURL(remotestream);
+        video.play();
+      });
+    }, function(err) {
+      console.log(err);
+    });
+
     // If myVideo1 div exist
-    if (this.myVideo1) {
-        let video1 = this.myVideo1.nativeElement;
-        let video2 = this.myVideo2.nativeElement;
-        let video3 = this.myVideo3.nativeElement;
-        let video4 = this.myVideo4.nativeElement;
-        let video5 = this.myVideo5.nativeElement;
+    // if (this.myVideo1) {
+    //     let video1 = this.myVideo1.nativeElement;
+    //     let video2 = this.myVideo2.nativeElement;
+    //     let video3 = this.myVideo3.nativeElement;
+    //     let video4 = this.myVideo4.nativeElement;
+    //     let video5 = this.myVideo5.nativeElement;
 
-        let n = <any>navigator;
-        let localPeer = this.peer;
-        let localChanId = this.currentChannel._idChannel;
-        let localCurU = this.currentUser._idUser;
-        let i: number = 0;
+    //     let n = <any>navigator;
+    //     let localPeer = this.peer;
+    //     let localChanId = this.currentChannel._idChannel;
+    //     let localCurU = this.currentUser._idUser;
+    //     let i: number = 0;
 
-        n.getUserMedia = n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
+    //     n.getUserMedia = n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
 
-        for (let u of this.users) {
-          n.getUserMedia({video: true, audio: true}, function(stream) {
-            if (u._idUser !== localCurU) {
-              let call = localPeer.call(u.webId + localChanId, stream);
-              console.log('Dest id is : ' + u.webId + localChanId);
-              call.on('stream', function(remotestream) {
-                i++;
-                console.log(i);
-                switch (i) {
-                  case 1: video1.src = URL.createObjectURL(remotestream);
-                          video1.play();
-                          console.log('stream');
-                          console.log('1');
-                        break;
-                  case 2: video2.src = URL.createObjectURL(remotestream);
-                          video2.play();
-                          console.log('stream');
-                          console.log('2');
-                        break;
-                  case 3: video3.src = URL.createObjectURL(remotestream);
-                          video3.play();
-                          console.log('stream');
-                          console.log('3');
-                        break;
-                  case 4: video4.src = URL.createObjectURL(remotestream);
-                          video4.play();
-                          console.log('stream');
-                        break;
-                  default: console.log('bitch');
-                        break;
-                }
-              });
-            }else{
-              // ToDo myVideo5 is set to local cam
-            }
-        }, function(err) {
-          console.log(err);
-        });
-        }
+    //     for (let u of this.users) {
+    //       n.getUserMedia({video: true, audio: true}, function(stream) {
+    //         if (u._idUser !== localCurU) {
+    //           let call = localPeer.call(u.webId + localChanId, stream);
+    //           console.log('Dest id is : ' + u.webId + localChanId);
+    //           call.on('stream', function(remotestream) {
+    //             i++;
+    //             console.log(i);
+    //             switch (i) {
+    //               case 1: video1.src = URL.createObjectURL(remotestream);
+    //                       video1.play();
+    //                       console.log('stream');
+    //                       console.log('1');
+    //                     break;
+    //               case 2: video2.src = URL.createObjectURL(remotestream);
+    //                       video2.play();
+    //                       console.log('stream');
+    //                       console.log('2');
+    //                     break;
+    //               case 3: video3.src = URL.createObjectURL(remotestream);
+    //                       video3.play();
+    //                       console.log('stream');
+    //                       console.log('3');
+    //                     break;
+    //               case 4: video4.src = URL.createObjectURL(remotestream);
+    //                       video4.play();
+    //                       console.log('stream');
+    //                     break;
+    //               default: console.log('bitch');
+    //                     break;
+    //             }
+    //           });
+    //         }else{
+    //           // ToDo myVideo5 is set to local cam
+    //         }
+    //     }, function(err) {
+    //       console.log(err);
+    //     });
+    //     }
 
-    this.peer.on('call', function(call) {
-          n.getUserMedia({video: true, audio: true}, function(stream){
-            call.answer(stream);
-            call.on('stream', function(remotestream) {
-              console.log(remotestream);
-              video5.src = URL.createObjectURL(remotestream);
-              video5.play();
-            });
-          }, function(err) {
-            console.log(err);
-          });
-        });
-      }
+    // this.peer.on('call', function(call) {
+    //       n.getUserMedia({video: true, audio: true}, function(stream){
+    //         call.answer(stream);
+    //         call.on('stream', function(remotestream) {
+    //           console.log(remotestream);
+    //           video5.src = URL.createObjectURL(remotestream);
+    //           video5.play();
+    //         });
+    //       }, function(err) {
+    //         console.log(err);
+    //       });
+    //     });
+    //   }
   }
 }

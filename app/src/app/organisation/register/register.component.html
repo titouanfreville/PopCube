@@ -1,8 +1,10 @@
 <form class="form-group">
+  <label *ngIf="errorMsg !== null">{{errorMsg}}</label>
   <input type="text" name="userName" class="form-control" placeholder="Username" [(ngModel)]="user.userName" />
   <input type="password" name="password" class="form-control" placeholder="Password" [(ngModel)]="user.password" />
+  <input type="password" name="passwordConfirm" class="form-control" placeholder="Password" [(ngModel)]="passwordConfirm" />
   <input type="text" name="email" class="form-control" placeholder="Email" [(ngModel)]="user.email" />
-  <input type="text" name="email" class="form-control" placeholder="Email Confirm" />
+  <input type="text" name="emailConfirm" class="form-control" placeholder="Email Confirm" [(ngModel)]="emailConfirm"/>
   <input type="text" name="firstName" class="form-control" placeholder="Firstname" [(ngModel)]="user.firstName"/>
   <input type="text" name="lastName" class="form-control" placeholder="Lastname" [(ngModel)]="user.lastName"/>
   <input type="text" name="nickName" class="form-control" placeholder="NickName" [(ngModel)]="user.nickName"/>
