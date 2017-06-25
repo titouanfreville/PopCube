@@ -1,15 +1,15 @@
 version: "2"
 services:
-  front:
-    ports:
-      - 8080:80
-      - 443:443
-    volumes:
-      - "./app/:/usr/share/nginx/html/app"
-      - "./docs/:/usr/share/nginx/html/docs"
-  compass:
-    volumes:
-      - "./app/styles:/home/style"
+  # front:
+  #   ports:
+  #     - 8080:80
+  #     - 443:443
+  #   volumes:
+  #     - "./app/:/usr/share/nginx/html/app"
+  #     - "./docs/:/usr/share/nginx/html/docs"
+  # compass:
+  #   volumes:
+  #     - "./app/styles:/home/style"
   goconvey:
     build:
       context: .
@@ -43,7 +43,7 @@ services:
     env_file: .env
     volumes:
       - "./go/src/api:/go/src/api"
-      - "./go/src/data_stores:/go/src/data_stores"
+      - "./go/src/datastores:/go/src/datastores"
       - "./go/src/models:/go/src/models"
       - "./go/src/utils:/go/src/utils"
   database:

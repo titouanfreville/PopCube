@@ -125,7 +125,7 @@ if [ "$watching" -eq 0 ]
 then
 	watcher /go "$CMD"
 else
-  sleep 30s
+  sleep 60s
 	check_fixed_packages_no_generation
   exit "$failures"
 fi

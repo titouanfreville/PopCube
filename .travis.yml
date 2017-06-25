@@ -1,56 +1,28 @@
 sudo: required
-
-language: bash
-env:
-  DOCKER_COMPOSE_VERSION: 1.9.0
-
-before_install:
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-  - cp .env.test .env
-
-
-services:
-  - docker
-
+dist: trusty
+language: node_js - "7.7.2"
+cache:
+  directories:
+  - app/node_modules
 script:
-  - docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY
-  - docker-compose build
-  - ./popcube.sh -t -y all
-  - docker-compose -f docker-compose.yml -f docker-compose.test.yml run back-test
-
+- npm install electron electron-packager -g
+- cd app; npm install; cd ..;
+- electron-packager app Popcube --platform=darwin --arch=x64 --icon=logo/app.ico --overwrite
+- electron-packager app Popcube --platform=linux --arch=x64 --icon=logo/app.ico --overwrite
+- zip -r Popcube-linux-x64.zip Popcube-linux-x64
+- zip -r Popcube-darwin-x64.zip Popcube-darwin-x64
 after_success:
-  - docker-compose -f docker-compose.yml -f docker-compose.test.yml run back-test
-  - >-
-    if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY;
-    docker build -t go_base -f docker/go_base.Dockerfile .;
-    docker tag go_base $DOCKER_REGISTRY/go:base;
-    docker push $DOCKER_REGISTRY/go:base;
-    docker build -t nginx_front -f docker/nginx_front.Dockerfile .;
-    docker tag nginx_front $DOCKER_REGISTRY/nginx_front:latest;
-    docker push $DOCKER_REGISTRY/nginx_front:latest;
-    docker build -t $DOCKER_REGISTRY/docs:latest -f docker/docs.Dockerfile .;
-    docker push $DOCKER_REGISTRY/docs:latest;
-    curl -X POST --header 'Content-Type: application/json' --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{ "Image": "registry.le-corre.eu:5000/nginx_front:latest", "Env": [ "VIRTUAL_NETWORK=nginx-proxy", "LETSENCRYPT_HOST=master.popcube.xyz", "LETSENCRYPT_EMAIL=clement@popcube.xyz", "VIRTUAL_HOST=master.popcube.xyz", "VIRTUAL_PORT=80" ], "Hostname": "nginx_front" }' http://${DEPLOY_URL}/deploy;
-    curl -X POST --header 'Content-Type: application/json' --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{ "Image": "registry.le-corre.eu:5000/docs:latest", "Env": [ "VIRTUAL_NETWORK=nginx-proxy", "LETSENCRYPT_HOST=master.popcube.xyz", "LETSENCRYPT_EMAIL=clement@popcube.xyz", "VIRTUAL_HOST=docs.popcube.xyz" ], "Hostname": "docs" }' http://${DEPLOY_URL}/deploy;
-    fi
-  - >-
-    if [ "$TRAVIS_BRANCH" == "development" ]; then
-    docker login -u="$DOCKER_USER" -p="$DOCKER_PWD" $DOCKER_REGISTRY;
-    docker build -t go_base -f docker/go_base.Dockerfile .;
-    docker tag go_base $DOCKER_REGISTRY/go:base-dev;
-    docker push $DOCKER_REGISTRY/go:base-dev;
-    docker build -t nginx_front -f docker/nginx_front.Dockerfile .;
-    docker tag nginx_front $DOCKER_REGISTRY/nginx_front:dev;
-    docker push $DOCKER_REGISTRY/nginx_front:dev;
-    docker build -t $DOCKER_REGISTRY/docs:dev -f docker/docs.Dockerfile .;
-    docker push $DOCKER_REGISTRY/docs:dev;
-    curl -X POST --header 'Content-Type: application/json' --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{ "Image": "registry.le-corre.eu:5000/nginx_front:dev", "Env": [ "VIRTUAL_NETWORK=nginx-proxy", "LETSENCRYPT_HOST=dev.popcube.xyz", "LETSENCRYPT_EMAIL=clement@popcube.xyz", "VIRTUAL_HOST=dev.popcube.xyz", "VIRTUAL_PORT=80" ], "Hostname": "nginx_front-dev" }' http://${DEPLOY_URL}/deploy;
-    curl -X POST --header 'Content-Type: application/json' --header "X-AUTH-TOKEN: ${DEPLOY_TOKEN}" -d '{ "Image": "registry.le-corre.eu:5000/docs:dev", "Env": [ "VIRTUAL_HOST=docs-dev.popcube.xyz" ], "Hostname": "docs-dev" }' http://${DEPLOY_URL}/deploy;
-    fi
-
+- if [ "$TRAVIS_BRANCH" == "master" ]; then fi
+- if [ "$TRAVIS_BRANCH" == "development" ]; then fi
+deploy:
+  provider: releases
+  api_key:
+    secure: lKLjNdNl9TtZWgOWXnNzgPIen+2RzgqGp3mQyg+ZzBFXnW+NNhmYAa49LxdAkm1IaksmiDvO/oiqz+AloIOPq3iggJ/0XMJgkvHfPVFp8lxNJj+VyfZRCGcWazJCYR+fmpwranCd2yPNF+mPfMBbIhn6h+ZMQMi+8bQMiEQvpp66yLck544d+fBCzqIpJNvN41TGJ4Smlh5kOdXEQen1ZKytXM1Hzk9Jj6TT9Q8aTI1erJRFPH7+qPMsnL7+kknqaMx2pOditgmnMXZh94hfOuyD/jVhnrlvx4mk38VPSeuy2SaDdvKyz9wpcSOb2DZ79WljkFxGpkX66ufyp5QXcELMbNQz4/hXoBBl4hAK85p6JKOKYbNr1bNiUNGxQ/avh0wkS0lgSPuBd0B9fSYkUdo+l8tnIGUCRpAI1wyZdbu1pKYrL8WLs72M5ABjNHQV0iNJkK8ebZVxgLLr05ow7DH+dPgz18zGPYkyCM1syF4BDXdUGqeL4N8Pz2od3wATfrMi90VifvcMdktrZFRVYDRdCw1khYpgdYJEnc85IGYPR3knx/ZbxCs1fHTTtk5TtcJBa3RaztbsDUBbbqkOafd+vXUikLFBLsz9u7aXRObMdNe6KUyz4c/dE60elxBdOxue3vOYlDhFOkPwdgD4bLWouBrE0IKH0tcPcXyBXeA=
+  file:
+    - "Popcube-darwin-x64.zip"
+    - "Popcube-linux-x64.zip"
+  skip_cleanup: true
+  on:
+    tags: true
 notifications:
   slack: societyco:T1mHeYKrOtopvRjIZ68MqOQo
