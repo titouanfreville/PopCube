@@ -332,6 +332,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
             }
           }
           this.setRolesList();
+          console.log(this.currentUser);
           this.peer = new Peer([this.currentUser.webId], {
             config: {'iceServers': [
               { url: 'stun:stun.l.google.com:19302' },
