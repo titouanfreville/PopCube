@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { ApiService } from './shared';
 
@@ -19,7 +20,21 @@ export class AppComponent {
   url = 'https://github.com/preboot/angular2-webpack';
   public img = 'img/tab.svg';
 
-  constructor(private api: ApiService) {
+  currentUser;
+
+  constructor(
+    private api: ApiService,
+    private _router: Router
+    ) {
+
+  }
+
+  popcubeNavigate() {
+    if (localStorage.getItem('isConnected') === '1') {
+        this._router.navigate(['/organisation']);
+    }else {
+      this._router.navigate(['']);
+    }
   }
 
   minimize() {
@@ -41,5 +56,10 @@ export class AppComponent {
   close() {
     let window = remote.getCurrentWindow();
     window.close();
+  }
+
+  navigateToSettings() {
+    localStorage.setItem('settingsNav', 'profil');
+    this._router.navigate(['/settings']);
   }
 }

@@ -15,12 +15,19 @@ export class User {
     nickName: string;
     firstName: string;
     lastName: string;
-    constructor(idUser, userName, password, email, firstName, lastName) {
+
+    constructor(idUser, webId, userName, email, password, updateAt, lastPasswordUpdate, locale, idRole, firstName, lastName, nickName, avatar) {
         this._idUser = idUser;
+        this.webId = webId;
         this.userName = userName;
-        this.password = password;
         this.email = email;
+        this.updatedAt = updateAt;
+        this.lastPasswordUpdate = lastPasswordUpdate;
+        this.locale = locale;
+        this.idRole = idRole;
         this.firstName = firstName;
         this.lastName = lastName;
-    }
+        this.nickName = nickName;
+        this.avatar = avatar;
+    } 
 }

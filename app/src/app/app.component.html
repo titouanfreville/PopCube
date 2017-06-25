@@ -1,13 +1,23 @@
 <header>
-  <nav>
-    <a [routerLink]="['']" class='noDrag'>Popcube</a>
-  </nav>
-  <div id="manager-window">
-      <div class='mg-win noDrag' (click)="minimize()"><img src="img/substract.svg" width="40%" height="40%"/></div>
-      <div class='mg-win noDrag' (click)="maximize()"><img src="{{img}}" width="40%" height="40%"/></div>
-      <div class='mg-win noDrag' (click)="close()"><img src="img/cancel.svg" width="40%" height="40%"/></div>
+  <div id="manager-Popcube">
+    <nav>
+      <a (click)="popcubeNavigate()" class='noDrag'>Popcube</a>
+    </nav>
+  </div>
+  <div id="container-organisation-window">
+    <div class="manager-organisation">
+      <div id="settings-organisation">
+        <div class='mg-win noDrag'><img src="img/settings.svg" class="mg-img" (click)='navigateToSettings()' ></div>
+      </div>
+    </div>
+    <div id="manager-window">
+        <div class='mg-win noDrag' (click)="minimize()"><img src="img/substract.svg" class='mg-img'/></div>
+        <div class='mg-win noDrag' (click)="maximize()"><img src="{{img}}" class='mg-img'/></div>
+        <div class='mg-win noDrag' (click)="close()"><img src="img/cancel.svg" class='mg-img'/></div>
+    </div>
   </div>
 </header>
+
 <main>
   <router-outlet></router-outlet>
 </main>

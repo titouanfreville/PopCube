@@ -1,0 +1,120 @@
+@import '../../style/var';
+
+//Main
+
+#settingPage{
+  display: flex;
+  height: 100%;
+}
+
+// Organisation Nav
+
+#navigation{
+  display: flex;
+  width: 150px;
+  background-color: $grey2;
+  ul{
+    list-style: none;
+    padding: 0;
+    li{
+      padding-top: 1em;
+      padding-left: 1em;
+      padding-bottom: 1em;
+      width:150px;
+    }
+    .liFocus{
+      background-color: $grey3;
+    }
+  }
+}
+
+#content{
+  display: flex;
+  width: 100%;
+  div{
+    display: block;
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  #profil {
+    margin-top: 50px;
+  }
+
+  #organisation {
+    margin-top: 50px;
+  }
+
+  #client {
+    margin-top: 50px;
+  }
+
+  #right {
+    margin-top: 50px;
+  }
+
+  #channel {
+    margin-top: 20px;
+  }
+
+  .label{
+    color: white;
+    font-size: 1.1em;
+    padding: 5px;
+    display: flex;
+    width: 98%;
+  }
+
+  .title_channel {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background-color: $royal;
+    margin: 5px;
+  }
+
+  .hide-mod {
+    display: flex;
+    color: white;
+    font-size: 1.5em;
+    width: 2%;
+  }
+
+  .table-hover>tbody>tr:hover {
+    background-color: $grey4;
+  }
+}
+
+// table
+// .channel-list {
+//   background-color: white;
+//   color: black;
+// }
+
+.table {
+  thead {
+    td {
+      text-align: center;
+    }
+  }
+  td:first-child {
+    width: 150px;
+  }
+}
+
+.cb-center {
+  text-align: center;
+}
+
+.avatarDiv{
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+  }
