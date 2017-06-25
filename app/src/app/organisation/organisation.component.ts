@@ -26,7 +26,7 @@ import { Stack } from '../../service/external/stack';
 export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   @ViewChild('message') private myScrollContainer: ElementRef;
-  @ViewChild('myVideo1') private myVideo: any;
+  @ViewChild('myVideo') private myVideo: any;
   @ViewChild('myVideo5') private myVideo5: any;
 
   organisations: Organisation[] = [];
@@ -93,12 +93,45 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
        });
     }
 
-    console.log(this.organisations);
+    this.peer = new Peer([this.currentUser.webId], {
+            config: {'iceServers': [
+              { url: 'stun:stun.l.google.com:19302' },
+              { url: 'turn:homeo@turn.bistri.com:80', credential: 'homeo' }
+            ]}, key: 'tcgi4gqxdbcsor'});
+          setTimeout(() => {
+            console.log(this.peer);
+        });
+
+    this.peer.on('connection', function(conn) {
+          conn.on('data', function(data) {
+            console.log(data);
+          });
+        });
+
     this.initStatus();
   }
 
   ngOnInit() {
     this.isOrganisationLoad = false;
+
+    if (this.myVideo) {
+          let video = this.myVideo.nativeElement;
+          let n = <any>navigator;
+
+          n.getUserMedia = n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
+
+          this.peer.on('call', function(call) {
+            n.getUserMedia({video: true, audio: true}, function(stream){
+              call.answer(stream);
+              call.on('stream', function(remotestream) {
+                video.src = URL.createObjectURL(remotestream);
+                video.play();
+              });
+            }, function(err) {
+              console.log(err);
+            });
+          });
+        }
   }
 
   ngAfterViewInit() {
@@ -314,38 +347,6 @@ export class OrganisationComponent implements OnInit, AfterViewInit, AfterViewCh
           }
           this.setRolesList();
           console.log(this.currentUser);
-          this.peer = new Peer([this.currentUser.webId], {
-            config: {'iceServers': [
-              { url: 'stun:stun.l.google.com:19302' },
-              { url: 'turn:homeo@turn.bistri.com:80', credential: 'homeo' }
-            ]}, key: 'tcgi4gqxdbcsor'});
-          setTimeout(() => {
-            console.log(this.peer);
-        });
-        if (this.myVideo) {
-          let video = this.myVideo.nativeElement;
-          let n = <any>navigator;
-
-          n.getUserMedia = n.getUserMedia || n.webkitGetUserMedia || n.mozGetUserMedia;
-
-          this.peer.on('call', function(call) {
-            n.getUserMedia({video: true, audio: true}, function(stream){
-              call.answer(stream);
-              call.on('stream', function(remotestream) {
-                video.src = URL.createObjectURL(remotestream);
-                video.play();
-              });
-            }, function(err) {
-              console.log(err);
-            });
-          });
-        }
-
-        this.peer.on('connection', function(conn) {
-          conn.on('data', function(data) {
-            console.log(data);
-          });
-        });
         }).catch((ex) => {
         console.error('Error fetching users', ex);
       });
